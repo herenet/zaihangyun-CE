@@ -17,5 +17,7 @@ Route::group([
     $router->get('apps/list', 'AppController@list')->name('apps.list');
 
     $router->get('app/manager/{app_key}', 'Manager\IndexController@index')->name('app.manager.index');
-    $router->resource('app/manager/{app_key}/user', 'Manager\UserController')->names('app.manager.user');
+    $router->group(['prefix' => 'app/manager/{app_key}'], function($router) {
+        $router->resource('user', 'Manager\UserController')->names('app.manager.user');
+    });
 });

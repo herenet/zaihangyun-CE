@@ -111,20 +111,21 @@ class UserController extends AdminController
         return $grid;
     }
 
+    public function edit($id, Content $content)
+    {
+        $id = request()->route('user');
+        return parent::edit($id, $content);
+    }
+
+    public function update($id)
+    {
+        $id = request()->route('user');
+        return parent::update($id);
+    }
+
     public function form()
     {
-        // if(request()->is('*/edit')){
-            
-        //     $form = new Form(User::find(request()->route('user')));
-        // }else{
-            $form = new Form(new User());
-        // }
-
-        if($form->isEditing()){
-            $uid = request()->route('user');
-            $form->setResourceId($uid);
-        }
-        
+        $form = new Form(new User());
         $form->setTitle('用户信息');
         $form->setWidth(6, 3);
         $form->text('nickname', '昵称')->rules(['required', 'string', 'max:64']);
@@ -175,6 +176,18 @@ class UserController extends AdminController
         $form->saved(function (Form $form) {
             admin_toastr('添加成功', 'success');
         });
+
+        $form->tools(function(Form\Tools $tools){
+            $tools->disableView();
+            $tools->disableDelete();
+        });
+
+        $form->footer(function(Form\Footer $footer){
+            $footer->disableViewCheck();
+            $footer->disableEditingCheck();
+            $footer->disableCreatingCheck();
+            $footer->disableReset();
+        });
         
         return $form;
     }
@@ -209,6 +222,11 @@ class UserController extends AdminController
         $show->field('reg_ip', '注册IP');
         $show->field('updated_at', '更新时间');
         $show->field('created_at', '注册时间');
+
+        $show->panel()->tools(function ($tools) {
+            $tools->disableEdit();
+            $tools->disableDelete();
+        });
         return $show;
     }
 }
