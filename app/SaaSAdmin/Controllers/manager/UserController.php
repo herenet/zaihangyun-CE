@@ -6,7 +6,9 @@ use App\Models\User;
 use App\Libs\Helpers;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Show;
 use App\SaaSAdmin\AppKey;
+use Illuminate\Support\Str;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\SaaSAdmin\Facades\SaaSAdmin;
@@ -111,8 +113,18 @@ class UserController extends AdminController
 
     public function form()
     {
-        $form = new Form(new User());
-        $form->action(admin_url("app/manager/{$this->getAppKey()}/user/create"));
+        // if(request()->is('*/edit')){
+            
+        //     $form = new Form(User::find(request()->route('user')));
+        // }else{
+            $form = new Form(new User());
+        // }
+
+        if($form->isEditing()){
+            $uid = request()->route('user');
+            $form->setResourceId($uid);
+        }
+        
         $form->setTitle('用户信息');
         $form->setWidth(6, 3);
         $form->text('nickname', '昵称')->rules(['required', 'string', 'max:64']);
@@ -165,5 +177,38 @@ class UserController extends AdminController
         });
         
         return $form;
+    }
+
+    public function detail()
+    {
+        $uid = request()->route('user');
+        $show = new Show(User::find($uid));
+        $show->avatar('头像')->image();
+        $show->field('uid', 'UID');
+        $show->field('wechat_openid', '微信OpenID');
+        $show->field('wechat_unionid', '微信UnionID');
+        $show->field('apple_userid', '苹果ID');
+        $show->field('nickname', '昵称');
+        $show->field('username', '用户名');
+        $show->field('gender', '性别');
+        $show->field('birthday', '生日');
+        $show->field('mobile', '手机号')->as(function ($value) {
+            /** @var User $this */
+            return $value ? $this->mcode . ' ' . $value : '';
+        });
+        $show->field('is_forever_vip', '永久会员')->using(User::$isForeverVipMap);
+        $show->field('vip_expired_at', 'VIP到期时间');
+        $show->field('ext_data', '扩展数据')->json();
+        $show->field('enter_pass', '启动密码')->password();
+        $show->field('country', '国家');
+        $show->field('province', '省份');
+        $show->field('city', '城市');
+        $show->field('version_number', 'APP版本');
+        $show->field('reg_from', '注册来源')->using(User::$regFromMap);
+        $show->field('channel', '渠道');
+        $show->field('reg_ip', '注册IP');
+        $show->field('updated_at', '更新时间');
+        $show->field('created_at', '注册时间');
+        return $show;
     }
 }

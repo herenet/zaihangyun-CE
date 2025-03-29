@@ -18,11 +18,12 @@
  *
  */
 
+use Encore\Admin\Show;
 use App\Models\SaaSMenu;
 use App\Models\ManagerMenu;
 use Encore\Admin\Grid\Column;
 use App\SaaSAdmin\Extentions\Nav\Link;
-use App\SaaSAdmin\Extensions\Grid\Column\Password;
+use App\SaaSAdmin\Extentions\Show\Password;
 
 //判断URL中是否是以app/manager开头
 if(strpos($_SERVER['REQUEST_URI'], 'app/manager') === false){
@@ -53,6 +54,7 @@ Column::extend('prependIcon', function ($value, $icon) {
     }
     return "<span style='color: #999;'><i class='fa fa-$icon'></i>  $value</span>";
 });
+Show::extend('password', Password::class);
 
 Admin::script(<<<JS
 $(document).ready(function() {
@@ -85,8 +87,9 @@ if($layout_type == 'custom'){
     view()->share('custom_menu', ['menu' => app(SaasMenu::class)->allNodes()]);
     app('view')->prependNamespace('admin', resource_path('views/saas'));
 }else{
-    $appKey = substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], '/') + 1);
     Encore\Admin\Form::forget(['map', 'editor']);
+    $appKey = request()->route('app_key');
+    
     view()->share('custom_menu', ['menu' => app(ManagerMenu::class)->allNodes($appKey)]);
     
     Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
