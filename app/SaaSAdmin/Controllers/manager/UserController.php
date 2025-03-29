@@ -114,7 +114,7 @@ class UserController extends AdminController
     public function edit($id, Content $content)
     {
         $id = request()->route('user');
-        return parent::edit($id, $content);
+        return parent::edit($id, $content)->title('用户信息')->description('编辑');
     }
 
     public function update($id)
@@ -126,7 +126,6 @@ class UserController extends AdminController
     public function form()
     {
         $form = new Form(new User());
-        $form->setTitle('用户信息');
         $form->setWidth(6, 3);
         $form->text('nickname', '昵称')->rules(['required', 'string', 'max:64']);
         $form->text('username', '用户名')->rules(['nullable', 'string', 'max:64']);
@@ -192,6 +191,11 @@ class UserController extends AdminController
         return $form;
     }
 
+    public function title()
+    {
+        return '用户信息';
+    }
+
     public function detail()
     {
         $uid = request()->route('user');
@@ -223,7 +227,8 @@ class UserController extends AdminController
         $show->field('updated_at', '更新时间');
         $show->field('created_at', '注册时间');
 
-        $show->panel()->tools(function ($tools) {
+        $show->panel()
+        ->tools(function ($tools) {
             $tools->disableEdit();
             $tools->disableDelete();
         });
