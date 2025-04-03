@@ -39,8 +39,8 @@ class ManagerMenu
                     [
                         'id' => 22,
                         'parent_id' => 2,
-                        'title' => '登录接口配置',
-                        'uri' => 'app/manager/' . $appKey. '/user/login/config',
+                        'title' => '接口配置',
+                        'uri' => 'app/manager/' . $appKey. '/user/config',
                     ],
                 ],
             ],
@@ -59,7 +59,7 @@ class ManagerMenu
                     [
                         'id' => 33,
                         'parent_id' => 3,
-                        'title' => '订单接口配置',
+                        'title' => '接口配置',
                         'uri' => 'app/manager/' . $appKey. '/payment/config',
                     ],
                 ],
@@ -74,7 +74,7 @@ class ManagerMenu
                         'id' => 41,
                         'parent_id' => 4,
                         'title' => '微信开放平台配置',
-                        'uri' => 'app/manager/' . $appKey. '/config/wechat',
+                        'uri' => 'app/manager/' . $appKey. '/config/wechat/platform',
                     ],
                     [
                         'id' => 42,

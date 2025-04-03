@@ -18,12 +18,14 @@
  *
  */
 
+use Encore\Admin\Form;
 use Encore\Admin\Show;
 use App\Models\SaaSMenu;
 use App\Models\ManagerMenu;
 use Encore\Admin\Grid\Column;
 use App\SaaSAdmin\Extentions\Nav\Link;
 use App\SaaSAdmin\Extentions\Show\Password;
+use App\SaaSAdmin\Extentions\Form\InterfaceCheck;
 
 //判断URL中是否是以app/manager开头
 if(strpos($_SERVER['REQUEST_URI'], 'app/manager') === false){
@@ -55,6 +57,8 @@ Column::extend('prependIcon', function ($value, $icon) {
     return "<span style='color: #999;'><i class='fa fa-$icon'></i>  $value</span>";
 });
 Show::extend('password', Password::class);
+
+Form::extend('interfaceCheck', InterfaceCheck::class);
 
 Admin::script(<<<JS
 $(document).ready(function() {

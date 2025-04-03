@@ -47,6 +47,7 @@ class UserController extends AdminController
             }
             return $this->mcode . ' ' . $mobile;
         })->prependIcon('phone');
+        $grid->column('email', '邮箱');
 
         // 第三方账号
         $grid->column('wechat_openid', '微信OpenID')->limit(15);
@@ -130,6 +131,7 @@ class UserController extends AdminController
         $form->text('nickname', '昵称')->rules(['required', 'string', 'max:64']);
         $form->text('username', '用户名')->rules(['nullable', 'string', 'max:64']);
         $form->mobile('mobile', '手机号')->prepend('+86')->rules(['nullable', 'integer', 'digits:11']);
+        $form->email('email', '邮箱')->rules(['nullable', 'email', 'max:64']);
         if($form->isCreating()) {
             $form->radio('gender', '性别')->options([
                 '男' => '男',
@@ -213,6 +215,7 @@ class UserController extends AdminController
             /** @var User $this */
             return $value ? $this->mcode . ' ' . $value : '';
         });
+        $show->field('email', '邮箱');
         $show->field('is_forever_vip', '永久会员')->using(User::$isForeverVipMap);
         $show->field('vip_expired_at', 'VIP到期时间');
         $show->field('ext_data', '扩展数据')->json();
