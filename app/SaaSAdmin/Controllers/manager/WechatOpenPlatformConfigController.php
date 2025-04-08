@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Encore\Admin\Layout\Content;
 use App\SaaSAdmin\Facades\SaaSAdmin;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use App\Models\WechatOpenPlatformConfig;
 use Encore\Admin\Controllers\AdminController;
 
@@ -59,6 +60,8 @@ class WechatOpenPlatformConfigController extends AdminController
     public function update($id)
     {
         $id = request()->route('platform');
+        $cache_key = 'wechat_open_platform_config|'.$id;
+        Cache::store('api_cache')->forget($cache_key);
         return parent::update($id);
     }
 
@@ -79,10 +82,12 @@ class WechatOpenPlatformConfigController extends AdminController
             ->rules(['nullable', 'string', 'max:255']);
         
         $form->interfaceCheck('interface_check', '验证配置')
-            ->buttonText('测试配置是否正确')
-            ->dependentOn(['wechat_appid', 'wechat_appsecret'])
-            ->testUrl(admin_url('app/manager/' . $this->getAppKey() . '/config/wechat/platform/check-interface'))
-            ->help('通过从微信开放平台获取AccessToken的方式来验证配置是否正确');
+        ->buttonText('测试配置是否正确')
+        ->dependentOn(['wechat_appid', 'wechat_appsecret'])
+        ->default(0)
+        ->testUrl(admin_url('app/manager/' . $this->getAppKey() . '/config/wechat/platform/check-interface'))
+        ->help('通过从微信开放平台获取AccessToken的方式来验证配置是否正确');
+        
 
         $form->tools(function ($tools) {
             $tools->disableDelete();
@@ -141,8 +146,8 @@ class WechatOpenPlatformConfigController extends AdminController
         if (isset($data['access_token'])) {
             return response()->json(['status' => true]);
         } else {
-            return response()->json(['status' => true]);
-            // return response()->json(['status' => false, 'message' => '配置错误[' . $data['errcode'] . ']:' . $data['errmsg']]);
+            // return response()->json(['status' => true]);
+            return response()->json(['status' => false, 'message' => '配置错误[' . $data['errcode'] . ']:' . $data['errmsg']]);
         }
     }
 }

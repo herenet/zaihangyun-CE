@@ -16,13 +16,20 @@ class InterfaceCheck extends Field
     {
         $this->addVariables([
             'successText' => '测试通过',
-            'failText' => '测试失败'
+            'failText' => '测试失败',
+            'element' => $this->getElementClass()
         ]);
     }
 
     public function dependentOn($fields)
     {
         $this->dependentFields = is_array($fields) ? $fields : [$fields];
+        return $this;
+    }
+
+    public function default($default) : self
+    {
+        $this->default = $default;
         return $this;
     }
 
@@ -53,10 +60,11 @@ class InterfaceCheck extends Field
 
         // 将依赖字段添加到视图变量
         $this->addVariables([
-            'testUrl' => $this->testUrl,
-            'buttonText' => $this->buttonText,
-            'dependentFields' => json_encode($this->dependentFields)
-        ]);
+                'testUrl' => $this->testUrl,
+                'buttonText' => $this->buttonText,
+                'dependentFields' => json_encode($this->dependentFields),
+            ])
+            ->value(isset($this->default) ? $this->default : $this->value());
 
         $fields = empty($this->dependentFields) ? '[]' : json_encode($this->dependentFields);
         

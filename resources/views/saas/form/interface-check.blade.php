@@ -1,6 +1,7 @@
 <div class="{{$viewClass['form-group']}} {!! !$errors->has($errorKey) ? '' : 'has-error' !!}">
     <label for="{{$id}}" class="{{$viewClass['label']}} control-label">{{$label}}</label>
     <div class="{{$viewClass['field']}}">
+        <input type="hidden" name="{{$name}}" value="{{$value}}">
         <a href="javascript:void(0);" 
            class="btn btn-warning interface-check-btn" 
            data-test-url="{{$testUrl}}"
@@ -8,7 +9,7 @@
            data-field="{{$name}}">
             <i class="fa fa-wrench"></i> {{$buttonText}}
         </a>
-        <input type="hidden" name="{{$name}}" value="{{$value}}">
+        
         <span class="interface-check-loading">
             <i class="fa fa-spinner fa-spin"></i> 测试中...
         </span>

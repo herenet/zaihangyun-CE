@@ -11,13 +11,13 @@ class LoginInterfaceConfig extends Model
         'app_key', 
         'switch', 
         'token_effective_duration',
-        'jwt_payload_fields', 
         'suport_wechat_login', 
         'selected_wechat_open_platform_id', 
         'suport_mobile_login', 
         'mobile_sms_interface_check', 
         'suport_apple_login', 
-        'apple_login_interface_check'
+        'apple_login_interface_check',
+        'endpoint_allow_count',
     ];
 
     public function getConfig($tenantId, $appKey)
