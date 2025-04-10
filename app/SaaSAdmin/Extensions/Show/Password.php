@@ -1,6 +1,6 @@
 <?php
 
-namespace App\SaaSAdmin\Extentions\Show;
+namespace App\SaaSAdmin\Extensions\Show;
 
 use Encore\Admin\Show\AbstractField;
 

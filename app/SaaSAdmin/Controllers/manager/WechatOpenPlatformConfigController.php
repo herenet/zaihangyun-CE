@@ -28,7 +28,9 @@ class WechatOpenPlatformConfigController extends AdminController
     public function grid()
     {
         $grid = new Grid(new WechatOpenPlatformConfig());
-        $grid->model()->orderBy('id', 'desc');
+        $grid->model()
+        ->where('tenant_id', SaaSAdmin::user()->id)
+        ->orderBy('id', 'desc');
 
         $grid->column('id', 'ID')->sortable();
         $grid->column('laucher_icon_url', '启动图标')->image();

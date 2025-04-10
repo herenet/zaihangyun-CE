@@ -2,14 +2,10 @@
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
-        @include('saas::form.select');
-
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
-        
+            {!! $appSelector ?? '' !!}
             @each('saas::partials.menu', $custom_menu['menu'], 'item')
-
         </ul>
         <!-- /.sidebar-menu -->
         <div class="user-panel">

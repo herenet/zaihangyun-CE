@@ -58,7 +58,7 @@ return [
     */
     'route' => [
 
-        'prefix' => env('ADMIN_ROUTE_PREFIX', 'admin'),
+        'prefix' => env('ADMIN_ROUTE_PREFIX', 'console'),
 
         'namespace' => 'App\\SaaSAdmin\\Controllers',
 
@@ -153,13 +153,13 @@ return [
     'upload' => [
 
         // Disk in `config/filesystem.php`.
-        'disk' => 'SaaSAdmin',
+        'disk' => 'SaaSAdmin-mch',
 
         // Image and file upload path under the disk above.
-        'directory' => [
-            'image' => 'images',
-            'file'  => 'files',
-        ],
+        // 'directory' => [
+        //     'image' => 'images',
+        //     'file'  => 'files',
+        // ],
     ],
 
     /*

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\SaaSAdmin\Extentions\Form;
+namespace App\SaaSAdmin\Extensions\Form;
 
 use Encore\Admin\Form\Field;
 use Encore\Admin\Facades\Admin;

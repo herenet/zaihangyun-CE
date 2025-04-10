@@ -23,9 +23,12 @@ use Encore\Admin\Show;
 use App\Models\SaaSMenu;
 use App\Models\ManagerMenu;
 use Encore\Admin\Grid\Column;
-use App\SaaSAdmin\Extentions\Nav\Link;
-use App\SaaSAdmin\Extentions\Show\Password;
-use App\SaaSAdmin\Extentions\Form\InterfaceCheck;
+use App\SaaSAdmin\Extensions\Nav\Link;
+use App\SaaSAdmin\Components\AppSelector;
+use App\SaaSAdmin\Extensions\Nav\Dropdown;
+use App\SaaSAdmin\Extensions\Nav\Shortcut;
+use App\SaaSAdmin\Extensions\Show\Password;
+use App\SaaSAdmin\Extensions\Form\InterfaceCheck;
 
 //判断URL中是否是以app/manager开头
 if(strpos($_SERVER['REQUEST_URI'], 'app/manager') === false){
@@ -86,7 +89,16 @@ $(document).ready(function() {
 });
 JS);
 
-view()->share('custom_data', ['app_select' => ['name' => 'app_select', 'options' => ['1' => '1', '2' => '2']]]); 
+
+$appSelector = (new AppSelector())->render();
+view()->share('appSelector', $appSelector);
+
+Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
+    $navbar->right(Shortcut::make([
+        '微信商户号设置' => 'global/config/wechat/payment',
+    ], 'fa-gears')->title('全局设置'));
+});
+
 if($layout_type == 'custom'){
     view()->share('custom_menu', ['menu' => app(SaasMenu::class)->allNodes()]);
     app('view')->prependNamespace('admin', resource_path('views/saas'));
@@ -96,8 +108,5 @@ if($layout_type == 'custom'){
     
     view()->share('custom_menu', ['menu' => app(ManagerMenu::class)->allNodes($appKey)]);
     
-    Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
-        // $navbar->right(Link::make('接入文档', 'https://www.baidu.com', 'fa-book'));
-    });   
     app('view')->prependNamespace('admin', resource_path('views/manager'));
 }

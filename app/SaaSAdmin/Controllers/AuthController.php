@@ -21,7 +21,7 @@ class AuthController extends BaseAuthController
         }
 
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('admin');
+            return redirect()->intended(config('admin.route.prefix'));
         }
 
         return redirect()->back()->withErrors(['phone_number' => 'These credentials do not match our records.']);

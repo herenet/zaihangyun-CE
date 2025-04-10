@@ -1,6 +1,6 @@
 <?php
 
-namespace App\SaaSAdmin\Extentions\Nav;
+namespace App\SaaSAdmin\Extensions\Nav;
 
 use Illuminate\Contracts\Support\Renderable;
 

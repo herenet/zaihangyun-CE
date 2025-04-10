@@ -10,23 +10,22 @@ use App\Http\Controllers\Controller;
 use App\Models\LoginInterfaceConfig;
 use App\SaaSAdmin\Facades\SaaSAdmin;
 use App\Models\WechatOpenPlatformConfig;
+use App\SaaSAdmin\Forms\OrderBaseConfig;
+use App\SaaSAdmin\Forms\WechatPayConfig;
 use Illuminate\Support\Facades\Validator;
-use App\SaaSAdmin\Forms\AccessTokenConfig;
-use App\SaaSAdmin\Forms\WechatLoginConfig;
-use App\SaaSAdmin\Forms\SmsLoginConfig;
 
-class UserConfigController extends Controller
+class OrderConfigController extends Controller
 {
     use AppKey;
 
     public function index(Content $content)
     {
         $content->title('接口配置');
-        $content->description('用户模块');
+        $content->description('订单模块');
+
         $content->body(Tab::forms([
-            'basic'    => AccessTokenConfig::class,
-            'wechat'   => WechatLoginConfig::class,
-            'sms'      => SmsLoginConfig::class,
+            'base' => OrderBaseConfig::class,
+            'wechat_pay' => WechatPayConfig::class,
         ]));
 
         return $content;
