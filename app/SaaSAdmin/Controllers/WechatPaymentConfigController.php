@@ -124,24 +124,6 @@ class WechatPaymentConfigController extends AdminController
         return $form;
     }
 
-    // public function checkInterface(Request $request)
-    // {
-    //     $wechat_appid = $request->input('wechat_appid');
-    //     $wechat_appsecret = $request->input('wechat_appsecret');
-    //     if (empty($wechat_appid) || empty($wechat_appsecret)) {
-    //         return response()->json(['status' => false, 'message' => '微信APPID和APPSECRET不能为空']);
-    //     }
-    //     $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $wechat_appid . '&secret=' . $wechat_appsecret;
-    //     $response = Http::get($url);
-    //     $data = $response->json();
-    //     if (isset($data['access_token'])) {
-    //         return response()->json(['status' => true]);
-    //     } else {
-    //         // return response()->json(['status' => true]);
-    //         return response()->json(['status' => false, 'message' => '配置错误[' . $data['errcode'] . ']:' . $data['errmsg']]);
-    //     }
-    // }
-
     public function checkCallback(Request $request)
     {
         dd($request->all());

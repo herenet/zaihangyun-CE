@@ -7,12 +7,11 @@ use Encore\Admin\Widgets\Tab;
 use Encore\Admin\Layout\Content;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\LoginInterfaceConfig;
 use App\SaaSAdmin\Facades\SaaSAdmin;
-use App\Models\WechatOpenPlatformConfig;
 use App\SaaSAdmin\Forms\OrderBaseConfig;
 use App\SaaSAdmin\Forms\WechatPayConfig;
 use Illuminate\Support\Facades\Validator;
+use App\Models\OrderInterfaceConfig;
 
 class OrderConfigController extends Controller
 {
@@ -38,23 +37,12 @@ class OrderConfigController extends Controller
         $app_key = $this->getAppKey();
 
         if ($switch == 1) {
-            $validator = Validator::make($request->all(), [
-                'token_effective_duration' => 'required|integer|min:1|max:3650',
-                'endpoint_allow_count' => 'required|integer|min:0|max:99999',
-            ]);
-           
-            if ($validator->fails()) {
-                return back()->withErrors($validator)->withInput();
-            }
-
-            $login_config_data = [
+            $order_config_data = [
                 'switch' => $switch,
-                'token_effective_duration' => $request->input('token_effective_duration'),
-                'endpoint_allow_count' => $request->input('endpoint_allow_count'),
             ];
 
             try {
-                app(LoginInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $login_config_data);
+                app(OrderInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $order_config_data);
                 admin_toastr('保存成功', 'success');
                 return back();
             } catch (\Exception $e) {
@@ -62,7 +50,7 @@ class OrderConfigController extends Controller
                 return back()->withErrors($e->getMessage())->withInput();
             }
         } else {
-            app(LoginInterfaceConfig::class)->saveConfig($tenant_id, $app_key, ['switch' => $switch]);
+            app(OrderInterfaceConfig::class)->saveConfig($tenant_id, $app_key, ['switch' => $switch]);
             admin_toastr('保存成功', 'success');
             return back();
         }
@@ -74,52 +62,27 @@ class OrderConfigController extends Controller
         $app_key = $this->getAppKey();
 
         $validator = Validator::make($request->all(), [
-            'suport_wechat_login' => 'required|in:0,1',
-            'app_name' => 'required_if:suport_wechat_login,1|string|max:64',
-            'wechat_appid' => 'required_if:suport_wechat_login,1|string|max:64',
-            'wechat_appsecret' => 'required_if:suport_wechat_login,1|string|max:128',
+            'suport_wechat_pay' => 'required|in:0,1',
+            'wechat_payment_config_id' => 'required_if:suport_wechat_pay,1|exists:wechat_payment_config,id',
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-        if($request->input('suport_wechat_login') == 1) {
-            $wechat_login_interface_check = $request->input('wechat_login_interface_check');
-            if($wechat_login_interface_check == 0) {
-                admin_error('请先验证微信配置是否正确');
-                return back()->withInput();
-            }
-        }
-
-        $login_config_data = [
-            'suport_wechat_login' => $request->input('suport_wechat_login'),
+        $order_config_data = [
+            'suport_wechat_pay' => $request->input('suport_wechat_pay'),
+            'wechat_payment_config_id' => $request->input('wechat_payment_config_id'),
         ];
 
         try {
-            DB::beginTransaction();
-            app(LoginInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $login_config_data);
-            if($request->input('suport_wechat_login') == 1) {
-                $wechat_open_platform_config_data = [
-                    'app_name' => $request->input('app_name'),
-                    'wechat_appid' => $request->input('wechat_appid'),
-                    'wechat_appsecret' => $request->input('wechat_appsecret'),
-                ];
-                app(WechatOpenPlatformConfig::class)->saveConfig($tenant_id, $app_key, $wechat_open_platform_config_data);
-            }
-            
-            DB::commit();
+            app(OrderInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $order_config_data);
             admin_toastr('保存成功', 'success');
             return back();
         } catch (\Exception $e) {
-            DB::rollBack();
             admin_toastr($e->getMessage(), 'error');
             return back()->withErrors($e->getMessage())->withInput();
         }
     }
 
-    public function saveSms(Request $request)
-    {
-        dd($request->all());
-    }
 }

@@ -22,4 +22,10 @@ class Helpers
     {
         return hexdec(substr(md5(Str::uuid()), 0, 8));
     }
+
+    //生成产品ID，8位数字
+    public static function generateProductId()
+    {
+        return hexdec(substr(md5(Str::uuid()), 0, 6));
+    }
 }

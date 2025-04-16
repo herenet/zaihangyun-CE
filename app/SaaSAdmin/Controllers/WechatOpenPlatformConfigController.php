@@ -1,6 +1,6 @@
 <?php
 
-namespace App\SaaSAdmin\Controllers\Manager;
+namespace App\SaaSAdmin\Controllers;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -33,10 +33,10 @@ class WechatOpenPlatformConfigController extends AdminController
         ->orderBy('id', 'desc');
 
         $grid->column('id', 'ID')->sortable();
-        $grid->column('laucher_icon_url', '启动图标')->image();
         $grid->column('app_name', 'APP名称');
         $grid->column('wechat_appid', '微信APPID')->copyable();
         $grid->column('wechat_appsecret', '微信APPSECRET')->password('*', 6)->copyable();
+        $grid->column('interface_check', '接口验证')->using([0 => '未验证', 1 => '已验证'])->label(['success' => '已验证', 'danger' => '未验证']);
         $grid->column('remark', '备注');
         $grid->column('updated_at', '更新时间')->sortable();
         $grid->column('created_at', '创建时间')->sortable();
@@ -53,15 +53,8 @@ class WechatOpenPlatformConfigController extends AdminController
         return '微信开放平台配置';
     }
 
-    public function edit($id, Content $content)
-    {
-        $id = request()->route('platform');
-        return parent::edit($id, $content);
-    }
-
     public function update($id)
     {
-        $id = request()->route('platform');
         $cache_key = 'wechat_open_platform_config|'.$id;
         Cache::store('api_cache')->forget($cache_key);
         return parent::update($id);
@@ -71,7 +64,6 @@ class WechatOpenPlatformConfigController extends AdminController
     {
         $form = new Form(new WechatOpenPlatformConfig());
         
-        $form->file('laucher_icon_url', '启动图标');
         $form->text('app_name', 'APP名称')
             ->rules(['required', 'string', 'max:64']);
         $form->text('wechat_appid', '微信APPID')
@@ -87,7 +79,7 @@ class WechatOpenPlatformConfigController extends AdminController
         ->buttonText('测试配置是否正确')
         ->dependentOn(['wechat_appid', 'wechat_appsecret'])
         ->default(0)
-        ->testUrl(admin_url('app/manager/' . $this->getAppKey() . '/config/wechat/platform/check-interface'))
+        ->testUrl(admin_url('global/config/wechat/platform/check-interface'))
         ->help('通过从微信开放平台获取AccessToken的方式来验证配置是否正确');
         
 
@@ -120,18 +112,18 @@ class WechatOpenPlatformConfigController extends AdminController
         $id = request()->route('platform');
         $show = new Show(WechatOpenPlatformConfig::find($id));
         $show->id('ID');
-        $show->laucher_icon_url('启动图标')->image();
         $show->app_name('APP名称');
         $show->wechat_appid('微信APPID')->copyable();
         $show->wechat_appsecret('微信APPSECRET')->password('*', 6)->copyable();
         $show->remark('备注');
+        $show->interface_check('接口验证')->using([0 => '未验证', 1 => '已验证'])->label(['success' => '已验证', 'danger' => '未验证']);
         $show->updated_at('更新时间');
         $show->created_at('创建时间');
-        $show->panel()
-        ->tools(function ($tools) {
-            $tools->disableEdit();
-            $tools->disableDelete();
-        });
+        // $show->panel()
+        // ->tools(function ($tools) {
+        //     $tools->disableEdit();
+        //     $tools->disableDelete();
+        // });
         return $show;
     }
 

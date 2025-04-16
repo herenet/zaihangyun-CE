@@ -16,23 +16,27 @@ Route::group([
     $router->resource('apps', 'AppController')->names('apps');
     $router->get('apps/list', 'AppController@list')->name('apps.list');
     $router->resource('global/config/wechat/payment', 'WechatPaymentConfigController')->names('global.wechat.payment.config');
+    $router->post('global/config/wechat/payment/check-interface', 'WechatPaymentConfigController@checkInterface')->name('global.wechat.payment.check-interface');
+    $router->resource('global/config/wechat/platform', 'WechatOpenPlatformConfigController')->names('global.wechat.platform.config');
+    $router->post('global/config/wechat/platform/check-interface', 'WechatOpenPlatformConfigController@checkInterface')->name('global.wechat.platform.check-interface');
+    $router->resource('global/config/aliyun/access', 'AliyunAccessConfigController')->names('global.aliyun.access.config');
+    $router->post('global/config/aliyun/access/check-interface', 'AliyunAccessConfigController@checkInterface')->name('global.aliyun.access.check-interface');
 
     $router->get('app/manager/{app_key}', 'Manager\IndexController@index')->name('app.manager.index');
     $router->group(['prefix' => 'app/manager/{app_key}'], function($router) {
-        // $router->post('user/config/save', 'Manager\UserConfigController@save')->name('app.manager.user.config.save');
-        // $router->addRoute(['get', 'post'] ,'user/config', 'Manager\UserConfigController@index')->name('app.manager.user.config');
+        $router->resource('user/list', 'Manager\UserController')->names('app.manager.user');
         $router->get('user/config', 'Manager\UserConfigController@index')->name('app.manager.user.config');
         $router->post('user/config/base', 'Manager\UserConfigController@saveBase')->name('app.manager.user.config.save.base');
         $router->post('user/config/sms', 'Manager\UserConfigController@saveSms')->name('app.manager.user.config.save.sms');
         $router->post('user/config/wechat', 'Manager\UserConfigController@saveWechat')->name('app.manager.user.config.save.wechat');
 
-        $router->get('payment/config', 'Manager\OrderConfigController@index')->name('app.manager.payment.config');
-        $router->post('payment/config/wechat', 'Manager\OrderConfigController@saveWechat')->name('app.manager.payment.config.save.wechat');
-
-        $router->resource('user', 'Manager\UserController')->names('app.manager.user');
-        $router->resource('config/wechat/platform', 'Manager\WechatOpenPlatformConfigController')->names('app.manager.wechat.platform');
+        $router->resource('order/list', 'Manager\OrderController')->names('app.manager.order');
+        $router->get('order/config', 'Manager\OrderConfigController@index')->name('app.manager.order.config');
+        $router->post('order/config/base', 'Manager\OrderConfigController@saveBase')->name('app.manager.order.config.save.base');
+        $router->resource('order/product', 'Manager\OrderProductController')->names('app.manager.order.product');
+        $router->post('order/config/wechat', 'Manager\OrderConfigController@saveWechat')->name('app.manager.order.config.save.wechat');
         
-        $router->post('config/wechat/platform/check-interface', 'Manager\WechatOpenPlatformConfigController@checkInterface')->name('app.manager.wechat.platform.check-interface');
-        $router->post('config/wechat/payment/check-interface', 'Manager\WechatPaymentConfigController@checkInterface')->name('app.manager.wechat.payment.check-interface');
+        
+        
     });
 });

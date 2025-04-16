@@ -61,6 +61,9 @@ class WechatPayInterfaceCheck extends RowAction
                     ->refresh(); // 刷新列表
             } else {
                 // 验证失败
+                $config->interface_check = 0;
+                $config->save();
+                
                 return $this->response()
                     ->error('配置验证失败: ' . ($result['message'] ?? '未知错误'))
                     ->refresh(false); // 不刷新列表

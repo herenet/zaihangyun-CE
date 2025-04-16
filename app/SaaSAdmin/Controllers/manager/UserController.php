@@ -114,13 +114,13 @@ class UserController extends AdminController
 
     public function edit($id, Content $content)
     {
-        $id = request()->route('user');
+        $id = request()->route('list');
         return parent::edit($id, $content)->title('用户信息')->description('编辑');
     }
 
     public function update($id)
     {
-        $id = request()->route('user');
+        $id = request()->route('list');
         return parent::update($id);
     }
 
@@ -168,11 +168,13 @@ class UserController extends AdminController
             ]);
         $form->datetime('vip_expired_at', 'VIP到期时间')->rules(['nullable', 'date']);
 
-        $form->saving(function (Form $form) {
-            $form->model()->uid = Helpers::generateUserId();
-            $form->model()->app_key = $this->getAppKey();
-            $form->model()->tenant_id = SaaSAdmin::user()->id;
-        });
+        if($form->isCreating()) {
+            $form->saving(function (Form $form) {
+                $form->model()->uid = Helpers::generateUserId();
+                $form->model()->app_key = $this->getAppKey();
+                $form->model()->tenant_id = SaaSAdmin::user()->id;
+            });
+        }
 
         $form->saved(function (Form $form) {
             admin_toastr('添加成功', 'success');
@@ -200,7 +202,7 @@ class UserController extends AdminController
 
     public function detail()
     {
-        $uid = request()->route('user');
+        $uid = request()->route('list');
         $show = new Show(User::find($uid));
         $show->avatar('头像')->image();
         $show->field('uid', 'UID');

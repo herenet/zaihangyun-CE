@@ -92,10 +92,11 @@ JS);
 
 $appSelector = (new AppSelector())->render();
 view()->share('appSelector', $appSelector);
-
 Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
     $navbar->right(Shortcut::make([
+        '微信开放平台设置' => 'global/config/wechat/platform',
         '微信商户号设置' => 'global/config/wechat/payment',
+        '阿里云AccessKey设置' => 'global/config/aliyun/access',
     ], 'fa-gears')->title('全局设置'));
 });
 

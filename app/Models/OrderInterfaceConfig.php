@@ -3,9 +3,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class LoginInterfaceConfig extends Model
+class OrderInterfaceConfig extends Model
 {
-    protected $table = 'login_interface_config';
+    protected $table = 'order_interface_config';
 
     protected $primaryKey = 'app_key';
 
@@ -15,12 +15,10 @@ class LoginInterfaceConfig extends Model
         'app_key', 
         'tenant_id', 
         'switch', 
-        'token_effective_duration',
-        'suport_wechat_login', 
-        'wechat_platform_config_id',
-        'suport_mobile_login',
-        'suport_apple_login',
-        'endpoint_allow_count',
+        'suport_wechat_pay', 
+        'wechat_payment_config_id',
+        'suport_alipay', 
+        'suport_apple_pay', 
     ];
 
     public function getConfig($tenantId, $appKey)

@@ -76,44 +76,23 @@ class UserConfigController extends Controller
 
         $validator = Validator::make($request->all(), [
             'suport_wechat_login' => 'required|in:0,1',
-            'app_name' => 'required_if:suport_wechat_login,1|string|max:64',
-            'wechat_appid' => 'required_if:suport_wechat_login,1|string|max:64',
-            'wechat_appsecret' => 'required_if:suport_wechat_login,1|string|max:128',
+            'wechat_platform_config_id' => 'required_if:suport_wechat_login,1|exists:wechat_open_platform_config,id',
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-        if($request->input('suport_wechat_login') == 1) {
-            $wechat_login_interface_check = $request->input('wechat_login_interface_check');
-            if($wechat_login_interface_check == 0) {
-                admin_error('请先验证微信配置是否正确');
-                return back()->withInput();
-            }
-        }
-
         $login_config_data = [
             'suport_wechat_login' => $request->input('suport_wechat_login'),
+            'wechat_platform_config_id' => $request->input('wechat_platform_config_id'),
         ];
 
         try {
-            DB::beginTransaction();
             app(LoginInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $login_config_data);
-            if($request->input('suport_wechat_login') == 1) {
-                $wechat_open_platform_config_data = [
-                    'app_name' => $request->input('app_name'),
-                    'wechat_appid' => $request->input('wechat_appid'),
-                    'wechat_appsecret' => $request->input('wechat_appsecret'),
-                ];
-                app(WechatOpenPlatformConfig::class)->saveConfig($tenant_id, $app_key, $wechat_open_platform_config_data);
-            }
-            
-            DB::commit();
             admin_toastr('保存成功', 'success');
             return back();
         } catch (\Exception $e) {
-            DB::rollBack();
             admin_toastr($e->getMessage(), 'error');
             return back()->withErrors($e->getMessage())->withInput();
         }

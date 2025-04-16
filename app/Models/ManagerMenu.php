@@ -34,7 +34,7 @@ class ManagerMenu
                         'id' => 21,
                         'parent_id' => 2,
                         'title' => '用户列表',
-                        'uri' => 'app/manager/' . $appKey. '/user',
+                        'uri' => 'app/manager/' . $appKey. '/user/list',
                     ],
                     [
                         'id' => 22,
@@ -47,20 +47,26 @@ class ManagerMenu
             [
                 'id' => 3,
                 'parent_id' => 0,
-                'title' => '收款管理',
+                'title' => '订单管理',
                 'icon' => 'fa-shopping-cart',
                 'children' => [
                     [
                         'id' => 31,
                         'parent_id' => 3,
                         'title' => '订单列表',
-                        'uri' => 'app/manager/' . $appKey. '/payment',
+                        'uri' => 'app/manager/' . $appKey. '/order/list',
+                    ],
+                    [
+                        'id' => 32,
+                        'parent_id' => 3,
+                        'title' => '产品列表',
+                        'uri' => 'app/manager/' . $appKey. '/order/product',
                     ],
                     [
                         'id' => 33,
                         'parent_id' => 3,
                         'title' => '接口配置',
-                        'uri' => 'app/manager/' . $appKey. '/payment/config',
+                        'uri' => 'app/manager/' . $appKey. '/order/config',
                     ],
                 ],
             ],

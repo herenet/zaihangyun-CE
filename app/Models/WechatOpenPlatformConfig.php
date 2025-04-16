@@ -8,9 +8,7 @@ class WechatOpenPlatformConfig extends Model
 {
     use DefaultDatetimeFormat;
 
-    protected $primaryKey = 'app_key';
-
-    public $incrementing = false;
+    protected $primaryKey = 'id';
 
     protected $table = 'wechat_open_platform_config';
     protected $fillable = [
