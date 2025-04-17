@@ -95,6 +95,12 @@ return [
             ],
         ],
 
+        'sms' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/laravel_sms.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
         'syslog' => [
             'driver' => 'syslog',
             'level' => env('LOG_LEVEL', 'debug'),

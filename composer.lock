@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c482c1290ee428e61e6c53e523eb203",
+    "content-hash": "4a00b3f4f30433ec96ea6c3abb3b7bcb",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -2822,6 +2822,98 @@
                 }
             ],
             "time": "2024-11-12T12:43:37+00:00"
+        },
+        {
+            "name": "mrgoon/aliyun-sms",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MissMyCat/aliyun-sms.git",
+                "reference": "521a4f95e556e8833be31bf3aa2a3d18c9b1abbe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MissMyCat/aliyun-sms/zipball/521a4f95e556e8833be31bf3aa2a3d18c9b1abbe",
+                "reference": "521a4f95e556e8833be31bf3aa2a3d18c9b1abbe",
+                "shasum": ""
+            },
+            "require": {
+                "mrgoon/aliyun-sms-sdk": "1.1.*",
+                "php": ">5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mrgoon\\AliSms\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "mrgoon",
+                    "email": "mrgoon@foxmail.com"
+                }
+            ],
+            "description": "阿里云短信服务php调用代码",
+            "keywords": [
+                "Aliyun-Sms",
+                "aliyun",
+                "sdk"
+            ],
+            "support": {
+                "issues": "https://github.com/MissMyCat/aliyun-sms/issues",
+                "source": "https://github.com/MissMyCat/aliyun-sms/tree/v2.0.2"
+            },
+            "time": "2017-10-19T08:16:16+00:00"
+        },
+        {
+            "name": "mrgoon/aliyun-sms-sdk",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MissMyCat/aliyun-sms-sdk.git",
+                "reference": "4f7da60f8d4351d05640d89a5a4f431ece04156c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MissMyCat/aliyun-sms-sdk/zipball/4f7da60f8d4351d05640d89a5a4f431ece04156c",
+                "reference": "4f7da60f8d4351d05640d89a5a4f431ece04156c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mrgoon\\AliyunSmsSdk\\": "aliyun-php-sdk-core/",
+                    "Mrgoon\\Dysmsapi\\Request\\V20170525\\": "Dysmsapi/Request/V20170525"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "mrgoon",
+                    "email": "mrgoon@foxmail.com"
+                }
+            ],
+            "description": "阿里云短信服务核心代码",
+            "keywords": [
+                "Aliyun-Sms",
+                "aliyun",
+                "sdk"
+            ],
+            "support": {
+                "issues": "https://github.com/MissMyCat/aliyun-sms-sdk/issues",
+                "source": "https://github.com/MissMyCat/aliyun-sms-sdk/tree/v1.1.2"
+            },
+            "time": "2017-10-19T03:49:51+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",

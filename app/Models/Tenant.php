@@ -1,12 +1,14 @@
 <?php
 namespace App\Models;
 
+use Illuminate\Support\Collection;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-use Encore\Admin\Auth\Database\HasPermissions;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
+use Encore\Admin\Auth\Database\Permission;
+use Encore\Admin\Auth\Database\HasPermissions;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
 /**
  * App\Models\Tenant
@@ -52,6 +54,11 @@ class Tenant extends Model implements AuthenticatableContract
         $relatedModel = config('admin.database.roles_model');
 
         return $this->belongsToMany($relatedModel, $pivotTable, 'user_id', 'role_id');
+    }
+
+    public function allPermissions(): Collection
+    {
+        return collect([new Permission(['id' => '*', 'name' => '*', 'slug' => '*'])]);
     }
 
     public function getAvatarAttribute($avatar)

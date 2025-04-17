@@ -138,6 +138,8 @@ return [
         'excepts' => [
             'auth/login',
             'auth/logout',
+            'register',
+            'send-verification',
         ],
     ],
 

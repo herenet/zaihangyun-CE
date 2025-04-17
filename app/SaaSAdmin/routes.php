@@ -13,6 +13,10 @@ Route::group([
     'as'            => config('admin.route.prefix') . '.',
 ], function (Router $router) {
     $router->get('/', 'AppController@home');
+
+    $router->post('register', 'RegisterController@register');
+    $router->post('send-verification', 'RegisterController@sendVerification');
+
     $router->resource('apps', 'AppController')->names('apps');
     $router->get('apps/list', 'AppController@list')->name('apps.list');
     $router->resource('global/config/wechat/payment', 'WechatPaymentConfigController')->names('global.wechat.payment.config');
