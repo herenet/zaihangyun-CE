@@ -47,6 +47,7 @@ class UserController extends AdminController
             }
             return $this->mcode . ' ' . $mobile;
         })->prependIcon('phone');
+        $grid->column('password', '登录密码')->password('*', 6);
         $grid->column('email', '邮箱');
 
         // 第三方账号
@@ -127,11 +128,31 @@ class UserController extends AdminController
     public function form()
     {
         $form = new Form(new User());
+
         $form->setWidth(6, 3);
         $form->text('nickname', '昵称')->rules(['required', 'string', 'max:64']);
         $form->text('username', '用户名')->rules(['nullable', 'string', 'max:64']);
         $form->mobile('mobile', '手机号')->prepend('+86')->rules(['nullable', 'integer', 'digits:11']);
+
         $form->email('email', '邮箱')->rules(['nullable', 'email', 'max:64']);
+       
+        if($form->isCreating()) {
+            $form->password('password', '登录密码')
+                ->attribute('minlength', 6)
+                ->attribute('maxlength', 12)
+                ->rules(['nullable', 'string', 'min:6', 'max:12'])
+                ->append('<a class="fa fa-eye" onclick="togglePasswordVisibility(this)" style="cursor:pointer;"></a>')
+                ->help('密码长度为6-12位, 采用MD5加密');
+        } else {
+            $form->password('password', '登录密码')
+                ->attribute('value', '')
+                ->attribute('minlength', 6)
+                ->attribute('maxlength', 12)
+                ->rules(['nullable', 'string', 'min:6', 'max:12'])
+                ->append('<a class="fa fa-eye" onclick="togglePasswordVisibility(this)" style="cursor:pointer;"></a>')
+                ->help('如果留空，则不修改密码, 密码长度为6-12位, 采用MD5加密');
+        }
+
         if($form->isCreating()) {
             $form->radio('gender', '性别')->options([
                 '男' => '男',
@@ -173,6 +194,20 @@ class UserController extends AdminController
                 $form->model()->uid = Helpers::generateUserId();
                 $form->model()->app_key = $this->getAppKey();
                 $form->model()->tenant_id = SaaSAdmin::user()->id;
+                
+                // 如果设置了密码，则进行 MD5 加密
+                if ($form->password && $form->password !== '') {
+                    $form->password = md5($form->password);
+                }
+            });
+        } else {
+            $form->saving(function (Form $form) {
+                // 更新时，如果设置了密码，则进行 MD5 加密
+                if ($form->password && $form->password !== '') {
+                    $form->password = md5($form->password);
+                }else{
+                    $form->input('password', $form->model()->getOriginal('password'));
+                }
             });
         }
 
@@ -217,6 +252,7 @@ class UserController extends AdminController
             /** @var User $this */
             return $value ? $this->mcode . ' ' . $value : '';
         });
+        $show->field('password', '登录密码')->password();
         $show->field('email', '邮箱');
         $show->field('is_forever_vip', '永久会员')->using(User::$isForeverVipMap);
         $show->field('vip_expired_at', 'VIP到期时间');

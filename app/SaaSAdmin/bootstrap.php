@@ -28,6 +28,7 @@ use App\SaaSAdmin\Components\AppSelector;
 use App\SaaSAdmin\Extensions\Nav\Dropdown;
 use App\SaaSAdmin\Extensions\Nav\Shortcut;
 use App\SaaSAdmin\Extensions\Show\Password;
+use App\SaaSAdmin\Extensions\Form\AliyunSmsCheck;
 use App\SaaSAdmin\Extensions\Form\InterfaceCheck;
 
 //判断URL中是否是以app/manager开头
@@ -62,6 +63,7 @@ Column::extend('prependIcon', function ($value, $icon) {
 Show::extend('password', Password::class);
 
 Form::extend('interfaceCheck', InterfaceCheck::class);
+Form::extend('aliyunSmsCheck', AliyunSmsCheck::class);
 
 Admin::script(<<<JS
 $(document).ready(function() {

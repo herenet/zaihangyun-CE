@@ -19,6 +19,9 @@ class LoginInterfaceConfig extends Model
         'suport_wechat_login', 
         'wechat_platform_config_id',
         'suport_mobile_login',
+        'aliyun_access_config_id',
+        'aliyun_sms_sign_name',
+        'aliyun_sms_tmp_code',
         'suport_apple_login',
         'endpoint_allow_count',
     ];

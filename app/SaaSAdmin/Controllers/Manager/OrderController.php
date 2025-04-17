@@ -68,6 +68,10 @@ class OrderController extends Controller
 
         $grid->disableCreateButton();
         $grid->disableBatchActions();
+        $grid->actions(function ($actions) {
+            $actions->disableEdit();
+            $actions->disableDelete();
+        });
 
         return $grid;
     }

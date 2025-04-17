@@ -5,15 +5,17 @@ use App\SaaSAdmin\AppKey;
 use Illuminate\Http\Request;
 use Encore\Admin\Widgets\Tab;
 use Encore\Admin\Layout\Content;
+use App\Models\AliyunAccessConfig;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\LoginInterfaceConfig;
 use App\SaaSAdmin\Facades\SaaSAdmin;
+use App\SaaSAdmin\Forms\SmsLoginConfig;
 use App\Models\WechatOpenPlatformConfig;
 use Illuminate\Support\Facades\Validator;
 use App\SaaSAdmin\Forms\AccessTokenConfig;
 use App\SaaSAdmin\Forms\WechatLoginConfig;
-use App\SaaSAdmin\Forms\SmsLoginConfig;
+use AlibabaCloud\Client\AlibabaCloud;
 
 class UserConfigController extends Controller
 {
@@ -100,6 +102,101 @@ class UserConfigController extends Controller
 
     public function saveSms(Request $request)
     {
-        dd($request->all());
+        $tenant_id = SaaSAdmin::user()->id;
+        $app_key = $this->getAppKey();
+
+        $validator = Validator::make($request->all(), [
+            'suport_mobile_login' => 'required|in:0,1',
+            'aliyun_access_config_id' => 'required_if:suport_mobile_login,1|exists:aliyun_access_config,id',
+            'aliyun_sms_sign_name' => 'required_if:suport_mobile_login,1|string|max:255',
+            'aliyun_sms_tmp_code' => 'required_if:suport_mobile_login,1|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $interface_check = $request->input('aliyun_sms_check');
+        if($interface_check == 0){
+            admin_error('请先验证配置是否正确');
+            return back()->withInput();
+        }
+        
+        $login_config_data = [
+            'suport_mobile_login' => $request->input('suport_mobile_login'),
+            'aliyun_access_config_id' => $request->input('aliyun_access_config_id'),
+            'aliyun_sms_sign_name' => $request->input('aliyun_sms_sign_name'),
+            'aliyun_sms_tmp_code' => $request->input('aliyun_sms_tmp_code'),
+        ];
+
+        try {
+            app(LoginInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $login_config_data);
+            admin_toastr('保存成功', 'success');
+            return back();
+        } catch (\Exception $e) {
+            admin_toastr($e->getMessage(), 'error');
+            return back()->withErrors($e->getMessage())->withInput();
+        }
+    }
+
+    public function checkSmsInterface(Request $request)
+    {
+        $mobile = $request->input('mobile');
+        $params = $request->input('params');
+        $aliyun_access_config_id = $request->input('aliyun_access_config_id');
+        $aliyun_sms_sign_name = $request->input('aliyun_sms_sign_name');
+        $aliyun_sms_tmp_code = $request->input('aliyun_sms_tmp_code');
+        
+        if(empty($aliyun_access_config_id)){
+            return response()->json(['status' => false, 'message' => '阿里云AccessKey值不能为空']);
+        }
+
+        $aliyun_access_config = AliyunAccessConfig::find($aliyun_access_config_id);
+        if(empty($aliyun_access_config)){
+            return response()->json(['status' => false, 'message' => '阿里云AccessKey值不存在']);
+        }
+
+        if(empty($aliyun_sms_sign_name)){
+            return response()->json(['status' => false, 'message' => '短信签名不能为空']);
+        }
+
+        if(empty($aliyun_sms_tmp_code)){
+            return response()->json(['status' => false, 'message' => '短信模板Code不能为空']);
+        }
+
+        if(!preg_match('/^1[3-9]\d{9}$/', $mobile)){
+            return response()->json(['status' => false, 'message' => '手机号格式不正确']);
+        }
+
+        $params_obj = json_decode($params, true);
+        if(empty($params_obj['code'])){
+            return response()->json(['status' => false, 'message' => '参数格式不正确']);
+        }
+        
+
+        AlibabaCloud::accessKeyClient($aliyun_access_config->access_key, $aliyun_access_config->access_key_secret)
+                ->regionId('cn-hangzhou')
+                ->asDefaultClient();
+        
+        $result = AlibabaCloud::rpc()
+            ->product('Dysmsapi')
+            ->version('2017-05-25')
+            ->action('SendSms')
+            ->method('POST')
+            ->options([
+                'query' => [
+                    'PhoneNumbers' => $mobile,
+                    'SignName' => $aliyun_sms_sign_name,
+                    'TemplateCode' => $aliyun_sms_tmp_code,
+                    'TemplateParam' => $params,
+                ],
+            ])->request();
+
+        if($result['Code'] == 'OK'){
+            return response()->json(['status' => true, 'message' => '短信发送成功']);
+        }else{
+            return response()->json(['status' => false, 'message' => '短信发送失败']);
+        }
+            
     }
 }

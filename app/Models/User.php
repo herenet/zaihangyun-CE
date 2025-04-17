@@ -20,6 +20,7 @@ class User extends Model
         'mcode' => '国家区号',
         'mobile' => '手机号',
         'username' => '用户名',
+        'password' => '密码',
         'nickname' => '昵称',
         'avatar' => '头像',
         'gender' => '性别',

@@ -28,6 +28,7 @@ Route::group([
         $router->get('user/config', 'Manager\UserConfigController@index')->name('app.manager.user.config');
         $router->post('user/config/base', 'Manager\UserConfigController@saveBase')->name('app.manager.user.config.save.base');
         $router->post('user/config/sms', 'Manager\UserConfigController@saveSms')->name('app.manager.user.config.save.sms');
+        $router->post('user/config/sms/check-interface', 'Manager\UserConfigController@checkSmsInterface')->name('app.manager.user.config.check.sms.interface');
         $router->post('user/config/wechat', 'Manager\UserConfigController@saveWechat')->name('app.manager.user.config.save.wechat');
 
         $router->resource('order/list', 'Manager\OrderController')->names('app.manager.order');
