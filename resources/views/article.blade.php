@@ -9,6 +9,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="{{ asset('vendor/hxsen/editormd/editor.md/css/editormd.preview.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/laravel-admin/AdminLTE/bootstrap/css/bootstrap.min.css') }}">
     <style>
         .markdown-body {
             box-sizing: border-box;
