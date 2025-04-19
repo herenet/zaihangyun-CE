@@ -71,6 +71,26 @@ class ManagerMenu
                 ],
             ],
             [
+                'id' => 4,
+                'parent_id' => 0,
+                'title' => '文档管理',
+                'icon' => 'fa-file-text',
+                'children' => [
+                    [
+                        'id' => 41,
+                        'parent_id' => 4,
+                        'title' => '帮助文档列表',
+                        'uri' => 'app/manager/' . $appKey. '/help/list',
+                    ],
+                    // [
+                    //     'id' => 42,
+                    //     'parent_id' => 4,
+                    //     'title' => '协议文档列表',
+                    //     'uri' => 'app/manager/' . $appKey. '/agreement/list',
+                    // ],
+                ],
+            ],
+            [
                 'id' => 5,
                 'parent_id' => 0,
                 'title' => 'API接入工具',

@@ -2,8 +2,9 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Http\Exceptions\PostTooLargeException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -35,7 +36,13 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
+            switch ($e) {
+                case $e instanceof PostTooLargeException:
+                    return response()->json([
+                        'success' => 0,
+                        'message' => '上传的文件超过了服务器允许的最大大小限制（' . ini_get('post_max_size') . '）'
+                    ]);
+            }
         });
     }
 }

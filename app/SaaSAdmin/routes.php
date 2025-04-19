@@ -16,6 +16,8 @@ Route::group([
 
     $router->post('register', 'RegisterController@register');
     $router->post('send-verification', 'RegisterController@sendVerification');
+    $router->post('send-login-verification', 'RegisterController@sendLoginVerification');
+    $router->post('upload/article/image', 'UploadController@uploadImage')->name('upload.article.image');
 
     $router->resource('apps', 'AppController')->names('apps');
     $router->get('apps/list', 'AppController@list')->name('apps.list');
@@ -41,7 +43,9 @@ Route::group([
         $router->resource('order/product', 'Manager\OrderProductController')->names('app.manager.order.product');
         $router->post('order/config/wechat', 'Manager\OrderConfigController@saveWechat')->name('app.manager.order.config.save.wechat');
         
-        
-        
+        $router->resource('help/list', 'Manager\ArticleController')->names('app.manager.help');
+
+
+        $router->resource('agreement/list', 'Manager\AgreementController')->names('app.manager.agreement');
     });
 });

@@ -22,7 +22,7 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo' => '<b>Laravel</b> admin',
+    'logo' => '<b>在行云</b> Console',
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return [
     | '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo-mini' => '<b>La</b>',
+    'logo-mini' => '<b>在行云</b>',
 
     /*
     |--------------------------------------------------------------------------
@@ -140,6 +140,7 @@ return [
             'auth/logout',
             'register',
             'send-verification',
+            'send-login-verification',
         ],
     ],
 
@@ -178,8 +179,8 @@ return [
         'connection' => '',
 
         // User tables and model.
-        'users_table' => 'admin_users',
-        'users_model' => Encore\Admin\Auth\Database\Administrator::class,
+        'users_table' => 'tenant',
+        'users_model' => App\Models\Tenant::class,
 
         // Role table and model.
         'roles_table' => 'admin_roles',
@@ -385,7 +386,7 @@ return [
     | The global Grid action display class.
     |--------------------------------------------------------------------------
     */
-    'grid_action_class' => \Encore\Admin\Grid\Displayers\DropdownActions::class,
+    'grid_action_class' => \Encore\Admin\Grid\Displayers\Actions::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -421,6 +422,72 @@ return [
                     'mainMenuBar' => true,
                     'maxVisibleChilds' => 100,
                 ],
+        ],
+        'editormd' => [
+            // Set to false if you want to disable this extension
+            'enable' => true,
+            // Set to true if you want to take advantage the screen length for your editormd instance.
+            'wideMode' => false,
+            // Set to true when the instance included in larave-admin tab component.
+            'dynamicMode' => false,
+            // Editor.js configuration (Refer to http://pandao.github.io/editor.md/)
+            'config' =>[
+                'path' => '/vendor/hxsen/editormd/editor.md/lib/',
+                'width' => '100%',
+                'height' => 600,
+                'emoji' => false,
+                'toolbarIcons' => [
+                    'undo',
+                    'redo',
+                    '|',
+                    'bold',
+                    'del',
+                    'italic',
+                    'quote',
+                    'ucwords',
+                    'uppercase',
+                    'lowercase',
+                    '|',
+                    'h1',
+                    'h2',
+                    'h3',
+                    'h4',
+                    'h5',
+                    'h6',
+                    '|',
+                    'list-ul',
+                    'list-ol',
+                    'hr',
+                    '|',
+                    'link',
+                    'image',
+                    'code',
+                    'preformatted-text',
+                    'code-block',
+                    'table',
+                    'datetime',
+                    '|',
+                    'watch',
+                    'preview',
+                    'fullscreen',
+                    '|',
+                    'help',
+                ],
+                // 'htmlDecode' => "style,script,iframe",
+                'htmlDecode' => false,
+                'saveHTMLToTextarea' => true,
+                // 主题
+                'theme' => 'light',
+                'previewTheme' => 'light',
+                // 'editorTheme' => 'pastel-on-dark',
+                // 图片上传
+                'imageUpload' => true,
+                'imageFormats' => ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'],
+                'imageUploadURL' => '/console/upload/article/image',
+                // 'markdown' => 'md',
+                'codeFold' => true,
+                'taskList' => true,
+            ],
         ]
     ],
 ];

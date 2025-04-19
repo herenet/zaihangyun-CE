@@ -23,10 +23,9 @@ use Encore\Admin\Show;
 use App\Models\SaaSMenu;
 use App\Models\ManagerMenu;
 use Encore\Admin\Grid\Column;
-use App\SaaSAdmin\Extensions\Nav\Link;
 use App\SaaSAdmin\Components\AppSelector;
-use App\SaaSAdmin\Extensions\Nav\Dropdown;
 use App\SaaSAdmin\Extensions\Nav\Shortcut;
+use App\SaaSAdmin\Extensions\Editormd\MyEditorField;
 use App\SaaSAdmin\Extensions\Show\Password;
 use App\SaaSAdmin\Extensions\Form\AliyunSmsCheck;
 use App\SaaSAdmin\Extensions\Form\InterfaceCheck;
@@ -61,7 +60,7 @@ Column::extend('prependIcon', function ($value, $icon) {
     return "<span style='color: #999;'><i class='fa fa-$icon'></i>  $value</span>";
 });
 Show::extend('password', Password::class);
-
+Form::extend('myEditorMd', MyEditorField::class);
 Form::extend('interfaceCheck', InterfaceCheck::class);
 Form::extend('aliyunSmsCheck', AliyunSmsCheck::class);
 

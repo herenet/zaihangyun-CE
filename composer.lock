@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a00b3f4f30433ec96ea6c3abb3b7bcb",
+    "content-hash": "bac101bd9a0b579b7f198ab5bf8e27c5",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -1960,6 +1960,63 @@
                 }
             ],
             "time": "2025-02-03T10:55:03+00:00"
+        },
+        {
+            "name": "hxsen/laravel-admin-editormd",
+            "version": "v1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hxsen/laravel-admin-editormd.git",
+                "reference": "0d50becc376326bba112268d41fa9a97d91bf46b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hxsen/laravel-admin-editormd/zipball/0d50becc376326bba112268d41fa9a97d91bf46b",
+                "reference": "0d50becc376326bba112268d41fa9a97d91bf46b",
+                "shasum": ""
+            },
+            "require": {
+                "encore/laravel-admin": "~1.6",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Hxsen\\EditorMd\\EditorMdServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hxsen\\EditorMd\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "hxsen",
+                    "email": "hx@hxsen.com"
+                }
+            ],
+            "description": "EditorMD extension for laravel-admin",
+            "homepage": "https://github.com/hxsen/laravel-admin-editormd",
+            "keywords": [
+                "extension",
+                "laravel-admin",
+                "laravel-admin-editormd"
+            ],
+            "support": {
+                "issues": "https://github.com/hxsen/laravel-admin-editormd/issues",
+                "source": "https://github.com/hxsen/laravel-admin-editormd/tree/master"
+            },
+            "time": "2020-04-09T15:41:02+00:00"
         },
         {
             "name": "jxlwqq/json-editor",

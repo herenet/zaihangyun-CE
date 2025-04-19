@@ -28,4 +28,10 @@ class Helpers
     {
         return hexdec(substr(md5(Str::uuid()), 0, 6));
     }
+
+    //生成文章ID，16位数字
+    public static function generateArticleId()
+    {
+        return hexdec(substr(md5(Str::uuid()), 0, 9));
+    }
 }

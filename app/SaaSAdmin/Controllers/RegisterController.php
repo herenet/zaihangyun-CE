@@ -158,4 +158,63 @@ class RegisterController extends Controller
             'message' => '验证码已发送',
         ]);
     }
+
+
+    public function sendLoginVerification(Request $request)
+    {
+        $phone = $request->input('phone');
+
+        // 验证手机号
+        if (!preg_match('/^1\d{10}$/', $phone)) {
+            return response()->json([
+                'success' => false,
+                'message' => '请输入正确的手机号码'
+            ]);
+        }
+
+        // 检查手机号是否已注册
+        if (!Tenant::where('phone_number', $phone)->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => '该手机号未注册'
+            ]);
+        }
+
+        // 检查发送频率限制
+        $throttleKey = 'verification_throttle_' . $phone;
+        if (Cache::has($throttleKey)) {
+            return response()->json([
+                'success' => false,
+                'message' => '发送过于频繁，请稍后再试'
+            ]);
+        }
+
+        // 生成验证码
+        $code = mt_rand(100000, 999999);
+        $cacheKey = 'verification_login_code_' . $phone;
+
+        try {
+            app(SmsService::class)->sendVerifyCode($phone, $code);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => '发送失败，请稍后再试'
+            ]);
+        }
+
+        // 开发环境下，可以直接打印验证码到日志
+        \Log::info("验证码: {$code} 已发送到手机号: {$phone}");
+
+        // 缓存验证码，有效期 5 分钟
+        Cache::put($cacheKey, $code, 300);
+        
+        // 设置发送频率限制，1 分钟内不能重复发送
+        Cache::put($throttleKey, 1, 60);
+
+        return response()->json([
+            'success' => true,
+            'message' => '验证码已发送',
+        ]);// 验证手机号
+        
+    }
 }

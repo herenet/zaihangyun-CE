@@ -61,17 +61,19 @@
         <!-- 登录 Tab -->
         <div class="tab-pane active" id="tab_login">
           <p class="login-box-msg">请登录</p>
-          <form action="{{ admin_url('auth/login') }}" method="post">
+          <form action="{{ admin_url('auth/login') }}" method="post" id="login-form">
             <div class="form-group has-feedback {!! !$errors->has('phone_number') ?: 'has-error' !!}">
               @if($errors->has('phone_number'))
                 @foreach($errors->get('phone_number') as $message)
                   <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{{$message}}</label><br>
                 @endforeach
               @endif
-              <input type="number" class="form-control" placeholder="手机号" name="phone_number" value="{{ old('phone_number') }}">
+              <input type="number" class="form-control" placeholder="手机号" name="phone_number" id="login_phone" value="{{ old('phone_number') }}">
               <span class="glyphicon glyphicon-phone form-control-feedback"></span>
             </div>
-            <div class="form-group has-feedback {!! !$errors->has('password') ?: 'has-error' !!}">
+
+            <!-- 密码输入区域 - 初始显示 -->
+            <div class="form-group has-feedback password-field {!! !$errors->has('password') ?: 'has-error' !!}">
               @if($errors->has('password'))
                 @foreach($errors->get('password') as $message)
                   <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{{$message}}</label><br>
@@ -80,6 +82,24 @@
               <input type="password" class="form-control" placeholder="密码" name="password">
               <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
+
+            <!-- 验证码输入区域 - 初始隐藏 -->
+            <div class="form-group has-feedback verification-code-field {!! !$errors->has('verification_login_code') ?: 'has-error' !!}" style="display: none;">
+              @if($errors->has('verification_login_code'))
+                @foreach($errors->get('verification_login_code') as $message)
+                  <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{{$message}}</label><br>
+                @endforeach
+              @endif
+              <div class="row">
+                <div class="col-xs-8">
+                  <input type="text" class="form-control" placeholder="验证码" name="verification_login_code" value="{{ old('verification_login_code') }}">
+                </div>
+                <div class="col-xs-4">
+                  <button type="button" class="btn btn-default verification-code-btn" id="login-code-btn">获取验证码</button>
+                </div>
+              </div>
+            </div>
+
             <div class="row">
               <div class="col-xs-8">
                 @if(config('admin.auth.remember'))
@@ -90,10 +110,13 @@
                   </label>
                 </div>
                 @endif
+                <a href="javascript:;" id="forgot-password" class="text-sm">忘记密码?</a>
+                <a href="javascript:;" id="back-to-password" class="text-sm" style="display: none;">使用密码登录</a>
               </div>
               <!-- /.col -->
               <div class="col-xs-4">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="login_type" value="password" id="login_type">
                 <button type="submit" class="btn btn-primary btn-block btn-flat">{{ trans('admin.login') }}</button>
               </div>
               <!-- /.col -->
@@ -125,7 +148,7 @@
               @endif
               <div class="row">
                 <div class="col-xs-8">
-                  <input type="text" class="form-control" placeholder="验证码" name="verification_code" value="{{ old('verification_code') }}" required>
+                    <input type="text" class="form-control" placeholder="验证码" name="verification_code" value="{{ old('verification_code') }}" required>
                 </div>
                 <div class="col-xs-4">
                   <button type="button" class="btn btn-default verification-code-btn" id="send-code-btn">获取验证码</button>
@@ -201,6 +224,14 @@
     // 检查 URL 中是否包含 #tab_register 片段
     if (window.location.hash === '#tab_register') {
       $('.nav-tabs a[href="#tab_register"]').tab('show');
+    } else if (window.location.hash === '#mode_code') {
+      // 切换到验证码登录模式
+      showVerificationCodeMode();
+    }
+    
+    // 检查是否有登录验证码错误，并且不是在注册标签页
+    if ({{ $errors->has('verification_login_code') && !$errors->has('register_phone') ? 'true' : 'false' }}) {
+      showVerificationCodeMode();
     }
     
     // 添加标签页切换事件监听器，当标签页切换时更新 URL
@@ -312,6 +343,99 @@
       
       return true;
     });
+
+    // 辅助函数，用于切换到验证码登录模式
+    function showVerificationCodeMode() {
+      $('.password-field').hide();
+      $('.verification-code-field').show();
+      $('#forgot-password').hide();
+      $('#back-to-password').show();
+      $('#login_type').val('verification_code');
+      
+      // 确保表单提交 URL 包含正确的片段
+      $('#login-form').attr('action', '{{ admin_url("auth/login") }}#mode_code');
+    }
+
+    // 忘记密码功能
+    $('#forgot-password').click(function() {
+      showVerificationCodeMode();
+    });
+
+    // 返回密码登录
+    $('#back-to-password').click(function() {
+      // 切换回密码登录模式
+      $('.verification-code-field').hide();
+      $('.password-field').show();
+      $('#back-to-password').hide();
+      $('#forgot-password').show();
+      $('#login_type').val('password');
+      
+      // 修改表单提交 URL
+      $('#login-form').attr('action', '{{ admin_url("auth/login") }}');
+    });
+
+    // 登录验证码发送功能
+    $('#login-code-btn').click(function() {
+      var phone = $('#login_phone').val();
+      if(!phone || !/^1\d{10}$/.test(phone)) {
+        Swal.fire({
+          icon: 'error',
+          title: '输入错误',
+          text: '请输入正确的手机号码'
+        });
+        return;
+      }
+      
+      var btn = $(this);
+      btn.prop('disabled', true);
+      
+      // 发送验证码请求
+      $.ajax({
+        url: '{{ admin_url("send-login-verification") }}',
+        type: 'POST',
+        data: {
+          _token: '{{ csrf_token() }}',
+          phone: phone
+        },
+        success: function(response) {
+          if(response.success) {
+            loginStartCountdown(btn);
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: '发送失败',
+              text: response.message || '发送失败，请稍后再试'
+            });
+            btn.prop('disabled', false);
+          }
+        },
+        error: function() {
+          Swal.fire({
+            icon: 'error',
+            title: '发送失败',
+            text: '网络错误，请稍后再试'
+          });
+          btn.prop('disabled', false);
+        }
+      });
+    });
+
+    // 登录验证码倒计时
+    function loginStartCountdown(btn) {
+      var seconds = 60;
+      btn.html(seconds + '秒后获取');
+      
+      var timer = setInterval(function() {
+        seconds--;
+        btn.html(seconds + '秒后获取');
+        
+        if(seconds <= 0) {
+          clearInterval(timer);
+          btn.html('获取验证码');
+          btn.prop('disabled', false);
+        }
+      }, 1000);
+    }
   });
 </script>
 </body>

@@ -44,10 +44,17 @@ class AliyunAccessConfigController extends AdminController
     public function form()
     {
         $form = new Form(new AliyunAccessConfig());
-        $form->text('name', '名称');
-        $form->text('access_key', 'AccessKey');
-        $form->text('access_key_secret', 'AccessKeySecret');
-        $form->textarea('remark', '备注');
+        $form->text('name', '名称')
+            ->rules(['required', 'string', 'max:64'])
+            ->help('输入名称以便区分不同阿里云AccessKey主体');
+        $form->text('access_key', 'AccessKey')
+            ->rules(['required', 'string', 'max:64'])
+            ->help('阿里云AccessKey获取地址：<a href="https://ram.console.aliyun.com/profile/access-keys" target="_blank">点击获取>>></a>');
+        $form->text('access_key_secret', 'AccessKeySecret')
+            ->rules(['required', 'string', 'max:64'])
+            ->help('阿里云AccessKeySecret获取地址：<a href="https://ram.console.aliyun.com/profile/access-keys" target="_blank">点击获取>>></a>');
+        $form->textarea('remark', '备注')
+            ->rules(['nullable', 'string', 'max:255']);
 
         $form->interfaceCheck('interface_check', '接口验证')
         ->buttonText('测试配置是否正确')
