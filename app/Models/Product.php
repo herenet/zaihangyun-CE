@@ -45,7 +45,7 @@ class Product extends Model implements Sortable
 
     const TYPE_VALUE_KEY_FOR_DURATION_MEMBER = 1;
     const TYPE_VALUE_KEY_FOR_FOREVER_MEMBER = 2;
-    // const TYPE_VALUE_KEY_FOR_CUSTOM_FUNCTION = 3;
+    // const TYPE_VALUE_KEY_FOR_CUSTOM_FUNCTION = 99;
     
     public static $typeMap = [
         self::TYPE_VALUE_KEY_FOR_DURATION_MEMBER => '会员时长',

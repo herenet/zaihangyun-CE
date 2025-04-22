@@ -63,6 +63,7 @@ class OrderConfigController extends Controller
 
         $validator = Validator::make($request->all(), [
             'suport_wechat_pay' => 'required|in:0,1',
+            'wechat_platform_config_id' => 'required_if:suport_wechat_pay,1|exists:wechat_open_platform_config,id',
             'wechat_payment_config_id' => 'required_if:suport_wechat_pay,1|exists:wechat_payment_config,id',
         ]);
 
@@ -72,6 +73,7 @@ class OrderConfigController extends Controller
 
         $order_config_data = [
             'suport_wechat_pay' => $request->input('suport_wechat_pay'),
+            'wechat_platform_config_id' => $request->input('wechat_platform_config_id'),
             'wechat_payment_config_id' => $request->input('wechat_payment_config_id'),
         ];
 

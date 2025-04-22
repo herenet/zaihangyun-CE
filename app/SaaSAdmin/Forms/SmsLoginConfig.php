@@ -32,7 +32,7 @@ class SmsLoginConfig extends Form
                         return AliyunAccessConfig::where(['tenant_id' => SaaSAdmin::user()->id, 'interface_check' => 1])->get()->pluck('name', 'id');
                     });
                 $form->text('aliyun_sms_sign_name', '短信签名');
-                $form->text('aliyun_sms_tmp_code', '模板Code')->help('请设置您短信模板变量名为"code"，<a href="https://dysms.console.aliyun.com/domestic/text/template/add" target="_blank">添加阿里云短信模板>>>></a>');
+                $form->text('aliyun_sms_tmp_code', '模板Code')->help('请设置您短信模板变量名为"code"，模板内容请兼容手机号修改或绑定的场景，<a href="https://dysms.console.aliyun.com/domestic/text/template/add" target="_blank">添加阿里云短信模板>>>></a>');
                 $form->number('aliyun_sms_verify_code_expire', '验证码有效期')->default(5)->max(60)->min(1)->help('单位：分钟，默认5分钟，最小1分钟，最大60分钟');
                 $form->aliyunSmsCheck('aliyun_sms_check', '验证配置')
                     ->buttonText('测试配置是否正确')

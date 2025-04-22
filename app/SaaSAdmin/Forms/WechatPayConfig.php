@@ -7,6 +7,7 @@ use Encore\Admin\Widgets\Form;
 use App\Models\WechatPaymentConfig;
 use App\Models\OrderInterfaceConfig;
 use App\SaaSAdmin\Facades\SaaSAdmin;
+use App\Models\WechatOpenPlatformConfig;
 
 class WechatPayConfig extends Form
 {
@@ -32,6 +33,15 @@ class WechatPayConfig extends Form
                         return WechatPaymentConfig::where(['tenant_id' => SaaSAdmin::user()->id, 'interface_check' => 1])->get()->pluck('mch_name', 'id');
                     })
                     ->help('请选择微信商户号，只能选择配置验证已经通过的商户号');
+
+                $form->select('wechat_platform_config_id', '微信开放平台APP')
+                    ->required()
+                    ->config('allowClear', false)
+                    ->config('minimumResultsForSearch', 'Infinity')
+                    ->options(function () {
+                        return WechatOpenPlatformConfig::where(['tenant_id' => SaaSAdmin::user()->id])->get()->pluck('app_name', 'id');
+                    })
+                    ->help('请选择与所选商户号关联的微信开放平台APP');
             });
         $this->action(admin_url('app/manager/'.$this->getAppKey().'/order/config/wechat'))->method('post');
         $this->disableReset();
@@ -43,6 +53,7 @@ class WechatPayConfig extends Form
         $config = app(OrderInterfaceConfig::class)->getConfig($tenant_id, $this->getAppKey());
         return[
             'suport_wechat_pay' => $config->suport_wechat_pay ?? 0,
+            'wechat_platform_config_id' => $config->wechat_platform_config_id ?? '',
             'wechat_payment_config_id' => $config->wechat_payment_config_id ?? '',
         ];
     }

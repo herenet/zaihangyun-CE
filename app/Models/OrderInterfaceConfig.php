@@ -16,6 +16,7 @@ class OrderInterfaceConfig extends Model
         'tenant_id', 
         'switch', 
         'suport_wechat_pay', 
+        'wechat_platform_config_id',
         'wechat_payment_config_id',
         'suport_alipay', 
         'suport_apple_pay', 
