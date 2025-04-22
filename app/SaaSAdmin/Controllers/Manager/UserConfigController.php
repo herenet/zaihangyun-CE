@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\LoginInterfaceConfig;
 use App\SaaSAdmin\Facades\SaaSAdmin;
+use AlibabaCloud\Client\AlibabaCloud;
+use Illuminate\Support\Facades\Cache;
 use App\SaaSAdmin\Forms\SmsLoginConfig;
 use App\Models\WechatOpenPlatformConfig;
 use Illuminate\Support\Facades\Validator;
 use App\SaaSAdmin\Forms\AccessTokenConfig;
 use App\SaaSAdmin\Forms\WechatLoginConfig;
-use AlibabaCloud\Client\AlibabaCloud;
 
 class UserConfigController extends Controller
 {
@@ -58,6 +59,7 @@ class UserConfigController extends Controller
 
             try {
                 app(LoginInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $login_config_data);
+                $this->clearAPICache($app_key);
                 admin_toastr('保存成功', 'success');
                 return back();
             } catch (\Exception $e) {
@@ -66,6 +68,7 @@ class UserConfigController extends Controller
             }
         } else {
             app(LoginInterfaceConfig::class)->saveConfig($tenant_id, $app_key, ['switch' => $switch]);
+            $this->clearAPICache($app_key);
             admin_toastr('保存成功', 'success');
             return back();
         }
@@ -92,6 +95,7 @@ class UserConfigController extends Controller
 
         try {
             app(LoginInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $login_config_data);
+            $this->clearAPICache($app_key);
             admin_toastr('保存成功', 'success');
             return back();
         } catch (\Exception $e) {
@@ -131,6 +135,7 @@ class UserConfigController extends Controller
 
         try {
             app(LoginInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $login_config_data);
+            $this->clearAPICache($app_key);
             admin_toastr('保存成功', 'success');
             return back();
         } catch (\Exception $e) {
@@ -198,5 +203,11 @@ class UserConfigController extends Controller
             return response()->json(['status' => false, 'message' => '短信发送失败']);
         }
             
+    }
+
+    protected function clearAPICache($app_key)
+    {
+        $cache_key = 'login_interface_config|'.$app_key;
+        Cache::store('api_cache')->forget($cache_key);
     }
 }

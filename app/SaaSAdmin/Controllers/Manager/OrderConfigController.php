@@ -7,11 +7,12 @@ use Encore\Admin\Widgets\Tab;
 use Encore\Admin\Layout\Content;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\OrderInterfaceConfig;
 use App\SaaSAdmin\Facades\SaaSAdmin;
+use Illuminate\Support\Facades\Cache;
 use App\SaaSAdmin\Forms\OrderBaseConfig;
 use App\SaaSAdmin\Forms\WechatPayConfig;
 use Illuminate\Support\Facades\Validator;
-use App\Models\OrderInterfaceConfig;
 
 class OrderConfigController extends Controller
 {
@@ -43,6 +44,7 @@ class OrderConfigController extends Controller
 
             try {
                 app(OrderInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $order_config_data);
+                $this->clearAPICache($app_key);
                 admin_toastr('保存成功', 'success');
                 return back();
             } catch (\Exception $e) {
@@ -51,6 +53,7 @@ class OrderConfigController extends Controller
             }
         } else {
             app(OrderInterfaceConfig::class)->saveConfig($tenant_id, $app_key, ['switch' => $switch]);
+            $this->clearAPICache($app_key);
             admin_toastr('保存成功', 'success');
             return back();
         }
@@ -79,12 +82,19 @@ class OrderConfigController extends Controller
 
         try {
             app(OrderInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $order_config_data);
+            $this->clearAPICache($app_key);
             admin_toastr('保存成功', 'success');
             return back();
         } catch (\Exception $e) {
             admin_toastr($e->getMessage(), 'error');
             return back()->withErrors($e->getMessage())->withInput();
         }
+    }
+
+    protected function clearAPICache($app_key)
+    {
+        $cache_key = 'order_interface_config|'.$app_key;
+        Cache::store('api_cache')->forget($cache_key);
     }
 
 }

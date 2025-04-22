@@ -10,6 +10,7 @@ use Encore\Admin\Show;
 use App\SaaSAdmin\AppKey;
 use Encore\Admin\Layout\Content;
 use App\SaaSAdmin\Facades\SaaSAdmin;
+use Illuminate\Support\Facades\Cache;
 use Encore\Admin\Controllers\AdminController;
 
 class UserController extends AdminController
@@ -120,7 +121,16 @@ class UserController extends AdminController
     public function update($id)
     {
         $id = request()->route('list');
+        $cache_key = 'user_info|'.$id;
+        Cache::store('api_cache')->forget($cache_key);
         return parent::update($id);
+    }
+
+    public function destroy($id)
+    {
+        $cache_key = 'user_info|'.$id;
+        Cache::store('api_cache')->forget($cache_key);
+        return parent::destroy($id);
     }
 
     public function form()

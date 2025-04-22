@@ -9,6 +9,7 @@ use Encore\Admin\Layout\Content;
 use App\Models\WechatPaymentConfig;
 use App\SaaSAdmin\Facades\SaaSAdmin;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Cache;
 use Encore\Admin\Controllers\AdminController;
 use App\SaaSAdmin\Actions\WechatPayInterfaceCheck;
 
@@ -64,7 +65,16 @@ class WechatPaymentConfigController extends AdminController
     public function update($id)
     {
         $id = request()->route('payment');
+        $cache_key = 'wechat_open_platform_config|'.$id;
+        Cache::store('api_cache')->forget($cache_key);
         return parent::update($id);
+    }
+
+    public function destroy($id)
+    {
+        $cache_key = 'wechat_open_platform_config|'.$id;
+        Cache::store('api_cache')->forget($cache_key);
+        return parent::destroy($id);
     }
 
     public function form()
