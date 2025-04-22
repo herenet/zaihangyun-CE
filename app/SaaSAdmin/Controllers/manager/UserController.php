@@ -35,7 +35,7 @@ class UserController extends AdminController
         $grid->column('nickname', '昵称');
         $grid->column('avatar', '头像')->image('', 50, 50);
         $grid->column('username', '用户名');
-        $grid->column('gender', '性别');
+        $grid->column('gender', '性别')->using(User::$genderMap);
         $grid->column('birthday', '生日')->date();
         // 联系方式
         $grid->column('mobile', '手机号')->display(function ($mobile) {
@@ -137,33 +137,29 @@ class UserController extends AdminController
         if($form->isCreating()) {
             $form->password('password', '登录密码')
                 ->attribute('minlength', 6)
-                ->attribute('maxlength', 12)
-                ->rules(['nullable', 'string', 'min:6', 'max:12'])
+                ->attribute('maxlength', 32)
+                ->rules(['nullable', 'string', 'min:6', 'max:32'])
                 ->append('<a class="fa fa-eye" onclick="togglePasswordVisibility(this)" style="cursor:pointer;"></a>')
-                ->help('密码长度为6-12位, 采用MD5加密');
+                ->help('密码长度为6-32位, 采用MD5加密');
         } else {
             $form->password('password', '登录密码')
                 ->attribute('value', '')
                 ->attribute('minlength', 6)
-                ->attribute('maxlength', 12)
-                ->rules(['nullable', 'string', 'min:6', 'max:12'])
+                ->attribute('maxlength', 32)
+                ->rules(['nullable', 'string', 'min:6', 'max:32'])
                 ->append('<a class="fa fa-eye" onclick="togglePasswordVisibility(this)" style="cursor:pointer;"></a>')
-                ->help('如果留空，则不修改密码, 密码长度为6-12位, 采用MD5加密');
+                ->help('如果留空，则不修改密码, 密码长度为6-32位, 采用MD5签名');
         }
 
         if($form->isCreating()) {
-            $form->radio('gender', '性别')->options([
-                '男' => '男',
-                '女' => '女',
-                '未知' => '未知',
-            ])->default('未知');
+            $form->radio('gender', '性别')->options(User::$genderMap)->default(0);
         } else {
-            $form->text('gender', '性别')->rules(['nullable', 'string', 'max:6']);
+            $form->text('gender', '性别')->rules(['nullable', 'integer', 'in:0,1,2']);
         }
         $form->date('birthday', '生日')->rules(['nullable', 'date']);
-        $form->text('country', '国家')->rules(['nullable', 'string', 'max:64']);
-        $form->text('province', '省份')->rules(['nullable', 'string', 'max:64']);
-        $form->text('city', '城市')->rules(['nullable', 'string', 'max:64']);
+        $form->text('country', '国家')->rules(['nullable', 'string', 'max:32']);
+        $form->text('province', '省份')->rules(['nullable', 'string', 'max:32']);
+        $form->text('city', '城市')->rules(['nullable', 'string', 'max:32']);
 
         $form->text('wechat_openid', '微信OpenID')->rules(['nullable', 'string', 'max:128']);
         $form->text('wechat_unionid', '微信UnionID')->rules(['nullable', 'string', 'max:128']);
@@ -174,11 +170,11 @@ class UserController extends AdminController
         $form->text('channel', '渠道')->default(User::DEFAULT_CHANNEL)->rules(['nullable', 'string', 'max:32']);
         $form->ip('reg_ip', '注册IP')->default('127.0.0.1')->rules(['nullable', 'ip']);
         $form->password('enter_pass', '启动密码')
-            ->attribute('minlength', 6)
-            ->attribute('maxlength', 12)
+            ->attribute('minlength', 4)
+            ->attribute('maxlength', 8)
             ->prepend('<i class="fa fa-lock"></i>')
             ->append('<a class="fa fa-eye" onclick="togglePasswordVisibility(this)" style="cursor:pointer;"></a>')
-            ->rules(['nullable', 'string', 'min:6', 'max:12']);
+            ->rules(['nullable', 'string', 'min:4', 'max:8']);
         $form->switch('is_forever_vip', '永久会员')
             ->default(0)
             ->states([
@@ -244,7 +240,7 @@ class UserController extends AdminController
         $show->field('apple_userid', '苹果ID');
         $show->field('nickname', '昵称');
         $show->field('username', '用户名');
-        $show->field('gender', '性别');
+        $show->field('gender', '性别')->using(User::$genderMap);
         $show->field('birthday', '生日');
         $show->field('mobile', '手机号')->as(function ($value) {
             /** @var User $this */

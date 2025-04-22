@@ -49,6 +49,12 @@ class User extends Model
         99 => '后台'
     ];
 
+    public static $genderMap = [
+        0 => '未知',
+        1 => '男',
+        2 => '女'
+    ];
+
     const DEFAULT_CHANNEL = 'official';
 
     public static $isForeverVipMap = [
