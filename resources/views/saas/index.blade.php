@@ -47,7 +47,7 @@
         {!! Admin::html() !!}
     </div>
 
-    @include('admin::partials.footer')
+    @include('saas::partials.footer')
 
 </div>
 
