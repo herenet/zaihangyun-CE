@@ -26,11 +26,24 @@ class OrderController extends Controller
         $grid->column('oid', '订单ID');
         $grid->column('uid', '用户ID');
         $grid->column('product_id', '产品ID');
-        $grid->column('product_price', '产品价格');
-        $grid->column('discount_amount', '优惠金额');
-        $grid->column('order_amount', '订单金额');
-        $grid->column('payment_amount', '实际支付');
-        $grid->column('platform_order_amount', '三方订单金额');
+        $grid->column('product_price', '产品价格')->display(function ($value) {
+            return '￥'.number_format($value / 100, 2);
+        });
+        $grid->column('discount_amount', '优惠金额')->display(function ($value) {
+            return '￥'.number_format($value / 100, 2);
+        });
+        $grid->column('order_amount', '订单金额')->display(function ($value) {
+            return '￥'.number_format($value / 100, 2);
+        });
+        $grid->column('payment_amount', '实际支付')->display(function ($value) {
+            return '￥'.number_format($value / 100, 2);
+        });
+        $grid->column('platform_order_amount', '三方订单金额')->display(function ($value) {
+            if ($value > 0) {
+                return '￥'.number_format($value / 100, 2);
+            }
+            return null;
+        });
         $grid->column('status', '订单状态')->using(Order::$statusMap)->label([
             1 => 'info',
             2 => 'success',
@@ -42,10 +55,9 @@ class OrderController extends Controller
         $grid->column('trade_type', '交易类型');
         $grid->column('bank_type', '银行类型');
         $grid->column('open_id', '三方用户标识');
-        $grid->column('prepay_id', '预支付ID');
         $grid->column('pay_time', '支付时间');
-        $grid->column('created_at', '创建时间');
         $grid->column('updated_at', '更新时间');
+        $grid->column('created_at', '创建时间');
 
         $grid->filter(function ($filter) {
             $filter->equal('status', '订单状态')->select(Order::$statusMap)->config('minimumResultsForSearch', 'Infinity');
