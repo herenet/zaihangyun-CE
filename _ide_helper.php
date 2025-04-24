@@ -16149,7 +16149,18 @@
      
 }
 
-        namespace Encore\Admin\Facades { 
+        namespace BinaryTorch\LaRecipe { 
+            /**
+     * 
+     *
+     */ 
+        class LaRecipe {
+         
+    }
+     
+}
+
+    namespace Encore\Admin\Facades { 
             /**
      * Class Admin.
      *
@@ -20427,6 +20438,7 @@ namespace  {
             class URL extends \Illuminate\Support\Facades\URL {}
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
+            class LaRecipe extends \BinaryTorch\LaRecipe\LaRecipe {}
             class Admin extends \Encore\Admin\Facades\Admin {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
      

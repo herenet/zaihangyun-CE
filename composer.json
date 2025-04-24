@@ -7,6 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "alibabacloud/sdk": "^1.8",
+        "binarytorch/larecipe": "^2.8",
         "encore/laravel-admin": "^1.8.10",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
