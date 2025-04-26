@@ -99,6 +99,13 @@ Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
         '微信商户号设置' => 'global/config/wechat/payment',
         '阿里云AccessKey设置' => 'global/config/aliyun/access',
     ], 'fa-gears')->title('全局设置'));
+    $navbar->right(
+        '<li class="dropdown">
+            <a href="/docs" class="dropdown-toggle" target="_blank">
+                <i class="fa fa-book"></i> API接入文档
+            </a>
+        </li>'
+    );
 });
 
 if($layout_type == 'custom'){

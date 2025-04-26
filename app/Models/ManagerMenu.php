@@ -102,12 +102,6 @@ class ManagerMenu
                         'title' => '接口调试',
                         'uri' => 'app/manager/' . $appKey. '/tool/api/test',
                     ],
-                    [
-                        'id' => 52,
-                        'parent_id' => 5,
-                        'title' => 'API接入文档',
-                        'uri' => 'app/manager/' . $appKey. '/tool/api/doc',
-                    ],
                 ],
             ],
         ];
