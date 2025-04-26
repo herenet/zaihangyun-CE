@@ -77,12 +77,12 @@ curl --location --request POST 'https://api.zaihangyun.com/v1/user/update' \
 - application/json方式：
 
 ```javascript
-curl --location --request POST 'http://127.0.0.1:8787/v1/user/update' \
+curl --location --request POST 'https://api.zaihangyun.com/v1/user/update' \
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer MTc0NTIxOTg4OQ==.1c7f037215a4bde32073b5abf1c8a6c4.RDVmY2VBMXNWdG1hTVkxRi4yLjE4NTcyNDgzMjQ=' \
 --header 'Accept: */*' \
---header 'Host: 127.0.0.1:8787' \
+--header 'Host: api.zaihangyun.com' \
 --header 'Connection: keep-alive' \
 --data-raw '{
   "nickname": "herenet1",

@@ -1,4 +1,4 @@
-# 发送登录短信验证码
+# 发送修改手机号短信验证码
 
 ---
 - [接口说明](#section-1)
@@ -11,9 +11,9 @@
 <a name="section-1"></a>
 ## 接口说明
 
-该接口为使用手机验证码登录时发送登录短信验证码时使用
+更新用户手机时发送短信验证码
 
-该接口需要在APP后台启用登录接口并配置好短信登录相关配置
+该接口需要在APP后台启用登录
 
 ### 注意事项
 
@@ -29,7 +29,7 @@
 
 | Method | URI Path | 鉴权方式 |
 | -- | -- | -- |
-| POST | `/v1/login/verify_code` | [签名认证](/{{route}}/{{version}}/intro#section-3) |
+| POST | `/v1/user/verify_code` | [Token认证](/{{route}}/{{version}}/intro#section-4) |
 
 <a name="section-3"></a>
 ## 请求参数
@@ -37,9 +37,7 @@
 ### 公共参数
 | 参数名 | 类型 | 取值范围 | 是否必须 | 说明 |
 | -- | -- | -- | -- | -- |
-| appkey | string | - | 是 | 在行云为应用分配的appkey |
-| timestamp | string | 10位数字 | 是 | 当前时间戳（秒级） |
-| sign | string | 32位小写字母和数字 | 是 | 签名，算法为：md5(appkey + timestamp + app_secret)，app_secret为在行云为应用分配的appSecret |
+| Authorization | string | Bearer + token | 是 | 登录令牌，**Header传值**，格式：Bearer eyJxx... |
 
 ### 业务参数
 | 参数名 | 类型 | 取值范围 | 是否必须 | 说明 |
@@ -53,34 +51,30 @@
 - application/x-www-form-urlencoded方式
 
 ```javascript
-curl --location --request POST 'https://api.zaihangyun.com/v1/login/verify_code' \
+curl --location --request POST 'https://api.zaihangyun.com/v1/user/verify_code' \
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
+--header 'Authorization: Bearer MTc0NTIxOTg4OQ==.1c7f037215a4bde32073b5abf1c8a6c4.RDVmY2VBMXNWdG1hTVkxRi4yLjE4NTcyNDgzMjQ=' \
 --header 'Accept: */*' \
 --header 'Host: api.zaihangyun.com' \
 --header 'Connection: keep-alive' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'appkey=D5fceA1sVtmaMY1F' \
 --data-urlencode 'mcode=+86' \
---data-urlencode 'timestamp=1745653704' \
---data-urlencode 'sign=89baeb05b60b59108087960b077963ca' \
 --data-urlencode 'mobile=18518768888'
 ```
 
 - application/json方式：
 
 ```javascript
-curl --location --request POST 'https://api.zaihangyun.com/v1/login/mobile' \
+curl --location --request POST 'https://api.zaihangyun.com/v1/user/verify_code' \
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
 --header 'Content-Type: application/json' \
+--header 'Authorization: Bearer MTc0NTIxOTg4OQ==.1c7f037215a4bde32073b5abf1c8a6c4.RDVmY2VBMXNWdG1hTVkxRi4yLjE4NTcyNDgzMjQ=' \
 --header 'Accept: */*' \
 --header 'Host: api.zaihangyun.com' \
 --header 'Connection: keep-alive' \
 --data-raw '{
-  "appkey": "D5fceA1sVtmaMY1F",
   "mcode": "+86",
   "mobile": "18518768888",
-  "timestamp": "1745653954",
-  "sign": "42704343af5fbc4a6639eb4826a53e91"
 }'
 ```
 
@@ -119,13 +113,10 @@ curl --location --request POST 'https://api.zaihangyun.com/v1/login/mobile' \
 | `400105` | mcode格式不正确 |
 | `400106` | mobile参数缺失 |
 | `400107` | mobile格式不正确 |
-| `400190` | 发送短信异常 |
-| `400191` | 发送短信失败 |
-| `400192` | 阿里云AccessKey配置未找到 |
-| `400193` | 阿里云短信模板未找到 |
-| `400194` | 阿里云短信签名未找到 |
-| `400195` | 阿里云配置未找到 |
-| `400196` | 手机登录未开启 |
-| `400197` | 登录接口未启用 |
+| `400192` | 发送短信异常 |
+| `400193` | 发送短信失败 |
+| `400194` | 阿里云AccessKey配置未找到 |
+| `400195` | 阿里云短信模板未找到 |
+| `400196` | 阿里云短信签名未找到 |
+| `400197` | 阿里云配置未找到 |
 | `400198` | 登录接口配置未找到 |
-| `400199` | appkey不存在 |

@@ -10,11 +10,11 @@
 
 - ## 接口列表
     - [微信登录（登录&注册）](/{{route}}/{{version}}/apis/login_wechat)
-    - [获取登录短信验证码](/{{route}}/{{version}}/apis/login_verify_code)
+    - [发送登录短信验证码](/{{route}}/{{version}}/apis/login_verify_code)
     - [手机验证码登录（登录&注册）](/{{route}}/{{version}}/apis/login_mobile)
     - [获取用户详情](/{{route}}/{{version}}/apis/user_info)
     - [更新用户信息](/{{route}}/{{version}}/apis/user_update_info)
-    - [获取修改手机短信验证码](/{{route}}/{{version}}/apis/user_update_verify_code)
+    - [发送修改手机号短信验证码](/{{route}}/{{version}}/apis/user_update_verify_code)
     - [更新用户手机号](/{{route}}/{{version}}/apis/user_update_mobile)
     - [更新用户头像](/{{route}}/{{version}}/apis/user_update_avatar)
     - [退出登录](/{{route}}/{{version}}/apis/logout)
