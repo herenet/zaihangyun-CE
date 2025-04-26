@@ -45,14 +45,14 @@
 ```javascript
 curl --location --request POST 'https://api.zaihangyun.com/v1/user/mobile' \
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
---header 'Authorization: Bearer MTc0NTIxOTg4OQ==.1c7f037215a4bde32073b5abf1c8a6c4.RDVmY2VBMXNWdG1hTVkxRi4yLjE4NTcyNDgzMjQ=' \
+--header 'Authorization: Bearer MTc0NTY1Mzk1NQ==.fea11f8171c7576d1853321bc3164e40.RDVmY2VBMXNWdG1hTVkxRi4yLjE4NTcyNDgzMjQ=' \
 --header 'Accept: */*' \
 --header 'Host: api.zaihangyun.com' \
 --header 'Connection: keep-alive' \
---header 'Content-Type: multipart/form-data; boundary=--------------------------590939310397154803448666' \
---form 'mcode="+86"' \
---form 'mobile="18518768888"' \
---form 'verify_code="347823"'
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'mcode=+86' \
+--data-urlencode 'mobile=18518768888' \
+--data-urlencode 'verify_code=347823'
 ```
 
 - application/json方式：

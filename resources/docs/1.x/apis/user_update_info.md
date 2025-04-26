@@ -56,22 +56,22 @@
 ```javascript
 curl --location --request POST 'https://api.zaihangyun.com/v1/user/update' \
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
---header 'Authorization: Bearer MTc0NTY1Mzk1NQ==.fea11f8171c7576d1853321bc3164e40.RDVmY2VBMXNWdG1hTVkxRi4yLjE4NTcyNDgzMjQ=' \
+--header 'Authorization: Bearer MTc0NTIxOTg4OQ==.1c7f037215a4bde32073b5abf1c8a6c4.RDVmY2VBMXNWdG1hTVkxRi4yLjE4NTcyNDgzMjQ=' \
 --header 'Accept: */*' \
 --header 'Host: api.zaihangyun.com' \
 --header 'Connection: keep-alive' \
---header 'Content-Type: multipart/form-data; boundary=--------------------------016597420824478164980692' \
---form 'nickname="herenet"' \
---form 'gender="1"' \
---form 'birthday="1997-03-04"' \
---form 'oaid="4123123132"' \
---form 'password="123456"' \
---form 'email="zaihangyun@126.com"' \
---form 'country=""' \
---form 'province=""' \
---form 'city=""' \
---form 'enter_pass="111111"' \
---form 'ext_data="{    \"device_id\": \"7290832492f7bccf\",    \"c_number\": \"huawei\",    \"packagename\": \"com.ape.apefather\",    \"d_id\": \"16181\"}"'
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'nickname=herenet' \
+--data-urlencode 'gender=1' \
+--data-urlencode 'birthday=1997-03-04' \
+--data-urlencode 'oaid=4123123132' \
+--data-urlencode 'password=123456' \
+--data-urlencode 'email=zaihangyun@126.com' \
+--data-urlencode 'country=' \
+--data-urlencode 'province=' \
+--data-urlencode 'city=' \
+--data-urlencode 'enter_pass=111111' \
+--data-urlencode 'ext_data={    "device_id": "7290832492f7bccf",    "c_number": "huawei",    "packagename": "com.ape.apefather",    "d_id": "16181"}'
 ```
 
 - application/json方式：
