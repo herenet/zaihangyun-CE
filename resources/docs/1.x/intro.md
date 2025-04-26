@@ -244,6 +244,7 @@ const sign = CryptoJS.MD5(paramString).toString();
 pm.environment.set('sign', sign);
 ```
 
+<a name="section-4"></a>
 ### Token认证
 
 用于需要用户登录后才能访问的接口，例如：下单、购买、修改用户信息等。在行云平台为支持多端登录管理，采用了有状态的Token机制。用户登录成功后会获得一个Token，在后续请求中，需要在HTTP请求头中通过Bearer认证方式携带此Token。

@@ -1,7 +1,7 @@
 <div class="fixed pin-t pin-x z-40">
     <div class="bg-gradient-primary text-white h-1"></div>
 
-    <nav class="flex items-center justify-between text-black bg-navbar shadow-xs h-16">
+    <nav class="flex items-center justify-between text-black bg-navbar shadow-xs h-16" style="padding-left:4rem">
         <div class="flex items-center flex-no-shrink">
             <a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-black mx-4">
                 @include("larecipe::partials.logo")

@@ -1,4 +1,4 @@
-# 微信登录（登录&注册）
+# 手机验证码登录（登录&注册）
 
 ---
 - [接口说明](#section-1)
@@ -12,18 +12,18 @@
 <a name="section-1"></a>
 ## 接口说明
 
-为APP提供微信登录功能，能过该接口获取调用微信参数；必需在调用此接口前获取到微信登录的code。
+为APP提供手机验证码登录功能，在调用此接口前需先调用[获取登录短信验证码](/{{route}}/{{version}}/apis/login_verify_code)接口获取短信验证码。
 
 该接口为免注册接口，登录成功同时系统会**同时完成注册**流程。（[查看流程图](#section-6)）
 
-该接口需要在APP后台启用登录接口并配置好微信登录相关配置
+该接口需要在APP后台启用登录接口并配置好短信登录相关配置
 
 <a name="section-2"></a>
 ## 请求路径
 
 | Method | URI Path | 鉴权方式 |
 | -- | -- | -- |
-| POST | `/v1/login/wechat` | [签名认证](/{{route}}/{{version}}/intro#section-3) |
+| POST | `/v1/login/mobile` | [签名认证](/{{route}}/{{version}}/intro#section-3) |
 
 <a name="section-3"></a>
 ## 请求参数
@@ -38,7 +38,9 @@
 ### 业务参数
 | 参数名 | 类型 | 取值范围 | 是否必须 | 说明 |
 | -- | -- | -- | -- | -- |
-| code | string | 最大长度128字符 | 是 | 微信授权登录code |
+| mcode | string | 格式为：+xx，默认+86 | 是 | 国际电话区号，如：+86 |
+| mobile | string | 手机号码格式 | 是 | 手机号码，中国大陆为11位数字 |
+| verify_code | string | 最大长度6位数字 | 是 | 短信验证码 |
 | version_number | integer | 整数值 | 是 | 应用版本号 |
 | channel | string | 最大长度32字符 | 是 | 渠道来源 |
 | oaid | string | 最大长度128字符 | 否 | 设备唯一标识符(Android) |
@@ -51,42 +53,42 @@
 - application/x-www-form-urlencoded方式
 
 ```javascript
-curl --location --request POST 'https://api.zaihangyun.com/v1/login/wechat' \
+curl --location --request POST 'https://api.zaihangyun.com/v1/login/mobile' \
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
 --header 'Accept: */*' \
 --header 'Host: api.zaihangyun.com' \
 --header 'Connection: keep-alive' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'appkey=D5fceA1sVtmaMY1x' \
---data-urlencode 'code=12312312312' \
+--data-urlencode 'appkey=D5fceA1sVtmaMY1F' \
+--data-urlencode 'mcode=+86' \
+--data-urlencode 'mobile=18518768888' \
+--data-urlencode 'verify_code=507149' \
 --data-urlencode 'version_number=12' \
 --data-urlencode 'channel=vivo' \
 --data-urlencode 'need_user_detail=0' \
---data-urlencode 'oaid=test' \
---data-urlencode 'device_id=test' \
---data-urlencode 'timestamp=1745649979' \
---data-urlencode 'sign=e6d8c298f4f2b0eb1eaf60afc3653532'
+--data-urlencode 'timestamp=1745653954' \
+--data-urlencode 'sign=42704343af5fbc4a6639eb4826a53e91'
 ```
 
 - application/json方式：
 
 ```javascript
-curl --location --request POST 'http://127.0.0.1:8787/v1/login/wechat' \
+curl --location --request POST 'https://api.zaihangyun.com/v1/login/mobile' \
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
 --header 'Content-Type: application/json' \
 --header 'Accept: */*' \
---header 'Host: 127.0.0.1:8787' \
+--header 'Host: api.zaihangyun.com' \
 --header 'Connection: keep-alive' \
 --data-raw '{
-    "appkey" : "D5fceA1sVtmaMY1x",
-    "code" : "xxxx",
-    "version_number" : 1,
-    "channel" : "vivo",
-    "oaid" : "oaidtest",
-    "need_user_detail" : 1,
-    "device_id" : "test",
-    "timestamp" : "1745652994",
-    "sign" : "79b4f3825a6e033da1b262bdff8147ce"
+  "appkey": "D5fceA1sVtmaMY1F",
+  "mcode": "+86",
+  "mobile": "18518768888",
+  "verify_code": "507149",
+  "version_number": "12",
+  "channel": "vivo",
+  "need_user_detail": "0",
+  "timestamp": "1745653954",
+  "sign": "42704343af5fbc4a6639eb4826a53e91"
 }'
 ```
 
@@ -152,7 +154,7 @@ curl --location --request POST 'http://127.0.0.1:8787/v1/login/wechat' \
 <a name="section-6"></a>
 ## 业务流程图
 
-<image src="/images/docs/wechat_login.png" width="1300px"/>
+<image src="/images/docs/mobile_login.png" width="1300px"/>
 
 
 <a name="section-7"></a>
@@ -162,23 +164,26 @@ curl --location --request POST 'http://127.0.0.1:8787/v1/login/wechat' \
 
 | 错误码 | 说明 |
 | -- | -- |
-| `400104` | code参数缺失 |
-| `400105` | code参数类型必须是字符串 |
-| `400106` | code参数长度不能超过128个字符 |
-| `400107` | version_number参数缺失 |
-| `400108` | version_number参数类型必须是整数 |
-| `400109` | channel参数缺失 |
-| `400110` | channel参数长度不能超过32个字符 |
-| `400111` | need_user_detail参数类型必须是整数 |
-| `400112` | need_user_detail参数值必须是0或1 |
-| `400113` | oaid参数类型必须是字符串 |
-| `400114` | oaid参数长度不能超过128个字符 |
-| `400115` | device_id参数类型必须是字符串 |
-| `400116` | device_id参数长度不能超过128个字符 |
+| 错误码 | 说明 |
+| -- | -- |
+| `400104` | mcode参数缺失 |
+| `400105` | mcode格式不正确 |
+| `400106` | mobile参数缺失 |
+| `400107` | mobile格式不正确 |
+| `400108` | verify_code参数缺失 |
+| `400109` | verify_code参数类型必须是字符串 |
+| `400110` | verify_code长度不能超过6个字符 |
+| `400111` | version_number参数缺失 |
+| `400112` | version_number参数类型必须是整数 |
+| `400113` | channel参数缺失 |
+| `400114` | channel长度不能超过32个字符/oaid长度不能超过128个字符 |
+| `400115` | need_user_detail参数类型必须是整数/device_id参数类型必须是字符串 |
+| `400116` | need_user_detail参数值必须是0或1/device_id长度不能超过128个字符 |
+| `400117` | oaid参数类型必须是字符串 |
 | `400193` | 生成访问令牌失败 |
-| `400194` | 微信接口调用异常，返回详细错误信息 |
-| `400195` | 微信开放平台配置未找到 |
-| `400196` | 微信登录未开启 |
+| `400194` | 验证码不正确 |
+| `400195` | 验证码未找到或已过期 |
+| `400196` | 手机登录未开启 |
 | `400197` | 登录接口未启用 |
 | `400198` | 登录接口配置未找到 |
 | `400199` | appkey不存在 |
