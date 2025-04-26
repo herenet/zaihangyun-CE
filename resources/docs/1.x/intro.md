@@ -1,13 +1,22 @@
-# 接入需知
+# 接入必读
 
 ---
-- [API规范](#section-1)
-- [安全认证](#section-2)
+- [API网关地址](#section-1)
+- [API规范](#section-2)
+- [安全认证](#section-3)
 
 <a name="section-1"></a>
+## API网关地址
+
+> {info.fa-server} 生产环境API关网URL：`https://api.zaihangyun.com`
+
+所有接口请求均需使用HTTPS协议。在行云平台的所有环境中，API服务地址的格式为：`https://api.zaihangyun.com/{path}`，path为接口URI。
+
+
+<a name="section-2"></a>
 ## API规范
 ### 接口请求
-在行云采用统一的接口风格。所有获取数据类的接口统一采用HTTP GET方式请求，所有修改数据类的接口采用HTTP POST方式请求。
+在行云平台采用基于HTTP动词的API设计风格。遵循HTTP语义，所有数据查询操作统一使用HTTP GET方法，所有数据修改操作（包括创建、更新和删除）统一使用HTTP POST方法。
 
 ### 请求参数
 - GET类请求参数需通过URL Query String方式传递（格式为`?key1=value1&key2=value2`）。
@@ -79,7 +88,7 @@
 
 
 
-<a name="section-2"></a>
+<a name="section-3"></a>
 ## 安全认证
 
 接口安全认证分为两类：
