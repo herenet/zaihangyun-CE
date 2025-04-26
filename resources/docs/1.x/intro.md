@@ -8,7 +8,7 @@
 <a name="section-1"></a>
 ## API网关地址
 
-> {info.fa-server} 生产环境API关网URL：`https://api.zaihangyun.com`
+> {info.fa-server} 生产环境API关网域名：`https://api.zaihangyun.com`
 
 所有接口请求均需使用HTTPS协议。在行云平台的所有环境中，API服务地址的格式为：`https://api.zaihangyun.com/{path}`，path为接口URI。
 
