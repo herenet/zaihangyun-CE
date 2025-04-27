@@ -41,7 +41,7 @@
 ```javascript
 curl --location --request GET 'https://api.zaihangyun.com/v1/user/logout' \
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
---header 'Authorization: Bearer MTc0NTY1Mzk1NQ==.fea11f8171c7576d1853xxxbc3164e40.RDVmY2VBMXNWxx1hTVkxRi4yLjE4NTcyNDgzMjQ=' \
+--header 'Authorization: Bearer ZaihangyunToken' \
 --header 'Accept: */*' \
 --header 'Host: api.zaihangyun.com' \
 --header 'Connection: keep-alive'

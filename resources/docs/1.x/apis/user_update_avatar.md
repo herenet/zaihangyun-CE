@@ -53,7 +53,7 @@
 ```javascript
 curl --location --request POST 'https://api.zaihangyun.com/v1/user/avatar' \
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
---header 'Authorization: Bearer MTc0NTIxOTg4OQ==.1c7f037215a4bde32073b5abf1c8a6c4.RDVmY2VBMXNWdG1hTVkxRi4yLjE4NTcyNDgzMjQ=' \
+--header 'Authorization: Bearer ZaihangyunToken' \
 --header 'Accept: */*' \
 --header 'Host: api.zaihangyun.com' \
 --header 'Connection: keep-alive' \

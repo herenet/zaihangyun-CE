@@ -45,7 +45,7 @@
 ```javascript
 curl --location --request POST 'https://api.zaihangyun.com/v1/user/mobile' \
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
---header 'Authorization: Bearer MTc0NTY1Mzk1NQ==.fea11f8171c7576d1853321bc3164e40.RDVmY2VBMXNWdG1hTVkxRi4yLjE4NTcyNDgzMjQ=' \
+--header 'Authorization: Bearer ZaihangyunToken' \
 --header 'Accept: */*' \
 --header 'Host: api.zaihangyun.com' \
 --header 'Connection: keep-alive' \
@@ -61,7 +61,7 @@ curl --location --request POST 'https://api.zaihangyun.com/v1/user/mobile' \
 curl --location --request POST 'https://api.zaihangyun.com/v1/user/mobile' \
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer MTc0NTIxOTg4OQ==.1c7f037215a4bde32073b5abf1c8a6c4.RDVmY2VBMXNWdG1hTVkxRi4yLjE4NTcyNDgzMjQ=' \
+--header 'Authorization: Bearer ZaihangyunToken' \
 --header 'Accept: */*' \
 --header 'Host: api.zaihangyun.com' \
 --header 'Connection: keep-alive' \
