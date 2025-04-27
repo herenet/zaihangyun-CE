@@ -39,7 +39,7 @@
 ##第四步：APP接入
 
 正试接入APP，目前官方不提供SDK包下载。可使用你熟悉的HTTP客户端调用API接口。在行云官方并无特别要求。<br>
-`特别说明`：在行云对于非登录态调用的接口需要使用Appkey&AppSecret进行签名。登录态接口直接在请求头中加Bearer Token即可调用。具体使用请查看[接入需知](/{{route}}/{{version}}/intro)。
+`特别说明`：在行云对于非登录态调用的接口需要使用Appkey&AppSecret进行签名。登录态接口直接在请求头中加Bearer Token即可调用。具体使用请查看[接入必读](/{{route}}/{{version}}/intro)。
 
 <a name="section-5"></a>
 ##第五步：后台查看测试数据
