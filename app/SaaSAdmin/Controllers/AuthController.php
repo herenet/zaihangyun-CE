@@ -134,7 +134,7 @@ class AuthController extends BaseAuthController
         $form->display('phone_number', '手机号');
         $form->text('nickname', '昵称')->rules('required');
         $form->image('avatar', '头像')
-            ->rules(['required', 'file', 'max:1024', 'mimes:jpg,png,jpeg'])
+            ->rules(['required', 'file', 'max:512', 'mimes:jpg,png,jpeg'])
             ->move('avatar', function ($file) use ($form) {
                 return 'avatar_'.$form->model()->id.'.'.$file->getClientOriginalExtension();
             });

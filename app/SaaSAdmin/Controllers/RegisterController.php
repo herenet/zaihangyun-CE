@@ -67,9 +67,13 @@ class RegisterController extends Controller
         try {
             $admin = new Tenant();
             $admin->id = Helpers::generateUserId();
+            $avatar_path = 'avatar/'.$admin->id.'.png'; 
+            Helpers::generateAndSaveAvatar($phone, $avatar_path);
+
             $admin->phone_number = $phone;
             $admin->nickname = '用户' . substr($phone, -4);
             $admin->password = Hash::make($request->input('register_password')); // 使用MD5加密
+            $admin->avatar = $avatar_path;
             $admin->save();
 
             // 删除验证码缓存

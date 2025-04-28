@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Libs;
+use Jdenticon\Identicon;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class Helpers
 {
@@ -33,5 +35,33 @@ class Helpers
     public static function generateArticleId()
     {
         return hexdec(substr(md5(Str::uuid()), 0, 9));
+    }
+
+    /**
+     * 生成并保存用户头像
+     * @param string $text 用于生成头像的文本（通常是用户ID或用户名）
+     * @param string $path 保存路径（相对public目录）
+     * @param int $size 头像尺寸，默认200px
+     * @return bool|string 成功返回头像URL，失败返回false
+     */
+    public static function generateAndSaveAvatar($text, $path, $size = 200)
+    {
+        try {
+            // 创建 Identicon 实例
+            $icon = new Identicon();
+            
+            // 设置参数
+            $icon->setValue($text);
+            $icon->setSize($size);
+            
+            // 生成图片数据
+            $imageData = $icon->getImageData('png');
+            
+            // 确保目录存在
+            return Storage::disk('SaaSAdmin-mch')->put($path, $imageData);
+        } catch (\Exception $e) {
+            \Log::error('生成头像失败: ' . $e->getMessage());
+            return false;
+        }
     }
 }

@@ -12,6 +12,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "hxsen/laravel-admin-editormd": "^1.1",
+        "jdenticon/jdenticon": "^1.0",
         "jxlwqq/json-editor": "^1.0",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
