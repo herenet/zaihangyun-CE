@@ -3,7 +3,7 @@
 ---
 - [用户模块](#section-1)
 - [订单模块](#section-2)
-- [文档模块](#section-3)
+- [文档模块](#section-4)
 
 <a name="section-1"></a>
 ##用户模块
@@ -67,6 +67,8 @@
 | updated_at | datetime | 更新时间 | 2024-04-15 15:30:25 |
 | created_at | datetime | 创建时间 | 2024-04-15 15:20:10 |
 
+
+<a name="section-3"></a>
 ### 产品数据结构
 
 | 字段名 | 类型 | 说明 | 示例值 |
@@ -82,10 +84,11 @@
 | sale_status | unsigned int | 销售状态（1=在售，2=待售），默认1 | 1 |
 | platform_type | unsigned int | 适用平台（1=所有平台，2=安卓，3=苹果），默认1 | 1 |
 | order | unsigned int | 排序权重，值越小越靠前，默认1 | 1 |
+| ext_data |  JSON  | 自定义扩展数据（JSON字符串）   | { "test": "test", ... } |
 | updated_at | datetime | 更新时间 | 2024-04-15 15:30:25 |
 | created_at | datetime | 创建时间 | 2024-04-15 15:20:10 |
 
-<a name="section-3"></a>
+<a name="section-4"></a>
 ##文档模块
 
 ### 文章数据结构

@@ -260,6 +260,7 @@ namespace App\Models{
  * @property int $sale_status 1在售，2为待售
  * @property int $platform_type 适用平台：1为所有平台，2为安卓，3为苹果
  * @property int $order 排序
+ * @property string|null $ext_data 用户自定义扩展字段，jsons格式
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
@@ -270,6 +271,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCrossPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereExtData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereFunctionValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereOrder($value)

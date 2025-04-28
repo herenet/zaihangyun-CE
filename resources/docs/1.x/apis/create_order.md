@@ -7,7 +7,8 @@
 - [请求示例代码](#section-4)
 - [返回响应](#section-5)
 - [返回字段解析](#section-6)
-- [错误码说明](#section-7)
+- [业务流程图](#section-7)
+- [错误码说明](#section-8)
 
 <a name="section-1"></a>
 ## 接口说明
@@ -126,6 +127,7 @@ curl --location --request POST 'https://api.zaihangyun.com/v1/order/create' \
 }
 ```
 
+
 <a name="section-6"></a>
 ## 返回字段解析
 
@@ -145,7 +147,15 @@ curl --location --request POST 'https://api.zaihangyun.com/v1/order/create' \
 | timestamp | integer | 时间戳，标准北京时间，时区为东八区，自1970年1月1日 0点0分0秒以来的秒数 |
 | sign | string | 签名，使用字段：appid、timestamp、noncestr、prepay_id，详见微信支付API文档 |
 
+
 <a name="section-7"></a>
+## 业务流程图
+
+###通过微信支付
+<image src="/images/docs/wechat_pay.png" width="1300px"/>
+
+
+<a name="section-8"></a>
 ## 错误码说明
 
 [查看全局错误码](/{{route}}/{{version}}/code#section-2)

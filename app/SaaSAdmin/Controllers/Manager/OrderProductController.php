@@ -47,6 +47,7 @@ class OrderProductController extends AdminController
         $grid->column('sale_status', '销售状态')->using(Product::$saleStatusMap);
         $grid->column('platform_type', '适用平台')->using(Product::$platformTypeMap);
         $grid->order('排序')->orderable();
+        $grid->column('ext_data', '扩展数据')->limit(30);
        
         $grid->column('updated_at', '更新时间')->sortable([]);
         $grid->column('created_at', '注册时间')->sortable();
@@ -66,6 +67,7 @@ class OrderProductController extends AdminController
             $export->filename('产品数据-'.date('Y-m-d H:i:s').'-'.$this->getAppKey().'.csv');
              
             $export->except(['order']);
+            $export->originalValue(['ext_data']);
 
             $export->column('type', function ($value, $original) {
                 return Product::$typeMap[$original];
@@ -164,7 +166,8 @@ class OrderProductController extends AdminController
             ->config('minimumResultsForSearch', 'Infinity')
             ->default(1)
             ->rules(['required', 'integer', 'max:64']);
-        $form->textarea('desc', '商品描述')->rules(['nullable', 'string', 'max:128']);
+        $form->textarea('desc', '商品描述')->rules(['nullable', 'string', 'max:256']);
+        $form->json('ext_data', '扩展数据')->rules(['nullable', 'string', 'max:256']);
 
         $form->saving(function (Form $form) {
             if($form->isCreating()) {

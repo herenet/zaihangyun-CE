@@ -65,7 +65,7 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/product/list?status
 <a name="section-5"></a>
 ## 返回响应
 
-- 成功返回（[查看字段解析](/{{route}}/{{version}}/struct#section-2)）
+- 成功返回（[查看字段解析](/{{route}}/{{version}}/struct#section-3)）
 
 ```json
 {
@@ -82,7 +82,8 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/product/list?status
             "sale_price": 1900,        // 销售价格(分)
             "desc": null,              // 商品描述
             "sale_status": 1,          // 销售状态
-            "platform_type": 1         // 平台类型
+            "platform_type": 1,        // 平台类型
+            "ext_data": "{\"test\":\"test\"}"   //用户自定义扩展数据
         }
         ...
     ]

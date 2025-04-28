@@ -78,6 +78,7 @@ class Product extends Model implements Sortable
         'sale_status',
         'platform_type',
         'order',
+        'ext_data',
     ];
 
     const FOREVER_VIP_FUNCTION_VALUE = 'forever_vip';
