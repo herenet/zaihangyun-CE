@@ -18,6 +18,7 @@
     - [更新用户手机号](/{{route}}/{{version}}/apis/user_update_mobile)
     - [更新用户头像](/{{route}}/{{version}}/apis/user_update_avatar)
     - [退出登录](/{{route}}/{{version}}/apis/logout)
+    - [用户账户注销](/{{route}}/{{version}}/apis/user_cancel)
     - [获取文档列表](/{{route}}/{{version}}/apis/article_list)
     - [获取文档内容（Markdown源码）](/{{route}}/{{version}}/apis/article_source)
     - [获取产品列表](/{{route}}/{{version}}/apis/product_list)

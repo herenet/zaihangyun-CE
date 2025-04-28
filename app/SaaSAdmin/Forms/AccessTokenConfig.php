@@ -29,6 +29,10 @@ class AccessTokenConfig extends Form
             ->required()
             ->default(1)
             ->help('同一用户同时最多允许登录设备数');
+            $this->number('cancel_after_days', '注销后自动删除间隔')
+            ->required()
+            ->default(15)
+            ->help('单位：天，用户提交注销后，多长时间系统自动删除用户数据。<b>在此期间如果用户有登录则取消自动删除恢复正常状态</b>');
             $this->action(admin_url('app/manager/'.$this->getAppKey().'/user/config/base'))->method('post');
             $this->disableReset();
         });
@@ -43,6 +47,7 @@ class AccessTokenConfig extends Form
             'switch' => $config->switch ?? 0,
             'token_effective_duration' => $config->token_effective_duration ?? 365,
             'endpoint_allow_count' => $config->endpoint_allow_count ?? 1,
+            'cancel_after_days' => $config->cancel_after_days ?? 15,
         ];
     }
 }

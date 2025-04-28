@@ -44,7 +44,8 @@ class UserConfigController extends Controller
         if ($switch == 1) {
             $validator = Validator::make($request->all(), [
                 'token_effective_duration' => 'required|integer|min:1|max:3650',
-                'endpoint_allow_count' => 'required|integer|min:0|max:99999',
+                'endpoint_allow_count' => 'required|integer|min:1|max:5',
+                'cancel_after_days' => 'required|integer|min:1|max:180',
             ]);
            
             if ($validator->fails()) {
@@ -55,6 +56,7 @@ class UserConfigController extends Controller
                 'switch' => $switch,
                 'token_effective_duration' => $request->input('token_effective_duration'),
                 'endpoint_allow_count' => $request->input('endpoint_allow_count'),
+                'cancel_after_days' => $request->input('cancel_after_days'),
             ];
 
             try {

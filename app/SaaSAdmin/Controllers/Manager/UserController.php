@@ -76,6 +76,7 @@ class UserController extends AdminController
 
         // 其他信息
         $grid->column('version_number', 'APP版本');
+        $grid->column('canceled_at', '申请注销时间');
         $grid->column('updated_at', '更新时间')->sortable();
         $grid->column('created_at', '注册时间')->sortable();
 

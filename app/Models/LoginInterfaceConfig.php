@@ -25,6 +25,7 @@ class LoginInterfaceConfig extends Model
         'aliyun_sms_verify_code_expire',
         'suport_apple_login',
         'endpoint_allow_count',
+        'cancel_after_days',
     ];
 
     public function getConfig($tenantId, $appKey)

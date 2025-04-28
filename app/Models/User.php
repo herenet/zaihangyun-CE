@@ -37,6 +37,7 @@ class User extends Model
         'version_number' => '版本数值',
         'channel' => '注册来源渠道',
         'ext_data' => '自定义扩展数据',
+        'canceled_at' => '申请注销时间',
         'created_at' => '创建时间',
         'updated_at' => '更新时间',
     ];
