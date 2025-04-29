@@ -33,7 +33,7 @@ class WechatPayService
 
         $this->instance = Builder::factory([
             "mchid" => $this->mchid,
-            "serial" => $mch_cert_serial,
+            "serial" => '471456B631AAF62155911E2EBC16641A4ACFD84C',
             "privateKey" => Rsa::from($mch_private_key_file, Rsa::KEY_TYPE_PRIVATE),
             "certs" => 
                 // $platform_cert_serial => $platform_public_key_instance,
