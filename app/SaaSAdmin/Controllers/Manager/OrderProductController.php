@@ -122,33 +122,23 @@ class OrderProductController extends AdminController
             ->config('allowClear', false)
             ->config('minimumResultsForSearch', 'Infinity')
             ->when(1, function (Form $form) {
-                Admin::script('
-                    $(document).ready(function() {
-                        $("input[name=function_value]").val(30);
-                    });
-                ');
-                Admin::style(<<<CSS
-                    .custom-number-input {
-                        width: 100px !important;
-                    }
-                    .input-group:has(.custom-number-input) {
-                        display: inline-table !important;
-                        vertical-align: middle;
-                    }
-                    .input-group:has(.custom-number-input) .input-group-addon {
-                        width: auto;
-                        display: table-cell;
-                    }
-                    .form-group:has(.custom-number-input) .input-group {
-                        margin-left: 0;
-                    }
-                CSS
-                );
-                $form->text('function_value', 'VIP时长')
-                ->default(30)
-                ->rules(['required', 'integer', 'min:1', 'max:9999'])
-                ->append('天')
-                ->help('VIP时长为设置的天数，则用户购买后，VIP有效期从购买当天开始计算。');
+                // Admin::script('
+                //     $(document).ready(function() {
+                //         $("input[name=function_value]").val(30);
+                //     });
+                // ');
+                if($form->isEditing()) {
+                    $form->text('function_value', 'VIP时长')
+                    ->rules(['required', 'integer', 'min:1', 'max:9999'])
+                    ->append('天')
+                    ->help('VIP时长为设置的天数，则用户购买后，VIP有效期从购买当天开始计算。');
+                }else{
+                    $form->text('function_value', 'VIP时长')
+                    ->default(30)
+                    ->rules(['required', 'integer', 'min:1', 'max:9999'])
+                    ->append('天')
+                    ->help('VIP时长为设置的天数，则用户购买后，VIP有效期从购买当天开始计算。');
+                }
             })
             ->when(2, function (Form $form) {
                 $form->html('<span class="text-success"><i class="fa fa-info"></i> 用户购买后，标记为永久会员。</span>');
