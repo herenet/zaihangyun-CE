@@ -35,9 +35,10 @@ class WechatPayService
             "mchid" => $this->mchid,
             "serial" => $mch_cert_serial,
             "privateKey" => Rsa::from($mch_private_key_file, Rsa::KEY_TYPE_PRIVATE),
-            "certs" => [
-                $platform_cert_serial => $platform_public_key_instance,
-            ]
+            "certs" => 
+                // $platform_cert_serial => $platform_public_key_instance,
+                ['any' => null]
+           
         ]);
     }
 
