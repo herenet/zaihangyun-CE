@@ -56,6 +56,12 @@ class WechatPayService
         return $this->_getResponseContent($resp);
     }
 
+    public function downloadPlatformCert()
+    {
+        $resp = $this->instance->chain('/v3/certificates')->get();
+        return $this->_getResponseContent($resp);
+    }
+
     /**
      * @throws Exception
      */

@@ -8,10 +8,11 @@ use App\SaaSAdmin\AppKey;
 use Encore\Admin\Layout\Content;
 use App\Models\WechatPaymentConfig;
 use App\SaaSAdmin\Facades\SaaSAdmin;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Request;
 use Encore\Admin\Controllers\AdminController;
 use App\SaaSAdmin\Actions\WechatPayInterfaceCheck;
+use App\SaaSAdmin\Actions\DownloadWechatPlatformCert;
 
 class WechatPaymentConfigController extends AdminController
 {
@@ -42,7 +43,12 @@ class WechatPaymentConfigController extends AdminController
         $grid->column('updated_at', '更新时间')->sortable();
         $grid->column('created_at', '创建时间')->sortable();
         $grid->column('interface_check', '配置验证')->action(WechatPayInterfaceCheck::class);
+        $grid->column('download_cert', '证书下载')->action(DownloadWechatPlatformCert::class);
         $grid->column('callback_check', '回调验证')->using([0 => '未验证', 1 => '验证通过'])->dot([0 => 'danger', 1 => 'success']);
+
+        // $grid->actions(function ($actions) {
+        //     $actions->add(new DownloadWechatPlatformCert());
+        // });
         
         $grid->disableExport();
         $grid->disableRowSelector();
