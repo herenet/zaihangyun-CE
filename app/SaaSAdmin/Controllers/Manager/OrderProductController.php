@@ -107,6 +107,13 @@ class OrderProductController extends AdminController
     public function form()
     {
         $form = new Form(new Product());
+
+        // 在表单显示之前处理
+        $form->editing(function ($form) {
+            $form->model()->cross_price = $form->model()->cross_price / 100;
+            $form->model()->sale_price = $form->model()->sale_price / 100;
+        });
+
         $form->setWidth(6, 3);
         $form->text('name', '产品名称')->rules(['required', 'string', 'max:64']);
         $form->text('sub_name', '子标题')->rules(['nullable', 'string', 'max:64']);
