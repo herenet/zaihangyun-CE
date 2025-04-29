@@ -100,7 +100,7 @@ class ManagerMenu
                         'id' => 51,
                         'parent_id' => 5,
                         'title' => '接口调试',
-                        'uri' => 'app/manager/' . $appKey. '/tool/api/test',
+                        'uri' => 'app/manager/' . $appKey. '/api_tester',
                     ],
                 ],
             ],

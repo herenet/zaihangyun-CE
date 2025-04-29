@@ -47,5 +47,9 @@ Route::group([
 
 
         $router->resource('agreement/list', 'Manager\AgreementController')->names('app.manager.agreement');
+
+
+        $router->get('api_tester', 'Manager\ZaihangyunApiTesterController@index')->name('api.tester');
+        $router->post('api_tester/handle', 'Manager\ZaihangyunApiTesterController@handle')->name('api.tester.handle');
     });
 });

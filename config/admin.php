@@ -488,6 +488,21 @@ return [
                 'codeFold' => true,
                 'taskList' => true,
             ],
+        ],
+
+        'api-tester' => [
+        
+            'class' => \App\SaaSAdmin\Extensions\ZaihangyunApiTester::class,
+            // route prefix for APIs
+            'prefix' => env('ADMIN_ROUTE_PREFIX', 'console'),
+
+            // auth guard for api
+            'guard'  => 'admin',
+
+            // If you are not using the default user model as the authentication model, set it up
+            // 'user_retriever' => function ($id) {
+            //     return \App\Models\Tenant::find($id);
+            // },
         ]
     ],
 ];

@@ -8,8 +8,6 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use App\Models\Article;
 use App\SaaSAdmin\AppKey;
-use Illuminate\Http\Request;
-use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Models\ArticleContentShow;
 use App\SaaSAdmin\Facades\SaaSAdmin;

@@ -137,12 +137,9 @@ class OrderProductController extends AdminController
                     }
                 CSS
                 );
-                $form->number('function_value', 'VIP时长')
+                $form->text('function_value', 'VIP时长')
                 ->default(30)
-                ->min(1)
-                ->max(3650)
-                ->rules(['required', 'integer', 'min:1', 'max:3650'])
-                ->addElementClass('custom-number-input')
+                ->rules(['required', 'integer', 'min:1', 'max:9999'])
                 ->append('天')
                 ->help('VIP时长为设置的天数，则用户购买后，VIP有效期从购买当天开始计算。');
             })

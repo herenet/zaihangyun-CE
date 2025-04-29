@@ -175,7 +175,7 @@ class UserController extends AdminController
         $form->text('wechat_openid', '微信OpenID')->rules(['nullable', 'string', 'max:128']);
         $form->text('wechat_unionid', '微信UnionID')->rules(['nullable', 'string', 'max:128']);
         $form->text('apple_userid', '苹果ID')->rules(['nullable', 'string', 'max:128']);
-        $form->number('version_number', 'APP版本')->default(1);
+        $form->number('version_number', 'APP版本')->default(1)->rules(['integer', 'min:1', 'max:9999']);
         $form->json('ext_data', '扩展数据')->rules(['nullable', 'string', 'max:128']);
         $form->select('reg_from', '注册来源')->options(User::$regFromMap)->default(99);
         $form->text('channel', '渠道')->default(User::DEFAULT_CHANNEL)->rules(['nullable', 'string', 'max:32']);

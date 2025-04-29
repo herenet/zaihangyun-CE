@@ -14,6 +14,7 @@
         "hxsen/laravel-admin-editormd": "^1.1",
         "jdenticon/jdenticon": "^1.0",
         "jxlwqq/json-editor": "^1.0",
+        "laravel-admin-ext/api-tester": "^1.0",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
