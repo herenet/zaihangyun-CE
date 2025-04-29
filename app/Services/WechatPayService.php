@@ -28,8 +28,8 @@ class WechatPayService
         $mch_private_key_file = Storage::disk('SaaSAdmin-mch')->get($mch_private_key_path);
         $platform_cert_file = Storage::disk('SaaSAdmin-mch')->get($mch_platform_cert_path);
 
-        $platform_public_key_instance = Rsa::from($platform_cert_file, Rsa::KEY_TYPE_PUBLIC);
-        $platform_cert_serial = PemUtil::parseCertificateSerialNo($platform_cert_file);
+        // $platform_public_key_instance = Rsa::from($platform_cert_file, Rsa::KEY_TYPE_PUBLIC);
+        // $platform_cert_serial = PemUtil::parseCertificateSerialNo($platform_cert_file);
 
         $this->instance = Builder::factory([
             "mchid" => $this->mchid,
