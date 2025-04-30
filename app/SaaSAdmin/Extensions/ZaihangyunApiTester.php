@@ -32,6 +32,43 @@ class ZaihangyunApiTester extends BaseApiTester
                 ])
             ],
             [
+                'method' => 'POST',
+                'uri' => '/v1/login/verify_code',
+                'title' => '验证码登录，发送验证码',
+                'parameters' => json_encode([
+                    ['name' => 'appkey', 'type' => 'string', 'required' => true, 'readonly' => true, 'description' => '系统分配的appkey，提交时系统自动填充', 'defaultValue' => '{{appkey}}'],
+                    ['name' => 'timestamp', 'type' => 'string', 'readonly' => true, 'description' => '当前时间戳，提交时系统自动填充', 'defaultValue' => '{{timestamp}}', 'required' => true],
+                    ['name' => 'sign', 'type' => 'string', 'readonly' => true, 'description' => '签名，提交时系统自动生成', 'defaultValue' => '{{sign}}', 'required' => true],
+                    ['name' => 'mcode', 'type' => 'string', 'required' => true, 'description' => '国家区号', 'defaultValue' => '+86'],
+                    ['name' => 'mobile', 'type' => 'string', 'required' => true, 'description' => '手机号'],
+                ])
+            ],
+            [
+                'method' => 'POST',
+                'uri' => '/v1/login/mobile',
+                'title' => '手机号验证码登录',
+                'parameters' => json_encode([
+                    ['name' => 'appkey', 'type' => 'string', 'required' => true, 'readonly' => true, 'description' => '系统分配的appkey，提交时系统自动填充', 'defaultValue' => '{{appkey}}'],
+                    ['name' => 'timestamp', 'type' => 'string', 'readonly' => true, 'description' => '当前时间戳，提交时系统自动填充', 'defaultValue' => '{{timestamp}}', 'required' => true],
+                    ['name' => 'sign', 'type' => 'string', 'readonly' => true, 'description' => '签名，提交时系统自动生成', 'defaultValue' => '{{sign}}', 'required' => true],
+                    ['name' => 'mcode', 'type' => 'string', 'required' => true, 'description' => '国家区号', 'defaultValue' => '+86'],
+                    ['name' => 'mobile', 'type' => 'string', 'required' => true, 'description' => '手机号'],
+                    ['name' => 'verify_code', 'type' => 'string', 'required' => true, 'description' => '验证码'],
+                    ['name' => 'version_number', 'type' => 'number', 'required' => true, 'description' => '版本号'],
+                    ['name' => 'channel', 'type' => 'string', 'required' => true, 'description' => '渠道'],
+                    ['name' => 'oaid', 'type' => 'string', 'description' => '设备oaid'],
+                    ['name' => 'need_user_detail', 'type' => 'number', 'defaultValue' => 0, 'description' => '是否需要用户信息：0-不需要，1-需要'],
+                    ['name' => 'device_id', 'type' => 'string', 'description' => '设备id'],
+                ])
+            ],
+            [
+                'method' => 'GET',
+                'uri' => '/v1/user/info',
+                'title' => '获取当前登录用户信息',
+                'token' => true,
+                'parameters' => json_encode([]),
+            ],
+            [
                 'method' => 'GET',
                 'uri' => '/v1/article/list',
                 'title' => '文档列表',
