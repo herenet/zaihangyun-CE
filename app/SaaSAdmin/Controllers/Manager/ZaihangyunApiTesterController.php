@@ -2,6 +2,7 @@
 
 namespace App\SaaSAdmin\Controllers\Manager;
 
+use App\Models\App;
 use App\SaaSAdmin\AppKey;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
@@ -15,9 +16,12 @@ class ZaihangyunApiTesterController extends Controller
 
     protected $tester;
 
+    protected $api_url;
+
     public function __construct()
     {
         $this->tester = new ZaihangyunApiTester();
+        $this->api_url = config('app.api_url');
     }
 
     public function index(Content $content)
@@ -32,9 +36,10 @@ class ZaihangyunApiTesterController extends Controller
 
     public function handle(Request $request)
     {
+        $app_key = $this->getAppKey();
         $method = $request->get('method');
         $uri = $request->get('uri');
-        $user = $request->get('user');
+        $token = $request->get('token');
         $all = $request->all();
 
         $keys = Arr::get($all, 'key', []);
@@ -45,20 +50,42 @@ class ZaihangyunApiTesterController extends Controller
 
         $parameters = [];
 
+        $app_info = App::where('app_key', $app_key)->first();
+
+        $current_time = time();
         foreach ($keys as $index => $key) {
-            $parameters[$key] = Arr::get($vals, $index);
+            $value = Arr::get($vals, $index);
+            if($key == 'appkey') {
+                $value = $app_info->app_key;
+            }else if($key == 'timestamp') {
+                $value = $current_time;
+            }else if($key == 'sign') {
+                $value = md5($app_info->app_key.$current_time.$app_info->app_secret);
+            }
+            $parameters[$key] = $value;
         }
 
         $parameters = array_filter($parameters, function ($key) {
             return $key !== '';
         }, ARRAY_FILTER_USE_KEY);
 
-        $response = $this->tester->call($method, $uri, $parameters, $user);
+        list($response, $requestInfo) = $this->tester->call($method, $this->api_url.$uri, $parameters, $token);
+
+        $ret_data = [
+            'headers'    => json_encode($response->getHeaders(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
+            'content'    => $response->getBody()->getContents(),
+            'request_params' => json_encode($requestInfo, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
+            'language'   => 'json',
+            'status'     => [
+                'code'  => $response->getStatusCode(),
+                'text'  => $response->getReasonPhrase(),
+            ],
+        ];
 
         return [
             'status'    => true,
             'message'   => 'success',
-            'data'      => $this->tester->parseResponse($response),
+            'data'      => $ret_data,
         ];
     }
 }

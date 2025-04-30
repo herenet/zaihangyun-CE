@@ -2,6 +2,8 @@
 
 namespace App\SaaSAdmin\Extensions;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\TransferStats;
 use Encore\Admin\ApiTester\ApiTester as BaseApiTester;
 
 class ZaihangyunApiTester extends BaseApiTester
@@ -39,5 +41,55 @@ class ZaihangyunApiTester extends BaseApiTester
             ],
             // 添加更多API...
         ];
+    }
+
+    public function call($method, $uri, $parameters = [], $token = null)
+    {
+        $client = new Client();
+
+        $reqeust_params = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'json' => $parameters,
+            'on_stats' => function (TransferStats $stats) use (&$requestInfo) {
+                // 获取请求对象
+                $request = $stats->getRequest();
+                
+                // 获取请求方法和URL（包含查询参数）
+                $method = $request->getMethod();
+                $uri = $request->getUri();
+                $path = $uri->getPath();
+                $query = $uri->getQuery(); // 获取查询字符串
+                
+                // 解析查询参数
+                parse_str($query, $queryParams);
+                
+                // 获取请求体内容
+                $body = (string)$request->getBody();
+                $jsonData = json_decode($body, true);
+                
+                // 存储所有信息
+                $requestInfo = [
+                    'method' => $method,
+                    'url' => (string)$uri,
+                    'path' => $path,
+                    'query_string' => $query,
+                    'query_params' => $queryParams,
+                    'body' => $body,
+                    'json_data' => $jsonData,
+                    'headers' => $request->getHeaders(),
+                    'transfer_time' => $stats->getTransferTime()
+                ];
+            }
+        ];
+
+        if ($token && $token !== '') {
+            $reqeust_params['headers']['Authorization'] = 'Bearer ' . $token;
+        }
+
+        $response = $client->request($method, $uri, $reqeust_params);
+
+        return [$response, $requestInfo];
     }
 }

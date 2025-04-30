@@ -105,7 +105,7 @@
 
             $('.response-tabs #content pre code').html(response.content);
             $('.response-tabs #headers pre code').html(response.headers);
-            $('.response-tabs #cookie pre code').html(response.cookies);
+            $('.response-tabs #request_params pre code').html(response.request_params);
 
             $('.response-tabs pre code').removeClass(function (index, className) {
                 return (className.match(/language-[^\s]+/) || []).join(' ');
@@ -338,9 +338,9 @@
 
         <div class="nav-tabs-custom response-tabs hide">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#content" data-toggle="tab">Content</a></li>
-                <li><a href="#headers" data-toggle="tab">Headers</a></li>
-                {{--<li><a href="#cookies" data-toggle="tab">Cookies</a></li>--}}
+                <li class="active"><a href="#content" data-toggle="tab">返回值</a></li>
+                <li><a href="#headers" data-toggle="tab">返回请求头</a></li>
+                <li><a href="#request_params" data-toggle="tab">实际请求</a></li>
                 <li class="status-label"><span class="label label-default response-status"></span></li>
             </ul>
             <div class="tab-content">
@@ -349,7 +349,7 @@
                     <div class="form-group"><pre><code class="line-numbers"></code></pre></div>
                 </div>
                 <!-- /.tab-pane -->
-                <div class="tab-pane" id="cookies">
+                <div class="tab-pane" id="request_params">
                     <div class="form-group"><pre><code class="line-numbers"></code></pre></div>
                 </div>
 
