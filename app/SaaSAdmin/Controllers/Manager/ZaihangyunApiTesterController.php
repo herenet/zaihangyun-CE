@@ -72,8 +72,8 @@ class ZaihangyunApiTesterController extends Controller
         list($response, $requestInfo) = $this->tester->call($method, $this->api_url.$uri, $parameters, $token);
 
         $ret_data = [
-            'headers'    => json_encode($response->getHeaders(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
-            'content'    => $response->getBody()->getContents(),
+            'headers'    => json_encode(collect($response->getHeaders())->except('Server'), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
+            'content'    => json_encode(json_decode($response->getBody()->getContents(), true), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
             'request_params' => json_encode($requestInfo, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
             'language'   => 'json',
             'status'     => [

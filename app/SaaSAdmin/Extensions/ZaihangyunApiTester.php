@@ -26,17 +26,21 @@ class ZaihangyunApiTester extends BaseApiTester
                     ['name' => 'code', 'type' => 'string', 'required' => true, 'description' => '微信授权码'],
                     ['name' => 'version_number', 'type' => 'number', 'required' => true, 'description' => '版本号'],
                     ['name' => 'channel', 'type' => 'string', 'required' => true, 'description' => '渠道'],
-                    ['name' => 'oaid', 'type' => 'string', 'required' => true, 'description' => '设备oaid'],
-                    ['name' => 'need_user_detail', 'type' => 'number', 'required' => true, 'description' => '是否需要用户信息：0-不需要，1-需要'],
-                    ['name' => 'device_id', 'type' => 'string', 'required' => true, 'description' => '设备id'],
+                    ['name' => 'oaid', 'type' => 'string', 'description' => '设备oaid'],
+                    ['name' => 'need_user_detail', 'type' => 'number', 'description' => '是否需要用户信息：0-不需要，1-需要'],
+                    ['name' => 'device_id', 'type' => 'string', 'description' => '设备id'],
                 ])
             ],
             [
-                'method' => 'POST',
-                'uri' => 'api/example/create',
+                'method' => 'GET',
+                'uri' => '/v1/article/list',
+                'title' => '文档列表',
                 'parameters' => json_encode([
-                    ['name' => 'name', 'type' => 'string', 'required' => true],
-                    ['name' => 'email', 'type' => 'string', 'required' => true]
+                    ['name' => 'appkey', 'type' => 'string', 'required' => true, 'readonly' => true, 'description' => '系统分配的appkey，提交时系统自动填充', 'defaultValue' => '{{appkey}}'],
+                    ['name' => 'timestamp', 'type' => 'string', 'readonly' => true, 'description' => '当前时间戳，提交时系统自动填充', 'defaultValue' => '{{timestamp}}', 'required' => true],
+                    ['name' => 'sign', 'type' => 'string', 'readonly' => true, 'description' => '签名，提交时系统自动生成', 'defaultValue' => '{{sign}}', 'required' => true],
+                    ['name' => 'page', 'type' => 'number', 'description' => '页码'],
+                    ['name' => 'page_size', 'type' => 'number', 'description' => '每页条数'],
                 ])
             ],
             // 添加更多API...

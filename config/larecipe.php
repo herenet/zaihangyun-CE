@@ -17,7 +17,7 @@ return [
         'route'   => '/docs',
         'path'    => '/resources/docs',
         'landing' => 'overview',
-        'middleware' => config('admin.route.middleware'),
+        // 'middleware' => config('admin.route.middleware'),
     ],
 
     /*
