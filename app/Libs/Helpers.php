@@ -64,4 +64,12 @@ class Helpers
             return false;
         }
     }
+
+    public static function generateOrderId($payChannel = 1)
+    {
+       $pre_code = date("YmdHis");
+       $suffix_code = rand(10000000, 99999999);
+   
+       return (string) $payChannel.$pre_code.$suffix_code;
+    }
 }

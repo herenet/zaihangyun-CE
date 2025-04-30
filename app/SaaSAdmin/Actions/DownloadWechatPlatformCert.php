@@ -36,15 +36,14 @@ class DownloadWechatPlatformCert extends RowAction
                 $config->mch_platform_cert_path,
                 $config->notify_url
             );
+            
             $this->aesKey = $config->mch_api_v3_secret;
             $content = $wechatPayService->downloadPlatformCert();
             $cert_content = $content['data'][0]['encrypt_certificate'];
             $decryptedContent = $this->decryptToString($cert_content['associated_data'], $cert_content['nonce'], $cert_content['ciphertext']);
             // $this->response()->success('下载成功');
             dd($decryptedContent);
-            // return $this->response()
-            //         ->success('下载成功')
-            //         ->($decryptedContent, 'platform_cert.pem');
+         
         } catch (\Exception $e) {
             return $this->response()
                     ->error('下载失败: ' . ($e->getMessage() ?? '未知错误'))

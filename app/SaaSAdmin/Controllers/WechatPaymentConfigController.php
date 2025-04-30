@@ -43,12 +43,10 @@ class WechatPaymentConfigController extends AdminController
         $grid->column('updated_at', '更新时间')->sortable();
         $grid->column('created_at', '创建时间')->sortable();
         $grid->column('interface_check', '配置验证')->action(WechatPayInterfaceCheck::class);
-        $grid->column('download_cert', '证书下载')->action(DownloadWechatPlatformCert::class);
-        $grid->column('callback_check', '回调验证')->using([0 => '未验证', 1 => '验证通过'])->dot([0 => 'danger', 1 => 'success']);
 
-        // $grid->actions(function ($actions) {
-        //     $actions->add(new DownloadWechatPlatformCert());
-        // });
+        $grid->actions(function ($actions) {
+            $actions->disableView();
+        });
         
         $grid->disableExport();
         $grid->disableRowSelector();
@@ -125,6 +123,7 @@ class WechatPaymentConfigController extends AdminController
         });
 
         $form->saving(function (Form $form) {
+            $form->model()->interface_check = 0;
             $form->model()->tenant_id = SaaSAdmin::user()->id;
         });
 
