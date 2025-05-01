@@ -19,6 +19,7 @@ class ZaihangyunApiTester extends BaseApiTester
                 'uri' => '/v1/login/wechat',
                 'title' => '微信登录',
                 'token' => false,
+                'doc_url' => config('app.url').'/docs/1.x/apis/login_wechat',
                 'parameters' => json_encode([
                     ['name' => 'appkey', 'type' => 'string', 'required' => true, 'readonly' => true, 'description' => '系统分配的appkey，提交时系统自动填充', 'defaultValue' => '{{appkey}}'],
                     ['name' => 'timestamp', 'type' => 'string', 'readonly' => true, 'description' => '当前时间戳，提交时系统自动填充', 'defaultValue' => '{{timestamp}}', 'required' => true],
@@ -35,6 +36,7 @@ class ZaihangyunApiTester extends BaseApiTester
                 'method' => 'POST',
                 'uri' => '/v1/login/verify_code',
                 'title' => '验证码登录，发送验证码',
+                'doc_url' => config('app.url').'/docs/1.x/apis/login_verify_code',
                 'parameters' => json_encode([
                     ['name' => 'appkey', 'type' => 'string', 'required' => true, 'readonly' => true, 'description' => '系统分配的appkey，提交时系统自动填充', 'defaultValue' => '{{appkey}}'],
                     ['name' => 'timestamp', 'type' => 'string', 'readonly' => true, 'description' => '当前时间戳，提交时系统自动填充', 'defaultValue' => '{{timestamp}}', 'required' => true],
@@ -47,6 +49,7 @@ class ZaihangyunApiTester extends BaseApiTester
                 'method' => 'POST',
                 'uri' => '/v1/login/mobile',
                 'title' => '手机号验证码登录',
+                'doc_url' => config('app.url').'/docs/1.x/apis/login_mobile',
                 'parameters' => json_encode([
                     ['name' => 'appkey', 'type' => 'string', 'required' => true, 'readonly' => true, 'description' => '系统分配的appkey，提交时系统自动填充', 'defaultValue' => '{{appkey}}'],
                     ['name' => 'timestamp', 'type' => 'string', 'readonly' => true, 'description' => '当前时间戳，提交时系统自动填充', 'defaultValue' => '{{timestamp}}', 'required' => true],
@@ -65,6 +68,7 @@ class ZaihangyunApiTester extends BaseApiTester
                 'method' => 'GET',
                 'uri' => '/v1/user/info',
                 'title' => '获取当前登录用户信息',
+                'doc_url' => config('app.url').'/docs/1.x/apis/user_info',
                 'token' => true,
                 'parameters' => json_encode([]),
             ],
@@ -72,6 +76,7 @@ class ZaihangyunApiTester extends BaseApiTester
                 'method' => 'GET',
                 'uri' => '/v1/article/list',
                 'title' => '文档列表',
+                'doc_url' => config('app.url').'/docs/1.x/apis/article_list',
                 'parameters' => json_encode([
                     ['name' => 'appkey', 'type' => 'string', 'required' => true, 'readonly' => true, 'description' => '系统分配的appkey，提交时系统自动填充', 'defaultValue' => '{{appkey}}'],
                     ['name' => 'timestamp', 'type' => 'string', 'readonly' => true, 'description' => '当前时间戳，提交时系统自动填充', 'defaultValue' => '{{timestamp}}', 'required' => true],

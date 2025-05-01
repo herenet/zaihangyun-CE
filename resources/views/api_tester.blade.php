@@ -31,6 +31,8 @@
 
             $('.api-title').html(li.data('title'));
 
+            $('a.api-doc-link').attr('href', li.data('doc_url'));
+
             if(li.data('token') && li.data('token') != '') {
                 $('.header-token').removeClass('hide');
             }else{
@@ -231,12 +233,15 @@
                             data-method-color="{{$color}}"
                             data-token="{{ isset($route['token']) ? $route['token'] : '' }}"
                             data-title="{{ isset($route['title']) ? $route['title'] : '' }}"
-                            data-parameters='{!! $route['parameters'] !!}' >
+                            data-parameters='{!! $route['parameters'] !!}'
+                            data-doc_url="{{ isset($route['doc_url']) ? $route['doc_url'] : '#' }}" >
 
                             <a href="#"><b>{{ $route['uri'] }}</b>
                                 <div class="pull-right">
                                     <span class="label bg-{{ $color }}">{{ $route['method'] }}</span>
                                 </div>
+                                <br/>
+                                <span class="text-muted">{{ $route['title'] }}</span>
                             </a>
                         </li>
                     @endforeach
@@ -281,7 +286,11 @@
                 <div class="box-body">
                     <div class="box-header with-border">
                         <h3 class="box-title api-title"></h3>
-                        <div class="box-tools pull-right"></div><!-- /.box-tools -->
+                        <div class="box-tools pull-right">
+                            <a href="#" target="_blank" class="btn btn-sm btn-default api-doc-link">
+                                <i class="fa fa-book"></i> 接口文档
+                            </a>
+                        </div><!-- /.box-tools -->
                     </div>
                     <br/>
                     <div class="form-group">

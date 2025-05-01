@@ -72,4 +72,33 @@ class Helpers
    
        return (string) $payChannel.$pre_code.$suffix_code;
     }
+
+    public static function simpleEncode($data)
+    {
+        // 将数据转换为二进制
+        $binary = '';
+        for ($i = 0; $i < strlen($data); $i++) {
+            // 将每个字符转换为8位二进制
+            $binary .= sprintf('%08b', ord($data[$i]));
+        }
+        
+        // 将二进制数据分组并转换为字母数字字符
+        $encoded = '';
+        // 每5位二进制数据映射为一个字符（2^5=32种可能性）
+        $chunks = str_split($binary, 5);
+        
+        // 字母数字字符集（不含容易混淆的字符如O和0，l和1等）
+        $charset = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+        
+        foreach ($chunks as $chunk) {
+            // 如果最后一个块不足5位，填充0
+            $chunk = str_pad($chunk, 5, '0');
+            // 将5位二进制转换为十进制索引（0-31）
+            $index = bindec($chunk) % strlen($charset);
+            // 映射到字符集
+            $encoded .= $charset[$index];
+        }
+        
+        return $encoded;
+    }
 }

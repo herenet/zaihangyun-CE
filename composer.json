@@ -7,6 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "alibabacloud/sdk": "^1.8",
+        "alipaysdk/easysdk": "^2.2",
         "binarytorch/larecipe": "^2.8",
         "encore/laravel-admin": "^1.8.10",
         "fruitcake/laravel-cors": "^2.0",
@@ -49,13 +50,18 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php -r \"file_exists('vendor/alipaysdk/easysdk/php/src/Kernel/EasySDKKernel.php') && copy('EasySDKKernel.php', 'vendor/alipaysdk/easysdk/php/src/Kernel/EasySDKKernel.php');\""
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+
+        "post-install-cmd": [
+            "@php -r \"file_exists('vendor/alipaysdk/easysdk/php/src/Kernel/EasySDKKernel.php') && copy('EasySDKKernel.php', 'vendor/alipaysdk/easysdk/php/src/Kernel/EasySDKKernel.php');\""
         ]
     },
     "extra": {

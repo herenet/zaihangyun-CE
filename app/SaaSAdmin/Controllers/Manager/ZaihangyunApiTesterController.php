@@ -27,7 +27,7 @@ class ZaihangyunApiTesterController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->title('API测试工具')
+            ->title('接口调试')
             ->body(view('api_tester', [
                 'form_url' => admin_url('app/manager/'.$this->getAppKey().'/api_tester/handle'),
                 'routes' => $this->tester->getRoutes(),
