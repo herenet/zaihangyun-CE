@@ -62,22 +62,19 @@ class WechatPaymentConfigController extends AdminController
 
     public function edit($id, Content $content)
     {
-        $id = request()->route('payment');
+        $this->clearAPICache($id);
         return parent::edit($id, $content);
     }
 
     public function update($id)
     {
-        $id = request()->route('payment');
-        $cache_key = 'wechat_open_platform_config|'.$id;
-        Cache::store('api_cache')->forget($cache_key);
+        $this->clearAPICache($id);
         return parent::update($id);
     }
 
     public function destroy($id)
     {
-        $cache_key = 'wechat_open_platform_config|'.$id;
-        Cache::store('api_cache')->forget($cache_key);
+        $this->clearAPICache($id);
         return parent::destroy($id);
     }
 
@@ -142,5 +139,11 @@ class WechatPaymentConfigController extends AdminController
     public function checkCallback(Request $request)
     {
         dd($request->all());
+    }
+
+    protected function clearAPICache($id)
+    {
+        $cache_key = 'wechat_payment_config|'.$id;
+        Cache::store('api_cache')->forget($cache_key);
     }
 }

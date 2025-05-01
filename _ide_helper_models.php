@@ -246,6 +246,7 @@ namespace App\Models{
  * @property string $app_key
  * @property int $tenant_id
  * @property int $switch
+ * @property string|null $oid_prefix 设置订单号前缀
  * @property int|null $suport_wechat_pay
  * @property int|null $wechat_platform_config_id
  * @property int|null $wechat_payment_config_id
@@ -258,6 +259,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig query()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig whereAppKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig whereOidPrefix($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig whereSuportAlipay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig whereSuportApplePay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig whereSuportWechatPay($value)

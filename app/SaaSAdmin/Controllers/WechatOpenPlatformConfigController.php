@@ -55,16 +55,26 @@ class WechatOpenPlatformConfigController extends AdminController
 
     public function update($id)
     {
-        $cache_key = 'wechat_open_platform_config|'.$id;
-        Cache::store('api_cache')->forget($cache_key);
+        $this->clearAPICache($id);
         return parent::update($id);
     }
 
     public function destroy($id)
     {
+        $this->clearAPICache($id);
+        return parent::destroy($id);
+    }
+
+    public function edit($id, Content $content)
+    {
+        $this->clearAPICache($id);
+        return parent::edit($id, $content);
+    }
+
+    protected function clearAPICache($id)
+    {
         $cache_key = 'wechat_open_platform_config|'.$id;
         Cache::store('api_cache')->forget($cache_key);
-        return parent::destroy($id);
     }
 
     public function form()

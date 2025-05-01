@@ -33,12 +33,11 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 为所有密钥切换图标添加点击事件
-    var toggleButtons = document.querySelectorAll('.toggle-secret');
-    
-    toggleButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            var td = this.parentNode;
+    // 使用事件委托
+    document.addEventListener('click', function(event) {
+        // 检查点击的是否是切换按钮
+        if (event.target.classList.contains('toggle-secret')) {
+            var td = event.target.parentNode;
             var secretContent = td.querySelector('.secret-content');
             var originalContent = td.querySelector('.original-content');
             
@@ -46,15 +45,15 @@ document.addEventListener('DOMContentLoaded', function() {
             if (secretContent.style.display !== 'none') {
                 secretContent.style.display = 'none';
                 originalContent.style.display = 'inline';
-                this.classList.remove('fa-eye-slash');
-                this.classList.add('fa-eye');
+                event.target.classList.remove('fa-eye-slash');
+                event.target.classList.add('fa-eye');
             } else {
                 secretContent.style.display = 'inline';
                 originalContent.style.display = 'none';
-                this.classList.remove('fa-eye');
-                this.classList.add('fa-eye-slash');
+                event.target.classList.remove('fa-eye');
+                event.target.classList.add('fa-eye-slash');
             }
-        });
+        }
     });
 });
 </script>

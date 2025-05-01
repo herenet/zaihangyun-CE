@@ -41,9 +41,25 @@ class OrderConfigController extends Controller
         $tenant_id = SaaSAdmin::user()->id;
         $app_key = $this->getAppKey();
 
+        $validator = Validator::make($request->all(), [
+            'switch' => 'required|in:0,1',
+            'oid_prefix' => 'required_if:switch,1|string|max:4',
+        ], [
+            'switch.required' => '是否启用接口不能为空',
+            'switch.in' => '是否启用接口必须为0或1',
+            'oid_prefix.required_if' => '必须启用接口后才能设置订单号前缀',
+            'oid_prefix.string' => '订单号前缀必须为字符串',
+            'oid_prefix.max' => '订单号前缀最大长度为4个字符',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
         if ($switch == 1) {
             $order_config_data = [
                 'switch' => $switch,
+                'oid_prefix' => $request->input('oid_prefix'),
             ];
 
             try {
@@ -152,7 +168,9 @@ class OrderConfigController extends Controller
     protected function clearAPICache($app_key)
     {
         $cache_key = 'order_interface_config|'.$app_key;
+        $alipay_cache_key = 'alipay_config|'.$app_key;
         Cache::store('api_cache')->forget($cache_key);
+        Cache::store('api_cache')->forget($alipay_cache_key);
     }
 
     public function checkAlipayInterface(Request $request)

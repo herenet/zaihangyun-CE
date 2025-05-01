@@ -31,11 +31,11 @@ class AlipayConfig extends Form
                     ->help('请输入支付宝应用ID，在支付宝开放平台添加应用后获取。');
                 $form->textarea('app_private_cert', '支付宝应用私钥')
                     ->required()
-                    ->rules(['required', 'string', 'max:512'])
+                    ->rules(['required', 'string', 'max:2048'])
                     ->help('支付宝开放平台中设置接口加签方式后，获取应用私钥。<a href="https://opendocs.alipay.com/common/02kdnc#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E8%8E%B7%E5%8F%96%E6%94%AF%E4%BB%98%E5%AE%9D%E5%85%AC%E9%92%A5%2F%E8%AF%81%E4%B9%A6" target="_blank">如何获取>>></a>');
                 $form->textarea('alipay_public_cert', '支付宝公钥')
                     ->required()
-                    ->rules(['required', 'string', 'max:512'])
+                    ->rules(['required', 'string', 'max:1028'])
                     ->help('支付宝公钥，在支付宝开放平台设置接口加签方式后获取。');
                 $form->display('alipay_callback_url', '支付宝授权回调地址')->with(function ($value) {
                     $params = Helpers::simpleEncode($this->getAppKey().'-'.SaaSAdmin::user()->id);

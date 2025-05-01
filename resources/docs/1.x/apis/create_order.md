@@ -107,6 +107,7 @@ curl --location --request POST 'https://api.zaihangyun.com/v1/order/create' \
     "code": 200,
     "msg": "success",
     "data": {
+        "oid": "12025050120355825756800",
         "appid": "wx123456789",        // 微信开放平台appid
         "partnerid": "1900000109",     // 微信支付商户号
         "prepay_id": "wx201410272009395522657a690389285100", // 预支付交易会话标识
@@ -114,6 +115,19 @@ curl --location --request POST 'https://api.zaihangyun.com/v1/order/create' \
         "noncestr": "a1b2c3d4e5",      // 随机字符串
         "timestamp": 1666666666,       // 时间戳
         "sign": "abcdefghijklmn"       // 签名
+    }
+}
+```
+
+- 选择支付宝创建订单成功响应
+
+```json
+{
+    "code": 200,
+    "msg": "success",
+    "data": {
+        "oid": "22025050120355825756800",
+        "order_str": "method=......5EhA%3D%3D"
     }
 }
 ```
@@ -139,6 +153,7 @@ curl --location --request POST 'https://api.zaihangyun.com/v1/order/create' \
 ### 微信支付 data 对象
 | 字段名 | 类型 | 说明 |
 | -- | -- | -- |
+| oid | string | 订单号 |
 | appid | string | 微信开放平台审核通过的应用APPID |
 | partnerid | string | 微信支付分配的商户号 |
 | prepay_id | string | 微信返回的支付交易会话ID |
@@ -147,6 +162,12 @@ curl --location --request POST 'https://api.zaihangyun.com/v1/order/create' \
 | timestamp | integer | 时间戳，标准北京时间，时区为东八区，自1970年1月1日 0点0分0秒以来的秒数 |
 | sign | string | 签名，使用字段：appid、timestamp、noncestr、prepay_id，详见微信支付API文档 |
 
+### 支付宝 data 对象
+| 字段名 | 类型 | 说明 |
+| -- | -- | -- |
+| oid | string | 订单号 |
+| order_str | string | 支付宝签名字符串 |
+
 
 <a name="section-7"></a>
 ## 业务流程图
@@ -154,6 +175,8 @@ curl --location --request POST 'https://api.zaihangyun.com/v1/order/create' \
 ###通过微信支付
 <image src="/images/docs/wechat_pay.png" width="1300px"/>
 
+###通过支付宝支付
+<image src="/images/docs/alipay.png" width="1300px"/>
 
 <a name="section-8"></a>
 ## 错误码说明
