@@ -85,6 +85,32 @@ class ZaihangyunApiTester extends BaseApiTester
                     ['name' => 'page_size', 'type' => 'number', 'description' => '每页条数'],
                 ])
             ],
+            [
+                'method' => 'GET',
+                'uri' => '/v1/product/list',
+                'title' => '产品列表',
+                'doc_url' => config('app.url').'/docs/1.x/apis/product_list',
+                'parameters' => json_encode([
+                    ['name' => 'appkey', 'type' => 'string', 'required' => true, 'readonly' => true, 'description' => '系统分配的appkey，提交时系统自动填充', 'defaultValue' => '{{appkey}}'],
+                    ['name' => 'timestamp', 'type' => 'string', 'readonly' => true, 'description' => '当前时间戳，提交时系统自动填充', 'defaultValue' => '{{timestamp}}', 'required' => true],
+                    ['name' => 'sign', 'type' => 'string', 'readonly' => true, 'description' => '签名，提交时系统自动生成', 'defaultValue' => '{{sign}}', 'required' => true],
+                    ['name' => 'status', 'type' => 'number', 'description' => '状态：1-上架，2-下架'],
+                    ['name' => 'platform', 'type' => 'number', 'description' => '平台：1-IOS, 2-Android'],
+                    ['name' => 'type', 'type' => 'number', 'description' => '类型：1:时长会员, 2:永久会员, 99:自定义会员'],
+                ]),
+            ],
+            [
+                'method' => 'POST',
+                'uri' => '/v1/order/create',
+                'title' => '创建订单',
+                'doc_url' => config('app.url').'/docs/1.x/apis/create_order',
+                'token' => true,
+                'parameters' => json_encode([
+                    ['name' => 'pid', 'type' => 'string', 'required' => true, 'description' => '产品pid，从产品列表接口获取'],
+                    ['name' => 'pay_channel', 'type' => 'number', 'required' => true, 'description' => '支付渠道：1:微信支付, 2:支付宝, 3:苹果支付'],
+                    ['name' => 'channel', 'type' => 'number', 'description' => '用户注册来源渠道'],
+                ])
+            ],
             // 添加更多API...
         ];
     }
