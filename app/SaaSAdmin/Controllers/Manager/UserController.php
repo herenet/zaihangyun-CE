@@ -34,7 +34,7 @@ class UserController extends AdminController
         // 基础信息
         $grid->column('uid', 'UID');
         $grid->column('nickname', '昵称');
-        $grid->column('avatar', '头像')->image(config('app.url').'/storage/mch/avatar/', 50, 50);
+        $grid->column('avatar', '头像')->image(config('app.url').'/storage/mch/avatar/', 30, 30);
         $grid->column('username', '用户名');
         $grid->column('gender', '性别')->using(User::$genderMap);
         $grid->column('birthday', '生日')->date();
