@@ -55,7 +55,7 @@ class OrderController extends AdminController
         $grid->column('tid', '第三方订单号');
         $grid->column('trade_type', '交易类型');
         $grid->column('bank_type', '银行类型');
-        $grid->column('open_id', '三方用户标识');
+        $grid->column('open_id', '三方用户标识')->limit(32);
         $grid->column('pay_time', '支付时间');
         $grid->column('updated_at', '更新时间');
         $grid->column('created_at', '创建时间');
