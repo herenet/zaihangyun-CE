@@ -111,6 +111,16 @@ class ZaihangyunApiTester extends BaseApiTester
                     ['name' => 'channel', 'type' => 'number', 'description' => '用户注册来源渠道'],
                 ])
             ],
+            [
+                'method' => 'GET',
+                'uri' => '/v1/order/info',
+                'title' => '获取订单详情',
+                'doc_url' => config('app.url').'/docs/1.x/apis/order_info',
+                'token' => true,
+                'parameters' => json_encode([
+                    ['name' => 'oid', 'type' => 'string', 'required' => true, 'description' => '订单号'],
+                ])
+            ],
             // 添加更多API...
         ];
     }
