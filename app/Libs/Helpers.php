@@ -28,7 +28,19 @@ class Helpers
     //生成产品ID，8位数字
     public static function generateProductId()
     {
-        return hexdec(substr(md5(Str::uuid()), 0, 6));
+        // 获取当前微秒时间戳，乘以1000并取整
+        $timestamp = (int)(microtime(true) * 1000);
+        
+        // 取时间戳的后7位
+        $timestampPart = substr($timestamp, -7);
+        
+        // 生成1位随机数(1-9)作为首位
+        $firstDigit = mt_rand(1, 9);
+        
+        // 组合成8位ID
+        $id = $firstDigit . $timestampPart;
+        
+        return $id;
     }
 
     //生成文章ID，16位数字

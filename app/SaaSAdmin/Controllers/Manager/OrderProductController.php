@@ -148,8 +148,19 @@ class OrderProductController extends AdminController
             // })
             ->rules(['required', 'integer', 'max:64']);
         $form->currency('cross_price', '划线价')->symbol('￥')
-            ->rules('required|numeric|between:0,999999.99');
-        $form->currency('sale_price', '售价')->symbol('￥')->rules('required|numeric|between:0,999999.99');
+            ->default(0)
+            ->rules([
+                'required', 
+                'regex:/^([0-9]{1,6})(\.[0-9]{1,2})?$/', 
+                'not_in:null'
+            ]);
+        $form->currency('sale_price', '售价')->symbol('￥')
+            ->default(0)
+            ->rules([
+                'required', 
+                'regex:/^([0-9]{1,6})(\.[0-9]{1,2})?$/', 
+                'not_in:null'
+            ]);
         $form->radio('sale_status', '销售状态')
             ->options(Product::$saleStatusMap)
             ->default(1)

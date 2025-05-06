@@ -40,6 +40,10 @@ class WechatOpenPlatformConfigController extends AdminController
         $grid->column('remark', '备注');
         $grid->column('updated_at', '更新时间')->sortable();
         $grid->column('created_at', '创建时间')->sortable();
+
+        $grid->actions(function ($actions) {
+            $actions->disableView();
+        });
         
         $grid->disableExport();
         $grid->disableRowSelector();
