@@ -244,7 +244,7 @@ class UserController extends AdminController
     {
         $uid = request()->route('list');
         $show = new Show(User::find($uid));
-        $show->avatar('头像')->image();
+        $show->avatar('头像')->image(config('app.url').'/storage/mch/avatar/');
         $show->field('uid', 'UID');
         $show->field('wechat_openid', '微信OpenID');
         $show->field('wechat_unionid', '微信UnionID');
