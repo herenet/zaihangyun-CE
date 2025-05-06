@@ -37,10 +37,10 @@ class AlipayConfig extends Form
                     ->required()
                     ->rules(['required', 'string', 'max:1028'])
                     ->help('支付宝公钥，在支付宝开放平台设置接口加签方式后获取。');
-                $form->display('alipay_callback_url', '支付宝授权回调地址')->with(function ($value) {
-                    $params = Helpers::simpleEncode($this->getAppKey().'-'.SaaSAdmin::user()->id);
-                    return config('app.api_url').'/v1/order/callback/alipay/'.$params;
-                })->help('请复制本地址作为支付宝授权回调地址');
+                // $form->display('alipay_callback_url', '支付宝授权回调地址')->with(function ($value) {
+                //     $params = Helpers::simpleEncode($this->getAppKey().'-'.SaaSAdmin::user()->id);
+                //     return config('app.api_url').'/v1/order/callback/alipay/'.$params;
+                // })->help('请复制本地址作为支付宝授权回调地址');
 
                 $form->interfaceCheck('alipay_interface_check', '验证配置')
                     ->buttonText('验证配置是否正确')
