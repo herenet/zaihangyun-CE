@@ -37,9 +37,10 @@
 | Authorization | string | Bearer + token | 是 | 登录令牌，**Header传值**，格式：Bearer eyJxx... |
 
 ### 业务参数
-| 参数名 | 类型 | 是否必须 | 说明 |
-| -- | -- | -- | -- |
-| oid | string | 是 | 订单号 |
+| 参数名 | 类型 | 是否必须 | 取值范围 | 默认值 | 说明 |
+| -- | -- | -- | -- | -- | -- |
+| oid | string | 是 | - | - | 订单ID |
+| need_product_info | integer | 否 | 0,1 | 0 | 是否需要返回商品信息 |
 
 <a name="section-4"></a>
 ## 请求示例代码
@@ -80,7 +81,20 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/order/info?oid=aabc
         "channel": "official",
         "pay_time": null,
         "updated_at": null,
-        "created_at": "2025-05-04 13:49:27"
+        "created_at": "2025-05-04 13:49:27",
+        "product_info": {               //need_product_info为0,则无此字段
+            "pid": 267370,
+            "name": "永久会员修改",
+            "sub_name": "月会员",
+            "type": 1,
+            "function_value": "30",
+            "cross_price": 9900,
+            "sale_price": 1900,
+            "desc": null,
+            "sale_status": 1,
+            "platform_type": 1,
+            "ext_data": "{\"test\":\"test\"}"
+        }
     }
 }
 ```
@@ -102,5 +116,8 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/order/info?oid=aabc
 
 | 错误码 | 说明 |
 | -- | -- |
-| `400101` | 订单号(oid)参数缺失 |
-| `400102` | 订单不存在或不属于当前用户 |
+| `400101` | oid参数缺失 |
+| `400102` | oid参数类型必须是字符串 |
+| `400103` | need_product_info参数类型必须是整数 |
+| `400109` | need_product_info参数值必须是0或1 |
+| `400199` | 订单不存在 |

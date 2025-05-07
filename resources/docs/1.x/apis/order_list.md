@@ -45,6 +45,7 @@
 | status | integer | 否 | 1:待支付, 2:已支付, 3:已退款, 4:支付失败 | 2 | 订单状态 |
 | pay_channel | integer | 否 | 1:微信支付, 2:支付宝, 3:苹果支付 | - | 支付渠道 |
 | limit | integer | 否 | 1-100 | 10 | 每页数量 |
+| need_product_info | integer | 否 | 0,1 | 0 | 是否需要返回商品信息 |
 
 <a name="section-4"></a>
 ## 请求示例代码
@@ -88,7 +89,20 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/order/my?status=2&p
             "channel": "official",
             "pay_time": null,
             "updated_at": null,
-            "created_at": "2025-05-04 13:49:27"
+            "created_at": "2025-05-04 13:49:27",
+            "product_info": {               //need_product_info为0,则无此字段
+                "pid": 267370,
+                "name": "永久会员修改",
+                "sub_name": "月会员",
+                "type": 1,
+                "function_value": "30",
+                "cross_price": 9900,
+                "sale_price": 1900,
+                "desc": null,
+                "sale_status": 1,
+                "platform_type": 1,
+                "ext_data": "{\"test\":\"test\"}"
+            }
         },
         ...
     ]
@@ -118,3 +132,5 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/order/my?status=2&p
 | `400105` | limit参数类型必须是整数 |
 | `400106` | limit参数值必须大于0 |
 | `400107` | limit参数值必须小于100 |
+| `400108` | need_product_info参数类型必须是整数 |
+| `400109` | need_product_info参数值必须是0或1 |
