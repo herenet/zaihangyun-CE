@@ -122,14 +122,14 @@ class UserController extends AdminController
     public function update($id)
     {
         $id = request()->route('list');
-        $cache_key = 'user_info|'.$id;
+        $cache_key = 'user_info_uid|'.$id;
         Cache::store('api_cache')->forget($cache_key);
         return parent::update($id);
     }
 
     public function destroy($id)
     {
-        $cache_key = 'user_info|'.$id;
+        $cache_key = 'user_info_uid|'.$id;
         Cache::store('api_cache')->forget($cache_key);
         return parent::destroy($id);
     }
