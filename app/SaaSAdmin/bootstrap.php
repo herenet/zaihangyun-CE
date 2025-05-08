@@ -25,10 +25,11 @@ use App\Models\ManagerMenu;
 use Encore\Admin\Grid\Column;
 use App\SaaSAdmin\Components\AppSelector;
 use App\SaaSAdmin\Extensions\Nav\Shortcut;
-use App\SaaSAdmin\Extensions\Editormd\MyEditorField;
 use App\SaaSAdmin\Extensions\Show\Password;
+use App\SaaSAdmin\Extensions\Form\ZhyKeyValue;
 use App\SaaSAdmin\Extensions\Form\AliyunSmsCheck;
 use App\SaaSAdmin\Extensions\Form\InterfaceCheck;
+use App\SaaSAdmin\Extensions\Editormd\MyEditorField;
 
 //判断URL中是否是以app/manager开头
 if(strpos($_SERVER['REQUEST_URI'], 'app/manager') === false){
@@ -63,6 +64,7 @@ Show::extend('password', Password::class);
 Form::extend('myEditorMd', MyEditorField::class);
 Form::extend('interfaceCheck', InterfaceCheck::class);
 Form::extend('aliyunSmsCheck', AliyunSmsCheck::class);
+Form::extend('zhyKeyValue', ZhyKeyValue::class);
 
 Admin::script(<<<JS
 $(document).ready(function() {

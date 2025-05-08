@@ -94,6 +94,33 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\AppConfig
+ *
+ * @property int $id
+ * @property string $app_key
+ * @property int $tenant_id
+ * @property string $title 配置名称
+ * @property string $name 配置名，英文，用于接口传参
+ * @property array $params 键值对，json格式
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @method static \Illuminate\Database\Eloquent\Builder|AppConfig newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppConfig newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppConfig query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppConfig whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppConfig whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppConfig whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppConfig whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppConfig whereParams($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppConfig whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppConfig whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppConfig whereUpdatedAt($value)
+ */
+	class AppConfig extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Article
  *
  * @property string $id
