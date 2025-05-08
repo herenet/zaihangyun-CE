@@ -9,6 +9,7 @@
     - [产品列表](/{{route}}/{{version}}/app)
 
 - ## 接口列表
+    - [获取应用配置](/{{route}}/{{version}}/apis/app_config)
     - [微信登录（登录&注册）](/{{route}}/{{version}}/apis/login_wechat)
     - [发送登录短信验证码](/{{route}}/{{version}}/apis/login_verify_code)
     - [手机验证码登录（登录&注册）](/{{route}}/{{version}}/apis/login_mobile)
