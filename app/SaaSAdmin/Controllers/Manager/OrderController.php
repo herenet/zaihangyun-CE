@@ -24,6 +24,7 @@ class OrderController extends AdminController
     {
         $grid = new Grid(new Order());
         $grid->model()->where('app_key', $this->getAppKey())->orderBy('created_at', 'desc');
+        $grid->fixColumns(2, -2);
         $grid->column('oid', '订单ID');
         $grid->column('uid', '用户ID');
         $grid->column('product_id', '产品ID');
