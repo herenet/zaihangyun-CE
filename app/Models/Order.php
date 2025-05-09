@@ -78,4 +78,14 @@ class Order extends Model
         'channel',
         'pay_time',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'pid');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'uid', 'uid');
+    }
 } 

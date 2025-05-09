@@ -27,7 +27,9 @@ class OrderController extends AdminController
         $grid->fixColumns(2, -2);
         $grid->column('oid', '订单ID');
         $grid->column('uid', '用户ID');
+        $grid->column('user.nickname', '用户昵称');
         $grid->column('product_id', '产品ID');
+        $grid->column('product.name', '产品名称');
         $grid->column('product_price', '产品价格')->display(function ($value) {
             return '￥'.number_format($value / 100, 2);
         });
