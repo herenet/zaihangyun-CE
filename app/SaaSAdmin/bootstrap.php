@@ -26,6 +26,7 @@ use Encore\Admin\Grid\Column;
 use App\SaaSAdmin\Components\AppSelector;
 use App\SaaSAdmin\Extensions\Nav\Shortcut;
 use App\SaaSAdmin\Extensions\Show\Password;
+use App\SaaSAdmin\Extensions\Column\ZhySwitch;
 use App\SaaSAdmin\Extensions\Form\ZhyKeyValue;
 use App\SaaSAdmin\Extensions\Form\AliyunSmsCheck;
 use App\SaaSAdmin\Extensions\Form\InterfaceCheck;
@@ -65,6 +66,7 @@ Form::extend('myEditorMd', MyEditorField::class);
 Form::extend('interfaceCheck', InterfaceCheck::class);
 Form::extend('aliyunSmsCheck', AliyunSmsCheck::class);
 Form::extend('zhyKeyValue', ZhyKeyValue::class);
+Column::extend('zhySwitch', ZhySwitch::class);
 
 Admin::script(<<<JS
 $(document).ready(function() {

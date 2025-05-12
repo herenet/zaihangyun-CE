@@ -132,7 +132,7 @@ namespace App\Models{
  * @property int $version_num
  * @property int|null $min_version_num 最小支持版本
  * @property int $force_upgrade
- * @property int $status 2为未生效, 1为生效中
+ * @property int $enabled 0为未生效, 1为生效中
  * @property int|null $gray_upgrade
  * @property int $gray_percent 灰度比例
  * @property int $upgrade_from 1应用商店, 2为官网下载
@@ -148,6 +148,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereAppKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereChannelId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereEnabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereForceUpgrade($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereGrayPercent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereGrayUpgrade($value)
@@ -157,7 +158,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade wherePackageMd5($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade wherePackageSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade wherePlatformType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereUpgradeFrom($value)
@@ -176,6 +176,7 @@ namespace App\Models{
  * @property int $tenant_id
  * @property string $app_key
  * @property string $channel_name
+ * @property int $is_default 1为是，2为否
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel newModelQuery()
@@ -185,6 +186,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel whereChannelName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel whereIsDefault($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel whereUpdatedAt($value)
  */

@@ -17,8 +17,8 @@ class AppUpgrade extends Model
         99 => 'other',
     ];
 
-    public static $statusMap = [
-        2 => '未开启',
+    public static $enabledMap = [
+        0 => '未开启',
         1 => '已开启',
     ];
 

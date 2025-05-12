@@ -8,6 +8,8 @@ use App\Models\AppUpgrade;
 use Encore\Admin\Layout\Content;
 use App\Models\AppUpgradeChannel;
 use App\Http\Controllers\Controller;
+use App\SaaSAdmin\Facades\SaaSAdmin;
+use Illuminate\Support\Facades\Validator;
 
 class AppUpgradeChannelController extends Controller
 {
@@ -15,6 +17,7 @@ class AppUpgradeChannelController extends Controller
     
     // 定义最大渠道数量
     const MAX_CHANNELS = 10;
+    const DEFAULT_CHANNEL_NAME = 'default';
 
     public function index(Content $content)
     {
@@ -30,8 +33,9 @@ class AppUpgradeChannelController extends Controller
         if ($channels->isEmpty()) {
             $defaultChannel = AppUpgradeChannel::create([
                 'app_key' => $this->getAppKey(),
-                'channel_name' => 'default', 
-                'is_default' => 1
+                'tenant_id' => SaaSAdmin::user()->id,
+                'channel_name' => self::DEFAULT_CHANNEL_NAME, 
+                'is_default' => AppUpgradeChannel::IS_DEFAULT
             ]);
             $channels = collect([$defaultChannel]);
             $channel_id = $defaultChannel->id;
@@ -39,13 +43,16 @@ class AppUpgradeChannelController extends Controller
         
         // 如果没有指定渠道ID，使用默认渠道
         if (!$channel_id) {
-            $defaultChannel = $channels->where('is_default', 1)->first();
+            $defaultChannel = $channels->where('is_default', AppUpgradeChannel::IS_DEFAULT)->first();
             if ($defaultChannel) {
                 $channel_id = $defaultChannel->id;
             } else {
                 $channel_id = $channels->first()->id;
             }
         }
+
+        //默认渠道排在最前面
+        $channels = $channels->sortBy('created_at');
         
         $content->row(function ($row) use ($channels, $channel_id) {
             // 左侧版本内容
@@ -72,7 +79,8 @@ class AppUpgradeChannelController extends Controller
             'channels' => $channels,
             'current_channel_id' => $current_channel_id,
             'max_channels' => self::MAX_CHANNELS,
-            'current_channel_count' => $channels->count()
+            'current_channel_count' => $channels->count(),
+            'channel_base_url' => admin_url('app/manager/'.$this->getAppKey().'/upgrade'),
         ])->render();
         
         return $html;
@@ -83,25 +91,78 @@ class AppUpgradeChannelController extends Controller
      */
     protected function buildChannelGrid(int $channel_id, string $channelName)
     {
+        $app_key = $this->getAppKey();
         $grid = new Grid(new AppUpgrade());
+        $grid->resource(admin_url('app/manager/'.$app_key.'/version/'.$channel_id.'/item'));
         $grid->model()->where('app_key', $this->getAppKey())->where('channel_id', $channel_id);
         $grid->model()->orderBy('created_at', 'desc');
+        $grid->tools(function ($tools) use ($app_key) {
+            $tools->append('<a href="/docs/1.x/apis/app_upgrade" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-book"></i> 查看接口文档</a>');
+        });
+        $grid->fixColumns(2, -2);
         
         $grid->header(function () use ($channelName) {
             return "<h3>{$channelName} - 版本列表</h3>";
         });
         
-        $grid->column('id', 'ID');
-        $grid->column('version_str', '版本号');
-        $grid->column('version_number', '版本码');
-        $grid->column('status', '状态')->using([0 => '未生效', 1 => '已生效']);
-        $grid->column('force_upgrade', '强制升级')->using([0 => '否', 1 => '是']);
-        $grid->column('created_at', '创建时间');
+        $grid->column('id', 'ID')->hide();
+        $grid->column('version_str', '版本号')->label();
+        $grid->column('version_num', '版本码');
+        $grid->column('platform_type', '平台')->icon([
+            1 => 'android',
+            2 => 'apple',
+            99 => 'question',
+        ], 'question');
         
-        // 添加创建版本按钮
-        $grid->tools(function ($tools) use ($channel_id) {
-            $tools->append('<a href="'.admin_url('app-upgrades/create?channel_id='.$channel_id).'" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> 添加版本</a>');
+        $grid->column('min_version_num', '最小版本值')->help('最小版本值，低于此版本将强制升级');
+        $grid->column('force_upgrade', '强制升级')->bool([
+            0 => false,
+            1 => true,
+        ]);
+        $grid->column('enabled', '升级开关')
+            ->zhySwitch([
+                'on' => ['value' => 1, 'text' => '开启', 'color' => 'success'],
+                'off' => ['value' => 0, 'text' => '关闭', 'color' => 'primary'],
+            ], admin_url('app/manager/'.$app_key.'/version/'.$channel_id.'/item'))
+            ->help('是否开启升级');
+
+        $grid->column('gray_percent', '灰度升级')->display(function ($gray_percent, $column)  {
+                /** @var AppUpgrade $this */
+                if($this->gray_upgrade == 1) {
+                    return '<span class="label label-success">'.$this->gray_percent.'%</span>';
+                } else {
+                    return '<span class="label label-default">关闭</span>';
+                }
+            })
+            ->help('是否开启灰度升级');
+        $grid->column('upgrade_from', '升级方式')->display(function ($upgrade_from) {
+            return AppUpgrade::$upgradeFromMap[$upgrade_from];
         });
+        $grid->column('package_download_url', '安装包下载地址')->downloadable()->help('安装包下载地址，用于下载安装包');
+        $grid->column('package_md5', '安装包MD5')->help('安装包MD5，用于验证安装包完整性');
+        $grid->column('package_size', '安装包大小');
+        $grid->column('upgrade_note', '升级说明')
+            ->display(function ($value) {
+                // 手动限制显示长度
+                return \Illuminate\Support\Str::limit($value, 30);
+            })
+            ->modal('升级说明', function ($model) {
+                return nl2br($model->upgrade_note);
+            })
+            ->help('升级说明，用于提示用户升级');
+        $grid->column('updated_at', '更新时间');
+        $grid->column('created_at', '创建时间');
+
+        $grid->actions(function ($actions) use ($app_key) {
+            // 添加复制按钮，直接链接到创建页面并带上源ID参数
+            $actions->prepend('<a href="' . admin_url('/app/manager/'.$app_key.'/version/'.$actions->row->channel_id.'/item/create?copy_from=' . $actions->row->id) . '" title="复制配置"><i class="fa fa-copy"></i></a>');
+        });
+    
+        $grid->disableBatchActions();
+        $grid->disableExport();
+        $grid->disableFilter();
+        $grid->disableRowSelector();
+        $grid->disableColumnSelector();
         
         return $grid->render();
     }
@@ -111,10 +172,21 @@ class AppUpgradeChannelController extends Controller
      */
     public function store()
     {
-        $data = request()->validate([
-            'channel_name' => 'required|string|max:50',
+        $validator = Validator::make(request()->all(),[
+            'channel_name' => 'required|string|max:30|regex:/^[a-zA-Z0-9_]+$/'
+        ], [
+            'channel_name.regex' => '渠道名称只能包含字母、数字和下划线'
         ]);
-        
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false, 
+                'message' => $validator->errors()->first()
+            ]);
+        }
+
+        $data = $validator->validated();
+
         // 检查渠道数量限制
         $channelCount = AppUpgradeChannel::where('app_key', $this->getAppKey())->count();
         if ($channelCount >= self::MAX_CHANNELS) {
@@ -123,12 +195,19 @@ class AppUpgradeChannelController extends Controller
                 'message' => '最多只能添加' . self::MAX_CHANNELS . '个渠道'
             ]);
         }
+
+        // 检查渠道名称是否已存在
+        if (AppUpgradeChannel::where('app_key', $this->getAppKey())->where('channel_name', $data['channel_name'])->exists()) {
+            return response()->json([
+                'status' => false, 
+                'message' => '渠道名称已存在'
+            ]);
+        }
         
         // 从请求中获取 app_key
         $data['app_key'] = $this->getAppKey();
-        
+        $data['tenant_id'] = SaaSAdmin::user()->id;
         // 自动生成渠道代码
-        $data['channel_code'] = 'channel_' . time() . rand(100, 999);
         $data['is_default'] = 0; // 非默认渠道
         
         // 创建新渠道
@@ -144,7 +223,7 @@ class AppUpgradeChannelController extends Controller
     /**
      * 删除渠道
      */
-    public function destroy($id)
+    public function destroy($appKey, $id)
     {
         $channel = AppUpgradeChannel::find($id);
         

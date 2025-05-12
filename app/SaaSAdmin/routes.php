@@ -32,7 +32,12 @@ Route::group([
     $router->group(['prefix' => 'app/manager/{app_key}'], function($router) {
         $router->resource('config', 'Manager\AppConfigController')->names('app.manager.config');
         $router->get('upgrade', 'Manager\AppUpgradeChannelController@index')->name('app.manager.upgrade');
-        // $router->resource('upgrade', 'Manager\AppUpgradeController')->names('app.manager.upgrade');
+        $router->post('upgrade', 'Manager\AppUpgradeChannelController@store')->name('app.manager.upgrade.store');
+        $router->delete('upgrade/{id}', 'Manager\AppUpgradeChannelController@destroy')->name('app.manager.upgrade.destroy');
+
+        $router->group(['prefix' => 'version/{channel_id}'], function($router) {
+            $router->resource('item', 'Manager\AppUpgradeController')->names('app.manager.version');
+        });
 
         $router->resource('user/list', 'Manager\UserController')->names('app.manager.user');
         $router->get('user/config', 'Manager\UserConfigController@index')->name('app.manager.user.config');

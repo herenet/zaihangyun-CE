@@ -9,17 +9,15 @@
         <ul class="nav nav-pills nav-stacked channel-list">
             @foreach($channels as $channel)
             <li class="{{ $current_channel_id == $channel->id ? 'active' : '' }}">
-                <a href="{{ admin_url('app-upgrade-channels?channel_id='.$channel->id) }}">
+                <a href="{{ $channel_base_url }}?channel_id={{ $channel->id }}">
                     @if($channel->is_default == 1)
                         <i class="fa fa-star text-yellow"></i> {{ $channel->channel_name }}
                     @else
                         <i class="fa fa-tag text-blue"></i> {{ $channel->channel_name }}
                         <span class="pull-right delete-channel" data-id="{{ $channel->id }}">
-                            @if(App\Models\AppUpgrade::where('channel_id', $channel->id)->exists())
-                                <i class="fa fa-check text-green" title="已有版本"></i>
-                            @else
+                           
                                 <i class="fa fa-times text-red" title="删除渠道"></i>
-                            @endif
+                           
                         </span>
                     @endif
                 </a>
@@ -46,6 +44,7 @@
             @endif
         </div>
     </div>
+    <input type="hidden" id="channel_base_url" value="{{ $channel_base_url }}">
     <input type="hidden" id="current_channel_id" value="{{ $current_channel_id }}">
     <input type="hidden" id="max_channels" value="{{ $max_channels }}"> 
     <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
@@ -73,7 +72,7 @@
 <script>
 (function() {
     var token = $('#csrf_token').val();
-    var baseUrl = '';
+    var baseUrl = $('#channel_base_url').val();
     var max_channels = $('#max_channels').val();
     var current_channel_id = $('#current_channel_id').val();
     var confirm_text = '渠道删除后，该渠道下所有版本数据将同步删除且无法恢复，请谨慎操作';
@@ -90,7 +89,7 @@
         }
         
         $.ajax({
-            url: baseUrl + 'app-upgrade-channels',
+            url: baseUrl,
             type: 'POST',
             data: {
                 channel_name: channelName,
@@ -103,7 +102,7 @@
                     // 添加新渠道到列表
                     var newChannel = response.channel;
                     var newChannelHtml = '<li>' +
-                        '<a href="' + baseUrl + 'app-upgrade-channels?channel_id=' + newChannel.id + '">' +
+                        '<a href="' + baseUrl + '?channel_id=' + newChannel.id + '">' +
                         '<i class="fa fa-tag text-blue"></i> ' + newChannel.channel_name +
                         '<span class="pull-right delete-channel" data-id="' + newChannel.id + '">' +
                         '<i class="fa fa-times text-red" title="删除渠道"></i>' +
@@ -128,7 +127,7 @@
                     
                     // 刷新页面以获取新渠道
                     setTimeout(function() {
-                        window.location.href = baseUrl + 'app-upgrade-channels?channel_id=' + newChannel.id;
+                        window.location.href = baseUrl + '?channel_id=' + newChannel.id;
                     }, 1000);
                 } else {
                     toastr.error(response.message);
@@ -166,7 +165,7 @@
         }).then(function(result) {
             if (result.value) {
                 $.ajax({
-                    url: baseUrl + 'app-upgrade-channels/' + channelId,
+                    url: baseUrl + '/' + channelId,
                     type: 'DELETE',
                     data: {
                         _token: token
@@ -189,7 +188,7 @@
                             
                             // 如果当前渠道被删除，跳转到默认渠道
                             if (current_channel_id == channelId) {
-                                window.location.href = baseUrl + 'app-upgrade-channels';
+                                window.location.href = baseUrl;
                             }
                         } else {
                             toastr.error(response.message);
