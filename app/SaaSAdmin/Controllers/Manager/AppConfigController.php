@@ -32,6 +32,9 @@ class AppConfigController extends AdminController
         $grid = new Grid(new AppConfig());
         $grid->model()->where('tenant_id', SaaSAdmin::user()->id)->where('app_key', $app_key);
         $grid->model()->orderBy('created_at', 'desc');
+        $grid->tools(function ($tools) use ($app_key) {
+            $tools->append('<a href="/docs/1.x/apis/app_config" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-book"></i> 查看接口文档</a>');
+        });
         $grid->column('id', 'ID');
         $grid->column('title', '配置名称');
         $grid->column('name', '配置标识符')->help('配置标识符，接口调用时使用');

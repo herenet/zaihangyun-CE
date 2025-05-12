@@ -31,6 +31,8 @@ Route::group([
     $router->get('app/manager/{app_key}', 'Manager\IndexController@index')->name('app.manager.index');
     $router->group(['prefix' => 'app/manager/{app_key}'], function($router) {
         $router->resource('config', 'Manager\AppConfigController')->names('app.manager.config');
+        $router->get('upgrade', 'Manager\AppUpgradeChannelController@index')->name('app.manager.upgrade');
+        // $router->resource('upgrade', 'Manager\AppUpgradeController')->names('app.manager.upgrade');
 
         $router->resource('user/list', 'Manager\UserController')->names('app.manager.user');
         $router->get('user/config', 'Manager\UserConfigController@index')->name('app.manager.user.config');

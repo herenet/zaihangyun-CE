@@ -121,6 +121,78 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\AppUpgrade
+ *
+ * @property int $id
+ * @property int $tenant_id
+ * @property string $app_key
+ * @property int $channel_id
+ * @property int $platform_type 1.android, 2.ios，99.others
+ * @property string $version_str
+ * @property int $version_num
+ * @property int|null $min_version_num 最小支持版本
+ * @property int $force_upgrade
+ * @property int $status 2为未生效, 1为生效中
+ * @property int|null $gray_upgrade
+ * @property int $gray_percent 灰度比例
+ * @property int $upgrade_from 1应用商店, 2为官网下载
+ * @property string|null $package_download_url
+ * @property string|null $package_md5
+ * @property int|null $package_size
+ * @property string|null $upgrade_note
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereChannelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereForceUpgrade($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereGrayPercent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereGrayUpgrade($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereMinVersionNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade wherePackageDownloadUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade wherePackageMd5($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade wherePackageSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade wherePlatformType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereUpgradeFrom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereUpgradeNote($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereVersionNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereVersionStr($value)
+ */
+	class AppUpgrade extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\AppUpgradeChannel
+ *
+ * @property int $id
+ * @property int $tenant_id
+ * @property string $app_key
+ * @property string $channel_name
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel whereChannelName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppUpgradeChannel whereUpdatedAt($value)
+ */
+	class AppUpgradeChannel extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Article
  *
  * @property string $id

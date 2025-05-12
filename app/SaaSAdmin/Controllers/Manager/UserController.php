@@ -31,6 +31,9 @@ class UserController extends AdminController
         $grid->model()->where('app_key', $this->getAppKey())->orderBy('created_at', 'desc');
         $grid->fixColumns(2, -2);
 
+        $grid->tools(function ($tools) {
+            $tools->append('<a href="/docs/1.x/apis/user_info" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-book"></i> 查看接口文档</a>');
+        });
         // 基础信息
         $grid->column('uid', 'UID');
         $grid->column('nickname', '昵称');
@@ -83,6 +86,7 @@ class UserController extends AdminController
         // 筛选器
         $grid->filter(function ($filter) {
             $filter->disableIdFilter();
+            $filter->equal('uid', 'UID');
             $filter->like('nickname', '昵称');
             $filter->like('mobile', '手机号');
             $filter->equal('reg_from', '注册来源')->select(User::$regFromMap);

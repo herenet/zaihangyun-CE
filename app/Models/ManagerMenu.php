@@ -27,9 +27,22 @@ class ManagerMenu
             [
                 'id' => 2,
                 'parent_id' => 0,
-                'title' => '应用配置',
+                'title' => '应用设置',
                 'icon' => 'fa-cog',
-                'uri' => 'app/manager/' . $appKey. '/config',
+                'children' => [
+                    [
+                        'id' => 21,
+                        'parent_id' => 2,
+                        'title' => '配置下发',
+                        'uri' => 'app/manager/' . $appKey. '/config',
+                    ],
+                    [
+                        'id' => 22,
+                        'parent_id' => 2,
+                        'title' => '版本管理',
+                        'uri' => 'app/manager/' . $appKey. '/upgrade',
+                    ],
+                ],
             ],
             [
                 'id' => 3,

@@ -28,6 +28,9 @@ class ArticleController extends AdminController
         $grid = new Grid(new Article());
         $grid->model()->where('tenant_id', SaaSAdmin::user()->id)->where('app_key', $this->getAppKey());
         $grid->model()->orderBy('order', 'asc')->orderBy('created_at', 'desc');
+        $grid->tools(function ($tools) {
+            $tools->append('<a href="/docs/1.x/apis/article_list" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-book"></i> 查看接口文档</a>');
+        });
         $grid->column('id', 'ID');
         $grid->column('title', '标题');
         $grid->order('排序')->orderable();
