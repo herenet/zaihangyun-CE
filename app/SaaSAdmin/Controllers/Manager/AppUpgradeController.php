@@ -139,13 +139,16 @@ class AppUpgradeController extends AdminController
             ->options([
                 1 => '开启',
                 0 => '关闭',
-            ])->required()->when(1, function ($form) {
+            ])->required()->when(1, function ($form) use ($sourceConfig) {
                 $form->number('gray_percent', '灰度百分比')
                     ->rules('integer|min:1|max:99')
                     ->default(30)
                     ->required()
+                    ->value($sourceConfig ? $sourceConfig->gray_percent : 30)
                     ->help('灰度百分比，1-99');
-            })->help('灰度升级，用于灰度升级');
+            })
+            ->value($sourceConfig ? $sourceConfig->gray_upgrade : 0)
+            ->help('灰度升级，用于灰度升级');
         $form->number('min_version_num', '最小版本值')
             ->rules('integer|min:1')
             ->help('最小版本值，低于此版本将强制升级')

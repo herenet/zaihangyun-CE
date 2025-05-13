@@ -115,9 +115,14 @@ class AppUpgradeChannelController extends Controller
         ], 'question');
         
         $grid->column('min_version_num', '最小版本值')->help('最小版本值，低于此版本将强制升级');
-        $grid->column('force_upgrade', '强制升级')->bool([
-            0 => false,
-            1 => true,
+        $grid->column('force_upgrade', '强制升级')
+        ->using([
+            0 => '否',
+            1 => '是',
+        ])
+        ->label([
+            0 => 'default',
+            1 => 'success',
         ]);
         $grid->column('enabled', '升级开关')
             ->zhySwitch([
