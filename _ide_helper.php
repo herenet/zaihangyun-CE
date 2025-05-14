@@ -16864,6 +16864,41 @@
      
 }
 
+    namespace Gai871013\IpLocation\Facades { 
+            /**
+     * 
+     *
+     */ 
+        class IpLocation {
+                    /**
+         * 根据所给 IP 地址或域名返回所在地区信息
+         *
+         * @access Public
+         * @param string $ip
+         * @return mixed 
+         * @throws InvalidArgumentException
+         * @static 
+         */ 
+        public static function getLocation($ip = '')
+        {
+                        /** @var \Gai871013\IpLocation\IpLocation $instance */
+                        return $instance->getLocation($ip);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_client_ip()
+        {
+                        /** @var \Gai871013\IpLocation\IpLocation $instance */
+                        return $instance->get_client_ip();
+        }
+         
+    }
+     
+}
+
     namespace Illuminate\Http { 
             /**
      * 
@@ -20441,6 +20476,7 @@ namespace  {
             class LaRecipe extends \BinaryTorch\LaRecipe\LaRecipe {}
             class Admin extends \Encore\Admin\Facades\Admin {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
+            class IpLocation extends \Gai871013\IpLocation\Facades\IpLocation {}
      
 }
 

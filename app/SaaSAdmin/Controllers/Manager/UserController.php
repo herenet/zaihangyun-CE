@@ -11,6 +11,7 @@ use App\SaaSAdmin\AppKey;
 use Encore\Admin\Layout\Content;
 use App\SaaSAdmin\Facades\SaaSAdmin;
 use Illuminate\Support\Facades\Cache;
+use Gai871013\IpLocation\Facades\IpLocation;
 use Encore\Admin\Controllers\AdminController;
 
 class UserController extends AdminController
@@ -75,7 +76,9 @@ class UserController extends AdminController
         // 注册信息
         $grid->column('reg_from', '注册来源')->using(User::$regFromMap);
         $grid->column('channel', '渠道')->badge('blue');
-        $grid->column('reg_ip', '注册IP');
+        $grid->column('reg_ip', '注册IP')->display(function($item){
+            return "<i class='fa fa-map-marker'></i> ".IpLocation::getLocation($item)['country']." - ".$item;
+        });;
 
         // 其他信息
         $grid->column('version_number', 'APP版本');
