@@ -95,7 +95,7 @@ class AppUpgradeController extends AdminController
                 'on' => ['value' => 1, 'text' => '开启', 'color' => 'success'],
                 'off' => ['value' => 0, 'text' => '关闭', 'color' => 'primary'],
             ])
-            ->help('升级开关，用于控制是否开启升级')
+            ->help('升级开关，用于控制是否开启升级，一个渠道只允许开启一个版本的升级')
             ->value($sourceConfig ? $sourceConfig->enabled : 1);
 
         $form->select('platform_type', '平台')
@@ -256,7 +256,7 @@ class AppUpgradeController extends AdminController
         $show->field('upgrade_from', '升级方式')->using(AppUpgrade::$upgradeFromMap);
         $show->field('package_download_url', '安装包下载地址');
         $show->field('package_md5', '安装包MD5');
-        $show->field('package_size', '安装包大小')->filesize();
+        $show->field('package_size', '安装包大小');
         $show->field('upgrade_note', '升级说明')->as(function ($value) {
             return "<pre>{$value}</pre>";
         })->unescape();

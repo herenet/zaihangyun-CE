@@ -74,7 +74,7 @@ class UserController extends AdminController
 
         // 注册信息
         $grid->column('reg_from', '注册来源')->using(User::$regFromMap);
-        $grid->column('channel', '渠道');
+        $grid->column('channel', '渠道')->badge();
         $grid->column('reg_ip', '注册IP');
 
         // 其他信息

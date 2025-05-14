@@ -129,7 +129,7 @@ class AppUpgradeChannelController extends Controller
                 'on' => ['value' => 1, 'text' => '开启', 'color' => 'success'],
                 'off' => ['value' => 0, 'text' => '关闭', 'color' => 'primary'],
             ], admin_url('app/manager/'.$app_key.'/version/'.$channel_id.'/item'))
-            ->help('是否开启升级');
+            ->help('是否开启升级，一个渠道只允许开启一个版本的升级');
 
         $grid->column('gray_percent', '灰度升级')->display(function ($gray_percent, $column)  {
                 /** @var AppUpgrade $this */

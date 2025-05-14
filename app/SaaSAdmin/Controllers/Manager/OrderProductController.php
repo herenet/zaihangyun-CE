@@ -46,7 +46,10 @@ class OrderProductController extends AdminController
         $grid->column('sale_price', '售价')->display(function ($value) {
             return '￥'.number_format($value / 100, 2);
         });
-        $grid->column('sale_status', '销售状态')->using(Product::$saleStatusMap);
+        $grid->column('sale_status', '销售状态')->switch([
+            'on' => ['value' => 1, 'text' => '在售', 'color' => 'success'],
+            'off' => ['value' => 2, 'text' => '待售', 'color' => 'primary'],
+        ]);
         $grid->column('platform_type', '适用平台')->using(Product::$platformTypeMap);
         $grid->order('排序')->orderable();
         $grid->column('ext_data', '扩展数据')->limit(30);
@@ -124,11 +127,6 @@ class OrderProductController extends AdminController
             ->config('allowClear', false)
             ->config('minimumResultsForSearch', 'Infinity')
             ->when(1, function (Form $form) {
-                // Admin::script('
-                //     $(document).ready(function() {
-                //         $("input[name=function_value]").val(30);
-                //     });
-                // ');
                 if($form->isEditing()) {
                     $form->text('function_value', 'VIP时长')
                     ->rules(['required', 'integer', 'min:1', 'max:9999'])
