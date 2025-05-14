@@ -48,7 +48,7 @@ class AppUpgradeController extends AdminController
         if(!$config) {
             return response()->json(['status' => false, 'message' => '配置不存在']);
         }
-        $this->clearAPICache($config->name, $config->app_key);
+        $this->clearAPICache($channel_id, $config->platform_type);
         return parent::update($id);
     }
 
@@ -61,7 +61,7 @@ class AppUpgradeController extends AdminController
         if(!$config) {
             return response()->json(['status' => false, 'message' => '配置不存在']);
         }
-        $this->clearAPICache($config->name, $config->app_key);
+        $this->clearAPICache($channel_id, $config->platform_type);
         return parent::destroy($id);
     }
 
@@ -95,7 +95,7 @@ class AppUpgradeController extends AdminController
                 'on' => ['value' => 1, 'text' => '开启', 'color' => 'success'],
                 'off' => ['value' => 0, 'text' => '关闭', 'color' => 'primary'],
             ])
-            ->help('升级开关，用于控制是否开启升级，一个渠道只允许开启一个版本的升级')
+            ->help('升级开关，用于控制是否开启升级，同一渠道同一平台只允许开启一个版本的升级')
             ->value($sourceConfig ? $sourceConfig->enabled : 1);
 
         $form->select('platform_type', '平台')
@@ -151,7 +151,7 @@ class AppUpgradeController extends AdminController
             ->help('灰度升级，用于灰度升级');
         $form->number('min_version_num', '最小版本值')
             ->rules('integer|min:1')
-            ->help('最小版本值，低于此版本将强制升级')
+            ->help('最小版本值，小于或等于此版本不管是否开启强制升级都将强制升级，但灰度升级未命中时不会强制升级')
             ->value($sourceConfig ? $sourceConfig->min_version_num : 1);
         $form->switch('force_upgrade', '强制升级')
             ->states([
@@ -180,6 +180,7 @@ class AppUpgradeController extends AdminController
                 AppUpgrade::where('tenant_id', $tenant_id)
                     ->where('app_key', $app_key)
                     ->where('channel_id', $channel_id)
+                    ->where('platform_type', $form->model()->platform_type)
                     ->update(['enabled' => 0]);
             }
         });
@@ -273,9 +274,9 @@ class AppUpgradeController extends AdminController
         return $show;
     }
 
-    protected function clearAPICache($config_name, $app_key)
+    protected function clearAPICache($channelId, $platformType)
     {
-        // $cache_key = 'app_config||'.$config_name.'|'.$app_key;
-        // Cache::store('api_cache')->forget($cache_key);
+        $cache_key = 'app_upgrade|'.$channelId.'|'.$platformType;
+        Cache::store('api_cache')->forget($cache_key);
     }
 }

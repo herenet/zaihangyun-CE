@@ -138,7 +138,7 @@ namespace App\Models{
  * @property int $upgrade_from 1应用商店, 2为官网下载
  * @property string|null $package_download_url
  * @property string|null $package_md5
- * @property int|null $package_size
+ * @property string|null $package_size
  * @property string|null $upgrade_note
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon $created_at

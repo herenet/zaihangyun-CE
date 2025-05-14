@@ -40,8 +40,9 @@ class AppController extends Controller
         $grid = new Grid(new App());
         
         $grid->model()->where('tenant_id', SaaSAdmin::user()->id);
+        $grid->model()->orderBy('created_at', 'desc');
         $grid->column('platform_type', '平台')->display(function ($value) {
-            return $value == 1 ? '<i class="fa fa-android"></i>' : '<i class="fa fa-apple"></i>';
+            return $value == 1 ? '<i class="fa fa-android"></i>' : ($value == 2 ? '<i class="fa fa-apple"></i>' : '<i class="fa fa-circle-o"></i>');
         });
         $grid->column('name', '应用名称')->display(function ($value) {
             /** @var \App\Models\App $this */
@@ -79,7 +80,11 @@ class AppController extends Controller
         $form = new Form(new App());
         $form->setTitle('应用信息');
         $form->text('name', '应用名称');
-        $form->radio('platform_type', '平台')->options([1 => 'Android', 2 => 'iPhone'])->default(1);
+        $form->radio('platform_type', '平台')->options([
+            1 => 'Android', 
+            2 => 'iOS',
+            3 => 'HarmonyOS',
+        ])->default(1);
 
         $form->tools(function (Form\Tools $tools) {
             $tools->disableList();
@@ -100,7 +105,7 @@ class AppController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:32',
-            'platform_type' => 'required|integer|in:1,2',
+            'platform_type' => 'required|integer|in:1,2,3',
         ], [
             'name.required' => '应用名称不能为空',
             'name.string' => '应用名称必须为字符串',

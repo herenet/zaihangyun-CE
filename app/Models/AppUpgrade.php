@@ -14,6 +14,7 @@ class AppUpgrade extends Model
     public static $platformMap = [
         1 => 'android',
         2 => 'ios',
+        3 => 'harmonyOS',
         99 => 'other',
     ];
 

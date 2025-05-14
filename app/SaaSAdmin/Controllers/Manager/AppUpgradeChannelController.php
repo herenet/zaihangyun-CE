@@ -111,6 +111,7 @@ class AppUpgradeChannelController extends Controller
         $grid->column('platform_type', '平台')->icon([
             1 => 'android',
             2 => 'apple',
+            3 => 'circle-o',
             99 => 'question',
         ], 'question');
         
@@ -129,7 +130,7 @@ class AppUpgradeChannelController extends Controller
                 'on' => ['value' => 1, 'text' => '开启', 'color' => 'success'],
                 'off' => ['value' => 0, 'text' => '关闭', 'color' => 'primary'],
             ], admin_url('app/manager/'.$app_key.'/version/'.$channel_id.'/item'))
-            ->help('是否开启升级，一个渠道只允许开启一个版本的升级');
+            ->help('是否开启升级，同一渠道同一平台只允许开启一个版本的升级');
 
         $grid->column('gray_percent', '灰度升级')->display(function ($gray_percent, $column)  {
                 /** @var AppUpgrade $this */
@@ -162,10 +163,21 @@ class AppUpgradeChannelController extends Controller
             // 添加复制按钮，直接链接到创建页面并带上源ID参数
             $actions->prepend('<a href="' . admin_url('/app/manager/'.$app_key.'/version/'.$actions->row->channel_id.'/item/create?copy_from=' . $actions->row->id) . '" title="复制配置"><i class="fa fa-copy"></i></a>');
         });
+
+        $grid->filter(function ($filter) {
+            $filter->equal('platform_type', '平台')->select(AppUpgrade::$platformMap);
+            $filter->equal('enabled', '升级开关')->select([
+                0 => '关闭',
+                1 => '开启',
+            ]);
+            $filter->scope('Android')->where('platform_type', 1);
+            $filter->scope('iOS')->where('platform_type', 2);
+            $filter->scope('HarmonyOS')->where('platform_type', 3);
+            $filter->scope('Others')->where('platform_type', 99);
+        });
     
         $grid->disableBatchActions();
         $grid->disableExport();
-        $grid->disableFilter();
         $grid->disableRowSelector();
         $grid->disableColumnSelector();
         
