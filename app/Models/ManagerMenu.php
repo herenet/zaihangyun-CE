@@ -99,15 +99,21 @@ class ManagerMenu
                     [
                         'id' => 51,
                         'parent_id' => 5,
-                        'title' => '帮助文档列表',
-                        'uri' => 'app/manager/' . $appKey. '/help/list',
+                        'title' => '文档分类',
+                        'uri' => 'app/manager/' . $appKey. '/article/category',
                     ],
-                    // [
-                    //     'id' => 42,
-                    //     'parent_id' => 4,
-                    //     'title' => '协议文档列表',
-                    //     'uri' => 'app/manager/' . $appKey. '/agreement/list',
-                    // ],
+                    [
+                        'id' => 52,
+                        'parent_id' => 5,
+                        'title' => '文档列表',
+                        'uri' => 'app/manager/' . $appKey. '/article/list',
+                    ],
+                    [
+                        'id' => 53,
+                        'parent_id' => 5,
+                        'title' => '接口配置',
+                        'uri' => 'app/manager/' . $appKey. '/article/config',
+                    ],
                 ],
             ],
             [

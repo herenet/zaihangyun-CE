@@ -43,10 +43,22 @@ class Helpers
         return $id;
     }
 
-    //生成文章ID，16位数字
+    //生成文章ID，9位数字
     public static function generateArticleId()
     {
-        return hexdec(substr(md5(Str::uuid()), 0, 9));
+        // 获取当前微秒时间戳，乘以1000并取整
+        $timestamp = (int)(microtime(true) * 1000);
+        
+        // 取时间戳的后7位
+        $timestampPart = substr($timestamp, -7);
+        
+        // 生成2位随机数(10-99)作为首位
+        $firstDigit = mt_rand(10, 99);
+        
+        // 组合成8位ID
+        $id = $firstDigit . $timestampPart;
+        
+        return $id;
     }
 
     /**

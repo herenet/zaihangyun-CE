@@ -8,6 +8,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use App\Models\Article;
 use App\SaaSAdmin\AppKey;
+use App\Models\ArticleCategory;
 use Encore\Admin\Layout\Content;
 use App\Models\ArticleContentShow;
 use App\SaaSAdmin\Facades\SaaSAdmin;
@@ -40,11 +41,16 @@ class ArticleController extends AdminController
         })->copyable();
         $grid->column('created_at', '创建时间');
         $grid->column('updated_at', '更新时间');
+
+        $grid->filter(function ($filter) {
+            $filter->equal('category_id', '分类')->select(ArticleCategory::where('app_key', $this->getAppKey())->pluck('name', 'id'))
+            ->config('allowClear', false)
+            ->config('minimumResultsForSearch', 'Infinity');
+        });
         
         $grid->disableExport();
         $grid->disableRowSelector();
         $grid->disableColumnSelector();
-        $grid->disableFilter();
 
         return $grid;
     }
@@ -63,17 +69,30 @@ class ArticleController extends AdminController
 
     public function form()
     {
+        $app_key = $this->getAppKey();
         $form = new Form(new Article());
+
+        $form->select('category_id', '分类')
+            ->options(ArticleCategory::where('app_key', $app_key)->pluck('name', 'id'))
+            ->config('allowClear', false)
+            ->config('minimumResultsForSearch', 'Infinity')
+            ->required()
+            ->rules('required');
         $form->text('title', '标题')->rules(['required', 'string', 'max:32'])->help('标题最多32个字符以内');
         
         // Editor.md 会提交 content 字段和隐藏的 content-markdown-doc 字段
-        $form->myEditorMd('content', '内容')->rules(['required', 'string', 'max:1000'])->help('内容最多1000个字符以内');
+        $form->myEditorMd('content', '内容')->rules(['required', 'string', 'max:10300'],['max' => '内容最多10000个字符以内'])->help('内容最多10000个字符以内');
         
-        $form->saving(function (Form $form) {
+        $form->saving(function (Form $form) use ($app_key) {
+            $html_content = request()->input('content_html');
+            if(empty($html_content)) {
+                admin_error('内容不能为空');
+                return back();
+            }
             if ($form->isCreating()) {
                 $form->model()->id = Helpers::generateArticleId();
                 $form->model()->tenant_id = SaaSAdmin::user()->id;
-                $form->model()->app_key = $this->getAppKey();
+                $form->model()->app_key = $app_key;
             }
         });
         

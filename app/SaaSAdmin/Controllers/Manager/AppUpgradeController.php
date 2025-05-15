@@ -86,6 +86,8 @@ class AppUpgradeController extends AdminController
         $form->select('channel_id', '渠道')
             ->options(AppUpgradeChannel::where('app_key', $app_key)->where('tenant_id', $tenant_id)->pluck('channel_name', 'id'))
             ->required()
+            ->config('allowClear', false)
+            ->config('minimumResultsForSearch', 'Infinity')
             ->rules('required|integer|min:1')
             ->help('渠道，用于选择渠道')
             ->value($channel_id);
@@ -101,6 +103,8 @@ class AppUpgradeController extends AdminController
         $form->select('platform_type', '平台')
             ->options(AppUpgrade::$platformMap)
             ->required()
+            ->config('allowClear', false)
+            ->config('minimumResultsForSearch', 'Infinity')
             ->rules('in:'.implode(',', array_keys(AppUpgrade::$platformMap)))
             ->help('平台，用于选择平台')
             ->value($sourceConfig ? $sourceConfig->platform_type : 1);
@@ -118,6 +122,8 @@ class AppUpgradeController extends AdminController
         $form->select('upgrade_from', '升级方式')
             ->options(AppUpgrade::$upgradeFromMap)
             ->required()
+            ->config('allowClear', false)
+            ->config('minimumResultsForSearch', 'Infinity')
             ->rules('in:'.implode(',', array_keys(AppUpgrade::$upgradeFromMap)))
             ->when(2, function ($form) use ($sourceConfig) {
                 $form->text('package_download_url', '安装包下载地址')

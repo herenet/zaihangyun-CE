@@ -22,4 +22,10 @@ class Article extends Model implements Sortable
         'sort_when_creating' => true,
         // 'ignore_timestamps' => false,
     ];
+    
+
+    public function category()
+    {
+        return $this->belongsTo(ArticleCategory::class, 'category_id', 'id');
+    }
 }

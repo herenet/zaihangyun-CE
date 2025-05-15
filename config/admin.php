@@ -436,6 +436,7 @@ return [
                 'width' => '100%',
                 'height' => 600,
                 'emoji' => false,
+                'watch' => true,
                 'toolbarIcons' => [
                     'undo',
                     'redo',

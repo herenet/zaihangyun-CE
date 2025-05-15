@@ -54,11 +54,10 @@ Route::group([
         $router->post('order/config/alipay', 'Manager\OrderConfigController@saveAlipay')->name('app.manager.order.config.save.alipay');
         $router->post('order/config/alipay/check-interface', 'Manager\OrderConfigController@checkAlipayInterface')->name('app.manager.order.config.check.alipay.interface');
         
-        $router->resource('help/list', 'Manager\ArticleController')->names('app.manager.help');
-
-
-        $router->resource('agreement/list', 'Manager\AgreementController')->names('app.manager.agreement');
-
+        $router->resource('article/category', 'Manager\ArticleCategoryController')->names('app.manager.article.category');
+        $router->resource('article/list', 'Manager\ArticleController')->names('app.manager.article.list');
+        $router->get('article/config', 'Manager\ArticleConfigController@index')->name('app.manager.article.config');
+        $router->post('article/config/base', 'Manager\ArticleConfigController@saveBase')->name('app.manager.article.config.save.base');
 
         $router->get('api_tester', 'Manager\ZaihangyunApiTesterController@index')->name('api.tester');
         $router->post('api_tester/handle', 'Manager\ZaihangyunApiTesterController@handle')->name('api.tester.handle');

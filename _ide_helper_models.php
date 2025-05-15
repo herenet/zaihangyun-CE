@@ -201,26 +201,77 @@ namespace App\Models{
  * @property int $tenant_id
  * @property string $app_key
  * @property string $title
- * @property int|null $type
+ * @property int $category_id
  * @property string $content
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon $created_at
+ * @property-read \App\Models\ArticleCategory|null $category
  * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Article query()
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Article whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Article whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereUpdatedAt($value)
  */
 	class Article extends \Eloquent implements \Spatie\EloquentSortable\Sortable {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\ArticleCategory
+ *
+ * @property int $id
+ * @property string $app_key
+ * @property int $tenant_id
+ * @property string $name
+ * @property string|null $desc
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleCategory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleCategory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleCategory query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleCategory whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleCategory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleCategory whereDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleCategory whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleCategory whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleCategory whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleCategory whereUpdatedAt($value)
+ */
+	class ArticleCategory extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\ArticleConfig
+ *
+ * @property string $app_key
+ * @property int $tenant_id
+ * @property int $switch
+ * @property string $list_theme
+ * @property string $content_theme
+ * @property string|null $updated_at
+ * @property string $created_at
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleConfig newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleConfig newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleConfig query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleConfig whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleConfig whereContentTheme($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleConfig whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleConfig whereListTheme($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleConfig whereSwitch($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleConfig whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ArticleConfig whereUpdatedAt($value)
+ */
+	class ArticleConfig extends \Eloquent {}
 }
 
 namespace App\Models{

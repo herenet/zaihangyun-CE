@@ -23,6 +23,7 @@
     - [用户账户注销](/{{route}}/{{version}}/apis/user_cancel)
     - [获取文档列表](/{{route}}/{{version}}/apis/article_list)
     - [获取文档内容（Markdown源码）](/{{route}}/{{version}}/apis/article_source)
+    - [获取文档分类列表](/{{route}}/{{version}}/apis/article_cate_list)
     - [获取产品列表](/{{route}}/{{version}}/apis/product_list)
     - [创建订单](/{{route}}/{{version}}/apis/create_order)
     - [我的订单列表](/{{route}}/{{version}}/apis/order_list)

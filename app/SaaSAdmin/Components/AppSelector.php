@@ -19,6 +19,7 @@ class AppSelector implements Renderable
         $user = SaaSAdmin::user();
         if($user){
             $this->apps = \App\Models\App::where('tenant_id', $user->id)
+                ->orderBy('created_at', 'desc')
                 ->get()
                 ->pluck('name', 'app_key')
                 ->toArray();

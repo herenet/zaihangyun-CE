@@ -18,3 +18,5 @@ Route::get('/', function () {
 });
 
 Route::get('/article/{app_key}/{id}', [ShowController::class, 'show'])->name('article.show');
+Route::get('/article/category/{app_key}/{id}', [ShowController::class, 'category'])->name('article.category.show');
+Route::get('/article/category/{app_key}/{id}/load', [ShowController::class, 'category'])->name('article.category.load');
