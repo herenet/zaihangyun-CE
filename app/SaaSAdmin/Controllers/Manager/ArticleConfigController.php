@@ -37,14 +37,14 @@ class ArticleConfigController extends Controller
 
         $validator = Validator::make($request->all(), [
             'switch' => 'required|in:0,1',
-            'list_theme' => 'required|in:'.implode(',', array_keys(ArticleConfig::$listTheme)),
-            'content_theme' => 'required|in:'.implode(',', array_keys(ArticleConfig::$contentTheme)),
+            'list_theme' => 'required_if:switch,1|in:'.implode(',', array_keys(ArticleConfig::$listTheme)),
+            'content_theme' => 'required_if:switch,1|in:'.implode(',', array_keys(ArticleConfig::$contentTheme)),
         ], [
             'switch.required' => '是否启用接口不能为空',
             'switch.in' => '是否启用接口必须为0或1',
-            'list_theme.required' => '列表主题不能为空',
+            'list_theme.required_if' => '列表主题不能为空',
             'list_theme.in' => '列表主题必须为'.implode(',', array_keys(ArticleConfig::$listTheme)),
-            'content_theme.required' => '内容主题不能为空',
+            'content_theme.required_if' => '内容主题不能为空',
             'content_theme.in' => '内容主题必须为'.implode(',', array_keys(ArticleConfig::$contentTheme)),
         ]);
 

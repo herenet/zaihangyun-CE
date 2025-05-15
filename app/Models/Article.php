@@ -28,4 +28,10 @@ class Article extends Model implements Sortable
     {
         return $this->belongsTo(ArticleCategory::class, 'category_id', 'id');
     }
+
+    public function buildSortQuery()
+    {
+        // 仅用同一个 app_key 的记录进行排序比较
+        return static::where('app_key', $this->app_key); 
+    }
 }

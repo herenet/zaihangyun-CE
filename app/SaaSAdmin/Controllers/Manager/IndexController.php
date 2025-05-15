@@ -8,7 +8,10 @@ use App\Models\Order;
 use App\SaaSAdmin\AppKey;
 use Illuminate\Support\Arr;
 use Encore\Admin\Layout\Row;
+use App\Models\ArticleConfig;
 use Encore\Admin\Layout\Content;
+use App\Models\LoginInterfaceConfig;
+use App\Models\OrderInterfaceConfig;
 use App\SaaSAdmin\Facades\SaaSAdmin;
 use Encore\Admin\Controllers\AdminController;
 
@@ -24,6 +27,7 @@ class IndexController extends AdminController
         ->row(view('manager.partials.stats', compact('stats')))
         ->row(function (Row $row) {
             $row->column(4, $this->appinfo());
+            $row->column(8, $this->moduleList());
         });
     }
 
@@ -39,6 +43,53 @@ class IndexController extends AdminController
 
 
         return view('saas.dashboard.environment', compact('envs'));
+    }
+
+    protected function moduleList()
+    {
+        $app_key = $this->getAppKey();
+        $tenant_id = SaaSAdmin::user()->id;
+        
+        $order_interface_config = app(OrderInterfaceConfig::class)->getConfig($tenant_id, $app_key);
+        $user_interface_config = app(LoginInterfaceConfig::class)->getConfig($tenant_id, $app_key);
+        $article_config = app(ArticleConfig::class)->getConfig($app_key, $tenant_id);
+        // 模块列表及其描述
+        $modules = [
+            [
+                'name' => '应用设置',
+                'description' => '包括APP版本管理、渠道管理、应用配置（自定义参数）等',
+                'enabled' => true, // 假设此模块已开通
+                'icon' => 'cog',
+                'color' => '#3c8dbc'
+            ],
+            [
+                'name' => '用户管理',
+                'description' => '包括用户管理、登录设置（微信、手机号、苹果）等',
+                'enabled' => isset($user_interface_config['switch']) ? ($user_interface_config['switch'] ? true : false) : false,
+                'url' => admin_url('app/manager/'.$this->getAppKey().'/user/config'),
+                'icon' => 'users',
+                'color' => '#00a65a'
+            ],
+            [
+                'name' => '订单管理',
+                'description' => '包括产品管理、订单管理、收退款管理、微信支付、支付宝支付、苹果支付功能等',
+                'enabled' => isset($order_interface_config['switch']) ? ($order_interface_config['switch'] ? true : false) : false,
+                'url' => admin_url('app/manager/'.$this->getAppKey().'/order/config'),
+                'icon' => 'shopping-cart',
+                'color' => '#f39c12'
+            ],
+            [
+                'name' => '文档管理',
+                'description' => '包括文档分类、文档内容管理、可用于应用的帮助文档，相关协议等',
+                'enabled' => isset($article_config['switch']) ? ($article_config['switch'] ? true : false) : false,
+                'url' => admin_url('app/manager/'.$this->getAppKey().'/article/config'),
+                'icon' => 'file-text',
+                'color' => '#605ca8'
+            ],
+            
+        ];
+        
+        return view('manager.partials.modules', compact('modules'));
     }
 
     protected function stats()

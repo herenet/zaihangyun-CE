@@ -26,6 +26,7 @@ class ArticleController extends AdminController
 
     protected function grid()
     {
+        $app_key = $this->getAppKey();
         $grid = new Grid(new Article());
         $grid->model()->where('tenant_id', SaaSAdmin::user()->id)->where('app_key', $this->getAppKey());
         $grid->model()->orderBy('order', 'asc')->orderBy('created_at', 'desc');
