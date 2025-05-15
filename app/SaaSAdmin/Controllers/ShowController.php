@@ -56,7 +56,7 @@ class ShowController extends Controller
             ->select('id', 'title')
             ->orderBy('order', 'asc')
             ->orderBy('created_at', 'desc')
-            ->paginate(3);
+            ->paginate(15);
         
         // 获取主题设置 - 优先使用 URL 参数，其次使用系统配置
         $theme = $request->query('theme') ?? $article_config['list_theme'];
