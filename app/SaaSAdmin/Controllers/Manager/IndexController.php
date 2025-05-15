@@ -81,7 +81,7 @@ class IndexController extends AdminController
             ],
             [
                 'title' => '总收入',
-                'value' => '¥' . number_format($total_income ?? 0, 2),
+                'value' => '¥' . number_format($total_income/100 ?? 0, 2),
                 'icon' => 'rmb',
                 'color' => '#dd4b39'
             ],
@@ -93,7 +93,7 @@ class IndexController extends AdminController
             ],
             [
                 'title' => '当日新增收入',
-                'value' => '¥' . number_format($income_increate ?? 0, 2),
+                'value' => '¥' . number_format($income_increate/100 ?? 0, 2),
                 'icon' => 'line-chart',
                 'color' => '#f39c12'
             ]
