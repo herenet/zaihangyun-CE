@@ -1,38 +1,3 @@
-@php
-$stats = [
-    [
-        'title' => '总用户数',
-        'value' => $total_users ?? 0,
-        'icon' => 'users',
-        'color' => '#0073b7'
-    ],
-    [
-        'title' => '新增用户',
-        'value' => $user_increate ?? 0,
-        'icon' => 'user-plus',
-        'color' => '#00c0ef'
-    ],
-    [
-        'title' => '总收入',
-        'value' => '¥' . number_format($total_income ?? 0, 2),
-        'icon' => 'rmb',
-        'color' => '#dd4b39'
-    ],
-    [
-        'title' => '新增订单',
-        'value' => $order_increate ?? 0,
-        'icon' => 'shopping-cart',
-        'color' => '#00a65a'
-    ],
-    [
-        'title' => '新增收入',
-        'value' => '¥' . number_format($income_increate ?? 0, 2),
-        'icon' => 'line-chart',
-        'color' => '#f39c12'
-    ]
-];
-@endphp
-
 <div class="stats-container">
     <div class="stats-grid">
         @foreach($stats as $stat)
