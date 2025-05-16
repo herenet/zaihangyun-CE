@@ -30,7 +30,7 @@ class FeedbackController extends AdminController
         $grid->fixColumns(2, -2);
 
         $grid->tools(function ($tools) {
-            $tools->append('<a href="/docs/1.x/apis/feedback_list" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-book"></i> 查看接口文档</a>');
+            $tools->append('<a href="/docs/1.x/apis/feedback" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-book"></i> 查看接口文档</a>');
         });
         $grid->column('id', 'ID')->hide();
         $grid->column('user.nickname', '昵称');

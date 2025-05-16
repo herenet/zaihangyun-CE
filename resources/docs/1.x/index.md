@@ -28,3 +28,6 @@
     - [创建订单](/{{route}}/{{version}}/apis/create_order)
     - [我的订单列表](/{{route}}/{{version}}/apis/order_list)
     - [获取订单详情](/{{route}}/{{version}}/apis/order_info)
+    - [提交意见反馈](/{{route}}/{{version}}/apis/feedback)
+    - [我的反馈列表](/{{route}}/{{version}}/apis/my_feedback)
+    - [获取所有反馈列表](/{{route}}/{{version}}/apis/feedback_list)
