@@ -28,7 +28,7 @@ class ArticleController extends AdminController
     {
         $app_key = $this->getAppKey();
         $grid = new Grid(new Article());
-        $grid->model()->where('tenant_id', SaaSAdmin::user()->id)->where('app_key', $this->getAppKey());
+        $grid->model()->where('tenant_id', SaaSAdmin::user()->id)->where('app_key', $app_key);
         $grid->model()->orderBy('order', 'asc')->orderBy('created_at', 'desc');
         $grid->tools(function ($tools) {
             $tools->append('<a href="/docs/1.x/apis/article_list" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-book"></i> 查看接口文档</a>');
@@ -136,6 +136,7 @@ class ArticleController extends AdminController
     {
         $id = request()->route('list');
         $show = new Show(Article::find($id));
+        $show->field('category.name', '分类');
         $show->field('title', '标题');
         $show->field('content', '内容')->editormd();
 

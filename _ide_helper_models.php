@@ -299,6 +299,38 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Feedback
+ *
+ * @property int $id
+ * @property string $app_key
+ * @property int $tenant_id
+ * @property int $uid
+ * @property int $type 1为bug反馈，2为意见
+ * @property string $content 内容
+ * @property string|null $contact
+ * @property string|null $reply
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereContact($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereReply($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereUpdatedAt($value)
+ */
+	class Feedback extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\LoginInterfaceConfig
  *
  * @property string $app_key
@@ -338,6 +370,27 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|LoginInterfaceConfig whereWechatPlatformConfigId($value)
  */
 	class LoginInterfaceConfig extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\MessageConfig
+ *
+ * @property string $app_key
+ * @property int $tenant_id
+ * @property int $switch
+ * @property string|null $updated_at
+ * @property string $created_at
+ * @method static \Illuminate\Database\Eloquent\Builder|MessageConfig newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MessageConfig newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MessageConfig query()
+ * @method static \Illuminate\Database\Eloquent\Builder|MessageConfig whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MessageConfig whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MessageConfig whereSwitch($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MessageConfig whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MessageConfig whereUpdatedAt($value)
+ */
+	class MessageConfig extends \Eloquent {}
 }
 
 namespace App\Models{

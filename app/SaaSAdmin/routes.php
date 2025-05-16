@@ -59,6 +59,13 @@ Route::group([
         $router->get('article/config', 'Manager\ArticleConfigController@index')->name('app.manager.article.config');
         $router->post('article/config/base', 'Manager\ArticleConfigController@saveBase')->name('app.manager.article.config.save.base');
 
+        $router->get('message/config', 'Manager\MessageConfigController@index')->name('app.manager.message.config');
+        $router->post('message/config/base', 'Manager\MessageConfigController@saveBase')->name('app.manager.message.config.save.base');
+        $router->resource('notice/list', 'Manager\NoticeController')->names('app.manager.notice.list');
+        $router->resource('feedback/list', 'Manager\FeedbackController')->names('app.manager.feedback.list');
+        $router->get('feedback/{id}/reply', 'Manager\FeedbackController@reply')->name('app.manager.feedback.reply');
+        $router->post('feedback/{id}/save-reply', 'Manager\FeedbackController@saveReply')->name('app.manager.feedback.save-reply');
+
         $router->get('api_tester', 'Manager\ZaihangyunApiTesterController@index')->name('api.tester');
         $router->post('api_tester/handle', 'Manager\ZaihangyunApiTesterController@handle')->name('api.tester.handle');
     });

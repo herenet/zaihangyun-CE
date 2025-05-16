@@ -92,7 +92,7 @@ class IndexController extends AdminController
                 'enabled' => isset($message_config['switch']) ? ($message_config['switch'] ? true : false) : false,
                 'url' => admin_url('app/manager/'.$this->getAppKey().'/message/config'),
                 'icon' => 'comments',
-                'color' => '#605ca8'
+                'color' => '#dd4b39'
             ],
         ];
         return view('manager.partials.modules', compact('modules'));
