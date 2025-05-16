@@ -1,0 +1,164 @@
+/* 基础样式优化 */
+input.content {
+    min-height: 0 !important;
+    padding: 6px 12px !important;
+    margin: 0 !important;
+    border-radius: 3px !important;
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out !important;
+}
+
+input.content:focus {
+    border-color: #3c8dbc !important;
+    box-shadow: 0 0 0 0.2rem rgba(60, 141, 188, 0.25) !important;
+}
+
+/* 盒子样式优化 */
+.box {
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    margin-bottom: 20px;
+}
+
+.box:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,.16), 0 3px 6px rgba(0,0,0,.23);
+}
+
+.box-header {
+    padding: 15px;
+    border-bottom: 1px solid #f4f4f4;
+}
+
+.box-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.box-body {
+    padding: 15px;
+}
+
+.box-footer {
+    border-top: 1px solid #f4f4f4;
+    padding: 15px;
+}
+
+/* 表单样式优化 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group > label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    border-radius: 3px;
+    box-shadow: none;
+    border: 1px solid #ddd;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #3c8dbc;
+    box-shadow: 0 0 0 0.2rem rgba(60, 141, 188, 0.25);
+}
+
+/* 按钮样式优化 */
+.btn {
+    border-radius: 3px;
+    font-weight: 500;
+    transition: all 0.3s;
+    padding: 6px 12px;
+    box-shadow: none;
+}
+
+.btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.btn-primary {
+    background-color: #3c8dbc;
+    border-color: #367fa9;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #367fa9;
+    border-color: #2e6da4;
+}
+
+/* 表格样式优化 */
+.table {
+    margin-bottom: 0;
+}
+
+.table > thead > tr > th {
+    border-bottom: 2px solid #f4f4f4;
+    font-weight: 500;
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 12px 8px;
+}
+
+.table > tbody > tr > td {
+    padding: 10px 8px;
+    vertical-align: middle;
+}
+
+.table-hover > tbody > tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* 导航栏样式优化 */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+/* 侧边栏样式优化 */
+.sidebar-menu {
+    margin-top: 10px;
+}
+
+.sidebar-menu > li > a {
+    padding: 12px 15px;
+    border-left: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.sidebar-menu > li.active > a, 
+.sidebar-menu > li > a:hover {
+    border-left-color: #3c8dbc;
+    background-color: #f5f5f5;
+}
+
+.sidebar-menu > li > a > i {
+    margin-right: 10px;
+}
+
+/* 卡片样式 */
+.info-box {
+    box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.24);
+    border-radius: 3px;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.info-box:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,.16), 0 3px 6px rgba(0,0,0,.23);
+}
+
+/* 返回顶部按钮 */
+#totop {
+    background-color: #3c8dbc;
+    color: #fff;
+    opacity: 0.7;
+    transition: all 0.3s;
+}
+
+#totop:hover {
+    opacity: 1;
+    box-shadow: 0 3px 6px rgba(0,0,0,.16), 0 3px 6px rgba(0,0,0,.23);
+}
