@@ -57,14 +57,14 @@ class IndexController extends AdminController
         $modules = [
             [
                 'name' => '应用设置',
-                'description' => '包括APP版本管理、渠道管理、应用配置（自定义参数）等',
+                'description' => '管理APP版本、渠道信息及应用参数，支持多渠道统一配置，所有配置项可通过API接入。',
                 'enabled' => true, // 假设此模块已开通
                 'icon' => 'cog',
                 'color' => '#3c8dbc'
             ],
             [
                 'name' => '用户管理',
-                'description' => '包括用户管理、登录设置（微信、手机号、苹果）等',
+                'description' => '支持用户信息管理及多种登录方式（微信、手机号、Apple登录），提供完整API接口。',
                 'enabled' => isset($user_interface_config['switch']) ? ($user_interface_config['switch'] ? true : false) : false,
                 'url' => admin_url('app/manager/'.$this->getAppKey().'/user/config'),
                 'icon' => 'users',
@@ -72,7 +72,7 @@ class IndexController extends AdminController
             ],
             [
                 'name' => '订单管理',
-                'description' => '包括产品管理、订单管理、收退款管理、微信支付、支付宝支付、苹果支付功能等',
+                'description' => '提供商品、订单及收退款管理，兼容微信、支付宝、Apple Pay等支付通道，支持API调用。',
                 'enabled' => isset($order_interface_config['switch']) ? ($order_interface_config['switch'] ? true : false) : false,
                 'url' => admin_url('app/manager/'.$this->getAppKey().'/order/config'),
                 'icon' => 'shopping-cart',
@@ -80,15 +80,21 @@ class IndexController extends AdminController
             ],
             [
                 'name' => '文档管理',
-                'description' => '包括文档分类、文档内容管理、可用于应用的帮助文档，相关协议等',
+                'description' => '管理帮助文档、协议内容等资料，支持文档分类与内容维护，便于接入端渲染与展示。',
                 'enabled' => isset($article_config['switch']) ? ($article_config['switch'] ? true : false) : false,
                 'url' => admin_url('app/manager/'.$this->getAppKey().'/article/config'),
                 'icon' => 'file-text',
                 'color' => '#605ca8'
             ],
-            
+            [
+                'name' => '用户互动',
+                'description' => '提供用户反馈记录和通知内容管理接口，便于收集意见和同步历史通知数据。',
+                'enabled' => isset($message_config['switch']) ? ($message_config['switch'] ? true : false) : false,
+                'url' => admin_url('app/manager/'.$this->getAppKey().'/message/config'),
+                'icon' => 'comments',
+                'color' => '#605ca8'
+            ],
         ];
-        
         return view('manager.partials.modules', compact('modules'));
     }
 

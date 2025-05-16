@@ -16,6 +16,7 @@ class App extends Model
 
     protected $fillable = [
         'app_key',
+        'app_secret',
         'name',
         'platform_type',
         'tenant_id',

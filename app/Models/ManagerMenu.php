@@ -119,12 +119,39 @@ class ManagerMenu
             [
                 'id' => 6,
                 'parent_id' => 0,
-                'title' => 'API接入工具',
-                'icon' => 'fa-wrench',
+                'title' => '用户互动',
+                'icon' => 'fa-comments',
                 'children' => [
                     [
                         'id' => 61,
                         'parent_id' => 6,
+                        'title' => '反馈消息列表',
+                        'uri' => 'app/manager/' . $appKey. '/feedback/list',
+                    ],
+                    [
+                        'id' => 62,
+                        'parent_id' => 6,
+                        'title' => '通知下发',
+                        'uri' => 'app/manager/' . $appKey. '/notice/list',
+                    ],
+                    [
+                        'id' => 63,
+                        'parent_id' => 6,
+                        'title' => '接口配置',
+                        'uri' => 'app/manager/' . $appKey. '/message/config',
+                    ],
+                    
+                ],
+            ],
+            [
+                'id' => 9,
+                'parent_id' => 0,
+                'title' => 'API接入工具',
+                'icon' => 'fa-wrench',
+                'children' => [
+                    [
+                        'id' => 91,
+                        'parent_id' => 9,
                         'title' => '接口调试',
                         'uri' => 'app/manager/' . $appKey. '/api_tester',
                     ],
