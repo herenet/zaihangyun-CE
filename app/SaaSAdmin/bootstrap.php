@@ -94,6 +94,7 @@ $(document).ready(function() {
 });
 JS);
 
+Admin::css("/vendor/laravel-admin/modern-admin.css");
 
 $appSelector = (new AppSelector())->render();
 view()->share('appSelector', $appSelector);
