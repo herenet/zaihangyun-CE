@@ -9,6 +9,7 @@ use App\SaaSAdmin\AppKey;
 use Illuminate\Support\Arr;
 use Encore\Admin\Layout\Row;
 use App\Models\ArticleConfig;
+use App\Models\MessageConfig;
 use Encore\Admin\Layout\Content;
 use App\Models\LoginInterfaceConfig;
 use App\Models\OrderInterfaceConfig;
@@ -53,6 +54,7 @@ class IndexController extends AdminController
         $order_interface_config = app(OrderInterfaceConfig::class)->getConfig($tenant_id, $app_key);
         $user_interface_config = app(LoginInterfaceConfig::class)->getConfig($tenant_id, $app_key);
         $article_config = app(ArticleConfig::class)->getConfig($app_key, $tenant_id);
+        $message_config = app(MessageConfig::class)->getConfig($app_key, $tenant_id);
         // 模块列表及其描述
         $modules = [
             [
