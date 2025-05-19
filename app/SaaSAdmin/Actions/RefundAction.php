@@ -250,6 +250,7 @@ SCRIPT;
         $notify_params = $order_interface_config['wechat_platform_config_id'].'-'.$order_interface_config['tenant_id'];
         $notify_params_encode = Helpers::simpleEncode($notify_params);
         $notify_url = url('/api/wechat/refund/notify/'.$notify_params_encode);
+        Log::channel('refund')->info('微信退款申请', ['notify_url' => $notify_url]);
 
         try {
             $wechatPayService = new WechatPayService(
