@@ -296,10 +296,10 @@ class OrderController extends AdminController
             ]);
         }
 
-        if($order->status != Order::STATUS_PAID || $order->refund_status != Order::STATUS_REFUNDING) {
+        if(!in_array($order->status, [Order::STATUS_PAID, Order::STATUS_REFUNDING])) {
             return response()->json([
                 'status' => false,
-                'message' => '订单未支付'
+                'message' => '订单状态错误'
             ]);
         }
         
