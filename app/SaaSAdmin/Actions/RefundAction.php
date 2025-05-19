@@ -96,7 +96,8 @@ class RefundAction extends RowAction
         // 验证码
         $this->text('verification_code', '验证码')
             ->required()
-            ->attribute(['style' => 'width: 150px; display: inline-block;']);
+            ->attribute(['style' => 'width: 150px; display: inline-block;'])
+            ->help('请输入管理员手机号收到的验证码');
         
         $this->hidden('verify_code_url')->default($this->getRefundSendCodeUrl($order->app_key));
 
@@ -191,9 +192,9 @@ SCRIPT;
             $cacheKey = str_replace(['{mobile}', '{order_id}'], [$mobile, $order->id], $cacheKey);
             $cachedCode = Cache::get($cacheKey);
             
-            // if (!$cachedCode || $cachedCode != $code) {
-            //     return $this->response()->error('验证码错误或已过期');
-            // }
+            if (!$cachedCode || $cachedCode != $code) {
+                return $this->response()->error('验证码错误或已过期');
+            }
             // 验证退款金额不超过支付金额
             $refundAmount = $request->get('refund_amount');
             if ($refundAmount * 100 > $order->payment_amount) {
