@@ -267,7 +267,7 @@ SCRIPT;
                 $order->oid, 
                 $refundReason
             );
-
+            Log::channel('refund')->info('微信退款申请', $result);
             if (isset($result['status']) && $result['status'] == 'SUCCESS') {
                 // 退款成功，更新订单状态
                 $order->refund_id = $result['refund_id'];
