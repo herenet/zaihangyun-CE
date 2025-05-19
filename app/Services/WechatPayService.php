@@ -56,7 +56,7 @@ class WechatPayService
         return $this->_getResponseContent($resp);
     }
 
-    public function applyRefund(string $transactionId, int $amount, int $refundAmount, string $refundId, string $refundReason)
+    public function applyRefund($transactionId, int $amount, int $refundAmount, $refundId, $refundReason)
     {
         $resp = $this->instance
             ->chain('/v3/refund/domestic/refunds')
