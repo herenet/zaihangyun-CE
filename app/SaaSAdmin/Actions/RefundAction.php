@@ -47,12 +47,19 @@ class RefundAction extends RowAction
             ->required()
             ->rules([
                 'required',
-                'regex:/^([0-9]{1,6})(\.[0-9]{1,2})?$/',
-                'not_in:null'
+                'numeric',
+                'min:0.01',
+                'max:9999999.99',
+                'regex:/^\d+(\.\d{1,2})?$/'
+            ],[
+                'required' => '请输入退款金额',
+                'numeric' => '退款金额必须为数字',
+                'min' => '退款金额不能小于0.01',
+                'max' => '退款金额不能大于9999999.99',
+                'regex' => '只允许输入两位小数'
             ])
             ->help('最大可退金额为 ¥' . number_format($order->payment_amount / 100, 2))
-            ->attribute(['style' => 'width: 150px;'])
-            ->prepend('¥');
+            ->attribute(['style' => 'width: 150px;']);
         
         // 退款类型
         if($product){
