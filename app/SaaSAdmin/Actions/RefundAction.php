@@ -260,7 +260,13 @@ SCRIPT;
                 $wechatPaymentConfig->mch_platform_cert_path, 
                 $notify_url
             );
-            $result = $wechatPayService->applyRefund($order->tid, $order->payment_amount, $refundAmount, $order->oid, $refundReason);
+            $result = $wechatPayService->applyRefund(
+                $order->tid, 
+                $order->payment_amount, 
+                $refundAmount, 
+                $order->oid, 
+                $refundReason
+            );
 
             if (isset($result['status']) && $result['status'] == 'SUCCESS') {
                 // 退款成功，更新订单状态
