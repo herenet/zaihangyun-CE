@@ -2,10 +2,12 @@
 
 namespace App\SaaSAdmin\Controllers\Manager;
 
+use App\Models\User;
 use App\Libs\Helpers;
 use App\Models\Order;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use App\Models\Product;
 use WeChatPay\Formatter;
 use App\SaaSAdmin\AppKey;
 use WeChatPay\Crypto\Rsa;
@@ -63,10 +65,12 @@ class OrderController extends AdminController
             return null;
         });
         $grid->column('status', '订单状态')->using(Order::$statusMap)->label([
-            1 => 'info',
-            2 => 'success',
-            3 => 'danger',
-            4 => 'warning',
+            Order::STATUS_PENDING => 'info',
+            Order::STATUS_PAID => 'success',
+            Order::STATUS_REFUNDING => 'danger',
+            Order::STATUS_REFUNDED => 'warning',
+            Order::STATUS_PAYMENT_FAILED => 'danger',
+            Order::STATUS_REFUND_FAILED => 'danger',
         ]);
         $grid->column('pay_channel', '支付方式')->using(Order::$payChannelMap)->prependIcon('pay');
         $grid->column('tid', '第三方订单号');
@@ -74,6 +78,15 @@ class OrderController extends AdminController
         $grid->column('bank_type', '银行类型');
         $grid->column('open_id', '三方用户标识')->limit(32);
         $grid->column('pay_time', '支付时间');
+        $grid->column('refund_id', '退款ID');
+        $grid->column('refund_type', '退款类型')->using(Order::$refundTypeMap);
+        $grid->column('refund_amount', '退款金额')->display(function ($value) {
+            return $value > 0 ? '￥'.number_format($value / 100, 2) : null;
+        });
+        $grid->column('refund_channel', '退款渠道')->using(Order::$refundChannelMap);
+        $grid->column('refund_send_time', '退款发起时间');
+        $grid->column('refund_time', '退款时间');
+        $grid->column('refund_reason', '退款原因')->limit(30);
         $grid->column('updated_at', '更新时间');
         $grid->column('created_at', '创建时间');
 
@@ -101,9 +114,9 @@ class OrderController extends AdminController
         $grid->actions(function ($actions) {
             $actions->disableEdit();
             $actions->disableDelete();
-            // if ($actions->row->status == Order::STATUS_PAID) {
+            if ($actions->row->status == Order::STATUS_PAID) {
                 $actions->add(new RefundAction());
-            // }
+            }
         });
 
         return $grid;
@@ -134,6 +147,15 @@ class OrderController extends AdminController
         $order->field('trade_type', '交易类型');
         $order->field('bank_type', '银行类型');
         $order->field('open_id', '三方用户标识');
+        $order->field('refund_id', '退款ID');
+        $order->field('refund_type', '退款类型')->using(Order::$refundTypeMap);
+        $order->field('refund_amount', '退款金额')->as(function ($value) {
+            return $value > 0 ? '￥'.number_format($value / 100, 2) : null;
+        });
+        $order->field('refund_channel', '退款渠道')->using(Order::$refundChannelMap);
+        $order->field('refund_send_time', '退款发起时间');
+        $order->field('refund_time', '退款时间');
+        $order->field('refund_reason', '退款原因');
         $order->field('pay_time', '支付时间');
         $order->field('updated_at', '更新时间');
         $order->field('created_at', '创建时间');
@@ -150,8 +172,6 @@ class OrderController extends AdminController
 
     public function wechatRefundCallback($encodeNotifyParams)
     {
-        $data = request()->all();
-
         try{
             $notify_params = Helpers::simpleDecode($encodeNotifyParams);
             list($wechat_payment_config_id, $tenant_id) = explode('-', $notify_params);
@@ -159,7 +179,6 @@ class OrderController extends AdminController
             Log::channel('refund')->info('微信退款回调', [
                 'tenant_id' => $tenant_id, 
                 'wechat_payment_config_id' => $wechat_payment_config_id, 
-                'data' => $data,
                 'headers' => request()->header(), 
                 'body' => request()->getContent()
             ]);
@@ -197,7 +216,6 @@ class OrderController extends AdminController
 
                 $in_body_resource = AesGcm::decrypt($ciphertext, $api_v3_key, $nonce, $aad);
                 $in_body_resource_array = (array) json_decode($in_body_resource, true);
-                Log::channel('refund')->info('微信退款回调', $in_body_resource_array);
 
                 $oid = $in_body_resource_array['out_trade_no'];
                 
@@ -206,12 +224,17 @@ class OrderController extends AdminController
                 if (!$order) {
                     throw new \Exception('订单不存在:'.$oid);
                 }
+
+                if($order->status == Order::STATUS_REFUNDED || $order->status == Order::STATUS_REFUNDING) {
+                    return response('SUCCESS');
+                }
                 
                 // 更新订单状态
                 if ($in_body_resource_array['refund_status'] == 'SUCCESS') {
                     $order->status = Order::STATUS_REFUNDED;
-                    $order->refund_time = now();
+                    $order->refund_time = $in_body_resource_array['success_time'] ?? null;
                     $order->save();
+                    $this->refundLogic($order);
                 } else {
                     $order->status = Order::STATUS_REFUND_FAILED;
                     $order->save();
@@ -266,12 +289,12 @@ class OrderController extends AdminController
             ]);
         }
 
-        // if($order->status != Order::STATUS_PAID) {
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => '订单未支付'
-        //     ]);
-        // }
+        if($order->status != Order::STATUS_PAID) {
+            return response()->json([
+                'status' => false,
+                'message' => '订单未支付'
+            ]);
+        }
         
         // 检查发送频率限制
         $throttleKey = 'refund_throttle_' . $mobile;
@@ -306,5 +329,41 @@ class OrderController extends AdminController
                 'message' => '发送失败，请稍后再试：' . $e->getMessage()
             ]);
         }
+    }
+
+    protected function refundLogic(Order $order)
+    {
+        if($order->refund_type == Order::REFUND_TYPE_ONLY) {
+            return;
+        }
+        $user = User::find($order->uid);
+        if(!$user) {
+            throw new \Exception('用户不存在');
+        }
+
+        $product = Product::find($order->product_id);
+        if(!$product) {
+            throw new \Exception('产品不存在');
+        }
+
+        switch($product->type) {
+            case Product::TYPE_VALUE_KEY_FOR_DURATION_MEMBER:
+                $vip_expired_at = null;
+                if($user->vip_expired_at) {
+                    $vip_time_left = strtotime($user->vip_expired_at) - $product->function_value * 24 * 60 * 60;
+                    if($vip_time_left > time()) {
+                        $vip_expired_at = date('Y-m-d H:i:s', $vip_time_left);
+                    }
+                }
+                $user->vip_expired_at = $vip_expired_at;
+                $user->save();
+                break;
+            case Product::TYPE_VALUE_KEY_FOR_FOREVER_MEMBER:
+                $user->is_forever_vip = 0;
+                $user->save();
+                break;
+            default:
+                throw new \Exception('产品类型错误');
+        }    
     }
 }

@@ -415,6 +415,7 @@ namespace App\Models{
  * @property string|null $refund_id 第三方退款ID
  * @property int|null $refund_type 1退款退功能，2仅退款
  * @property int|null $refund_amount
+ * @property string|null $refund_channel
  * @property string|null $refund_reason
  * @property string|null $open_id 第三方支付用户标识
  * @property string $channel 来源渠道
@@ -443,6 +444,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereProductId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereProductPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereRefundAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRefundChannel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereRefundId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereRefundReason($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereRefundSendTime($value)

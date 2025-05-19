@@ -4,6 +4,7 @@ namespace App\SaaSAdmin\Actions;
 
 use App\Libs\Helpers;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Encore\Admin\Facades\Admin;
 use App\Services\WechatPayService;
@@ -33,6 +34,8 @@ class RefundAction extends RowAction
             admin_error('订单不存在');
             return;
         }
+
+        $product = Product::find($order->product_id);
         
         // 显示订单信息
         $this->text('order_info', '订单信息')->readonly()->default("订单号: {$order->oid}，订单金额: ¥" . number_format($order->order_amount / 100, 2));
@@ -52,13 +55,22 @@ class RefundAction extends RowAction
             ->prepend('¥');
         
         // 退款类型
-        $this->radio('refund_type', '退款类型')
+        if($product){
+            $this->radio('refund_type', '退款类型')
             ->options(Order::$refundTypeMap)
-            ->default(1)
+            ->default(Order::REFUND_TYPE_ORIGINAL)
             ->rules('required|in:' . implode(',', array_keys(Order::$refundTypeMap)))
             ->required()
             ->help('退款并退功能：退款同时功能也将恢复到本次购买前状态；退款金额原路返回。');
-        
+        }else{
+            $this->radio('refund_type', '退款类型')
+            ->options([Order::REFUND_TYPE_ONLY => Order::$refundTypeMap[Order::REFUND_TYPE_ONLY]])
+            ->default(Order::REFUND_TYPE_ONLY)
+            ->rules('required|in:' . implode(',', array_keys(Order::$refundTypeMap)))
+            ->required()
+            ->help('当前订单产品信息已被删除，只允许仅退款操作');
+        }
+       
         // 退款原因
         $this->textarea('refund_reason', '退款原因')
             ->rows(3)
@@ -184,9 +196,9 @@ SCRIPT;
                 return $this->response()->error('退款金额不能小于0');
             }
 
-            // if ($order->status != Order::STATUS_PAID) {
-            //     return $this->response()->error('订单未支付，无法退款');
-            // }
+            if ($order->status != Order::STATUS_PAID) {
+                return $this->response()->error('订单未支付，无法退款');
+            }
 
             if($order->status == Order::STATUS_REFUNDING) {
                 return $this->response()->error('订单正在退款中，请稍后再试');
@@ -287,6 +299,7 @@ SCRIPT;
                 $order->refund_reason = $refundReason;
                 $order->refund_amount = $refundAmount;
                 $order->refund_send_time = now();
+                $order->refund_channel = $result['channel'] ?? 'ORIGINAL';
                 $order->save();
                 return true;
             } else {

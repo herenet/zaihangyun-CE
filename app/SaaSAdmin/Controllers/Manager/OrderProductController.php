@@ -90,7 +90,6 @@ class OrderProductController extends AdminController
                 return '￥'.number_format($original / 100, 2);
             });
         });
-
         // 禁用批量删除
         $grid->disableBatchActions();
 

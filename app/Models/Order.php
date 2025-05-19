@@ -34,15 +34,25 @@ class Order extends Model
     const PAY_CHANNEL_ALIPAY = 2;
     const PAY_CHANNEL_APPLE = 3;
 
+    public static $refundChannelMap = [
+        'ORIGINAL' => '原路退款',
+        'BALANCE' => '退款到余额',
+        'OTHER_BALANCE' => '原账户异常退到其他余额账户',
+        'OTHER_BANKCARD' => '原银行卡异常退到其他银行卡',
+    ];
+
     public static $payChannelMap = [
         self::PAY_CHANNEL_WECHAT => '微信',
         self::PAY_CHANNEL_ALIPAY => '支付宝',
         self::PAY_CHANNEL_APPLE => '苹果',
     ];
 
+    const REFUND_TYPE_ORIGINAL = 1;
+    const REFUND_TYPE_ONLY = 2;
+
     public static $refundTypeMap = [
-        1 => '退款并退功能',
-        2 => '仅退款',
+        self::REFUND_TYPE_ORIGINAL => '退款并退功能',
+        self::REFUND_TYPE_ONLY => '仅退款',
     ];
 
 
