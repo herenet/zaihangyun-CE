@@ -114,7 +114,7 @@ class OrderController extends AdminController
         $grid->actions(function ($actions) {
             $actions->disableEdit();
             $actions->disableDelete();
-            if ($actions->row->status == Order::STATUS_PAID) {
+            if (in_array($actions->row->status, [Order::STATUS_PAID, Order::STATUS_REFUNDING])) {
                 $actions->add(new RefundAction());
             }
         });
@@ -217,6 +217,10 @@ class OrderController extends AdminController
                 $in_body_resource = AesGcm::decrypt($ciphertext, $api_v3_key, $nonce, $aad);
                 $in_body_resource_array = (array) json_decode($in_body_resource, true);
 
+                Log::channel('refund')->info('微信退款回调', [
+                    'in_body_resource_array' => $in_body_resource_array
+                ]);
+
                 $oid = $in_body_resource_array['out_trade_no'];
                 
                 // 查找并更新订单
@@ -225,7 +229,7 @@ class OrderController extends AdminController
                     throw new \Exception('订单不存在:'.$oid);
                 }
 
-                if($order->status == Order::STATUS_REFUNDED || $order->status == Order::STATUS_REFUNDING) {
+                if($order->status == Order::STATUS_REFUNDED) {
                     return response('SUCCESS');
                 }
                 
