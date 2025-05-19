@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\SaaSAdmin\Controllers\Manager\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::post('config/wechat/payment/check-callback', 'Manager\WechatPaymentConfigController@checkCallback')
     ->name('wechat.payment.check-callback');
 
-Route::post('wechat/refund/notify/{encodeNotifyParams}', 'Manager\OrderController@wechatRefundCallback')
+Route::post('wechat/refund/notify/{encodeNotifyParams}', [OrderController::class, 'wechatRefundCallback'])
     ->name('wechat.refund.notify');
 
-Route::post('ali/refund/notify/{encodeNotifyParams}', 'Manager\OrderController@aliRefundCallback')
+Route::post('ali/refund/notify/{encodeNotifyParams}', [OrderController::class, 'aliRefundCallback'])
     ->name('ali.refund.notify');
 
-Route::post('apple/refund/notify/{encodeNotifyParams}', 'Manager\OrderController@appleRefundCallback')
+Route::post('apple/refund/notify/{encodeNotifyParams}', [OrderController::class, 'appleRefundCallback'])
     ->name('apple.refund.notify');
