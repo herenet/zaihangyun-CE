@@ -56,6 +56,19 @@ class WechatPayService
         return $this->_getResponseContent($resp);
     }
 
+    public function applyRefund(string $transactionId, int $amount, int $refundAmount, string $refundId, string $refundReason)
+    {
+        $resp = $this->instance
+            ->chain('/v3/refund/domestic/refunds')
+            ->post(['json' => [
+                'transaction_id' => $transactionId,
+                'out_refund_no' => $refundId,
+                'reason' => $refundReason ?? '退款',
+                'amount' => ['refund' => $refundAmount, 'total' => $amount, 'currency' => 'CNY'],
+            ]]);
+        return $this->_getResponseContent($resp);
+    }
+
     public function downloadPlatformCert()
     {
         $resp = $this->instance->chain('/v3/certificates')->get();

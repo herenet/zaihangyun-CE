@@ -412,9 +412,15 @@ namespace App\Models{
  * @property string|null $tid 第三方订单号
  * @property string|null $trade_type 交易类型
  * @property string|null $bank_type 银行类型
+ * @property string|null $refund_id 第三方退款ID
+ * @property int|null $refund_type 1退款退功能，2仅退款
+ * @property int|null $refund_amount
+ * @property string|null $refund_reason
  * @property string|null $open_id 第三方支付用户标识
  * @property string $channel 来源渠道
  * @property string|null $pay_time 支付时间
+ * @property string|null $refund_send_time
+ * @property string|null $refund_time
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property-read \App\Models\Product|null $product
@@ -436,6 +442,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePlatformOrderAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereProductId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereProductPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRefundAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRefundId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRefundReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRefundSendTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRefundTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereRefundType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTid($value)

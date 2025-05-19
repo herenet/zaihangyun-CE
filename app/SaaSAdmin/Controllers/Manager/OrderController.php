@@ -2,11 +2,22 @@
 
 namespace App\SaaSAdmin\Controllers\Manager;
 
+use App\Libs\Helpers;
 use App\Models\Order;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use WeChatPay\Formatter;
 use App\SaaSAdmin\AppKey;
+use WeChatPay\Crypto\Rsa;
+use Illuminate\Http\Request;
+use WeChatPay\Crypto\AesGcm;
 use Encore\Admin\Layout\Content;
+use App\Models\WechatPaymentConfig;
+use Illuminate\Support\Facades\Log;
+use App\SaaSAdmin\Facades\SaaSAdmin;
+use Illuminate\Support\Facades\Cache;
+use App\SaaSAdmin\Actions\RefundAction;
+use Illuminate\Support\Facades\Storage;
 use Encore\Admin\Controllers\AdminController;
 
 class OrderController extends AdminController
@@ -90,6 +101,9 @@ class OrderController extends AdminController
         $grid->actions(function ($actions) {
             $actions->disableEdit();
             $actions->disableDelete();
+            // if ($actions->row->status == Order::STATUS_PAID) {
+                $actions->add(new RefundAction());
+            // }
         });
 
         return $grid;
@@ -132,5 +146,165 @@ class OrderController extends AdminController
 
         return $order;
         
+    }
+
+    public function wechatRefundCallback($encodeNotifyParams)
+    {
+        $data = request()->all();
+
+        try{
+            $notify_params = Helpers::simpleDecode($encodeNotifyParams);
+            list($wechat_payment_config_id, $tenant_id) = explode('-', $notify_params);
+
+            Log::channel('refund')->info('微信退款回调', [
+                'tenant_id' => $tenant_id, 
+                'wechat_payment_config_id' => $wechat_payment_config_id, 
+                'data' => $data,
+                'headers' => request()->header(), 
+                'body' => request()->getContent()
+            ]);
+
+            $wechat_payment_config = WechatPaymentConfig::where('id', $wechat_payment_config_id)->where('tenant_id', $tenant_id)->first();
+            if (!$wechat_payment_config) {
+                throw new \Exception('商户配置错误:'.$wechat_payment_config_id.'-'.$tenant_id);
+            }
+
+            $inWechatpaySignature = request()->header('Wechatpay-Signature');
+            $inWechatpayTimestamp = request()->header('Wechatpay-Timestamp');
+            $inWechatpayNonce = request()->header('Wechatpay-Nonce');
+            // $inWechatpaySerial = request()->header('Wechatpay-Serial');
+            $inBody = request()->getContent();
+            
+            $api_v3_key = $wechat_payment_config['mch_api_v3_secret'];
+            $platform_public_key_file = Storage::disk('SaaSAdmin-mch')->path($wechat_payment_config['mch_platform_cert_path']);
+            $platform_pubic_key_instance = Rsa::from("file://".$platform_public_key_file, Rsa::KEY_TYPE_PUBLIC);
+
+            $time_offset_status = 1800 >= abs(Formatter::timestamp() - (int)$inWechatpayTimestamp);
+            $verified_status = Rsa::verify(
+                Formatter::joinedByLineFeed($inWechatpayTimestamp, $inWechatpayNonce, $inBody),
+                $inWechatpaySignature,
+                $platform_pubic_key_instance
+            );
+            
+            if ($time_offset_status && $verified_status) {
+            
+                $in_body_array = (array) json_decode($inBody, true);
+                ['resource' => [
+                    'ciphertext'      => $ciphertext,
+                    'nonce'           => $nonce,
+                    'associated_data' => $aad
+                ]] = $in_body_array;
+
+                $in_body_resource = AesGcm::decrypt($ciphertext, $api_v3_key, $nonce, $aad);
+                $in_body_resource_array = (array) json_decode($in_body_resource, true);
+                Log::channel('refund')->info('微信退款回调', $in_body_resource_array);
+
+                $oid = $in_body_resource_array['out_trade_no'];
+                
+                // 查找并更新订单
+                $order = Order::where('oid', $oid)->first();
+                if (!$order) {
+                    throw new \Exception('订单不存在:'.$oid);
+                }
+                
+                // 更新订单状态
+                if ($in_body_resource_array['refund_status'] == 'SUCCESS') {
+                    $order->status = Order::STATUS_REFUNDED;
+                    $order->refund_time = now();
+                    $order->save();
+                } else {
+                    $order->status = Order::STATUS_REFUND_FAILED;
+                    $order->save();
+                    
+                    // 记录日志
+                    Log::channel('refund')->error('微信退款失败', [
+                        'order_id' => $order->oid,
+                        'refund_id' => $order->refund_id,
+                        'result' => $in_body_resource_array
+                    ]);
+                }
+                
+                return response('SUCCESS');
+            }else{
+                throw new \Exception('回调验证未通过');
+            }
+        }catch(\Throwable $e){
+            Log::channel('refund')->error('微信退款回调失败', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'code' => 'FAIL',
+                'message' => '微信退款回调失败'
+            ], 500);
+        }
+    }
+
+    public function aliRefundCallback()
+    {
+        $data = request()->all();
+        dd($data);
+    }
+
+    public function appleRefundCallback()
+    {
+        $data = request()->all();
+        dd($data);
+    }
+
+    public function sendRefundCode(Request $request)
+    {
+        $mobile = SaaSAdmin::user()->phone_number;
+        $orderId = $request->input('order_id');
+        
+        // 检查订单是否存在
+        $order = Order::find($orderId);
+        if (!$order) {
+            return response()->json([
+                'status' => false,
+                'message' => '订单不存在'
+            ]);
+        }
+
+        // if($order->status != Order::STATUS_PAID) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => '订单未支付'
+        //     ]);
+        // }
+        
+        // 检查发送频率限制
+        $throttleKey = 'refund_throttle_' . $mobile;
+        if (Cache::has($throttleKey)) {
+            return response()->json([
+                'status' => false,
+                'message' => '发送过于频繁，请稍后再试'
+            ]);
+        }
+        
+        // 生成验证码
+        $code = mt_rand(100000, 999999);
+        $cacheKey = RefundAction::REFUNED_VERIFY_CODE_CACHE_KEY;
+        $cacheKey = str_replace(['{mobile}', '{order_id}'], [$mobile, $orderId], $cacheKey);
+        
+        try {
+            // 发送验证码
+            app(\App\Services\SmsService::class)->sendVerifyCode($mobile, $code);
+            
+            // 缓存验证码，有效期 5 分钟
+            Cache::put($cacheKey, $code, RefundAction::REFUNED_VERIFY_CODE_EXPIRE_TIME);
+            
+            Cache::put($throttleKey, 1, 10);
+            
+            return response()->json([
+                'status' => true,
+                'message' => '验证码已发送'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => '发送失败，请稍后再试：' . $e->getMessage()
+            ]);
+        }
     }
 }

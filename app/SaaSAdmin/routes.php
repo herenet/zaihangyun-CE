@@ -53,6 +53,7 @@ Route::group([
         $router->post('order/config/wechat', 'Manager\OrderConfigController@saveWechat')->name('app.manager.order.config.save.wechat');
         $router->post('order/config/alipay', 'Manager\OrderConfigController@saveAlipay')->name('app.manager.order.config.save.alipay');
         $router->post('order/config/alipay/check-interface', 'Manager\OrderConfigController@checkAlipayInterface')->name('app.manager.order.config.check.alipay.interface');
+        $router->post('order/refund/send-code', 'Manager\OrderController@sendRefundCode')->name('app.manager.order.refund.send-code');
         
         $router->resource('article/category', 'Manager\ArticleCategoryController')->names('app.manager.article.category');
         $router->resource('article/list', 'Manager\ArticleController')->names('app.manager.article.list');

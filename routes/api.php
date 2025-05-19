@@ -16,3 +16,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('config/wechat/payment/check-callback', 'Manager\WechatPaymentConfigController@checkCallback')
     ->name('wechat.payment.check-callback');
+
+Route::post('wechat/refund/notify/{encodeNotifyParams}', 'Manager\OrderController@wechatRefundCallback')
+    ->name('wechat.refund.notify');
+
+Route::post('ali/refund/notify/{encodeNotifyParams}', 'Manager\OrderController@aliRefundCallback')
+    ->name('ali.refund.notify');
+
+Route::post('apple/refund/notify/{encodeNotifyParams}', 'Manager\OrderController@appleRefundCallback')
+    ->name('apple.refund.notify');

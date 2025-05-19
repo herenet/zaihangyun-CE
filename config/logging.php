@@ -101,6 +101,12 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
+        'refund' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/laravel_refund.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
         'syslog' => [
             'driver' => 'syslog',
             'level' => env('LOG_LEVEL', 'debug'),

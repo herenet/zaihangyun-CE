@@ -100,7 +100,7 @@ class WechatPaymentConfigController extends AdminController
                 $mch_id = $form->model()->mch_id ?? $form->input('mch_id');
                 return 'mch_private_key_'.$mch_id.'.'.$file->getClientOriginalExtension();
             })
-            ->disk('SaaSAdmin-mch')
+            // ->disk('SaaSAdmin-mch')
             ->help('请上传微信商户API证书私钥，<a href="https://kf.qq.com/faq/161222NneAJf161222U7fARv.html" target="_blank">查看如何获取>>></a>');
         $form->file('mch_platform_cert_path', '平台证书')
             ->rules(['required', 'file', 'max:512', 'mimes:pem,txt'])
@@ -108,7 +108,7 @@ class WechatPaymentConfigController extends AdminController
                 $mch_id = $form->model()->mch_id ?? $form->input('mch_id');
                 return 'mch_platform_cert_'.$mch_id.'.'.$file->getClientOriginalExtension();
             })
-            ->disk('SaaSAdmin-mch')
+            // ->disk('SaaSAdmin-mch')
             ->help('请上传微信支付平台证书，<a href="https://pay.weixin.qq.com/doc/v3/merchant/4012068829" target="_blank">查看如何获取>>></a>');
         $form->text('remark', '备注')
             ->rules(['nullable', 'string', 'max:128']);

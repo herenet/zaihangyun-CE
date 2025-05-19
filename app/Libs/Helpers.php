@@ -125,4 +125,41 @@ class Helpers
         
         return $encoded;
     }
+
+    /**
+     * 简单解码函数 - 将编码后的字符串还原
+     * 
+     * @param string $encoded 编码后的数据
+     * @return string 解码后的原始数据
+     */
+    public static function simpleDecode($encoded)
+    {
+        // 字母数字字符集（需与编码时使用的完全一致）
+        $charset = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+        
+        // 将编码字符还原为二进制
+        $binary = '';
+        for ($i = 0; $i < strlen($encoded); $i++) {
+            $char = $encoded[$i];
+            $position = strpos($charset, $char);
+            if ($position === false) {
+                continue; // 忽略不在字符集中的字符
+            }
+            // 将位置转换回5位二进制
+            $binary .= sprintf('%05b', $position);
+        }
+        
+        // 将二进制数据转换回原始字符
+        $result = '';
+        // 每8位二进制转换为一个字符
+        $bytes = str_split($binary, 8);
+        foreach ($bytes as $byte) {
+            // 忽略不完整的字节
+            if (strlen($byte) == 8) {
+                $result .= chr(bindec($byte));
+            }
+        }
+        
+        return $result;
+    }
 }
