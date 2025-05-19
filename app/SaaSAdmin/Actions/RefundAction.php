@@ -188,6 +188,14 @@ SCRIPT;
             //     return $this->response()->error('订单未支付，无法退款');
             // }
 
+            if($order->status == Order::STATUS_REFUNDING) {
+                return $this->response()->error('订单正在退款中，请稍后再试');
+            }
+
+            if($order->status == Order::STATUS_REFUNDED) {
+                return $this->response()->success('订单已退款，无需重复退款')->refresh();
+            }
+
             switch($order->pay_channel) {
                 case Order::PAY_CHANNEL_WECHAT:
                     $this->refundWechat($order, $refundAmount, $request->get('refund_type'), $request->get('refund_reason'));
@@ -269,10 +277,12 @@ SCRIPT;
                 $refundReason
             );
             Log::channel('refund')->info('微信退款申请', $result);
-            if (isset($result['status']) && $result['status'] == 'SUCCESS') {
+            if (isset($result['status']) && ($result['status'] == 'SUCCESS' || $result['status'] == 'PROCESSING')) {
                 // 退款成功，更新订单状态
+                $status = $result['status'] == 'SUCCESS' ? Order::STATUS_REFUNDED : Order::STATUS_REFUNDING;
+
                 $order->refund_id = $result['refund_id'];
-                $order->status = Order::STATUS_REFUNDING;
+                $order->status = $status;
                 $order->refund_type = $refundType;
                 $order->refund_reason = $refundReason;
                 $order->refund_amount = $refundAmount;

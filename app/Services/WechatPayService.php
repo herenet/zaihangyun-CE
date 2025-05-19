@@ -65,6 +65,7 @@ class WechatPayService
                 'out_refund_no' => $refundId,
                 'reason' => $refundReason ?? '退款',
                 'amount' => ['refund' => $refundAmount, 'total' => $amount, 'currency' => 'CNY'],
+                'notify_url' => $this->notifyUrl,
             ]]);
         return $this->_getResponseContent($resp);
     }
