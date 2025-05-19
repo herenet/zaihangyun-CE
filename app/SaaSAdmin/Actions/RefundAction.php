@@ -2,6 +2,7 @@
 
 namespace App\SaaSAdmin\Actions;
 
+use Carbon\Carbon;
 use App\Libs\Helpers;
 use App\Models\Order;
 use App\Models\Product;
@@ -298,7 +299,7 @@ SCRIPT;
                 $order->refund_reason = $refundReason;
                 $order->refund_amount = $refundAmount;
                 $order->refund_send_time = now();
-                $order->refund_time = $result['success_time'] ?? null;
+                $order->refund_time = $result['success_time'] ? Carbon::parse($result['success_time'])->format('Y-m-d H:i:s') : null;
                 $order->refund_channel = $result['channel'] ?? 'ORIGINAL';
                 $order->save();
                 return true;

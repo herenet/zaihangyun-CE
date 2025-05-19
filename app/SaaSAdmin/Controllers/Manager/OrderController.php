@@ -2,6 +2,7 @@
 
 namespace App\SaaSAdmin\Controllers\Manager;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Libs\Helpers;
 use App\Models\Order;
@@ -236,7 +237,9 @@ class OrderController extends AdminController
                 // 更新订单状态
                 if ($in_body_resource_array['refund_status'] == 'SUCCESS') {
                     $order->status = Order::STATUS_REFUNDED;
-                    $order->refund_time = $in_body_resource_array['success_time'] ?? null;
+                    $order->refund_time = $in_body_resource_array['success_time'] 
+                        ? Carbon::parse($in_body_resource_array['success_time'])->format('Y-m-d H:i:s') 
+                        : null;
                     $order->save();
                     $this->refundLogic($order);
                 } else {
