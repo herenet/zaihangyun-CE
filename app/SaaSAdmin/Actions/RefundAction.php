@@ -188,20 +188,12 @@ SCRIPT;
             // }
             // 验证退款金额不超过支付金额
             $refundAmount = $request->get('refund_amount');
-            if ($refundAmount > $order->payment_amount) {
+            if ($refundAmount * 100 > $order->payment_amount) {
                 return $this->response()->error('退款金额不能超过支付金额');
             }
 
             if($refundAmount <= 0) {
                 return $this->response()->error('退款金额不能小于0');
-            }
-
-            if ($order->status != Order::STATUS_PAID) {
-                return $this->response()->error('订单未支付，无法退款');
-            }
-
-            if($order->status == Order::STATUS_REFUNDING) {
-                return $this->response()->error('订单正在退款中，请稍后再试');
             }
 
             if($order->status == Order::STATUS_REFUNDED) {
