@@ -298,6 +298,7 @@ SCRIPT;
                 $order->refund_reason = $refundReason;
                 $order->refund_amount = $refundAmount;
                 $order->refund_send_time = now();
+                $order->refund_time = $result['success_time'] ?? null;
                 $order->refund_channel = $result['channel'] ?? 'ORIGINAL';
                 $order->save();
                 return true;
