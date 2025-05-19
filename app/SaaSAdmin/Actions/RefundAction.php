@@ -291,7 +291,12 @@ SCRIPT;
             Log::channel('refund')->info('微信退款申请', $result);
             if (isset($result['status']) && ($result['status'] == 'SUCCESS' || $result['status'] == 'PROCESSING')) {
                 // 退款成功，更新订单状态
-                $status = $result['status'] == 'SUCCESS' ? Order::STATUS_REFUNDED : Order::STATUS_REFUNDING;
+                if($result['status'] == 'SUCCESS') {
+                    $status = Order::STATUS_REFUNDED;
+                    $order->refund_time = isset($result['success_time']) ? Carbon::parse($result['success_time'])->format('Y-m-d H:i:s') : null;
+                } else {
+                    $status = Order::STATUS_REFUNDING;
+                }
 
                 $order->refund_id = $result['refund_id'];
                 $order->status = $status;
@@ -299,7 +304,6 @@ SCRIPT;
                 $order->refund_reason = $refundReason;
                 $order->refund_amount = $refundAmount;
                 $order->refund_send_time = now();
-                $order->refund_time = $result['success_time'] ? Carbon::parse($result['success_time'])->format('Y-m-d H:i:s') : null;
                 $order->refund_channel = $result['channel'] ?? 'ORIGINAL';
                 $order->save();
                 return true;

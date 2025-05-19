@@ -237,7 +237,7 @@ class OrderController extends AdminController
                 // 更新订单状态
                 if ($in_body_resource_array['refund_status'] == 'SUCCESS') {
                     $order->status = Order::STATUS_REFUNDED;
-                    $order->refund_time = $in_body_resource_array['success_time'] 
+                    $order->refund_time = isset($in_body_resource_array['success_time']) 
                         ? Carbon::parse($in_body_resource_array['success_time'])->format('Y-m-d H:i:s') 
                         : null;
                     $order->save();
