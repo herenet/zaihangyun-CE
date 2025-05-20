@@ -255,7 +255,7 @@ SCRIPT;
             throw new \Exception('支付宝功能未开启');
         }
 
-        $refund_amount_int  = (int) $refundAmount * 100;
+        $refund_amount_int  = (int)($refundAmount * 100);
 
         if($refund_amount_int > $order->payment_amount) {
             throw new \Exception('退款金额不能超过支付金额');
@@ -288,7 +288,7 @@ SCRIPT;
                 $order->refund_id = $ret['trade_no'];
                 $order->status = Order::STATUS_REFUNDING;
                 $order->refund_send_time = now();
-                $order->refund_amount = (int) $ret['refund_fee']*100;
+                $order->refund_amount = (int)($ret['refund_fee']*100);
                 $order->refund_reason = $refundReason;
                 $order->refund_type = $refundType;
                 $order->refund_channel = 'ORIGINAL';
