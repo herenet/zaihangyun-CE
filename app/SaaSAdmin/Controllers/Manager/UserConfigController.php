@@ -17,6 +17,7 @@ use App\Models\WechatOpenPlatformConfig;
 use Illuminate\Support\Facades\Validator;
 use App\SaaSAdmin\Forms\AccessTokenConfig;
 use App\SaaSAdmin\Forms\WechatLoginConfig;
+use App\SaaSAdmin\Forms\AppleLoginConfig;
 
 class UserConfigController extends Controller
 {
@@ -30,6 +31,7 @@ class UserConfigController extends Controller
             'basic'    => AccessTokenConfig::class,
             'wechat'   => WechatLoginConfig::class,
             'sms'      => SmsLoginConfig::class,
+            'apple'    => AppleLoginConfig::class,
         ]));
 
         return $content;
@@ -93,6 +95,36 @@ class UserConfigController extends Controller
         $login_config_data = [
             'suport_wechat_login' => $request->input('suport_wechat_login'),
             'wechat_platform_config_id' => $request->input('wechat_platform_config_id'),
+        ];
+
+        try {
+            app(LoginInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $login_config_data);
+            $this->clearAPICache($app_key);
+            admin_toastr('保存成功', 'success');
+            return back();
+        } catch (\Exception $e) {
+            admin_toastr($e->getMessage(), 'error');
+            return back()->withErrors($e->getMessage())->withInput();
+        }
+    }
+
+    public function saveApple(Request $request)
+    {
+        $tenant_id = SaaSAdmin::user()->id;
+        $app_key = $this->getAppKey();
+
+        $validator = Validator::make($request->all(), [
+            'suport_apple_login' => 'required|in:0,1',
+            'apple_nickname_prefix' => 'nullable|string|max:8',
+        ]);
+        
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+        
+        $login_config_data = [
+            'suport_apple_login' => $request->input('suport_apple_login'),
+            'apple_nickname_prefix' => $request->input('apple_nickname_prefix') ?? '',
         ];
 
         try {

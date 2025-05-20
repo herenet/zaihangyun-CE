@@ -24,6 +24,7 @@ class LoginInterfaceConfig extends Model
         'aliyun_sms_tmp_code',
         'aliyun_sms_verify_code_expire',
         'suport_apple_login',
+        'apple_nickname_prefix',
         'endpoint_allow_count',
         'cancel_after_days',
     ];

@@ -17,9 +17,3 @@ use App\SaaSAdmin\Controllers\Manager\OrderController;
 
 Route::post('config/wechat/payment/check-callback', 'Manager\WechatPaymentConfigController@checkCallback')
     ->name('wechat.payment.check-callback');
-
-Route::post('wechat/refund/notify/{encodeNotifyParams}', [OrderController::class, 'wechatRefundCallback'])
-    ->name('wechat.refund.notify');
-
-Route::post('apple/refund/notify/{encodeNotifyParams}', [OrderController::class, 'appleRefundCallback'])
-    ->name('apple.refund.notify');
