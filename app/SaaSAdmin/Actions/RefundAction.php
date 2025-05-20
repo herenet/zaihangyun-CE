@@ -6,7 +6,9 @@ use Carbon\Carbon;
 use App\Libs\Helpers;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\AlipayConfig;
 use Illuminate\Http\Request;
+use App\Services\AlipayService;
 use Encore\Admin\Facades\Admin;
 use App\Services\WechatPayService;
 use App\Models\WechatPaymentConfig;
@@ -69,7 +71,7 @@ class RefundAction extends RowAction
             ->default(Order::REFUND_TYPE_ORIGINAL)
             ->rules('required|in:' . implode(',', array_keys(Order::$refundTypeMap)))
             ->required()
-            ->help('退款并退功能：退款同时功能也将恢复到本次购买前状态；退款金额原路返回。');
+            ->help('退款并退功能：退款同时功能也将恢复到本次购买前状态。');
         }else{
             $this->radio('refund_type', '退款类型')
             ->options([Order::REFUND_TYPE_ONLY => Order::$refundTypeMap[Order::REFUND_TYPE_ONLY]])
@@ -213,9 +215,9 @@ SCRIPT;
                 case Order::PAY_CHANNEL_WECHAT:
                     $this->refundWechat($order, $refundAmount, $request->get('refund_type'), $request->get('refund_reason'));
                     break;
-                // case Order::PAY_CHANNEL_ALIPAY:
-                //     // $this->refundAlipay($order, $refundAmount, $request->get('refund_type'), $request->get('refund_reason'));
-                //     break;
+                case Order::PAY_CHANNEL_ALIPAY:
+                    $this->refundAlipay($order, $refundAmount, $request->get('refund_type'), $request->get('refund_reason'));
+                    break;
                 // case Order::PAY_CHANNEL_APPLE:
                 //     // $this->refundApple($order, $refundAmount, $request->get('refund_type'), $request->get('refund_reason'));
                 //     break;
@@ -238,6 +240,70 @@ SCRIPT;
         }
     }
 
+    private function refundAlipay(Order $order, $refundAmount, $refundType, $refundReason)
+    {
+        $order_interface_config = OrderInterfaceConfig::where('app_key', $order->app_key)->first();
+        if(!$order_interface_config) {
+            return $this->response()->error('订单接口配置不存在');
+        }
+
+        if($order_interface_config->switch == 0) {
+            return $this->response()->error('订单接口配置未开启');
+        }
+
+        if($order_interface_config->suport_alipay == 0){
+            return $this->response()->error('支付宝功能未开启');
+        }
+
+        $refund_amount_int  = (int) $refundAmount * 100;
+
+        if($refund_amount_int > $order->payment_amount) {
+            return $this->response()->error('退款金额不能超过支付金额');
+        }
+
+        if($refund_amount_int <= 0) {
+            return $this->response()->error('退款金额不能小于0');
+        }
+
+        $alipay_config = AlipayConfig::where('app_key', $order->app_key)->first();
+        if(!$alipay_config) {
+            return $this->response()->error('支付宝配置不存在');
+        }
+
+        try{
+            $alipay_config_params = [
+                'alipay_app_id' => $alipay_config['alipay_app_id'],
+                'app_private_cert' => $alipay_config['app_private_cert'],
+                'alipay_public_cert' => $alipay_config['alipay_public_cert'],
+            ];
+
+            $alipay_service = new AlipayService($alipay_config_params);
+            $ret = $alipay_service->applyRefund(
+                $order->tid, 
+                $refundAmount, 
+                $refundReason
+            );
+            Log::channel('refund')->info('支付宝退款申请', $ret);
+            if($ret['code'] == '10000') {
+                $order->refund_id = $ret['trade_no'];
+                $order->status = Order::STATUS_REFUNDING;
+                $order->refund_send_time = now();
+                $order->refund_amount = (int) $ret['refund_fee']*100;
+                $order->refund_reason = $refundReason;
+                $order->refund_type = $refundType;
+                $order->refund_channel = 'ORIGINAL';
+                $order->save();
+                return true;
+            } else {
+                Log::channel('refund')->error('支付宝退款申请失败', $ret);
+                return $this->response()->error('退款申请失败: ' . $ret['msg']);
+            }
+
+        }catch(\Throwable $e){
+            throw $e;
+        }
+    }
+
     private function refundWechat(Order $order, $refundAmount, $refundType, $refundReason)
     {
         $order_interface_config = OrderInterfaceConfig::where('app_key', $order->app_key)->first();
@@ -247,6 +313,10 @@ SCRIPT;
 
         if($order_interface_config->switch == 0) {
             return $this->response()->error('订单接口配置未开启');
+        }
+
+        if($order_interface_config->suport_wechat_pay == 0){
+            return $this->response()->error('微信支付功能未开启');
         }
 
         $refundAmount  = (int)($refundAmount * 100);
@@ -271,7 +341,6 @@ SCRIPT;
         $notify_params = $order_interface_config['wechat_platform_config_id'].'-'.$order_interface_config['tenant_id'];
         $notify_params_encode = Helpers::simpleEncode($notify_params);
         $notify_url = url('/api/wechat/refund/notify/'.$notify_params_encode);
-        Log::channel('refund')->info('微信退款申请', ['notify_url' => $notify_url]);
 
         try {
             $wechatPayService = new WechatPayService(
@@ -309,6 +378,7 @@ SCRIPT;
                 $order->save();
                 return true;
             } else {
+                Log::channel('refund')->error('微信退款申请失败', $result);
                 return $this->response()->error('退款申请失败: ' . $result['message']);
             }
         } catch (\Throwable $e) {

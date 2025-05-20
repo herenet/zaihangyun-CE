@@ -12,8 +12,10 @@ use App\Models\Product;
 use WeChatPay\Formatter;
 use App\SaaSAdmin\AppKey;
 use WeChatPay\Crypto\Rsa;
+use App\Models\AlipayConfig;
 use Illuminate\Http\Request;
 use WeChatPay\Crypto\AesGcm;
+use App\Services\AlipayService;
 use Encore\Admin\Layout\Content;
 use App\Models\WechatPaymentConfig;
 use Illuminate\Support\Facades\Log;
@@ -103,6 +105,9 @@ class OrderController extends AdminController
             $export->filename('订单列表-'.date('Y-m-d H:i:s').'-'.$this->getAppKey().'.csv');
             $export->column('status', function ($value, $original) {
                 return Order::$statusMap[$original];
+            });
+            $export->column('open_id', function ($value, $original) {
+                return $original;
             });
             $export->column('pay_channel', function ($value, $original) {
                 return Order::$payChannelMap[$original];
@@ -268,12 +273,6 @@ class OrderController extends AdminController
                 'message' => '微信退款回调失败'
             ], 500);
         }
-    }
-
-    public function aliRefundCallback()
-    {
-        $data = request()->all();
-        dd($data);
     }
 
     public function appleRefundCallback()

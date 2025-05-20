@@ -21,8 +21,5 @@ Route::post('config/wechat/payment/check-callback', 'Manager\WechatPaymentConfig
 Route::post('wechat/refund/notify/{encodeNotifyParams}', [OrderController::class, 'wechatRefundCallback'])
     ->name('wechat.refund.notify');
 
-Route::post('ali/refund/notify/{encodeNotifyParams}', [OrderController::class, 'aliRefundCallback'])
-    ->name('ali.refund.notify');
-
 Route::post('apple/refund/notify/{encodeNotifyParams}', [OrderController::class, 'appleRefundCallback'])
     ->name('apple.refund.notify');
