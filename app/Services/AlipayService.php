@@ -36,7 +36,7 @@ class AlipayService
         }
     }
 
-    public function applyRefund(string $orderId, int $refundAmount, $refundReason)
+    public function applyRefund(string $orderId, string $refundAmount, $refundReason)
     {
        
         $result = $this->_client
