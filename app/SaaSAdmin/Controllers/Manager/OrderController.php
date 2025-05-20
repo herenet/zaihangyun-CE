@@ -120,9 +120,9 @@ class OrderController extends AdminController
         $grid->actions(function ($actions) {
             $actions->disableEdit();
             $actions->disableDelete();
-            // if (in_array($actions->row->status, [Order::STATUS_PAID, Order::STATUS_REFUNDING])) {
+            if (in_array($actions->row->status, [Order::STATUS_PAID, Order::STATUS_REFUNDING])) {
                 $actions->add(new RefundAction());
-            // }
+            }
         });
 
         return $grid;
