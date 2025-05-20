@@ -244,30 +244,30 @@ SCRIPT;
     {
         $order_interface_config = OrderInterfaceConfig::where('app_key', $order->app_key)->first();
         if(!$order_interface_config) {
-            return $this->response()->error('订单接口配置不存在');
+            throw new \Exception('订单接口配置不存在');
         }
 
         if($order_interface_config->switch == 0) {
-            return $this->response()->error('订单接口配置未开启');
+            throw new \Exception('订单接口配置未开启');
         }
 
         if($order_interface_config->suport_alipay == 0){
-            return $this->response()->error('支付宝功能未开启');
+            throw new \Exception('支付宝功能未开启');
         }
 
         $refund_amount_int  = (int) $refundAmount * 100;
 
         if($refund_amount_int > $order->payment_amount) {
-            return $this->response()->error('退款金额不能超过支付金额');
+            throw new \Exception('退款金额不能超过支付金额');
         }
 
         if($refund_amount_int <= 0) {
-            return $this->response()->error('退款金额不能小于0');
+            throw new \Exception('退款金额不能小于0');
         }
 
         $alipay_config = AlipayConfig::where('app_key', $order->app_key)->first();
         if(!$alipay_config) {
-            return $this->response()->error('支付宝配置不存在');
+            throw new \Exception('支付宝配置不存在');
         }
 
         try{
@@ -279,7 +279,7 @@ SCRIPT;
 
             $alipay_service = new AlipayService($alipay_config_params);
             $ret = $alipay_service->applyRefund(
-                $order->tid, 
+                $order->oid, 
                 $refundAmount, 
                 $refundReason
             );
@@ -296,7 +296,7 @@ SCRIPT;
                 return true;
             } else {
                 Log::channel('refund')->error('支付宝退款申请失败', $ret);
-                return $this->response()->error('退款申请失败: ' . $ret['msg']);
+                throw new \Exception('退款申请失败: ' . $ret['msg']);
             }
 
         }catch(\Throwable $e){
@@ -308,34 +308,34 @@ SCRIPT;
     {
         $order_interface_config = OrderInterfaceConfig::where('app_key', $order->app_key)->first();
         if(!$order_interface_config) {
-            return $this->response()->error('订单接口配置不存在');
+            throw new \Exception('订单接口配置不存在');
         }
 
         if($order_interface_config->switch == 0) {
-            return $this->response()->error('订单接口配置未开启');
+            throw new \Exception('订单接口配置未开启');
         }
 
         if($order_interface_config->suport_wechat_pay == 0){
-            return $this->response()->error('微信支付功能未开启');
+            throw new \Exception('微信支付功能未开启');
         }
 
         $refundAmount  = (int)($refundAmount * 100);
 
         if($refundAmount > $order->payment_amount) {
-            return $this->response()->error('退款金额不能超过支付金额');
+            throw new \Exception('退款金额不能超过支付金额');
         }
 
         if($refundAmount <= 0) {
-            return $this->response()->error('退款金额不能小于0');
+            throw new \Exception('退款金额不能小于0');
         }
 
         $wechatPaymentConfig = WechatPaymentConfig::where('id', $order_interface_config->wechat_payment_config_id)->first();
         if(!$wechatPaymentConfig) {
-            return $this->response()->error('微信支付配置不存在');
+            throw new \Exception('微信支付配置不存在');
         }
         $wechatOpenPlatformConfig = WechatOpenPlatformConfig::where('id', $order_interface_config->wechat_platform_config_id)->first();
         if(!$wechatOpenPlatformConfig) {
-            return $this->response()->error('微信开放平台配置不存在');
+            throw new \Exception('微信开放平台配置不存在');
         }
 
         $notify_params = $order_interface_config['wechat_platform_config_id'].'-'.$order_interface_config['tenant_id'];
@@ -379,7 +379,7 @@ SCRIPT;
                 return true;
             } else {
                 Log::channel('refund')->error('微信退款申请失败', $result);
-                return $this->response()->error('退款申请失败: ' . $result['message']);
+                throw new \Exception('退款申请失败: ' . $result['message']);
             }
         } catch (\Throwable $e) {
             throw $e;
