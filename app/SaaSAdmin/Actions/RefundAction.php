@@ -194,9 +194,9 @@ SCRIPT;
             $cacheKey = str_replace(['{mobile}', '{order_id}'], [$mobile, $order->id], $cacheKey);
             $cachedCode = Cache::get($cacheKey);
             
-            // if (!$cachedCode || $cachedCode != $code) {
-            //     return $this->response()->error('验证码错误或已过期');
-            // }
+            if (!$cachedCode || $cachedCode != $code) {
+                return $this->response()->error('验证码错误或已过期');
+            }
             // 验证退款金额不超过支付金额
             $refundAmount = $request->get('refund_amount');
             if ($refundAmount * 100 > $order->payment_amount) {
