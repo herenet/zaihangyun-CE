@@ -14,7 +14,7 @@
     - [微信登录（登录&注册）](/{{route}}/{{version}}/apis/login_wechat)
     - [发送登录短信验证码](/{{route}}/{{version}}/apis/login_verify_code)
     - [手机验证码登录（登录&注册）](/{{route}}/{{version}}/apis/login_mobile)
-    - [苹果登录（登录&注册）](/{{route}}/{{version}}/apis/login_apple)
+    - [AppleID登录（登录&注册）](/{{route}}/{{version}}/apis/login_apple)
     - [获取用户详情](/{{route}}/{{version}}/apis/user_info)
     - [更新用户信息](/{{route}}/{{version}}/apis/user_update_info)
     - [发送修改手机号短信验证码](/{{route}}/{{version}}/apis/user_update_verify_code)
