@@ -16,7 +16,7 @@ class Helpers
     // 生成应用密钥，64位字符串
     public static function generateAppSecret()
     {
-        return Str::random(64);
+        return Str::random(32);
      }
 
     //生成用户ID，8位数字
