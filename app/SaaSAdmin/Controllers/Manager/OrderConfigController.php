@@ -348,17 +348,17 @@ class OrderConfigController extends Controller
                 'iss' => $config->issuer_id,
                 'iat' => $now,
                 'exp' => $now + 600, // 10分钟有效期
-                'aud' => 'appstoreconnect-v1'
+                'aud' => 'appstorekit-v1',
+                'bid' => $bundle_id,
             ], $config->p8_cert_content, 'ES256', $config->key_id);
 
-            // 3. 调用苹果测试通知接口
             $response = Http::withToken($token)
                 ->withHeaders([
                     'Accept' => 'application/json',
                 ])
                 ->post('https://api.storekit-sandbox.itunes.apple.com/inApps/v1/notifications/test');
-
-            Log::channel('callback')->info('苹果IAP测试通知', ['response' => $response->headers()]);
+                
+            Log::channel('callback')->info('苹果IAP测试通知', ['response' => $response->body()]);
                 
             if ($response->successful()) {
                 // 4. 获取测试通知ID

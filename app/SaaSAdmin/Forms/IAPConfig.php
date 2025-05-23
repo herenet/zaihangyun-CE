@@ -30,11 +30,11 @@ class IAPConfig extends Form
                 $form->text('bundle_id', '应用包名（Bundle ID）')
                     ->required()
                     ->rules(['required', 'string', 'max:128'])
-                    ->help('请输入当前应用对应的苹果应用包名，在苹果开发者中心添加应用后获取，例如：com.example.app。');
+                    ->help('请输入当前应用对应的苹果应用包名，在苹果App Store Connect后台App信息中可以找到，例如：com.example.app。');
                 $form->text('app_apple_id', '苹果应用ID（App ID）')
                     ->required()
                     ->rules(['required', 'integer'])
-                    ->help('请输入当前应用对应的苹果应用ID，在苹果开发者中心添加应用后获取，例如：123456789。');
+                    ->help('请输入当前应用对应的AppleID，在苹果App Store Connect后台App信息中可以找到，例如：123456789。');
 
                 $form->radioButton('subscrip_switch', '订阅功能')
                     ->options([
@@ -106,7 +106,7 @@ class IAPConfig extends Form
                     <ol>
                         <li>登录 <a href="https://appstoreconnect.apple.com" target="_blank">App Store Connect</a></li>
                         <li>选择您的应用</li>
-                        <li>找到App Store 服务器通知</li>
+                        <li>在App信息里找到App Store 服务器通知</li>
                         <li>点击对应的生产环境服务器或沙盒环境服务器中间的“设置URL”</li>
                         <li>在弹出的窗口中，粘贴本页面显示的回调地址</li>
                         <li>点击“存储”按钮完成配置</li>
