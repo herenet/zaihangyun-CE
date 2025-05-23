@@ -22,7 +22,10 @@ use Illuminate\Support\Facades\Cache;
 use App\SaaSAdmin\Forms\OrderBaseConfig;
 use App\SaaSAdmin\Forms\WechatPayConfig;
 use Illuminate\Support\Facades\Validator;
+use Readdle\AppStoreServerAPI\Environment;
+use Readdle\AppStoreServerAPI\AppStoreServerAPI;
 use App\Models\AlipayConfig as AlipayConfigModel;
+use Readdle\AppStoreServerAPI\Exception\AppStoreServerAPIException;
 
 class OrderConfigController extends Controller
 {
@@ -342,44 +345,27 @@ class OrderConfigController extends Controller
         }
 
         try {
-            // 2. 生成JWT token
-            $now = time();
-            $token = JWT::encode([
-                'iss' => $config->issuer_id,
-                'iat' => $now,
-                'exp' => $now + 600, // 10分钟有效期
-                'aud' => 'appstorekit-v1',
-                'bid' => $bundle_id,
-            ], $config->p8_cert_content, 'ES256', $config->key_id);
+            
+            $api = new AppStoreServerAPI(
+                Environment::SANDBOX,
+                $config->issuer_id,
+                $bundle_id,
+                $config->key_id,
+                $config->p8_cert_content
+            );
 
-            $response = Http::withToken($token)
-                ->withHeaders([
-                    'Accept' => 'application/json',
-                ])
-                ->post('https://api.storekit-sandbox.itunes.apple.com/inApps/v1/notifications/test');
-                
-            Log::channel('callback')->info('苹果IAP测试通知', ['response' => $response->body()]);
-                
-            if ($response->successful()) {
-                // 4. 获取测试通知ID
-                $testNotificationToken = $response->json('testNotificationToken');
+            try {
+                $testNotification = $api->requestTestNotification();
+                Log::channel('callback')->info('苹果IAP测试通知', ['response' => $testNotification->getTestNotificationToken()]);
                 
                 return [
                     'status' => true,
-                    'message' => '测试通知已发送，请检查回调接口是否收到通知:'.$testNotificationToken
+                    'message' => '测试通知已发送，请检查回调接口是否收到通知:'.$testNotification->getTestNotificationToken()
                 ];
-            }
 
-            // 5. 处理错误
-            $error = $response->json('errors.0');
-            return [
-                'status' => false,
-                'message' => sprintf('请求失败 code[%s]: %s => %s', 
-                    $response->status(),
-                    $error['code'] ?? 'unknown',
-                    $error['title'] ?? '未知错误'
-                )
-            ];
+            } catch (AppStoreServerAPIException $e) {
+                return ['status' => false, 'message' => '请求测试通知失败: ' . $e->getMessage()];
+            }
 
         } catch (\Exception $e) {
             return [

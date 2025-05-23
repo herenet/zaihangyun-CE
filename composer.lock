@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cae22612873875d307839c2dbcfa0b0d",
+    "content-hash": "b59a4c0df4e872afeea4e26451dac963",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -4830,6 +4830,66 @@
                 }
             ],
             "time": "2021-09-25T23:10:38+00:00"
+        },
+        {
+            "name": "readdle/app-store-server-api",
+            "version": "3.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/readdle/app-store-server-api.git",
+                "reference": "e4ef10baa619a5f941efd4317a858262cd8a5071"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/readdle/app-store-server-api/zipball/e4ef10baa619a5f941efd4317a858262cd8a5071",
+                "reference": "e4ef10baa619a5f941efd4317a858262cd8a5071",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-openssl": "*"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.23",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Readdle\\AppStoreServerAPI\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pavlo Kotets",
+                    "email": "pkotets@readdle.com",
+                    "homepage": "https://github.com/pkotets"
+                }
+            ],
+            "description": "Pure-PHP library that allows managing customer transactions using the App Store Server API and handling server-to-server notifications using the App Store Server Notifications V2",
+            "homepage": "https://github.com/readdle/app-store-server-api",
+            "keywords": [
+                "app store",
+                "apple",
+                "in app",
+                "itunes",
+                "parser",
+                "php",
+                "purchase",
+                "server api",
+                "server notifications",
+                "server-to-server"
+            ],
+            "support": {
+                "issues": "https://github.com/readdle/app-store-server-api/issues",
+                "source": "https://github.com/readdle/app-store-server-api/tree/v3.12.0"
+            },
+            "time": "2025-05-22T10:16:06+00:00"
         },
         {
             "name": "spatie/eloquent-sortable",
