@@ -5,7 +5,7 @@ namespace App\SaaSAdmin\Extensions\Form;
 use Encore\Admin\Form\Field;
 use Encore\Admin\Facades\Admin;
 
-class AliyunSmsCheck extends Field
+class IAPSingleCheck extends Field
 {
     protected $view = 'saas.form.interface-check';
     protected $testUrl = '';
@@ -77,19 +77,15 @@ class AliyunSmsCheck extends Field
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">短信验证测试</h5>
+                            <h5 class="modal-title">IAP支付凭证验证</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>手机号</label>
-                                <input type="text" class="form-control mobile-input" placeholder="请输入手机号">
-                            </div>
-                            <div class="form-group">
-                                <label>参数</label>
-                                <input type="text" class="form-control params-input" placeholder='请输入参数，例如：{"code":"123456"}'>
+                                <label>支付凭证</label>
+                                <textarea type="text" class="form-control receipt-input" placeholder="请输入APP内购买凭证"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -114,16 +110,10 @@ class AliyunSmsCheck extends Field
                     
                     // 确认按钮点击事件
                     confirmBtn.off('click').on('click', function() {
-                        var mobile = modal.find('.mobile-input').val();
-                        var params = modal.find('.params-input').val();
+                        var receipt = modal.find('.receipt-input').val();
                         
-                        if (!mobile) {
-                            toastr.error('请输入手机号');
-                            return;
-                        }
-                        
-                        if (!params) {
-                            toastr.error('请输入参数');
+                        if (!receipt) {
+                            toastr.error('请输入支付凭证');
                             return;
                         }
                         
@@ -138,8 +128,7 @@ class AliyunSmsCheck extends Field
                         // 获取指定字段的值
                         var formData = {
                             _token: LA.token,
-                            mobile: mobile,
-                            params: params
+                            receipt: receipt,
                         };
 
                         dependentFields.forEach(function(field) {

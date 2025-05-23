@@ -22,7 +22,7 @@ class WechatLoginConfig extends Form
                 0 => '关闭',
                 1 => '开启',
             ])
-            ->help('微信登录需要配置微信开放平台，登录注册功能一体。<a href="'.admin_url('global/config/wechat/platform').'">添加微信开放平台>>></a>')
+            ->help('微信登录需要配置微信开放平台，登录注册功能一体。')
             ->when(1, function (Form $form) {
                 $form->select('wechat_platform_config_id', '微信开放平台')
                     ->required()
@@ -30,7 +30,8 @@ class WechatLoginConfig extends Form
                     ->config('minimumResultsForSearch', 'Infinity')
                     ->options(function () {
                         return WechatOpenPlatformConfig::where(['tenant_id' => SaaSAdmin::user()->id, 'interface_check' => 1])->get()->pluck('app_name', 'id');
-                    });
+                    })
+                    ->help('请选择当前应用所属的微信开放平台，如未配置请先<a href="'.admin_url('global/config/wechat/platform').'">添加微信开放平台>>></a>');
             });
         $this->action(admin_url('app/manager/'.$this->getAppKey().'/user/config/wechat'))->method('post');
         $this->disableReset();

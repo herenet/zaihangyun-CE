@@ -80,17 +80,18 @@ class AppController extends Controller
         $form = new Form(new App());
         $form->setTitle('应用信息');
         $form->text('name', '应用名称');
-        $form->radio('platform_type', '平台')->options([
-            1 => 'Android', 
-            2 => 'iOS',
-            3 => 'HarmonyOS',
-        ])->default(1);
+        $form->radio('platform_type', '平台')->options(App::$platformType)->default(App::PLATFORM_TYPE_ANDROID);
 
         $form->tools(function (Form\Tools $tools) {
             $tools->disableList();
         });
 
         $form->setAction(admin_url('apps'));
+
+        $form->saved(function (Form $form) {
+            $app_key = $form->model()->app_key;
+            app(App::class)->clearAppInfoCache($app_key);
+        });
 
         $form->footer(function (Form\Footer $footer) {
             $footer->disableViewCheck();

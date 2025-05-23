@@ -32,7 +32,7 @@ class WechatPaymentConfigController extends AdminController
             ->where('tenant_id', SaaSAdmin::user()->id)
             ->orderBy('id', 'desc');
         $grid->fixColumns(3, -3);
-        $grid->column('id', 'ID')->sortable();
+        $grid->column('id', 'ID')->hide();
         $grid->column('mch_name', '商户名称');
         $grid->column('mch_id', '商户ID')->copyable();
         $grid->column('mch_cert_serial', 'API证书序列号')->copyable();
@@ -48,6 +48,7 @@ class WechatPaymentConfigController extends AdminController
             $actions->disableView();
         });
         
+        $grid->disableFilter();
         $grid->disableExport();
         $grid->disableRowSelector();
         $grid->disableColumnSelector();

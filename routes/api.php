@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\SaaSAdmin\Controllers\Manager\OrderController;
-
+use App\SaaSAdmin\Controllers\AppleApiCertConfigController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,5 +15,5 @@ use App\SaaSAdmin\Controllers\Manager\OrderController;
 |
 */
 
-Route::post('config/wechat/payment/check-callback', 'Manager\WechatPaymentConfigController@checkCallback')
-    ->name('wechat.payment.check-callback');
+Route::post('sandbox/apple/verify/notify/{params}', [AppleApiCertConfigController::class, 'verifyNotify'])
+    ->name('apple.verify-notify');

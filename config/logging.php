@@ -96,9 +96,17 @@ return [
         ],
 
         'sms' => [
-            'driver' => 'single',
+            'driver' => 'daily',
             'path' => storage_path('logs/laravel_sms.log'),
             'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
+        ],
+
+        'callback' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/laravel_callback.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
         ],
 
         'refund' => [

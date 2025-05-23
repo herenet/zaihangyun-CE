@@ -195,6 +195,46 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * CREATE TABLE `apple_dev_s2s_config` (
+ * `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+ * `tenant_id` bigint unsigned NOT NULL,
+ * `dev_account_name` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '苹果开发者账户名称',
+ * `issuer_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+ * `key_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+ * `p8_cert_content` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'p8证书内容',
+ * `interface_check` tinyint unsigned NOT NULL DEFAULT '0',
+ * `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+ * `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ * PRIMARY KEY (`id`)
+ * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+ *
+ * @property int $id
+ * @property int $tenant_id
+ * @property string $dev_account_name 苹果开发者账户名称
+ * @property string $issuer_id
+ * @property string $key_id
+ * @property string $p8_cert_content p8证书内容
+ * @property int $interface_check
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleDevS2SConfig newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleDevS2SConfig newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleDevS2SConfig query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleDevS2SConfig whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleDevS2SConfig whereDevAccountName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleDevS2SConfig whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleDevS2SConfig whereInterfaceCheck($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleDevS2SConfig whereIssuerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleDevS2SConfig whereKeyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleDevS2SConfig whereP8CertContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleDevS2SConfig whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleDevS2SConfig whereUpdatedAt($value)
+ */
+	class AppleDevS2SConfig extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Article
  *
  * @property string $id
@@ -327,6 +367,37 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereUpdatedAt($value)
  */
 	class Feedback extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\IAPConfig
+ *
+ * @property string $app_key
+ * @property int $tenant_id
+ * @property string $bundle_id
+ * @property int $app_apple_id
+ * @property int $subscrip_switch 用户是否开启了苹果的订阅功能
+ * @property string|null $shared_secret 用于验证自动续期订阅收据（verifyReceipt）
+ * @property int|null $apple_dev_s2s_config_id
+ * @property int $interface_check
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig query()
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig whereAppAppleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig whereAppleDevS2sConfigId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig whereBundleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig whereInterfaceCheck($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig whereSharedSecret($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig whereSubscripSwitch($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig whereUpdatedAt($value)
+ */
+	class IAPConfig extends \Eloquent {}
 }
 
 namespace App\Models{

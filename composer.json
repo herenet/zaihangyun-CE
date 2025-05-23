@@ -10,6 +10,7 @@
         "alipaysdk/easysdk": "^2.2",
         "binarytorch/larecipe": "^2.8",
         "encore/laravel-admin": "^1.8.10",
+        "firebase/php-jwt": "^6.11",
         "fruitcake/laravel-cors": "^2.0",
         "gai871013/ip-location": "^1.1",
         "guzzlehttp/guzzle": "^7.0.1",

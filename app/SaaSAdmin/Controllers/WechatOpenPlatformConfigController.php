@@ -32,7 +32,7 @@ class WechatOpenPlatformConfigController extends AdminController
         ->where('tenant_id', SaaSAdmin::user()->id)
         ->orderBy('id', 'desc');
 
-        $grid->column('id', 'ID')->sortable();
+        $grid->column('id', 'ID')->hide();
         $grid->column('app_name', 'APP名称');
         $grid->column('wechat_appid', '微信APPID')->copyable();
         $grid->column('wechat_appsecret', '微信APPSECRET')->password('*', 6)->copyable();
@@ -45,6 +45,7 @@ class WechatOpenPlatformConfigController extends AdminController
             $actions->disableView();
         });
         
+        $grid->disableFilter();
         $grid->disableExport();
         $grid->disableRowSelector();
         $grid->disableColumnSelector();

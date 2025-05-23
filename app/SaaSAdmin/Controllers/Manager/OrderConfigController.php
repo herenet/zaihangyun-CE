@@ -1,15 +1,22 @@
 <?php
 namespace App\SaaSAdmin\Controllers\Manager;
 
+use App\Models\App;
+use App\Libs\Helpers;
+use Firebase\JWT\JWT;
 use App\SaaSAdmin\AppKey;
 use Illuminate\Http\Request;
 use Encore\Admin\Widgets\Tab;
 use Encore\Admin\Layout\Content;
 use Alipay\EasySDK\Kernel\Config;
+use App\Models\AppleDevS2SConfig;
+use App\SaaSAdmin\Forms\IAPConfig;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\OrderInterfaceConfig;
 use App\SaaSAdmin\Facades\SaaSAdmin;
+use Illuminate\Support\Facades\Http;
 use App\SaaSAdmin\Forms\AlipayConfig;
 use Illuminate\Support\Facades\Cache;
 use App\SaaSAdmin\Forms\OrderBaseConfig;
@@ -23,14 +30,23 @@ class OrderConfigController extends Controller
 
     public function index(Content $content)
     {
+        $app_key = $this->getAppKey();
+        $app_info = app(App::class)->getAppInfo($app_key);
         $content->title('接口配置');
         $content->description('订单模块');
 
-        $content->body(Tab::forms([
-            'base' => OrderBaseConfig::class,
-            'wechat_pay' => WechatPayConfig::class,
-            'alipay' => AlipayConfig::class,
-        ]));
+        if($app_info['platform_type'] == App::PLATFORM_TYPE_IOS) {
+            $content->body(Tab::forms([
+                'base' => OrderBaseConfig::class,
+                'iap' => IAPConfig::class,
+            ]));
+        }else{
+            $content->body(Tab::forms([
+                'base' => OrderBaseConfig::class,
+                'wechat_pay' => WechatPayConfig::class,
+                'alipay' => AlipayConfig::class,
+            ]));
+        }
 
         return $content;
     }
@@ -237,5 +253,165 @@ class OrderConfigController extends Controller
                 'message' => '支付宝配置验证失败: ' . $e->getMessage(),
             ]);
         }
+    }
+
+    public function verifyOneTimePurchase(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'bundle_id' => 'required|string|max:128',
+            'app_apple_id' => 'required|integer',
+            'receipt' => 'required|string',
+        ],[
+            'bundle_id.required' => '应用包名不能为空',
+            'bundle_id.string' => '应用包名必须为字符串',
+            'bundle_id.max' => '应用包名最大长度为128个字符',
+            'app_apple_id.required' => '苹果应用ID不能为空',
+            'app_apple_id.integer' => '苹果应用ID必须为整数',
+            'receipt.required' => '支付凭证不能为空',
+            'receipt.string' => '支付凭证必须为字符串',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'message' => $validator->errors()->first()]);
+        }
+
+        $receipt = $request->input('receipt');
+        $bundle_id = $request->input('bundle_id');
+        $app_apple_id = $request->input('app_apple_id');
+
+        try {
+            $response = $this->callAppleVerifyApi($receipt);
+            if ($response['status'] === 0 && isset($response['receipt'])) {
+                // 验证成功
+                if($response['receipt']['bundle_id'] == $bundle_id) {
+                    return response()->json([
+                        'status' => true,
+                        'data' => '验证成功',
+                    ]);
+                }else{
+                    return response()->json([
+                        'status' => false,
+                        'message' => '验证失败: 应用包名不匹配',
+                    ]);
+                }
+            }
+    
+            return response()->json([
+                'status' => false,
+                'message' => Helpers::getAppleReceiptStatusMessage($response['status']),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => '验证失败:'.$e->getMessage(),
+            ]);
+        }
+    }
+
+    public function verifyNotify(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'bundle_id' => 'required|string|max:128',
+            'app_apple_id' => 'required|integer',
+            'shared_secret' => 'required|string',
+            'apple_dev_s2s_config_id' => 'required|integer',
+        ],[
+            'bundle_id.required' => '应用包名不能为空',
+            'bundle_id.string' => '应用包名必须为字符串',
+            'bundle_id.max' => '应用包名最大长度为128个字符',
+            'app_apple_id.required' => '苹果应用ID不能为空',
+            'app_apple_id.integer' => '苹果应用ID必须为整数',
+            'shared_secret.required' => '共享密钥不能为空',
+            'shared_secret.string' => '共享密钥必须为字符串',
+            'apple_dev_s2s_config_id.required' => '苹果服务端API证书不能为空',
+            'apple_dev_s2s_config_id.integer' => '苹果服务端API证书必须为整数',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'message' => $validator->errors()->first()]);
+        }
+        
+        $bundle_id = $request->input('bundle_id');
+        $app_apple_id = $request->input('app_apple_id');
+        $shared_secret = $request->input('shared_secret');
+        $apple_dev_s2s_config_id = $request->input('apple_dev_s2s_config_id');
+
+        $config = AppleDevS2SConfig::find($apple_dev_s2s_config_id);
+        if (!$config) {
+            return ['status' => false, 'message' => '找不到对应的苹果API证书配置'];
+        }
+
+        try {
+            // 2. 生成JWT token
+            $now = time();
+            $token = JWT::encode([
+                'iss' => $config->issuer_id,
+                'iat' => $now,
+                'exp' => $now + 600, // 10分钟有效期
+                'aud' => 'appstoreconnect-v1'
+            ], $config->p8_cert_content, 'ES256', $config->key_id);
+
+            // 3. 调用苹果测试通知接口
+            $response = Http::withToken($token)
+                ->withHeaders([
+                    'Accept' => 'application/json',
+                ])
+                ->post('https://api.storekit-sandbox.itunes.apple.com/inApps/v1/notifications/test');
+
+            Log::channel('callback')->info('苹果IAP测试通知', ['response' => $response->headers()]);
+                
+            if ($response->successful()) {
+                // 4. 获取测试通知ID
+                $testNotificationToken = $response->json('testNotificationToken');
+                
+                return [
+                    'status' => true,
+                    'message' => '测试通知已发送，请检查回调接口是否收到通知:'.$testNotificationToken
+                ];
+            }
+
+            // 5. 处理错误
+            $error = $response->json('errors.0');
+            return [
+                'status' => false,
+                'message' => sprintf('请求失败 code[%s]: %s => %s', 
+                    $response->status(),
+                    $error['code'] ?? 'unknown',
+                    $error['title'] ?? '未知错误'
+                )
+            ];
+
+        } catch (\Exception $e) {
+            return [
+                'status' => false,
+                'message' => '请求异常: ' . $e->getMessage()
+            ];
+        }
+    }
+
+    private function callAppleVerifyApi(string $receiptData, $sharedSecret = null): array
+    {
+        $payload = [
+            'receipt-data' => $receiptData,
+        ];
+
+        if ($sharedSecret) {
+            $payload['password'] = $sharedSecret;
+        }
+
+        $url = 'https://buy.itunes.apple.com/verifyReceipt';
+
+        // 可选切换到 sandbox（用于测试环境）
+        $sandboxFallback = false;
+
+        $response = Http::post($url, $payload)->json();
+
+        // 自动 fallback 到 sandbox（只用于测试环境）
+        if ($response['status'] == 21007 && !$sandboxFallback) {
+            $sandboxFallback = true;
+            $response = Http::post('https://sandbox.itunes.apple.com/verifyReceipt', $payload)->json();
+        }
+
+        return $response;
     }
 }

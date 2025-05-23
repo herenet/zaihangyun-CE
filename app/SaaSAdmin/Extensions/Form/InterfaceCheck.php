@@ -73,7 +73,7 @@ class InterfaceCheck extends Field
         // 修改 JavaScript 代码
         Admin::script(<<<JS
             $(function () {
-                $('.interface-check-btn').on('click', function() {
+                $('.interface-check-btn.{$this->column}').on('click', function() {
                     var btn = $(this);
                     var hiddenInput = btn.siblings('[name="' + btn.data('field') + '"]');
                     var form = btn.closest('.form-horizontal');
@@ -101,7 +101,12 @@ class InterfaceCheck extends Field
                                     formData[matches[1]][matches[2]] = input.val();
                                 }
                             } else {
-                                formData[field] = input.val();
+                                var value = input.val();
+                                // 对于select，确保获取选中的值
+                                if (input.is('select')) {
+                                    value = input.find('option:selected').val();
+                                }
+                                formData[field] = value;
                             }
                         }
                     });

@@ -27,6 +27,8 @@ Route::group([
     $router->post('global/config/wechat/platform/check-interface', 'WechatOpenPlatformConfigController@checkInterface')->name('global.wechat.platform.check-interface');
     $router->resource('global/config/aliyun/access', 'AliyunAccessConfigController')->names('global.aliyun.access.config');
     $router->post('global/config/aliyun/access/check-interface', 'AliyunAccessConfigController@checkInterface')->name('global.aliyun.access.check-interface');
+    $router->resource('global/config/apple/apicert', 'AppleApiCertConfigController')->names('global.apple.apicert.config');
+    $router->post('global/config/apple/apicert/verify', 'AppleApiCertConfigController@verify')->name('global.apple.apicert.verify');
 
     $router->get('app/manager/{app_key}', 'Manager\IndexController@index')->name('app.manager.index');
     $router->group(['prefix' => 'app/manager/{app_key}'], function($router) {
@@ -55,6 +57,8 @@ Route::group([
         $router->post('order/config/alipay', 'Manager\OrderConfigController@saveAlipay')->name('app.manager.order.config.save.alipay');
         $router->post('order/config/alipay/check-interface', 'Manager\OrderConfigController@checkAlipayInterface')->name('app.manager.order.config.check.alipay.interface');
         $router->post('order/refund/send-code', 'Manager\OrderController@sendRefundCode')->name('app.manager.order.refund.send-code');
+        $router->post('order/config/apple/verify-one-time-purchase', 'Manager\OrderConfigController@verifyOneTimePurchase')->name('app.manager.order.config.verify.one-time-purchase');
+        $router->post('order/config/apple/verify-notify', 'Manager\OrderConfigController@verifyNotify')->name('app.manager.order.config.verify.notify');
         
         $router->resource('article/category', 'Manager\ArticleCategoryController')->names('app.manager.article.category');
         $router->resource('article/list', 'Manager\ArticleController')->names('app.manager.article.list');

@@ -1,6 +1,7 @@
 <?php
 namespace App\SaaSAdmin\Controllers\Manager;
 
+use App\Models\App;
 use App\SaaSAdmin\AppKey;
 use Illuminate\Http\Request;
 use Encore\Admin\Widgets\Tab;
@@ -14,10 +15,10 @@ use AlibabaCloud\Client\AlibabaCloud;
 use Illuminate\Support\Facades\Cache;
 use App\SaaSAdmin\Forms\SmsLoginConfig;
 use App\Models\WechatOpenPlatformConfig;
+use App\SaaSAdmin\Forms\AppleLoginConfig;
 use Illuminate\Support\Facades\Validator;
 use App\SaaSAdmin\Forms\AccessTokenConfig;
 use App\SaaSAdmin\Forms\WechatLoginConfig;
-use App\SaaSAdmin\Forms\AppleLoginConfig;
 
 class UserConfigController extends Controller
 {
@@ -25,14 +26,25 @@ class UserConfigController extends Controller
 
     public function index(Content $content)
     {
+        $app_key = $this->getAppKey();
+        $app_info = app(App::class)->getAppInfo($app_key);
         $content->title('接口配置');
         $content->description('用户模块');
-        $content->body(Tab::forms([
-            'basic'    => AccessTokenConfig::class,
-            'wechat'   => WechatLoginConfig::class,
-            'sms'      => SmsLoginConfig::class,
-            'apple'    => AppleLoginConfig::class,
-        ]));
+
+        if($app_info['platform_type'] == App::PLATFORM_TYPE_IOS) {
+            $content->body(Tab::forms([
+                'basic'    => AccessTokenConfig::class,
+                'wechat'   => WechatLoginConfig::class,
+                'sms'      => SmsLoginConfig::class,
+                'apple'    => AppleLoginConfig::class,
+            ]));
+        }else{
+            $content->body(Tab::forms([
+                'basic'    => AccessTokenConfig::class,
+                'wechat'   => WechatLoginConfig::class,
+                'sms'      => SmsLoginConfig::class,
+            ]));
+        }
 
         return $content;
     }

@@ -162,4 +162,23 @@ class Helpers
         
         return $result;
     }
+
+    public static function getAppleReceiptStatusMessage(int $code): string
+    {
+        $messages = [
+            21000 => '请求未使用 HTTP POST 方法发送。',
+            21001 => 'App Store 不再返回该状态码（已弃用）。',
+            21002 => 'receipt-data 参数中的数据格式错误。',
+            21003 => '系统无法验证该收据。',
+            21004 => '提供的共享密钥（shared secret）与账户设置的不一致。',
+            21005 => '收据服务器暂时无法提供服务。请稍后重试。',
+            21006 => '收据有效，但订阅已过期（仅适用于 iOS 6 风格的自动续期收据）。',
+            21007 => '这是来自沙盒环境的收据，但你发送到了生产验证服务器。',
+            21008 => '这是来自生产环境的收据，但你发送到了沙盒验证服务器。',
+            21009 => '服务器内部数据访问错误。请稍后重试。',
+            21010 => '无法找到用户账户，或账户已被删除。',
+        ];
+
+        return $messages[$code] ? '【'.$code.'】'.$messages[$code] : '未知错误代码。';
+    }
 }

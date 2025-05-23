@@ -29,6 +29,7 @@ use App\SaaSAdmin\Extensions\Show\Password;
 use App\SaaSAdmin\Extensions\Column\ZhySwitch;
 use App\SaaSAdmin\Extensions\Form\ZhyKeyValue;
 use App\SaaSAdmin\Extensions\Form\AliyunSmsCheck;
+use App\SaaSAdmin\Extensions\Form\IAPSingleCheck;
 use App\SaaSAdmin\Extensions\Form\InterfaceCheck;
 use App\SaaSAdmin\Extensions\Editormd\MyEditorField;
 
@@ -65,6 +66,7 @@ Show::extend('password', Password::class);
 Form::extend('myEditorMd', MyEditorField::class);
 Form::extend('interfaceCheck', InterfaceCheck::class);
 Form::extend('aliyunSmsCheck', AliyunSmsCheck::class);
+Form::extend('iapSingleCheck', IAPSingleCheck::class);
 Form::extend('zhyKeyValue', ZhyKeyValue::class);
 Column::extend('zhySwitch', ZhySwitch::class);
 
@@ -103,7 +105,9 @@ Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
         '微信开放平台设置' => 'global/config/wechat/platform',
         '微信商户号设置' => 'global/config/wechat/payment',
         '阿里云AccessKey设置' => 'global/config/aliyun/access',
-    ], 'fa-gears')->title('全局设置'));
+        '苹果服务端API请求证书设置' => 'global/config/apple/apicert',
+    ], 'fa-gears')->title('全局设置 <i class="fa fa-caret-down"></i>'));
+
     $navbar->right(
         '<li class="dropdown">
             <a href="/docs" class="dropdown-toggle" target="_blank">

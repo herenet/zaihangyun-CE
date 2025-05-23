@@ -35,11 +35,13 @@ class IndexController extends AdminController
     public function appinfo()
     {
         $app_key = $this->getAppKey();
-        $app_info = app(App::class)->where(['app_key' => $app_key, 'tenant_id' => SaaSAdmin::user()->id])->first();
+        $app_info = app(App::class)->getAppInfo($app_key);
         $envs = [
-            ['name' => '名称',       'value' => $app_info->name],
-            ['name' => 'AppKey',   'value' => $app_info->app_key],
-            ['name' => 'AppSecret',   'value' => $app_info->app_secret],
+            ['name' => '名称',       'value' => $app_info['name']],
+            ['name' => 'AppKey',   'value' => $app_info['app_key']],
+            ['name' => 'AppSecret',   'value' => $app_info['app_secret']],
+            ['name' => '平台',       'value' => App::$platformType[$app_info['platform_type']]],
+            ['name' => '创建时间',   'value' => $app_info['created_at']],
         ];
 
 

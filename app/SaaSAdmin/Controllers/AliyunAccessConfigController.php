@@ -25,7 +25,7 @@ class AliyunAccessConfigController extends AdminController
     {
         $grid = new Grid(new AliyunAccessConfig());
         $grid->model()->where('tenant_id', SaaSAdmin::user()->id);
-        $grid->column('id', 'ID')->sortable();
+        $grid->column('id', 'ID')->hide();
         $grid->column('name', '名称');
         $grid->column('access_key', 'AccessKey')->copyable();
         $grid->column('access_key_secret', 'AccessKeySecret')->password('*', 6)->copyable();
@@ -34,9 +34,14 @@ class AliyunAccessConfigController extends AdminController
         $grid->column('updated_at', '更新时间')->sortable();
         $grid->column('created_at', '创建时间')->sortable();
 
+        $grid->actions(function ($actions) {
+            $actions->disableView();
+        });
+
         $grid->disableExport();
         $grid->disableRowSelector();
         $grid->disableColumnSelector();
+        $grid->disableFilter();
         
         return $grid;
     }

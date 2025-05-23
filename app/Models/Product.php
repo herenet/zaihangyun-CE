@@ -61,7 +61,7 @@ class Product extends Model implements Sortable
     public static $platformTypeMap = [
         1 => '所有平台',
         2 => '安卓',
-        3 => '苹果',
+        3 => '鸿蒙',
     ];
 
     protected $fillable = [
