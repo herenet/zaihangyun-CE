@@ -82,6 +82,7 @@ class IAPCallbackCheck extends Field
         // 修改 JavaScript 代码
         Admin::script(<<<JS
             var callbackVerify = function(btn, result, uuid) {
+                var hiddenInput = btn.siblings('[name="' + btn.data('field') + '"]');
                 $.getJSON(btn.data('callback-url'), {uuid: uuid}, function(data) {
                     if (data.status) {
                         result.removeClass('interface-check-fail')
@@ -112,7 +113,6 @@ class IAPCallbackCheck extends Field
             $(function () {
                 $('.interface-check-btn.{$this->column}').on('click', function() {
                     var btn = $(this);
-                    var hiddenInput = btn.siblings('[name="' + btn.data('field') + '"]');
                     var form = btn.closest('.form-horizontal');
                     var result = btn.siblings('.interface-check-result');
                     var loading = btn.siblings('.interface-check-loading');
