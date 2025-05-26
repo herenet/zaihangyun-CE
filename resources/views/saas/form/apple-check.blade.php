@@ -5,6 +5,7 @@
         <a href="javascript:void(0);" 
            class="btn btn-warning interface-check-btn {{$name}}" 
            data-test-url="{{$testUrl}}"
+           data-callback-url="{{$callbackUrl}}"
            data-dependent-fields='{{$dependentFields}}'
            data-field="{{$name}}">
             <i class="fa fa-wrench"></i> {{$buttonText}}

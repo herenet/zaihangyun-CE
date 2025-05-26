@@ -7,7 +7,7 @@ use Encore\Admin\Facades\Admin;
 
 class IAPCallbackCheck extends Field
 {
-    protected $view = 'saas.form.interface-check';
+    protected $view = 'saas.form.apple-check';
     protected $testUrl = '';
     protected $callbackUrl = '';
     protected $buttonText = '测试接口';
