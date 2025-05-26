@@ -88,7 +88,7 @@ class IAPCallbackCheck extends Field
                         result.removeClass('interface-check-fail')
                               .removeClass('interface-check-waiting')
                               .addClass('interface-check-success')
-                              .html('<i class="fa fa-check"></i> ' + (data.message ? data.message : successText));
+                              .html('<i class="fa fa-check"></i> <span>' + (data.message ? data.message : successText) + '</span>');
                         hiddenInput.val(1);
                         clearInterval(interval);
                     } else {
@@ -96,13 +96,13 @@ class IAPCallbackCheck extends Field
                             result.removeClass('interface-check-success')
                                   .removeClass('interface-check-waiting')
                                   .addClass('interface-check-fail')
-                                  .html('<i class="fa fa-times"></i> ' + (data.message ? data.message : failText));
+                                  .html('<i class="fa fa-times"></i> <span>' + (data.message ? data.message : failText) + '</span>');
                             clearInterval(interval);
                         } else {
                             result.removeClass('interface-check-success')
                                   .removeClass('interface-check-fail')
                                   .addClass('interface-check-waiting')
-                                  .html('<i class="fa fa-spinner fa-spin"></i> ' + (data.message ? data.message : failText));
+                                  .html('<i class="fa fa-spinner fa-spin"></i> <span>' + (data.message ? data.message : failText) + '</span>');
                         }
                     }
                 });
@@ -162,7 +162,7 @@ class IAPCallbackCheck extends Field
                             if (response.status) {
                                 result.removeClass('interface-check-fail')
                                       .addClass('interface-check-waiting')
-                                      .html('<i class="fa fa-spinner fa-spin"></i> ' + response.message);
+                                      .html('<i class="fa fa-spinner fa-spin"></i> <span>' + response.message + '</span>');
                                 var uuid = response.data.uuid;
                                 clearInterval(interval);
                                 interval = setInterval(function() {
@@ -171,8 +171,8 @@ class IAPCallbackCheck extends Field
                             } else {
                                 result.removeClass('interface-check-success')
                                       .addClass('interface-check-fail')
-                                      .html('<i class="fa fa-times"></i> ' + failText + 
-                                            (response.message ? ': ' + response.message : ''));
+                                      .html('<i class="fa fa-times"></i> <span>' + failText + 
+                                            (response.message ? ': ' + response.message : '') + '</span>');
                             }
                             result.show();
                         },
@@ -180,7 +180,7 @@ class IAPCallbackCheck extends Field
                             var message = xhr.responseJSON ? xhr.responseJSON.message : '请求失败';
                             result.removeClass('interface-check-success')
                                   .addClass('interface-check-fail')
-                                  .html('<i class="fa fa-times"></i> ' + failText + ': ' + message)
+                                  .html('<i class="fa fa-times"></i> <span>' + failText + ': ' + message + '</span>')
                                   .show();
                         },
                         complete: function() {

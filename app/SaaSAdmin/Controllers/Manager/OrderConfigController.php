@@ -26,6 +26,7 @@ use Readdle\AppStoreServerAPI\Environment;
 use Readdle\AppStoreServerAPI\AppStoreServerAPI;
 use App\Models\AlipayConfig as AlipayConfigModel;
 use Readdle\AppStoreServerAPI\Exception\AppStoreServerAPIException;
+use App\Models\IAPConfig as IAPConfigModel;
 
 class OrderConfigController extends Controller
 {
@@ -65,11 +66,10 @@ class OrderConfigController extends Controller
 
         $validator = Validator::make($request->all(), [
             'switch' => 'required|in:0,1',
-            'oid_prefix' => 'required_if:switch,1|string|max:4',
+            'oid_prefix' => 'nullable|string|max:4',
         ], [
             'switch.required' => '是否启用接口不能为空',
             'switch.in' => '是否启用接口必须为0或1',
-            'oid_prefix.required_if' => '必须启用接口后才能设置订单号前缀',
             'oid_prefix.string' => '订单号前缀必须为字符串',
             'oid_prefix.max' => '订单号前缀最大长度为4个字符',
         ]);
@@ -167,6 +167,7 @@ class OrderConfigController extends Controller
                 }
 
                 $alipay_config_data = [
+                    'interface_check' => $request->input('alipay_interface_check'),
                     'alipay_app_id' => $request->input('alipay_app_id'),
                     'app_private_cert' => $request->input('app_private_cert'),
                     'alipay_public_cert' => $request->input('alipay_public_cert'),
@@ -176,6 +177,81 @@ class OrderConfigController extends Controller
 
             app(OrderInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $order_config_data);
             
+            $this->clearAPICache($app_key);
+            DB::commit();
+            admin_toastr('保存成功', 'success');
+            return back();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            admin_toastr($e->getMessage(), 'error');
+            return back()->withErrors($e->getMessage())->withInput();
+        }
+    }
+
+    public function saveIAP(Request $request)
+    {
+        $tenant_id = SaaSAdmin::user()->id;
+        $app_key = $this->getAppKey();
+
+        $validator = Validator::make($request->all(), [
+            'suport_apple_pay' => 'required|in:0,1',
+            'bundle_id' => 'required_if:suport_apple_pay,1|string|max:128',
+            'app_apple_id' => 'required_if:suport_apple_pay,1|integer',
+            'apple_iap_single_check' => 'nullable|in:0,1',
+            'subscrip_switch' => 'nullable|in:0,1',
+            'shared_secret' => 'nullable|string|max:128',
+            'apple_dev_s2s_config_id' => 'nullable|integer',
+            'apple_subscrip_check' => 'nullable|in:0,1',
+        ], [
+            'suport_apple_pay.required' => '是否启用苹果IAP不能为空',
+            'suport_apple_pay.in' => '是否启用苹果IAP必须为0或1',
+            'apple_subscrip_check.in' => '订阅验证必须为0或1',
+            'apple_dev_s2s_config_id.integer' => '苹果服务端API证书必须为整数',
+            'shared_secret.string' => '共享密钥必须为字符串',
+            'shared_secret.max' => '共享密钥最大长度为128个字符',
+            'bundle_id.required_if' => '必须启用苹果IAP后才能设置应用包名',
+            'bundle_id.string' => '应用包名必须为字符串',
+            'bundle_id.max' => '应用包名最大长度为128个字符',
+            'app_apple_id.required_if' => '必须启用苹果IAP后才能设置苹果应用ID',
+            'app_apple_id.integer' => '苹果应用ID必须为整数',
+            'apple_iap_single_check.in' => '配置验证必须为0或1',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        if($request->input('subscrip_switch') == 0 && $request->input('apple_iap_single_check') != 1) {
+            admin_error('必须验证配置成功才能提交');
+            return back()->withInput();
+        }
+
+        if($request->input('subscrip_switch') == 1 && $request->input('apple_subscrip_check') != 1) {
+            admin_error('必须验证配置成功才能提交');
+            return back()->withInput();
+        }
+
+        $order_config_data = [
+            'suport_apple_pay' => $request->input('suport_apple_pay'),
+        ];
+
+        try {
+            DB::beginTransaction();
+            if ($request->input('suport_apple_pay') == 1) {
+                $apple_iap_config_data = [
+                    'bundle_id' => $request->input('bundle_id'),
+                    'app_apple_id' => $request->input('app_apple_id'),
+                    'interface_check' => 1,
+                ];
+                if($request->input('subscrip_switch') == 1) {
+                    $apple_iap_config_data['subscrip_switch'] = 1;
+                    $apple_iap_config_data['shared_secret'] = $request->input('shared_secret');
+                    $apple_iap_config_data['apple_dev_s2s_config_id'] = $request->input('apple_dev_s2s_config_id');
+                }
+
+                app(IAPConfigModel::class)->saveConfig($tenant_id, $app_key, $apple_iap_config_data);
+            }
+            app(OrderInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $order_config_data);
             $this->clearAPICache($app_key);
             DB::commit();
             admin_toastr('保存成功', 'success');
@@ -388,6 +464,8 @@ class OrderConfigController extends Controller
                 $cache_key = str_replace('{uuid}', $uuid, self::APPLE_CALLBACK_VERIFY_CACHE_KEY);
                 $call_back_verify_status = [
                     'status' => false,
+                    'waiting' => true,
+                    'bundle_id' => $bundle_id,
                     'message' => '回调验证中，请稍后...',
                 ];
                 Cache::put($cache_key, $call_back_verify_status, self::APPLE_CALLBACK_VERIFY_CACHE_TTL);

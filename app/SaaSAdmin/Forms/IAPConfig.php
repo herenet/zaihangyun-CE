@@ -46,12 +46,10 @@ class IAPConfig extends Form
                     ->help('如在App Store Connect中配置了订阅，请选择开启订阅功能。并配置好以下共享密钥及回调地址。')
                     ->when(1, function (Form $form) {
                         $form->text('shared_secret', '共享密钥')
-                            ->required()
                             ->rules(['string', 'max:255'])
                             ->help('请输入共享密钥，在App Store Connect > App 信息 > App 专用共享密码，生成后获取。');
 
                         $form->select('apple_dev_s2s_config_id', '苹果服务端API证书')
-                            ->required()
                             ->config('allowClear', false)
                             ->config('minimumResultsForSearch', 'Infinity')
                             ->options(function () {
@@ -192,6 +190,7 @@ JS);
             'suport_apple_pay' => $config->suport_apple_pay ?? 0,
             'bundle_id' => $iap_config->bundle_id ?? '',
             'app_apple_id' => $iap_config->app_apple_id ?? '',
+            'apple_dev_s2s_config_id' => $iap_config->apple_dev_s2s_config_id ?? '',
             'subscrip_switch' => $iap_config->subscrip_switch ?? 0,
             'shared_secret' => $iap_config->shared_secret ?? '',
         ];

@@ -60,6 +60,7 @@ Route::group([
         $router->post('order/config/apple/verify-one-time-purchase', 'Manager\OrderConfigController@verifyOneTimePurchase')->name('app.manager.order.config.verify.one-time-purchase');
         $router->post('order/config/apple/verify-notify', 'Manager\OrderConfigController@verifyNotify')->name('app.manager.order.config.verify.notify');
         $router->get('order/config/apple/callback-verify-status', 'Manager\OrderConfigController@getAppleCallbackVerifyStatus')->name('app.manager.order.config.verify.callback-status');
+        $router->post('order/config/iap', 'Manager\OrderConfigController@saveIAP')->name('app.manager.order.config.save.iap');
         
         $router->resource('article/category', 'Manager\ArticleCategoryController')->names('app.manager.article.category');
         $router->resource('article/list', 'Manager\ArticleController')->names('app.manager.article.list');
