@@ -377,6 +377,8 @@ class OrderConfigController extends Controller
                 $testNotification = $api->requestTestNotification();
                 $response = $testNotification->getTestNotificationToken();
                 Log::channel('callback')->info('苹果IAP测试通知', ['response' => $response]);
+
+                sleep(2);
                 $testNotificationStatus = $api->getTestNotificationStatus($response);
                 
                 $cache_key = str_replace('{uuid}', $response, self::APPLE_CALLBACK_VERIFY_CACHE_KEY);
