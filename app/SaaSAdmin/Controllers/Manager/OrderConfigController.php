@@ -32,7 +32,7 @@ class OrderConfigController extends Controller
     use AppKey;
 
     const APPLE_CALLBACK_VERIFY_CACHE_KEY = 'apple_callback_verify_cache:{uuid}';
-    const APPLE_CALLBACK_VERIFY_CACHE_TTL = 60*10; // 10分钟
+    const APPLE_CALLBACK_VERIFY_CACHE_TTL = 60; // 1分钟
 
     public function index(Content $content)
     {
@@ -327,6 +327,13 @@ class OrderConfigController extends Controller
         $uuid = $request->input('uuid');
         $cache_key = str_replace('{uuid}', $uuid, self::APPLE_CALLBACK_VERIFY_CACHE_KEY);
         $call_back_verify_status = Cache::get($cache_key);
+        if(!$call_back_verify_status) {
+            return response()->json([
+                'status' => false,
+                'waiting' => false,
+                'message' => '验证失败: 验证超时',
+            ]);
+        }
         return response()->json($call_back_verify_status);
     }
 

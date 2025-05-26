@@ -91,10 +91,18 @@ class IAPCallbackCheck extends Field
                         hiddenInput.val(1);
                         clearInterval(interval);
                     } else {
-                        result.removeClass('interface-check-success')
-                              .removeClass('interface-check-waiting')
-                              .addClass('interface-check-fail')
-                              .html('<i class="fa fa-times"></i> ' + (data.message ? data.message : failText));
+                        if(typeof data.waiting !== 'undefined' && data.waiting == false) {
+                            result.removeClass('interface-check-success')
+                                  .removeClass('interface-check-waiting')
+                                  .addClass('interface-check-fail')
+                                  .html('<i class="fa fa-times"></i> ' + (data.message ? data.message : failText));
+                            clearInterval(interval);
+                        } else {
+                            result.removeClass('interface-check-success')
+                                  .removeClass('interface-check-waiting')
+                                  .addClass('interface-check-fail')
+                                  .html('<i class="fa fa-spinner fa-spin"></i> ' + (data.message ? data.message : failText));
+                        }
                     }
                 });
             }
