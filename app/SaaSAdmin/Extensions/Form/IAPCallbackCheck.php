@@ -91,7 +91,7 @@ class IAPCallbackCheck extends Field
                         hiddenInput.val(1);
                         clearInterval(interval);
                     } else {
-                        if(typeof data.waiting !== 'undefined' && data.waiting == false) {
+                        if(typeof data.waiting !== 'undefined' && data.waiting === false) {
                             result.removeClass('interface-check-success')
                                   .removeClass('interface-check-waiting')
                                   .addClass('interface-check-fail')
