@@ -164,6 +164,7 @@ class IAPCallbackCheck extends Field
                                       .addClass('interface-check-waiting')
                                       .html('<i class="fa fa-spinner fa-spin"></i> ' + response.message);
                                 var uuid = response.data.uuid;
+                                clearInterval(interval);
                                 interval = setInterval(function() {
                                     callbackVerify(btn, result, uuid);
                                 }, 1000);
