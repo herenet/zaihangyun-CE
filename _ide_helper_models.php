@@ -20,6 +20,7 @@ namespace App\Models{
  * @property string $alipay_app_id
  * @property string $alipay_public_cert
  * @property string $app_private_cert
+ * @property int $interface_check
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon $created_at
  * @method static \Illuminate\Database\Eloquent\Builder|AlipayConfig newModelQuery()
@@ -30,6 +31,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|AlipayConfig whereAppKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AlipayConfig whereAppPrivateCert($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AlipayConfig whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AlipayConfig whereInterfaceCheck($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AlipayConfig whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AlipayConfig whereUpdatedAt($value)
  */

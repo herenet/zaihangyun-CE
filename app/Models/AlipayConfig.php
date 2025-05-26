@@ -17,6 +17,7 @@ class AlipayConfig extends Model
         'alipay_app_id',
         'alipay_public_cert',
         'app_private_cert',
+        'interface_check',
     ];
 
     public function getConfig($tenantId, $appKey)
