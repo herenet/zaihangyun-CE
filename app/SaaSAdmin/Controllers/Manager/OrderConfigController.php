@@ -379,9 +379,10 @@ class OrderConfigController extends Controller
                 Log::channel('callback')->info('苹果IAP测试通知', ['response' => $response]);
 
                 sleep(2);
+                $uuid = explode('_', $response)[0];
                 $testNotificationStatus = $api->getTestNotificationStatus($response);
                 
-                $cache_key = str_replace('{uuid}', $response, self::APPLE_CALLBACK_VERIFY_CACHE_KEY);
+                $cache_key = str_replace('{uuid}', $uuid, self::APPLE_CALLBACK_VERIFY_CACHE_KEY);
                 $call_back_verify_status = [
                     'status' => false,
                     'message' => '回调验证中，请稍后...',
@@ -392,7 +393,7 @@ class OrderConfigController extends Controller
                     'status' => true,
                     'message' => '测试通知已发送:'.$response,
                     'data' => [
-                        'uuid' => $response,
+                        'uuid' => $uuid,
                     ]
                 ];
 

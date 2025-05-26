@@ -85,14 +85,16 @@ class IAPCallbackCheck extends Field
                 $.getJSON(btn.data('callback-url'), {uuid: uuid}, function(data) {
                     if (data.status) {
                         result.removeClass('interface-check-fail')
-                                      .addClass('interface-check-success')
-                                      .html('<i class="fa fa-check"></i> ' + successText);
+                              .removeClass('interface-check-waiting')
+                              .addClass('interface-check-success')
+                              .html('<i class="fa fa-check"></i> ' + (data.message ? data.message : successText));
                         hiddenInput.val(1);
                         clearInterval(interval);
                     } else {
                         result.removeClass('interface-check-success')
-                                      .addClass('interface-check-waiting')
-                                      .html('<i class="fa fa-spinner fa-spin"></i> ' + data.message);
+                              .removeClass('interface-check-waiting')
+                              .addClass('interface-check-fail')
+                              .html('<i class="fa fa-times"></i> ' + (data.message ? data.message : failText));
                     }
                 });
             }
@@ -151,8 +153,8 @@ class IAPCallbackCheck extends Field
                         success: function(response) {
                             if (response.status) {
                                 result.removeClass('interface-check-fail')
-                                      .addClass('interface-check-success')
-                                      .html('<i class="fa fa-check"></i> ' + successText);
+                                      .addClass('interface-check-waiting')
+                                      .html('<i class="fa fa-spinner fa-spin"></i> ' + response.message);
                                 var uuid = response.data.uuid;
                                 interval = setInterval(function() {
                                     callbackVerify(btn, result, uuid);
