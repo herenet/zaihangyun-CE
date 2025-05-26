@@ -12,7 +12,11 @@ use App\Models\AppleDevS2SConfig;
 use Illuminate\Support\Facades\Log;
 use App\SaaSAdmin\Facades\SaaSAdmin;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use Encore\Admin\Controllers\AdminController;
+use Readdle\AppStoreServerAPI\ResponseBodyV2;
+use App\SaaSAdmin\Controllers\Manager\OrderConfigController;
+use Readdle\AppStoreServerAPI\Exception\AppStoreServerNotificationException;
 
 class AppleApiCertConfigController extends AdminController
 {
@@ -198,9 +202,28 @@ JS);
     {
         $params = Helpers::simpleDecode($params);
         $headers = request()->header();
-        $body = request()->getContent();
         $data = request()->all();
-        //dd($params);
-        Log::channel('callback')->info('苹果IAP回调验证', ['params' => $params, 'headers' => $headers, 'body' => $body, 'data' => $data]);
+       
+        Log::channel('callback')->info('苹果IAP回调验证', ['params' => $params, 'headers' => $headers, 'data' => $data]);
+
+        $notification = json_encode($data);
+
+        try {
+            $responseBodyV2 = ResponseBodyV2::createFromRawNotification(
+                $notification,
+                Helpers::getApplePublicCertificates()
+            );
+            $notification_uuid = $responseBodyV2->getNotificationUuid();
+            $cache_key = str_replace('{uuid}', $notification_uuid, OrderConfigController::APPLE_CALLBACK_VERIFY_CACHE_KEY);
+            $call_back_verify_status = Cache::get($cache_key);
+            if ($call_back_verify_status) {
+                $call_back_verify_status['status'] = true;
+                $call_back_verify_status['message'] = '回调验证成功';
+                Cache::put($cache_key, $call_back_verify_status, OrderConfigController::APPLE_CALLBACK_VERIFY_CACHE_TTL);
+            }
+            Log::channel('callback')->info('苹果IAP回调验证解密成功', ['responseBodyV2' => $responseBodyV2]);
+        } catch (AppStoreServerNotificationException $e) {
+            Log::channel('callback')->error('苹果IAP回调验证解密失败', ['error' => $e->getMessage(), 'notification' => $notification]);
+        }
     }
 }

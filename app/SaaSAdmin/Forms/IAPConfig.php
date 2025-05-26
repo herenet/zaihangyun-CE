@@ -75,10 +75,11 @@ class IAPConfig extends Form
 
                         $this->html('<span class="text-danger"><i class="fa fa-warning"></i> 如用户为订阅购买：<br/>1、系统将会以S2S通知中的expiresDate作为用户VIP的过期时间。<br/>2、必须配置共享密钥及回调地址。</span>');
                     
-                        $form->interfaceCheck('apple_subscrip_check', '验证配置')
+                        $form->iapCallbackCheck('apple_subscrip_check', '验证配置')
                             ->buttonText('验证配置是否正确')
                             ->dependentOn(['bundle_id', 'app_apple_id', 'shared_secret', 'apple_dev_s2s_config_id'])
                             ->default(0)
+                            ->callbackUrl(admin_url('app/manager/'.$this->getAppKey().'/order/config/apple/callback-verify-status'))
                             ->testUrl(admin_url('app/manager/'.$this->getAppKey().'/order/config/apple/verify-notify'))
                             ->help('为确保订阅功能正常使用，需要使用苹果IAP接口请求苹果发送回调验证。<br/>
                             验证接口文档：<a href="https://developer.apple.com/documentation/AppStoreServerAPI/Request-a-Test-Notification" target="_blank">查看文档>>></a>');

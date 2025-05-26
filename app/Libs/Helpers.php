@@ -3,7 +3,9 @@
 namespace App\Libs;
 use Jdenticon\Identicon;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Readdle\AppStoreServerAPI\Util\Helper;
 
 class Helpers
 {
@@ -180,5 +182,17 @@ class Helpers
         ];
 
         return $messages[$code] ? '【'.$code.'】'.$messages[$code] : '未知错误代码。';
+    }
+
+    public static function getApplePublicCertificates()
+    {
+        $cache_key = 'apple_public_certificates';
+        $ttl = 60 * 60 * 24 * 30; // 30天
+        $cert = Cache::get($cache_key);
+        if (!$cert) {
+            $cert = Helper::toPEM(file_get_contents('https://www.apple.com/certificateauthority/AppleRootCA-G3.cer'));
+            Cache::put($cache_key, $cert, $ttl);
+        }
+        return $cert;
     }
 }

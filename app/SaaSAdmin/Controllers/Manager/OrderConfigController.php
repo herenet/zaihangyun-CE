@@ -31,6 +31,9 @@ class OrderConfigController extends Controller
 {
     use AppKey;
 
+    const APPLE_CALLBACK_VERIFY_CACHE_KEY = 'apple_callback_verify_cache:{uuid}';
+    const APPLE_CALLBACK_VERIFY_CACHE_TTL = 60*10; // 10分钟
+
     public function index(Content $content)
     {
         $app_key = $this->getAppKey();
@@ -311,6 +314,22 @@ class OrderConfigController extends Controller
         }
     }
 
+    public function getAppleCallbackVerifyStatus(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'uuid' => 'required|string|max:128',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'message' => $validator->errors()->first()]);
+        }
+
+        $uuid = $request->input('uuid');
+        $cache_key = str_replace('{uuid}', $uuid, self::APPLE_CALLBACK_VERIFY_CACHE_KEY);
+        $call_back_verify_status = Cache::get($cache_key);
+        return response()->json($call_back_verify_status);
+    }
+
     public function verifyNotify(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -356,11 +375,23 @@ class OrderConfigController extends Controller
 
             try {
                 $testNotification = $api->requestTestNotification();
-                Log::channel('callback')->info('苹果IAP测试通知', ['response' => $testNotification->getTestNotificationToken()]);
+                $response = $testNotification->getTestNotificationToken();
+                Log::channel('callback')->info('苹果IAP测试通知', ['response' => $response]);
+                $testNotificationStatus = $api->getTestNotificationStatus($response);
                 
+                $cache_key = str_replace('{uuid}', $response, self::APPLE_CALLBACK_VERIFY_CACHE_KEY);
+                $call_back_verify_status = [
+                    'status' => false,
+                    'message' => '回调验证中，请稍后...',
+                ];
+                Cache::put($cache_key, $call_back_verify_status, self::APPLE_CALLBACK_VERIFY_CACHE_TTL);
+
                 return [
                     'status' => true,
-                    'message' => '测试通知已发送，请检查回调接口是否收到通知:'.$testNotification->getTestNotificationToken()
+                    'message' => '测试通知已发送:'.$response,
+                    'data' => [
+                        'uuid' => $response,
+                    ]
                 ];
 
             } catch (AppStoreServerAPIException $e) {
