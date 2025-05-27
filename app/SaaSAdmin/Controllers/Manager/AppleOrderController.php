@@ -59,7 +59,10 @@ class AppleOrderController extends AdminController
         $grid->column('subscription_status', '订阅状态')->using(AppleOrder::$subscriptionStatusMap)->prependIcon('pay');
         $grid->column('transaction_id', '苹果交易ID');
         $grid->column('original_transaction_id', '原始交易ID');
-        $grid->column('environment', '环境');
+        $grid->column('environment', '环境')->using(AppleOrder::$environmentMap)->label([
+            AppleOrder::ENVIRONMENT_SANDBOX => 'info',
+            AppleOrder::ENVIRONMENT_PRODUCTION => 'success',
+        ]);
         $grid->column('is_trial_period', '是否试用期')->using([0 => '否', 1 => '是']);
         $grid->column('is_in_intro_offer_period', '是否促销期')->using([0 => '否', 1 => '是']);
         $grid->column('expires_date', '订阅过期时间');
@@ -69,7 +72,10 @@ class AppleOrderController extends AdminController
         $grid->column('purchase_date', '购买时间');
         $grid->column('original_purchase_date', '原始购买时间');
         $grid->column('cancellation_date', '取消时间');
-        $grid->column('data_source', '数据来源')->using(AppleOrder::$dataSourceMap);
+        $grid->column('data_source', '数据来源')->using(AppleOrder::$dataSourceMap)->dot([
+            AppleOrder::DATA_SOURCE_RECEIPT => 'info',
+            AppleOrder::DATA_SOURCE_S2S => 'success',
+        ]);
         $grid->column('updated_at', '更新时间');
         $grid->column('created_at', '创建时间');
 
