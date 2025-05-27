@@ -267,8 +267,10 @@ class OrderConfigController extends Controller
     {
         $cache_key = 'order_interface_config|'.$app_key;
         $alipay_cache_key = 'alipay_config|'.$app_key;
+        $iap_cache_key = 'iap_config|'.$app_key;
         Cache::store('api_cache')->forget($cache_key);
         Cache::store('api_cache')->forget($alipay_cache_key);
+        Cache::store('api_cache')->forget($iap_cache_key);
     }
 
     public function checkAlipayInterface(Request $request)

@@ -237,6 +237,99 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * CREATE TABLE `apple_orders` (
+ * `oid` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '内部订单号',
+ * `tenant_id` bigint(20) unsigned NOT NULL COMMENT '租户ID',
+ * `app_key` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用标识',
+ * `uid` bigint(20) unsigned NOT NULL COMMENT '用户ID',
+ * `product_id` int(10) unsigned NOT NULL COMMENT '内部产品ID',
+ * `apple_product_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '苹果产品标识符',
+ * `product_type` tinyint(3) unsigned NOT NULL COMMENT '产品类型：1=消耗型(consumable)，2=非消耗型(non_consumable)，3=自动续期订阅(auto_renewable_subscription)，4=非续期订阅(non_renewing_subscription)',
+ * `amount` int(10) unsigned NOT NULL COMMENT '订单金额(分)',
+ * `payment_status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '支付状态：1=待验证，2=支付成功，3=支付失败，4=已退款',
+ * `subscription_status` tinyint(3) unsigned DEFAULT NULL COMMENT '订阅状态：1=活跃，2=已过期，3=已取消，4=宽限期，5=计费重试',
+ * `transaction_id` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '苹果交易ID',
+ * `original_transaction_id` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '原始交易ID(订阅关联标识)',
+ * `environment` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '环境：sandbox或production',
+ * `is_trial_period` tinyint(1) DEFAULT NULL COMMENT '是否试用期：0=否，1=是',
+ * `is_in_intro_offer_period` tinyint(1) DEFAULT NULL COMMENT '是否促销期：0=否，1=是',
+ * `expires_date` timestamp NULL DEFAULT NULL COMMENT '订阅过期时间',
+ * `grace_period_expires_date` timestamp NULL DEFAULT NULL COMMENT '宽限期过期时间',
+ * `auto_renew_status` tinyint(1) DEFAULT NULL COMMENT '自动续订状态：0=关闭，1=开启',
+ * `auto_renew_product_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '下一周期续订的产品ID',
+ * `purchase_date` timestamp NULL DEFAULT NULL COMMENT '购买时间',
+ * `original_purchase_date` timestamp NULL DEFAULT NULL COMMENT '原始购买时间',
+ * `cancellation_date` timestamp NULL DEFAULT NULL COMMENT '取消时间(退款时苹果返回)',
+ * `data_source` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '数据来源：1=Receipt验证，2=S2S通知',
+ * `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+ * `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+ * PRIMARY KEY (`oid`),
+ * UNIQUE KEY `uk_tenant_app_transaction` (`tenant_id`,`app_key`,`transaction_id`),
+ * KEY `idx_tenant_app_original_transaction` (`tenant_id`,`app_key`,`original_transaction_id`),
+ * KEY `idx_uid` (`uid`)
+ * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='苹果支付订单表';
+ *
+ * @property string $oid 内部订单号
+ * @property int $tenant_id 租户ID
+ * @property string $app_key 应用标识
+ * @property int $uid 用户ID
+ * @property int $product_id 内部产品ID
+ * @property string $apple_product_id 苹果产品标识符
+ * @property int $product_type 产品类型：1=消耗型(consumable)，2=非消耗型(non_consumable)，3=自动续期订阅(auto_renewable_subscription)，4=非续期订阅(non_renewing_subscription)
+ * @property int $amount 订单金额(分)
+ * @property int $payment_status 支付状态：1=待验证，2=支付成功，3=支付失败，4=已退款
+ * @property int|null $subscription_status 订阅状态：1=活跃，2=已过期，3=已取消，4=宽限期，5=计费重试
+ * @property string|null $transaction_id 苹果交易ID
+ * @property string|null $original_transaction_id 原始交易ID(订阅关联标识)
+ * @property string $environment 环境：sandbox或production
+ * @property int|null $is_trial_period 是否试用期：0=否，1=是
+ * @property int|null $is_in_intro_offer_period 是否促销期：0=否，1=是
+ * @property string|null $expires_date 订阅过期时间
+ * @property string|null $grace_period_expires_date 宽限期过期时间
+ * @property int|null $auto_renew_status 自动续订状态：0=关闭，1=开启
+ * @property string|null $auto_renew_product_id 下一周期续订的产品ID
+ * @property string|null $purchase_date 购买时间
+ * @property string|null $original_purchase_date 原始购买时间
+ * @property string|null $cancellation_date 取消时间(退款时苹果返回)
+ * @property int $data_source 数据来源：1=Receipt验证，2=S2S通知
+ * @property string|null $updated_at 更新时间
+ * @property string|null $created_at 创建时间
+ * @property-read \App\Models\IAPProduct|null $product
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereAppleProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereAutoRenewProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereAutoRenewStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereCancellationDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereDataSource($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereEnvironment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereExpiresDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereGracePeriodExpiresDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereIsInIntroOfferPeriod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereIsTrialPeriod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereOid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereOriginalPurchaseDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereOriginalTransactionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder wherePaymentStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereProductType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder wherePurchaseDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereSubscriptionStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereTransactionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereUpdatedAt($value)
+ */
+	class AppleOrder extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Article
  *
  * @property string $id
