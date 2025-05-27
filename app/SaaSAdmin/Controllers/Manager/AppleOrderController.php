@@ -60,7 +60,7 @@ class AppleOrderController extends AdminController
         $grid->column('transaction_id', '苹果交易ID');
         $grid->column('original_transaction_id', '原始交易ID');
         $grid->column('environment', '环境')->using(AppleOrder::$environmentMap)->label([
-            AppleOrder::ENVIRONMENT_SANDBOX => 'info',
+            AppleOrder::ENVIRONMENT_SANDBOX => 'warning',
             AppleOrder::ENVIRONMENT_PRODUCTION => 'success',
         ]);
         $grid->column('is_trial_period', '是否试用期')->using([0 => '否', 1 => '是']);
