@@ -51,7 +51,7 @@ class AppleOrderController extends AdminController
             return null;
         });
         $grid->column('payment_status', '支付状态')->using(AppleOrder::$paymentStatusMap)->label([
-            AppleOrder::PAYMENT_STATUS_PENDING => 'info',
+            AppleOrder::PAYMENT_STATUS_PENDING => 'default',
             AppleOrder::PAYMENT_STATUS_SUCCESS => 'success',
             AppleOrder::PAYMENT_STATUS_FAILED => 'danger',
             AppleOrder::PAYMENT_STATUS_REFUNDED => 'warning',
