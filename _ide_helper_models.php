@@ -404,6 +404,75 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * CREATE TABLE `iap_products` (
+ *  `pid` bigint unsigned NOT NULL,
+ *  `app_key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+ *  `tenant_id` bigint unsigned NOT NULL,
+ *  `iap_product_id` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '苹果产品ID',
+ *  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '产品名称',
+ *  `sub_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '子标题',
+ *  `is_subscription` tinyint unsigned DEFAULT '0' COMMENT '是否为订阅',
+ *  `subscription_duration` tinyint unsigned DEFAULT NULL COMMENT '苹果订阅时长周期类型',
+ *  `type` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '产品类型：1、会员时长；2、永久会员；99、自定义',
+ *  `function_value` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '产品功能值，用于购买后逻辑处理',
+ *  `cross_price` int unsigned NOT NULL COMMENT '划线价，单位分',
+ *  `sale_price` int unsigned NOT NULL COMMENT '售价',
+ *  `desc` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品描述',
+ *  `sale_status` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '1在售，2为待售',
+ *  `order` int unsigned NOT NULL DEFAULT '1' COMMENT '排序',
+ *  `ext_data` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户自定义扩展字段，jsons格式',
+ *  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+ *  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+ *  PRIMARY KEY (`pid`) USING BTREE,
+ *  UNIQUE KEY `unq_iap_pid` (`app_key`,`iap_product_id`)
+ * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+ *
+ * @property int $pid
+ * @property string $app_key
+ * @property int $tenant_id
+ * @property string|null $iap_product_id 苹果产品ID
+ * @property string $name 产品名称
+ * @property string|null $sub_name 子标题
+ * @property int|null $is_subscription 是否为订阅
+ * @property int|null $subscription_duration 苹果订阅时长周期类型
+ * @property int $type 产品类型：1、会员时长；2、永久会员；99、自定义
+ * @property string $function_value 产品功能值，用于购买后逻辑处理
+ * @property int $cross_price 划线价，单位分
+ * @property int $sale_price 售价
+ * @property string|null $desc 商品描述
+ * @property int $sale_status 1在售，2为待售
+ * @property int $order 排序
+ * @property string|null $ext_data 用户自定义扩展字段，jsons格式
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct ordered(string $direction = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct query()
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereCrossPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereExtData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereFunctionValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereIapProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereIsSubscription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct wherePid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereSalePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereSaleStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereSubName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereSubscriptionDuration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereUpdatedAt($value)
+ */
+	class IAPProduct extends \Eloquent implements \Spatie\EloquentSortable\Sortable {}
+}
+
+namespace App\Models{
+/**
  * App\Models\LoginInterfaceConfig
  *
  * @property string $app_key

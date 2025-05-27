@@ -69,7 +69,7 @@
 
 
 <a name="section-3"></a>
-### 产品数据结构
+### 产品数据结构（非Apple平台）
 
 | 字段名 | 类型 | 说明 | 示例值 |
 |--------|------|------|--------|
@@ -82,11 +82,35 @@
 | sale_price | unsigned int | 售价（单位：分） | 9900 |
 | desc | string | 商品描述 | 解锁全部高级功能，畅享无限使用体验 |
 | sale_status | unsigned int | 销售状态（1=在售，2=待售），默认1 | 1 |
-| platform_type | unsigned int | 适用平台（1=所有平台，2=安卓，3=苹果），默认1 | 1 |
+| platform_type | unsigned int | 适用平台（1=所有平台，2=安卓，3=鸿蒙），默认1 | 1 |
 | order | unsigned int | 排序权重，值越小越靠前，默认1 | 1 |
 | ext_data |  JSON  | 自定义扩展数据（JSON字符串）   | { "test": "test", ... } |
 | updated_at | datetime | 更新时间 | 2024-04-15 15:30:25 |
 | created_at | datetime | 创建时间 | 2024-04-15 15:20:10 |
+
+
+<a name="section-5"></a>
+### Apple平台产品数据结构
+
+| 字段名 | 类型 | 说明 | 示例值 |
+|--------|------|------|--------|
+| pid | bigint unsigned | 产品唯一ID | 1001 |
+| iap_product_id | varchar(128) | 苹果产品ID | com.example.app.monthly |
+| name | varchar(32) | 产品名称 | 高级会员月卡 |
+| sub_name | varchar(64) | 子标题 | 尊享所有高级功能30天 |
+| is_subscription | tinyint unsigned | 是否为订阅（0=否，1=是），默认0 | 1 |
+| subscription_duration | tinyint unsigned | 苹果订阅时长周期类型（1=周，2=月，3=双月，4=季度，5=半年，6=年） | 2 |
+| type | tinyint unsigned | 产品类型（1=会员时长，2=永久会员，99=自定义），默认1 | 1 |
+| function_value | varchar(64) | 产品功能值，用于购买后逻辑处理 | 30 |
+| cross_price | int unsigned | 划线价，单位分 | 12900 |
+| sale_price | int unsigned | 售价，单位分 | 9900 |
+| desc | varchar(512) | 商品描述 | 解锁全部高级功能，畅享无限使用体验 |
+| sale_status | tinyint unsigned | 销售状态（1=在售，2=待售），默认1 | 1 |
+| order | int unsigned | 排序，值越小越靠前，默认1 | 1 |
+| ext_data | varchar(512) | 用户自定义扩展字段，JSON格式 | {"tag": "hot"} |
+| updated_at | timestamp | 更新时间 | 2024-04-15 15:30:25 |
+| created_at | timestamp | 创建时间 | 2024-04-15 15:20:10 |
+
 
 <a name="section-4"></a>
 ##文档模块
