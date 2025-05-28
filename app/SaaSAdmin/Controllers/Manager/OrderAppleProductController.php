@@ -127,7 +127,10 @@ class OrderAppleProductController extends AdminController
         $form->setWidth(6, 3);
         $form->text('name', '产品名称')->rules(['required', 'string', 'max:64']);
         $form->text('sub_name', '子标题')->rules(['nullable', 'string', 'max:64']);
-        $form->text('iap_product_id', '苹果产品ID')->rules(['required', 'string', 'max:128'])
+        $form->text('iap_product_id', '苹果产品ID')
+            ->rules(['required', 'unique:iap_products,iap_product_id,NULL,id,app_key,'.$this->getAppKey(), 'string', 'max:128'], [
+                'unique' => '苹果产品ID已存在',
+            ])
             ->help('苹果产品ID为苹果后台的商品ID，请在苹果后台查看。');
         $form->select('type', '产品类型')
             ->options(IAPProduct::$typeMap)
