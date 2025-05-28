@@ -44,7 +44,7 @@
 <a name="section-2"></a>
 ##订单模块
 
-###订单数据结构
+###订单数据结构（Android）
 
 | 字段名 | 类型 | 说明 | 示例值 |
 |--------|------|------|--------|
@@ -68,8 +68,50 @@
 | created_at | datetime | 创建时间 | 2024-04-15 15:20:10 |
 
 
+<a name="section-6"></a>
+###订单数据结构（Apple）
+
+| 字段名 | 类型 | 说明 | 示例值 |
+|--------|------|------|--------|
+| oid | string | 订单唯一ID | AP202404151234567890123456 |
+| uid | unsigned int | 用户ID | 1857248324 |
+| product_id | unsigned int | 产品ID | 1001 |
+| apple_product_id | string | Apple产品标识符 | com.example.premium_monthly |
+| product_type | unsigned int | 产品类型（0=消耗型，1=非消耗型，2=自动续费订阅，3=非自动续费订阅） | 2 |
+| amount | unsigned int | 订单金额（单位：分），`非实际支付金额，仅作参考` | 9400 |
+| payment_status | unsigned int | 支付状态（1=待支付，2=已支付，3=已退款，4=支付失败），默认1 | 2 |
+| subscription_status | unsigned int | 订阅状态（1=活跃，2=已过期，3=已取消，4=宽限期，5=暂停），仅订阅产品 | 1 |
+| transaction_id | string | Apple交易ID | 2000000123456789 |
+| original_transaction_id | string | 原始交易ID | 2000000123456789 |
+| purchase_date | datetime | 购买时间 | 2024-04-15 15:30:25 |
+| original_purchase_date | datetime | 原始购买时间 | 2024-04-15 15:30:25 |
+| expires_date | datetime | 过期时间（仅订阅产品） | 2024-05-15 15:30:25 |
+| cancellation_date | datetime | 取消时间 | 2024-04-20 10:15:30 |
+| is_trial_period | unsigned int | 是否试用期（0=否，1=是） | 0 |
+| is_in_intro_offer_period | unsigned int | 是否介绍性优惠期（0=否，1=是） | 0 |
+| auto_renew_status | unsigned int | 自动续费状态（0=关闭，1=开启） | 1 |
+| auto_renew_product_id | string | 自动续费产品ID | com.example.premium_monthly |
+| environment | string | 环境类型（Sandbox=沙盒，Production=生产） | Production |
+| data_source | unsigned int | 数据来源（1=Receipt验证，2=S2S通知） | 1 |
+| updated_at | datetime | 更新时间 | 2024-04-15 15:30:25 |
+| created_at | datetime | 创建时间 | 2024-04-15 15:20:10 |
+
+#### 字段说明
+* 订阅相关字段：
+1. subscription_status、expires_date、auto_renew_status 等字段仅对订阅类型产品有效
+2. 非订阅产品这些字段值为 NULL 或默认值
+* Apple特有字段：
+1. transaction_id：Apple提供的唯一交易标识
+2. original_transaction_id：用于关联续费订单的原始交易ID
+3. apple_product_id：在App Store Connect中配置的产品标识符
+4. environment：区分沙盒测试和生产环境
+* 数据来源：
+1. data_source=1：通过Receipt验证创建/更新的订单
+2. data_source=2：通过Apple S2S通知创建/更新的订单
+
+
 <a name="section-3"></a>
-### Android产品数据结构
+### 产品数据结构（Android）
 
 | 字段名 | 类型 | 说明 | 示例值 |
 |--------|------|------|--------|
@@ -89,7 +131,7 @@
 
 
 <a name="section-5"></a>
-### Apple平台产品数据结构
+### 产品数据结构（Apple）
 
 | 字段名 | 类型 | 说明 | 示例值 |
 |--------|------|------|--------|

@@ -1,4 +1,4 @@
-# 获取Apple平台产品列表
+# 获取产品列表（Apple）
 
 ---
 - [接口说明](#section-1)
@@ -29,7 +29,7 @@
 
 | Method | URI Path | 鉴权方式 |
 | -- | -- | -- |
-| GET | `/v1/product/iap_list` | [签名认证](/{{route}}/{{version}}/intro#section-3) |
+| GET | `/v1/product/iap/list` | [签名认证](/{{route}}/{{version}}/intro#section-3) |
 
 <a name="section-3"></a>
 ## 请求参数

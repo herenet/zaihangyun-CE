@@ -1,4 +1,4 @@
-# 获取产品详情（非Apple平台）
+# 获取产品详情（Android）
 
 ---
 - [接口说明](#section-1)
@@ -11,7 +11,7 @@
 <a name="section-1"></a>
 ## 接口说明
 
-获取指定IAP商品的详细信息。
+获取指定商品的详细信息。
 
 ### 注意事项
 
@@ -52,7 +52,7 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/product/info' \
     "appkey": "D5fceA1sVtmaMY1F",
     "timestamp": 1650381362,
     "sign": "5HC0kxCm2jsR3DpzhRJEFY3IfFvTcCN-8-qvvLCrKB8",
-    "pid": 1001
+    "pid": 7534399
 }'
 ```
 
@@ -66,21 +66,16 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/product/info' \
     "code": 200,
     "msg": "success",
     "data": {
-        "pid": "1001",
-        "iap_product_id": "com.example.app.monthly",
-        "name": "高级会员月卡",
-        "sub_name": "尊享所有高级功能30天",
-        "is_subscription": 1,
-        "subscription_duration": 2,
+        "pid": 7534399,
+        "name": "年会员",
+        "sub_name": "一年会员",
         "type": 1,
-        "function_value": "30",
-        "cross_price": 12900,
+        "function_value": "365",
+        "cross_price": 11100,
         "sale_price": 9900,
-        "desc": "解锁全部高级功能，畅享无限使用体验",
+        "desc": null,
         "sale_status": 1,
-        "ext_data": {
-            "tag": "hot"
-        }
+        "ext_data": null
     }
 }
 ```
