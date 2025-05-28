@@ -186,7 +186,6 @@ SCRIPT;
     // 处理提交的表单
     public function handle(Order $order, Request $request)
     {
-        dd($order);
         try {
             // 验证验证码
             $mobile = $request->get('mobile');
