@@ -193,6 +193,8 @@ SCRIPT;
             $cacheKey = self::REFUNED_VERIFY_CODE_CACHE_KEY;
             $cacheKey = str_replace(['{mobile}', '{order_id}'], [$mobile, $order->oid], $cacheKey);
             $cachedCode = Cache::get($cacheKey);
+            dump($cacheKey);
+            dd($cachedCode, $code);
             
             if (!$cachedCode || $cachedCode != $code) {
                 return $this->response()->error('验证码错误或已过期');
