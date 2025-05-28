@@ -140,7 +140,7 @@ class AppleOrder extends Model
 
     public function product()
     {
-        return $this->belongsTo(IAPProduct::class, 'product_id', 'pid');
+        return $this->belongsTo(IAPProduct::class, 'product_id', 'pid')->withTrashed();
     }
 
     public function user()
