@@ -186,12 +186,13 @@ SCRIPT;
     // 处理提交的表单
     public function handle(Order $order, Request $request)
     {
+        dd($order);
         try {
             // 验证验证码
             $mobile = $request->get('mobile');
             $code = $request->get('verification_code');
             $cacheKey = self::REFUNED_VERIFY_CODE_CACHE_KEY;
-            $cacheKey = str_replace(['{mobile}', '{order_id}'], [$mobile, $order->id], $cacheKey);
+            $cacheKey = str_replace(['{mobile}', '{order_id}'], [$mobile, $order->oid], $cacheKey);
             $cachedCode = Cache::get($cacheKey);
             
             if (!$cachedCode || $cachedCode != $code) {
