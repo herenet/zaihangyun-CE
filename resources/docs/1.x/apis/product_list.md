@@ -22,12 +22,11 @@
 1. 价格单位为分
 2. 返回的产品列表按order字段升序排序
 3. 不传status参数默认返回在售商品
-4. 不传platform参数默认返回全平台商品
-5. 不传type参数默认返回所有类型商品
-6. function_value字段：
+4. 不传type参数默认返回所有类型商品
+5. function_value字段：
    - 当type=1(时长会员)时，表示会员时长天数
    - 当type=2(永久会员)时，固定值为"forever_vip"
-7. 最多返回100条数据
+6. 最多返回100条数据
 
 <a name="section-2"></a>
 ## 请求路径
@@ -50,7 +49,6 @@
 | 参数名 | 类型 | 是否必须 | 取值范围 | 默认值 | 说明 |
 | -- | -- | -- | -- | -- | -- |
 | status | integer | 否 | 1:在售, 2:下架 | 1 | 商品状态 |
-| platform | integer | 否 | 1:全部, 2:安卓, 3:鸿蒙 | 1 | 平台类型 |
 | type | integer | 否 | 1:时长会员, 2:永久会员, 99:自定义会员 | 1 | 商品类型 |
 
 <a name="section-4"></a>
@@ -84,7 +82,6 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/product/list?status
             "sale_price": 1900,        // 销售价格(分)
             "desc": null,              // 商品描述
             "sale_status": 1,          // 销售状态
-            "platform_type": 1,        // 平台类型
             "ext_data": "{\"test\":\"test\"}"   //用户自定义扩展数据
         }
         ...

@@ -100,6 +100,7 @@ class AppleApiCertConfigController extends AdminController
                 admin_error('请先验证配置是否正确');
                 return back()->withInput();
             }
+            $this->clearAPICache($form->model()->id, $form->model()->tenant_id);
         });
 
         $form->footer(function ($footer) {
@@ -157,6 +158,12 @@ $(function () {
 JS);
 
         return $form;
+    }
+
+    protected function clearAPICache($id, $tenantId)
+    {
+        $cache_key = 'apple_dev_s2s_config|'.$id.'|'.$tenantId;
+        Cache::store('api_cache')->forget($cache_key);
     }
 
     public function verify()

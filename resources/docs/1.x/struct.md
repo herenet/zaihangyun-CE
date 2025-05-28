@@ -69,7 +69,7 @@
 
 
 <a name="section-3"></a>
-### 产品数据结构（非Apple平台）
+### Android产品数据结构
 
 | 字段名 | 类型 | 说明 | 示例值 |
 |--------|------|------|--------|
@@ -82,7 +82,6 @@
 | sale_price | unsigned int | 售价（单位：分） | 9900 |
 | desc | string | 商品描述 | 解锁全部高级功能，畅享无限使用体验 |
 | sale_status | unsigned int | 销售状态（1=在售，2=待售），默认1 | 1 |
-| platform_type | unsigned int | 适用平台（1=所有平台，2=安卓，3=鸿蒙），默认1 | 1 |
 | order | unsigned int | 排序权重，值越小越靠前，默认1 | 1 |
 | ext_data |  JSON  | 自定义扩展数据（JSON字符串）   | { "test": "test", ... } |
 | updated_at | datetime | 更新时间 | 2024-04-15 15:30:25 |

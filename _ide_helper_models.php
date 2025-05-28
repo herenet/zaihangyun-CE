@@ -536,15 +536,18 @@ namespace App\Models{
  * @property int $sale_status 1在售，2为待售
  * @property int $order 排序
  * @property string|null $ext_data 用户自定义扩展字段，jsons格式
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct query()
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereAppKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereCrossPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereExtData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereFunctionValue($value)
@@ -560,6 +563,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct withoutTrashed()
  */
 	class IAPProduct extends \Eloquent implements \Spatie\EloquentSortable\Sortable {}
 }
@@ -748,15 +753,18 @@ namespace App\Models{
  * @property int $platform_type 适用平台：1为所有平台，2为安卓，3为苹果
  * @property int $order 排序
  * @property string|null $ext_data 用户自定义扩展字段，jsons格式
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Product ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereAppKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCrossPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereExtData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereFunctionValue($value)
@@ -770,6 +778,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product withoutTrashed()
  */
 	class Product extends \Eloquent implements \Spatie\EloquentSortable\Sortable {}
 }

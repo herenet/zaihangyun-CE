@@ -8,10 +8,11 @@ use Spatie\EloquentSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\SortableTrait;
 use Encore\Admin\Traits\DefaultDatetimeFormat;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model implements Sortable
 {
-    use DefaultDatetimeFormat, SortableTrait;
+    use DefaultDatetimeFormat, SortableTrait, SoftDeletes;
 
     protected $table = 'products';
 

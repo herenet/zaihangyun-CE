@@ -6,6 +6,7 @@ use Spatie\EloquentSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\SortableTrait;
 use Encore\Admin\Traits\DefaultDatetimeFormat;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
 * CREATE TABLE `iap_products` (
@@ -34,7 +35,7 @@ use Encore\Admin\Traits\DefaultDatetimeFormat;
 
 class IAPProduct extends Model implements Sortable
 {
-    use DefaultDatetimeFormat, SortableTrait;
+    use DefaultDatetimeFormat, SortableTrait, SoftDeletes;
 
     protected $table = 'iap_products';
 

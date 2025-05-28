@@ -59,7 +59,7 @@ class OrderProductController extends AdminController
                 'on' => ['value' => 1, 'text' => '在售', 'color' => 'success'],
                 'off' => ['value' => 2, 'text' => '待售', 'color' => 'primary'],
             ]);
-            $grid->column('platform_type', '适用平台')->using(Product::$platformTypeMap);
+            // $grid->column('platform_type', '适用平台')->using(Product::$platformTypeMap);
             $grid->order('排序')->orderable();
             $grid->column('ext_data', '扩展数据')->limit(30);
         
@@ -178,10 +178,7 @@ class OrderProductController extends AdminController
                 ->options(Product::$saleStatusMap)
                 ->default(1)
                 ->rules(['required', 'integer', 'max:64']);
-            $form->select('platform_type', '适用平台')
-                ->options(Product::$platformTypeMap)
-                ->config('allowClear', false)
-                ->config('minimumResultsForSearch', 'Infinity')
+            $form->hidden('platform_type', '适用平台')
                 ->default(1)
                 ->rules(['required', 'integer', 'max:64']);
             $form->textarea('desc', '商品描述')->rules(['nullable', 'string', 'max:256']);
@@ -245,7 +242,7 @@ class OrderProductController extends AdminController
                 return '￥'.number_format($value / 100, 2);
             });
             $show->field('sale_status', '销售状态')->using(Product::$saleStatusMap);
-            $show->field('platform_type', '适用平台')->using(Product::$platformTypeMap);
+            // $show->field('platform_type', '适用平台')->using(Product::$platformTypeMap);
             // $show->field('order', '排序');
             $show->field('created_at', '创建时间');
             $show->field('updated_at', '更新时间');
