@@ -18,7 +18,7 @@
 1. 需要用户登录认证
 2. 只能查询当前登录用户的订单
 3. 订单按创建时间倒序排列
-4. payment_status和subscription_status不传值或为null则返回所有订单
+4. payment_status和subscription_status不传值则返回所有订单
 
 <a name="section-2"></a>
 ## 请求路径
