@@ -35,6 +35,7 @@
     - [创建订单（Apple）](/{{route}}/{{version}}/apis/create_apple_order)
     - [获取订单详情（Apple）](/{{route}}/{{version}}/apis/apple_order_info)
     - [我的订单列表（Apple）](/{{route}}/{{version}}/apis/apple_order_list)
+    - [支付凭证校验（Apple）](/{{route}}/{{version}}/apis/apple_order_verify)
     - [提交意见反馈](/{{route}}/{{version}}/apis/feedback)
     - [我的反馈列表](/{{route}}/{{version}}/apis/my_feedback)
     - [获取所有反馈列表](/{{route}}/{{version}}/apis/feedback_list)
