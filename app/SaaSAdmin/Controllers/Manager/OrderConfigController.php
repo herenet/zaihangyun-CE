@@ -32,7 +32,7 @@ class OrderConfigController extends Controller
 {
     use AppKey;
 
-    const APPLE_CALLBACK_VERIFY_CACHE_KEY = 'apple_callback_verify_cache:{uuid}';
+    const APPLE_CALLBACK_VERIFY_CACHE_KEY = 'apple_callback_verify_cache|{uuid}';
     const APPLE_CALLBACK_VERIFY_CACHE_TTL = 60; // 1分钟
 
     public function index(Content $content)
