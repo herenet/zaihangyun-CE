@@ -404,7 +404,8 @@ class OrderConfigController extends Controller
 
         $uuid = $request->input('uuid');
         $cache_key = str_replace('{uuid}', $uuid, self::APPLE_CALLBACK_VERIFY_CACHE_KEY);
-        $call_back_verify_status = Cache::store('api_cache')->get($cache_key);
+        $cache_value = Cache::store('api_cache')->get($cache_key);
+        $call_back_verify_status = $cache_value ? json_decode($cache_value, true) : null;
         if(!$call_back_verify_status) {
             return response()->json([
                 'status' => false,
