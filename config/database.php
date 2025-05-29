@@ -149,9 +149,9 @@ return [
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '10'),
-            'options' => [
-                'serializer' => 2
-            ]
+            // 'options' => [
+            //     'serializer' => 2
+            // ]
         ],
 
     ],
