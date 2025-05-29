@@ -471,8 +471,7 @@ class OrderConfigController extends Controller
                     'bundle_id' => $bundle_id,
                     'message' => '回调验证中，请稍后...',
                 ];
-                Cache::store('api_cache')->put($cache_key, $call_back_verify_status, 10*60);
-                Cache::store('api_cache')->put($cache_key.'-laravel', $call_back_verify_status, 10*60);
+                Cache::store('api_cache')->put($cache_key, $call_back_verify_status, self::APPLE_CALLBACK_VERIFY_CACHE_TTL);
                 sleep(2);
                 $testNotificationStatus = $api->getTestNotificationStatus($response);
 
