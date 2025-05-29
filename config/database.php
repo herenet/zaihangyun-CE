@@ -150,7 +150,7 @@ return [
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '10'),
             'options' => [
-                'serializer' => 1
+                'serializer' => 3
             ]
         ],
 
