@@ -413,7 +413,6 @@ class OrderConfigController extends Controller
                 'message' => '验证失败: 验证超时',
             ]);
         }
-        $call_back_verify_status = json_decode($call_back_verify_status, true);
         return response()->json($call_back_verify_status);
     }
 
@@ -472,7 +471,7 @@ class OrderConfigController extends Controller
                     'bundle_id' => $bundle_id,
                     'message' => '回调验证中，请稍后...',
                 ];
-                Cache::store('api_cache')->put($cache_key, json_encode($call_back_verify_status), self::APPLE_CALLBACK_VERIFY_CACHE_TTL);
+                Cache::store('api_cache')->put($cache_key, $call_back_verify_status, self::APPLE_CALLBACK_VERIFY_CACHE_TTL);
                 sleep(2);
                 $testNotificationStatus = $api->getTestNotificationStatus($response);
 
