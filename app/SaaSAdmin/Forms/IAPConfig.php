@@ -57,19 +57,19 @@ class IAPConfig extends Form
                             })
                             ->help('请选择当前应用所属的苹果开发者账号对应的苹果服务端API证书，如未配置请先<a href="'.admin_url('global/config/apple/apicert').'">添加苹果服务端API证书>>></a>');
 
-                        $form->display('apple_pay_callback_url_sbx', '苹果IAP回调地址（沙盒环境）')
-                            ->readonly()
-                            ->with(function ($value) {
-                                $params = Helpers::simpleEncode($this->getAppKey().'-'.SaaSAdmin::user()->id);
-                                return url('api/sandbox/apple/verify/notify/'.$params);
-                            });
+                        // $form->display('apple_pay_callback_url_sbx', '苹果IAP回调地址（沙盒环境）')
+                        //     ->readonly()
+                        //     ->with(function ($value) {
+                        //         $params = Helpers::simpleEncode($this->getAppKey().'-'.SaaSAdmin::user()->id);
+                        //         return url('api/sandbox/apple/verify/notify/'.$params);
+                        //     });
                         
-                        $form->display('apple_pay_callback_url_prd', '苹果IAP回调地址（生产环境）')
+                        $form->display('apple_pay_callback_url_prd', '苹果IAP回调地址')
                             ->readonly()
                             ->with(function ($value) {
                                 $params = Helpers::simpleEncode($this->getAppKey().'-'.SaaSAdmin::user()->id);
                                 return config('app.api_url').'/v1/order/callback/apple/'.$params;
-                            })->help('请复制以上对应环境的地址作为苹果IAP回调地址。<button type="button" class="btn btn-xs btn-info" id="callback-help-btn"><i class="fa fa-question-circle"></i> 如何配置</button>');
+                            })->help('请复制以上地址作为苹果IAP回调地址，沙盒和生产环境均使用同一个地址。<button type="button" class="btn btn-xs btn-info" id="callback-help-btn"><i class="fa fa-question-circle"></i> 如何配置</button>');
 
                         $this->html('<span class="text-danger"><i class="fa fa-warning"></i> 如用户为订阅购买：<br/>1、系统将会以S2S通知中的expiresDate作为用户VIP的过期时间。<br/>2、必须配置共享密钥及回调地址。</span>');
                     
@@ -106,8 +106,8 @@ class IAPConfig extends Form
                         <li>登录 <a href="https://appstoreconnect.apple.com" target="_blank">App Store Connect</a></li>
                         <li>选择您的应用</li>
                         <li>在App信息里找到App Store 服务器通知</li>
-                        <li>点击对应的生产环境服务器或沙盒环境服务器中间的“设置URL”</li>
-                        <li>在弹出的窗口中，粘贴本页面显示的回调地址</li>
+                        <li>点击对应的生产环境服务器和沙盒环境服务器中间的“设置URL”</li>
+                        <li>在弹出的窗口中，粘贴本页面显示的回调地址（沙盒和生产环境均使用同一个地址）</li>
                         <li>点击“存储”按钮完成配置</li>
                     </ol>
                     

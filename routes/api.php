@@ -15,5 +15,5 @@ use App\SaaSAdmin\Controllers\AppleApiCertConfigController;
 |
 */
 
-Route::post('sandbox/apple/verify/notify/{params}', [AppleApiCertConfigController::class, 'verifyNotify'])
-    ->name('apple.verify-notify');
+// Route::post('sandbox/apple/verify/notify/{params}', [AppleApiCertConfigController::class, 'verifyNotify'])
+//     ->name('apple.verify-notify');
