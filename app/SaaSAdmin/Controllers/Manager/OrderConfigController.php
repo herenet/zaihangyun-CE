@@ -405,6 +405,7 @@ class OrderConfigController extends Controller
         $uuid = $request->input('uuid');
         $cache_key = str_replace('{uuid}', $uuid, self::APPLE_CALLBACK_VERIFY_CACHE_KEY);
         $call_back_verify_status = Cache::store('api_cache')->get($cache_key);
+        Log::channel('callback')->info('苹果IAP回调验证状态', ['cache_key' => $cache_key, 'call_back_verify_status' => $call_back_verify_status]);
         if(!$call_back_verify_status) {
             return response()->json([
                 'status' => false,
