@@ -224,18 +224,18 @@ JS);
             $bundle_id = $responseBodyV2->getAppMetadata()->getBundleId();
 
             $cache_key = str_replace('{uuid}', $notification_uuid, OrderConfigController::APPLE_CALLBACK_VERIFY_CACHE_KEY);
-            $call_back_verify_status = Cache::store('api_cache')->get($cache_key);
+            $call_back_verify_status = Cache::get($cache_key);
             if ($call_back_verify_status) {
                 if ($call_back_verify_status['bundle_id'] == $bundle_id) {
                     $call_back_verify_status['status'] = true;
                     $call_back_verify_status['waiting'] = false;
                     $call_back_verify_status['message'] = '回调验证成功';
-                    Cache::store('api_cache')->put($cache_key, $call_back_verify_status, OrderConfigController::APPLE_CALLBACK_VERIFY_CACHE_TTL);
+                    Cache::put($cache_key, $call_back_verify_status, OrderConfigController::APPLE_CALLBACK_VERIFY_CACHE_TTL);
                 } else {
                     $call_back_verify_status['status'] = false;
                     $call_back_verify_status['waiting'] = false;
                     $call_back_verify_status['message'] = '回调验证失败，Bundle ID不匹配';
-                    Cache::store('api_cache')->put($cache_key, $call_back_verify_status, OrderConfigController::APPLE_CALLBACK_VERIFY_CACHE_TTL);
+                    Cache::put($cache_key, $call_back_verify_status, OrderConfigController::APPLE_CALLBACK_VERIFY_CACHE_TTL);
                 }
             }
             Log::channel('callback')->info('苹果IAP回调验证解密成功', ['responseBodyV2' => $responseBodyV2]);
