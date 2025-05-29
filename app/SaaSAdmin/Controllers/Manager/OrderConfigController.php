@@ -464,14 +464,14 @@ class OrderConfigController extends Controller
                 $response = $testNotification->getTestNotificationToken();
                 Log::channel('callback')->info('苹果IAP测试通知', ['response' => $response]);
                 $uuid = explode('_', $response)[0];
-                $cache_key = str_replace('{uuid}', $uuid, self::APPLE_CALLBACK_VERIFY_CACHE_KEY);
+                $cache_key = str_replace('{uuid}', $uuid, self::APPLE_CALLBACK_VERIFY_CACHE_KEY)."-laravel";
                 $call_back_verify_status = [
                     'status' => false,
                     'waiting' => true,
                     'bundle_id' => $bundle_id,
                     'message' => '回调验证中，请稍后...',
                 ];
-                Cache::store('api_cache')->put($cache_key, $call_back_verify_status, self::APPLE_CALLBACK_VERIFY_CACHE_TTL);
+                Cache::store('api_cache')->put($cache_key, $call_back_verify_status, 10*60);
                 sleep(2);
                 $testNotificationStatus = $api->getTestNotificationStatus($response);
 
