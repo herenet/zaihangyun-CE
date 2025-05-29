@@ -404,7 +404,7 @@ class OrderConfigController extends Controller
 
         $uuid = $request->input('uuid');
         $cache_key = str_replace('{uuid}', $uuid, self::APPLE_CALLBACK_VERIFY_CACHE_KEY);
-        $call_back_verify_status = Cache::connection('api_cache')->get($cache_key);
+        $call_back_verify_status = Cache::store('api_cache')->get($cache_key);
         Log::channel('callback')->info('苹果IAP回调验证状态', ['cache_key' => $cache_key, 'call_back_verify_status' => $call_back_verify_status]);
         if(!$call_back_verify_status) {
             return response()->json([
@@ -471,7 +471,7 @@ class OrderConfigController extends Controller
                     'bundle_id' => $bundle_id,
                     'message' => '回调验证中，请稍后...',
                 ];
-                Cache::connection('api_cache')->set($cache_key, $call_back_verify_status, self::APPLE_CALLBACK_VERIFY_CACHE_TTL);
+                Cache::store('api_cache')->put($cache_key, $call_back_verify_status, self::APPLE_CALLBACK_VERIFY_CACHE_TTL);
                 sleep(2);
                 $testNotificationStatus = $api->getTestNotificationStatus($response);
 
