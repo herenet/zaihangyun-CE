@@ -80,7 +80,7 @@ return [
         ],
 
         'api_cache' => [
-            'driver' => 'redis',
+            'driver' => 'json-redis',
             'connection' => 'api_cache',
             'lock_connection' => 'default',
             'prefix' => ''
