@@ -60,7 +60,6 @@ class AppleOrderController extends AdminController
         $grid->column('is_trial_period', '是否试用期')->using([0 => '否', 1 => '是']);
         $grid->column('is_in_intro_offer_period', '是否促销期')->using([0 => '否', 1 => '是']);
         $grid->column('expires_date', '订阅过期时间');
-        $grid->column('grace_period_expires_date', '宽限期过期时间');
         $grid->column('auto_renew_status', '自动续订状态')->using([0 => '关闭', 1 => '开启']);
         $grid->column('auto_renew_product_id', '下一周期续订的产品ID');
         $grid->column('purchase_date', '购买时间');
@@ -126,7 +125,6 @@ class AppleOrderController extends AdminController
         $order->field('is_trial_period', '是否试用期')->using([0 => '否', 1 => '是']);
         $order->field('is_in_intro_offer_period', '是否促销期')->using([0 => '否', 1 => '是']);
         $order->field('expires_date', '订阅过期时间');
-        $order->field('grace_period_expires_date', '宽限期过期时间');
         $order->field('auto_renew_status', '自动续订状态')->using([0 => '关闭', 1 => '开启']);
         $order->field('auto_renew_product_id', '下一周期续订的产品ID');
         $order->field('purchase_date', '购买时间');
