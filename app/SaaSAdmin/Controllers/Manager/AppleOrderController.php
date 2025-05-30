@@ -44,12 +44,6 @@ class AppleOrderController extends AdminController
         $grid->column('amount', '订单金额')->display(function ($value) {
             return '￥'.number_format($value / 100, 2);
         })->help('此为内部产品售价金额，并非实际支付金额');
-        $grid->column('platform_order_amount', '三方订单金额')->display(function ($value) {
-            if ($value > 0) {
-                return '￥'.number_format($value / 100, 2);
-            }
-            return null;
-        });
         $grid->column('payment_status', '支付状态')->using(AppleOrder::$paymentStatusMap)->label([
             AppleOrder::PAYMENT_STATUS_PENDING => 'default',
             AppleOrder::PAYMENT_STATUS_SUCCESS => 'success',
@@ -116,6 +110,7 @@ class AppleOrderController extends AdminController
         $order->field('uid', '用户ID');
         $order->field('user.nickname', '用户昵称');
         $order->field('product_id', '产品ID');
+        $order->field('apple_product_id', '苹果产品ID');
         $order->field('product.name', '产品名称');
         $order->field('product.sale_price', '产品价格')->as(function ($value) {
             return '￥'.number_format($value / 100, 2);
