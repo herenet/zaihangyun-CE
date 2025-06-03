@@ -35,7 +35,7 @@ class AppleOrderController extends AdminController
         $grid->column('product_id', '产品ID');
         $grid->column('apple_product_id', '苹果产品ID');
         $grid->column('product.name', '产品名称');
-        $grid->column('product.apple_product_type', '苹果产品类型')->using(IAPProduct::$productTypeMap);
+        $grid->column('product_type', '苹果产品类型')->using(AppleOrder::$productTypeMap);
         $grid->column('product.sale_price', '产品价格')->display(function ($value) {
             return '￥'.number_format($value / 100, 2);
         });
