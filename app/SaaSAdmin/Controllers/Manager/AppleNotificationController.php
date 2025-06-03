@@ -66,17 +66,10 @@ class AppleNotificationController extends AdminController
         return $grid;
     }
 
-    public function show($id, Content $content)
+    public function detail()
     {
         $id = request()->route('notifications');
-        return $content
-            ->title('通知详情')
-            ->body($this->detail($id));
-    }
-
-    public function detail($id)
-    {
-        $show = new Show(AppleNotification::findOrFail($id));
+        $show = new Show(AppleNotification::find($id));
         
         $show->field('id', 'ID');
         $show->field('notification_uuid', '通知UUID');
