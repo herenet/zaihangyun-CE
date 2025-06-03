@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\App;
+
 /**
  * Class Menu.
  *
@@ -69,26 +71,7 @@ class ManagerMenu
                 'parent_id' => 0,
                 'title' => '订单管理',
                 'icon' => 'fa-shopping-cart',
-                'children' => [
-                    [
-                        'id' => 41,
-                        'parent_id' => 4,
-                        'title' => '订单列表',
-                        'uri' => 'app/manager/' . $appKey. '/order/list',
-                    ],
-                    [
-                        'id' => 42,
-                        'parent_id' => 4,
-                        'title' => '产品列表',
-                        'uri' => 'app/manager/' . $appKey. '/order/product',
-                    ],
-                    [
-                        'id' => 43,
-                        'parent_id' => 4,
-                        'title' => '接口配置',
-                        'uri' => 'app/manager/' . $appKey. '/order/config',
-                    ],
-                ],
+                'children' => $this->getOrderMenu($appKey),
             ],
             [
                 'id' => 5,
@@ -158,5 +141,59 @@ class ManagerMenu
                 ],
             ],
         ];
+    }
+
+    public function getOrderMenu($appKey)
+    {
+        $appInfo = app(App::class)->getAppInfo($appKey);
+        if($appInfo['platform_type'] == App::PLATFORM_TYPE_IOS) {
+            return [
+                [
+                    'id' => 41,
+                    'parent_id' => 4,
+                    'title' => '订单列表',
+                    'uri' => 'app/manager/' . $appKey. '/order/apple/list',
+                ],
+                [
+                    'id' => 42,
+                    'parent_id' => 4,
+                    'title' => '产品列表',
+                    'uri' => 'app/manager/' . $appKey. '/order/apple/product',
+                ],
+                [
+                    'id' => 43,
+                    'parent_id' => 4,
+                    'title' => '苹果回调通知',
+                    'uri' => 'app/manager/' . $appKey. '/apple/notifications',
+                ],
+                [
+                    'id' => 44,
+                    'parent_id' => 4,
+                    'title' => '接口配置',
+                    'uri' => 'app/manager/' . $appKey. '/order/config',
+                ],
+            ];
+        }else{
+            return [
+                [
+                    'id' => 41,
+                    'parent_id' => 4,
+                    'title' => '订单列表',
+                    'uri' => 'app/manager/' . $appKey. '/order/android/list',
+                ],
+                [
+                    'id' => 42,
+                    'parent_id' => 4,
+                    'title' => '产品列表',
+                    'uri' => 'app/manager/' . $appKey. '/order/android/product',
+                ],
+                [
+                    'id' => 43,
+                    'parent_id' => 4,
+                    'title' => '接口配置',
+                    'uri' => 'app/manager/' . $appKey. '/order/config',
+                ],
+            ];
+        }
     }
 }

@@ -49,10 +49,12 @@ Route::group([
         $router->post('user/config/wechat', 'Manager\UserConfigController@saveWechat')->name('app.manager.user.config.save.wechat');
         $router->post('user/config/apple', 'Manager\UserConfigController@saveApple')->name('app.manager.user.config.save.apple');
 
-        $router->resource('order/list', 'Manager\OrderController')->names('app.manager.order');
+        $router->resource('order/android/list', 'Manager\OrderController')->names('app.manager.order.android');
+        $router->resource('order/apple/list', 'Manager\AppleOrderController')->names('app.manager.order.apple');
         $router->get('order/config', 'Manager\OrderConfigController@index')->name('app.manager.order.config');
         $router->post('order/config/base', 'Manager\OrderConfigController@saveBase')->name('app.manager.order.config.save.base');
-        $router->resource('order/product', 'Manager\OrderProductController')->names('app.manager.order.product');
+        $router->resource('order/android/product', 'Manager\OrderProductController')->names('app.manager.order.android.product');
+        $router->resource('order/apple/product', 'Manager\OrderAppleProductController')->names('app.manager.order.apple.product');
         $router->post('order/config/wechat', 'Manager\OrderConfigController@saveWechat')->name('app.manager.order.config.save.wechat');
         $router->post('order/config/alipay', 'Manager\OrderConfigController@saveAlipay')->name('app.manager.order.config.save.alipay');
         $router->post('order/config/alipay/check-interface', 'Manager\OrderConfigController@checkAlipayInterface')->name('app.manager.order.config.check.alipay.interface');
@@ -76,5 +78,9 @@ Route::group([
 
         $router->get('api_tester', 'Manager\ZaihangyunApiTesterController@index')->name('api.tester');
         $router->post('api_tester/handle', 'Manager\ZaihangyunApiTesterController@handle')->name('api.tester.handle');
+
+        // 苹果通知路由
+        $router->get('apple/notifications', 'Manager\AppleNotificationController@index')->name('app.manager.apple.notifications');
+        $router->get('apple/notifications/{id}', 'Manager\AppleNotificationController@show')->name('app.manager.apple.notifications.show');
     });
 });
