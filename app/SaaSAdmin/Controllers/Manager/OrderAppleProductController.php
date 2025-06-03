@@ -38,10 +38,8 @@ class OrderAppleProductController extends AdminController
         $grid->column('name', '产品名称');
         $grid->column('sub_name', '子标题');
         $grid->column('iap_product_id', '苹果产品ID');
-        $grid->column('type', '产品类型')->using(IAPProduct::$typeMap);
-        $grid->column('is_subscription', '是否为订阅')->using(IAPProduct::$isSubscriptionMap)->label(
-            [0 => 'default', 1 => 'success']
-        );
+        $grid->column('type', '功能模型')->using(IAPProduct::$typeMap);
+        $grid->column('apple_product_type', '苹果产品类型')->using(IAPProduct::$productTypeMap);
         $grid->column('subscription_duration', '订阅时长')->using(IAPProduct::$subscriptionDurationTypeMap);
         $grid->column('function_value', '产品功能值');
         $grid->column('cross_price', '划线价')->display(function ($value) {
@@ -65,8 +63,8 @@ class OrderAppleProductController extends AdminController
             $filter->disableIdFilter();
             $filter->like('name', '产品名称');
             $filter->like('sub_name', '子标题');
-            $filter->radio('is_subscription', '是否为订阅')->options(IAPProduct::$isSubscriptionMap);
-            $filter->equal('type', '产品类型')->select(IAPProduct::$typeMap);
+            $filter->equal('apple_product_type', '苹果产品类型')->select(IAPProduct::$productTypeMap);
+            $filter->equal('type', '功能模型')->select(IAPProduct::$typeMap);
             $filter->equal('sale_status', '销售状态')->radio(IAPProduct::$saleStatusMap);
         });
 
@@ -83,8 +81,8 @@ class OrderAppleProductController extends AdminController
             $export->column('sale_status', function ($value, $original) {
                 return IAPProduct::$saleStatusMap[$original];
             });
-            $export->column('is_subscription', function ($value, $original) {
-                return IAPProduct::$isSubscriptionMap[$original];
+            $export->column('apple_product_type', function ($value, $original) {
+                return IAPProduct::$productTypeMap[$original];
             });
             $export->column('subscription_duration', function ($value, $original) {
                 return IAPProduct::$subscriptionDurationTypeMap[$original];
@@ -132,7 +130,7 @@ class OrderAppleProductController extends AdminController
             ->creationRules(['unique:iap_products,iap_product_id,NULL,pid,app_key,'.$this->getAppKey()])
             ->updateRules(['unique:iap_products,iap_product_id,{{id}},pid,app_key,'.$this->getAppKey()])
             ->help('苹果产品ID为苹果后台的商品ID，请在苹果后台查看。');
-        $form->select('type', '产品类型')
+        $form->select('type', '功能模型')
             ->options(IAPProduct::$typeMap)
             ->config('allowClear', false)
             ->config('minimumResultsForSearch', 'Infinity')
@@ -157,11 +155,13 @@ class OrderAppleProductController extends AdminController
             //     $form->text('function_value', '产品功能值')->rules(['nullable', 'string', 'max:64']);
             // })
             ->rules(['required', 'integer', 'max:64']);
-        $form->radio('is_subscription', '是否为订阅')
-            ->options(IAPProduct::$isSubscriptionMap)
-            ->default(0)
+        $form->select('apple_product_type', '苹果产品类型')
+            ->config('allowClear', false)
+            ->config('minimumResultsForSearch', 'Infinity')
+            ->options(IAPProduct::$productTypeMap)
+            ->default(IAPProduct::PRODUCT_TYPE_CONSUMABLE)
             ->rules(['required', 'integer', 'max:64'])
-            ->when(1, function (Form $form) {
+            ->when(IAPProduct::PRODUCT_TYPE_AUTO_RENEWABLE, function (Form $form) {
                 $form->select('subscription_duration', '订阅时长')
                     ->config('allowClear', false)
                     ->config('minimumResultsForSearch', 'Infinity')
@@ -169,7 +169,17 @@ class OrderAppleProductController extends AdminController
                     ->default(IAPProduct::SUBSCRIPTION_DURATION_TYPE_ONE_MONTH)
                     ->rules(['required_if:is_subscription,1', 'integer', 'max:64'])
                     ->help('用于对应苹果订阅时长类型展示，不作功能处理。');
-            });
+            })
+            ->when(IAPProduct::PRODUCT_TYPE_NON_RENEWING, function (Form $form) {
+                $form->select('subscription_duration', '订阅时长')
+                    ->config('allowClear', false)
+                    ->config('minimumResultsForSearch', 'Infinity')
+                    ->options(IAPProduct::$subscriptionDurationTypeMap)
+                    ->default(IAPProduct::SUBSCRIPTION_DURATION_TYPE_ONE_MONTH)
+                    ->rules(['required_if:is_subscription,1', 'integer', 'max:64'])
+                    ->help('用于对应苹果订阅时长类型展示，不作功能处理。');
+            })
+            ->help('系统会根据产品类型来处理产品是否允许重复购买。');
         $form->currency('cross_price', '划线价')->symbol('￥')
             ->default(0)
             ->rules([
@@ -238,8 +248,8 @@ class OrderAppleProductController extends AdminController
         $show->field('name', '产品名称');
         $show->field('sub_name', '子标题');
         $show->field('iap_product_id', '苹果产品ID');
-        $show->field('type', '产品类型')->using(IAPProduct::$typeMap);
-        $show->field('is_subscription', '是否为订阅')->using(IAPProduct::$isSubscriptionMap);
+        $show->field('type', '功能模型')->using(IAPProduct::$typeMap);
+        $show->field('apple_product_type', '苹果产品类型')->using(IAPProduct::$productTypeMap);
         $show->field('subscription_duration', '订阅时长')->using(IAPProduct::$subscriptionDurationTypeMap);
         $show->field('function_value', '产品功能值');
         $show->field('cross_price', '划线价')->as(function ($value) {

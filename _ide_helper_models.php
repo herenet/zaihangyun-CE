@@ -284,7 +284,6 @@ namespace App\Models{
  * @property int|null $is_trial_period 是否试用期：0=否，1=是
  * @property int|null $is_in_intro_offer_period 是否促销期：0=否，1=是
  * @property string|null $expires_date 订阅过期时间
- * @property string|null $grace_period_expires_date 宽限期过期时间
  * @property int|null $auto_renew_status 自动续订状态：0=关闭，1=开启
  * @property string|null $auto_renew_product_id 下一周期续订的产品ID
  * @property string|null $purchase_date 购买时间
@@ -308,7 +307,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereDataSource($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereEnvironment($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereExpiresDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereGracePeriodExpiresDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereIsInIntroOfferPeriod($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereIsTrialPeriod($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppleOrder whereOid($value)
@@ -503,7 +501,7 @@ namespace App\Models{
  *  `iap_product_id` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '苹果产品ID',
  *  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '产品名称',
  *  `sub_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '子标题',
- *  `is_subscription` tinyint unsigned DEFAULT '0' COMMENT '是否为订阅',
+ *  `apple_product_type` tinyint unsigned DEFAULT '1' COMMENT '苹果产品类型',
  *  `subscription_duration` tinyint unsigned DEFAULT NULL COMMENT '苹果订阅时长周期类型',
  *  `type` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '产品类型：1、会员时长；2、永久会员；99、自定义',
  *  `function_value` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '产品功能值，用于购买后逻辑处理',
@@ -525,7 +523,7 @@ namespace App\Models{
  * @property string|null $iap_product_id 苹果产品ID
  * @property string $name 产品名称
  * @property string|null $sub_name 子标题
- * @property int|null $is_subscription 是否为订阅
+ * @property int $apple_product_type 苹果产品类型
  * @property int|null $subscription_duration 苹果订阅时长周期类型
  * @property int $type 产品类型：1、会员时长；2、永久会员；99、自定义
  * @property string $function_value 产品功能值，用于购买后逻辑处理
@@ -544,6 +542,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct query()
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereAppleProductType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereCrossPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereDeletedAt($value)
@@ -551,7 +550,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereExtData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereFunctionValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereIapProductId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereIsSubscription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IAPProduct wherePid($value)

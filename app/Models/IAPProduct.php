@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 *  `iap_product_id` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '苹果产品ID',
 *  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '产品名称',
 *  `sub_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '子标题',
-*  `is_subscription` tinyint unsigned DEFAULT '0' COMMENT '是否为订阅',
+*  `apple_product_type` tinyint unsigned DEFAULT '1' COMMENT '苹果产品类型',
 *  `subscription_duration` tinyint unsigned DEFAULT NULL COMMENT '苹果订阅时长周期类型',
 *  `type` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '产品类型：1、会员时长；2、永久会员；99、自定义',
 *  `function_value` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '产品功能值，用于购买后逻辑处理',
@@ -45,7 +45,7 @@ class IAPProduct extends Model implements Sortable
         'iap_product_id',
         'name', 
         'sub_name', 
-        'is_subscription', 
+        'apple_product_type', 
         'subscription_duration',
         'type', 
         'function_value', 
@@ -102,9 +102,17 @@ class IAPProduct extends Model implements Sortable
         2 => '待售'
     ];
 
-    public static $isSubscriptionMap = [
-        0 => '否',
-        1 => '是'
+    // 产品类型
+    const PRODUCT_TYPE_CONSUMABLE = 1;               // 消耗型
+    const PRODUCT_TYPE_NON_CONSUMABLE = 2;           // 非消耗型
+    const PRODUCT_TYPE_AUTO_RENEWABLE = 3;           // 自动续期订阅
+    const PRODUCT_TYPE_NON_RENEWING = 4;             // 非续期订阅
+
+    public static $productTypeMap = [
+        self::PRODUCT_TYPE_CONSUMABLE => '消耗型',
+        self::PRODUCT_TYPE_NON_CONSUMABLE => '非消耗型',
+        self::PRODUCT_TYPE_AUTO_RENEWABLE => '自动续期订阅',
+        self::PRODUCT_TYPE_NON_RENEWING => '非续期订阅'
     ];
 
     protected $primaryKey = 'pid';
