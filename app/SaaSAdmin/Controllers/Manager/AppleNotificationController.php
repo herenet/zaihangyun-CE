@@ -68,6 +68,7 @@ class AppleNotificationController extends AdminController
 
     public function show($id, Content $content)
     {
+        $id = request()->route('list');
         return $content
             ->title('通知详情')
             ->body($this->detail($id));
