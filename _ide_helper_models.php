@@ -237,6 +237,62 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * CREATE TABLE `apple_notifications` (
+ *  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+ *  `tenant_id` bigint(20) unsigned NOT NULL COMMENT '租户ID',
+ *  `app_key` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用标识',
+ *  `notification_uuid` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `notification_type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '通知类型(如INITIAL_BUY,DID_RENEW,DID_CANCEL等)',
+ *  `subtype` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '通知子类型',
+ *  `transaction_id` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '交易ID',
+ *  `original_transaction_id` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '原始交易ID',
+ *  `environment` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '环境：sandbox或production',
+ *  `notification_data` text COLLATE utf8mb4_unicode_ci COMMENT '完整的通知数据(JSON格式字符串)',
+ *  `processed` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已处理：0=未处理，1=已处理',
+ *  `process_result` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '处理结果描述',
+ *  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+ *  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+ *  PRIMARY KEY (`id`),
+ *  KEY `idx_processed` (`processed`)
+ * ) ENGINE=InnoDB AUTO_INCREMENT=209 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='苹果S2S通知记录表';
+ *
+ * @property int $id 自增ID
+ * @property int $tenant_id 租户ID
+ * @property string $app_key 应用标识
+ * @property string|null $notification_uuid
+ * @property string $notification_type 通知类型(如INITIAL_BUY,DID_RENEW,DID_CANCEL等)
+ * @property string|null $subtype 通知子类型
+ * @property string|null $transaction_id 交易ID
+ * @property string|null $original_transaction_id 原始交易ID
+ * @property string $environment 环境：sandbox或production
+ * @property string|null $notification_data 完整的通知数据(JSON格式字符串)
+ * @property int $processed 是否已处理：0=未处理，1=已处理
+ * @property string|null $process_result 处理结果描述
+ * @property string|null $updated_at
+ * @property string|null $created_at 创建时间
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereEnvironment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereNotificationData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereNotificationType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereNotificationUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereOriginalTransactionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereProcessResult($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereProcessed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereSubtype($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereTransactionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleNotification whereUpdatedAt($value)
+ */
+	class AppleNotification extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * CREATE TABLE `apple_orders` (
  * `oid` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '内部订单号',
  * `tenant_id` bigint(20) unsigned NOT NULL COMMENT '租户ID',
@@ -465,7 +521,7 @@ namespace App\Models{
 /**
  * App\Models\IAPConfig
  *
- * @property string $app_key
+ * @property int $app_key
  * @property int $tenant_id
  * @property string $bundle_id
  * @property int $app_apple_id
@@ -473,8 +529,8 @@ namespace App\Models{
  * @property string|null $shared_secret 用于验证自动续期订阅收据（verifyReceipt）
  * @property int|null $apple_dev_s2s_config_id
  * @property int $interface_check
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon $created_at
+ * @property string|null $updated_at
+ * @property string $created_at
  * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|IAPConfig query()

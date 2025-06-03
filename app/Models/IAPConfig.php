@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class IAPConfig extends Model
 {
     protected $table = 'iap_config';
+
+    protected $primaryKey = 'app_key';
+
+    public $timestamps = false;
     
     /**
      * CREATE TABLE `iap_config` (

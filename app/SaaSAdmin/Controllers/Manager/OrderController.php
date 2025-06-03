@@ -7,12 +7,14 @@ use App\Models\Order;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use App\SaaSAdmin\AppKey;
+use App\Models\AppleOrder;
 use Illuminate\Http\Request;
 use Encore\Admin\Layout\Content;
 use App\SaaSAdmin\Facades\SaaSAdmin;
 use Illuminate\Support\Facades\Cache;
 use App\SaaSAdmin\Actions\RefundAction;
 use Encore\Admin\Controllers\AdminController;
+use Encore\Admin\Widgets\Tab;
 
 class OrderController extends AdminController
 {
@@ -27,9 +29,22 @@ class OrderController extends AdminController
 
     public function index(Content $content)
     {
-        return $content
-            ->title('订单列表')
-            ->body($this->grid());
+        // 检查是否是 iOS 平台
+        if($this->appInfo['platform_type'] == App::PLATFORM_TYPE_IOS) {
+            // 为 iOS 平台创建选项卡
+            $tab = new Tab();
+            $tab->add('订单列表', app(AppleOrderController::class)->grid()->render());
+            $tab->add('苹果通知', $this->appleNotificationGrid());
+            
+            return $content
+                ->title('订单列表')
+                ->body($tab);
+        } else {
+            // 非 iOS 平台保持原有逻辑
+            return $content
+                ->title('订单列表')
+                ->body($this->grid());
+        }
     }
 
     protected function grid()
@@ -233,5 +248,45 @@ class OrderController extends AdminController
                 'message' => '发送失败，请稍后再试：' . $e->getMessage()
             ]);
         }
+    }
+
+    // 新增苹果通知数据网格方法
+    protected function appleNotificationGrid()
+    {
+        $grid = new Grid(new \App\Models\AppleNotification());
+        $grid->model()->where('app_key', $this->getAppKey())->orderBy('created_at', 'desc');
+        
+        $grid->column('id', 'ID');
+        $grid->column('notification_type', '通知类型');
+        $grid->column('subtype', '子类型');
+        $grid->column('transaction_id', '交易ID');
+        $grid->column('original_transaction_id', '原始交易ID');
+        $grid->column('environment', '环境')->display(function ($value) {
+            return strtolower($value) === strtolower(AppleOrder::ENVIRONMENT_SANDBOX) ? AppleOrder::$environmentMap[AppleOrder::ENVIRONMENT_SANDBOX] : AppleOrder::$environmentMap[AppleOrder::ENVIRONMENT_PRODUCTION];
+        });
+        $grid->column('processed', '处理状态')->display(function ($value) {
+            return $value ? '已处理' : '待处理';
+        })->label([
+            0 => 'warning',
+            1 => 'success',
+        ]);
+        $grid->column('process_result', '处理结果')->limit(50);
+        $grid->column('created_at', '创建时间');
+        
+        $grid->filter(function ($filter) {
+            $filter->equal('notification_type', '通知类型');
+            $filter->equal('environment', '环境')->select(['sandbox' => '沙盒', 'production' => '生产']);
+            $filter->equal('processed', '处理状态')->select([0 => '待处理', 1 => '已处理']);
+        });
+        
+        $grid->disableCreateButton();
+        $grid->disableBatchActions();
+        $grid->disableExport();
+        $grid->actions(function ($actions) {
+            $actions->disableEdit();
+            $actions->disableDelete();
+        });
+        
+        return $grid->render();
     }
 }
