@@ -80,7 +80,7 @@ class AppleNotificationController extends AdminController
         $show->field('environment', '环境')->using(AppleOrder::$environmentMap);
         $show->field('processed', '处理状态')->using(AppleNotification::$processedMap);
         $show->field('process_result', '处理结果');
-        $show->field('notification_data', '通知数据')->json();
+        // $show->field('notification_data', '通知数据')->json();
         $show->field('created_at', '创建时间');
         $show->field('updated_at', '更新时间');
 
