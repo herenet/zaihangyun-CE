@@ -8,6 +8,7 @@ use App\SaaSAdmin\AppKey;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Controllers\AdminController;
 use App\Models\AppleOrder;
+use App\Models\IAPProduct;
 
 class AppleOrderController extends AdminController
 {
@@ -34,10 +35,7 @@ class AppleOrderController extends AdminController
         $grid->column('product_id', '产品ID');
         $grid->column('apple_product_id', '苹果产品ID');
         $grid->column('product.name', '产品名称');
-        $grid->column('product.is_subscription', '是否订阅')->using([0 => '否', 1 => '是'])->label([
-            0 => 'info',
-            1 => 'success'
-        ]);
+        $grid->column('product.apple_product_type', '苹果产品类型')->using(IAPProduct::$productTypeMap);
         $grid->column('product.sale_price', '产品价格')->display(function ($value) {
             return '￥'.number_format($value / 100, 2);
         });
@@ -74,6 +72,7 @@ class AppleOrderController extends AdminController
 
         $grid->filter(function ($filter) {
             $filter->equal('payment_status', '支付状态')->select(AppleOrder::$paymentStatusMap)->config('minimumResultsForSearch', 'Infinity');
+            $filter->equal('apple_product_type', '苹果产品类型')->select(IAPProduct::$productTypeMap)->config('minimumResultsForSearch', 'Infinity');
             $filter->equal('subscription_status', '订阅状态')->select(AppleOrder::$subscriptionStatusMap)->config('minimumResultsForSearch', 'Infinity');
             $filter->equal('transaction_id', '苹果交易ID');
             $filter->equal('uid', '用户ID');
@@ -87,6 +86,9 @@ class AppleOrderController extends AdminController
             });
             $export->column('subscription_status', function ($value, $original) {
                 return AppleOrder::$subscriptionStatusMap[$original];
+            });
+            $export->column('product.apple_product_type', function ($value, $original) {
+                return IAPProduct::$productTypeMap[$original];
             });
             $export->except(['app_key', 'tenant_id']);
         });
