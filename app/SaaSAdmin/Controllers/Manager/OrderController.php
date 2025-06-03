@@ -34,7 +34,7 @@ class OrderController extends AdminController
             // 为 iOS 平台创建选项卡
             $tab = new Tab();
             $tab->add('订单列表', app(AppleOrderController::class)->grid()->render());
-            $tab->add('苹果通知', $this->appleNotificationGrid());
+            $tab->add('苹果回调通知', $this->appleNotificationGrid());
             
             return $content
                 ->title('订单列表')
