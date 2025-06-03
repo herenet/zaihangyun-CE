@@ -118,7 +118,7 @@
 | pid | unsigned int | 产品唯一ID | 1001 |
 | name | string | 产品名称 | 高级会员月卡 |
 | sub_name | string | 子标题 | 尊享所有高级功能30天 |
-| type | unsigned int | 产品类型（1=会员时长，2=永久会员，99=自定义），默认1 | 1 |
+| type | unsigned int | 产品类型（1=会员时长，2=永久会员），默认1 | 1 |
 | function_value | string | 产品功能值，根据产品类型适配购买后逻辑处理 | 30 |
 | cross_price | unsigned int | 划线价（单位：分） | 12900 |
 | sale_price | unsigned int | 售价（单位：分） | 9900 |
@@ -139,9 +139,9 @@
 | iap_product_id | varchar(128) | 苹果产品ID | com.example.app.monthly |
 | name | varchar(32) | 产品名称 | 高级会员月卡 |
 | sub_name | varchar(64) | 子标题 | 尊享所有高级功能30天 |
-| is_subscription | tinyint unsigned | 是否为订阅（0=否，1=是），默认0 | 1 |
+| apple_product_type | tinyint unsigned | Apple产品类型：1-消耗型，2-非消耗型，3-自动续期订阅，4-非续期订阅 | 1 |
 | subscription_duration | tinyint unsigned | 苹果订阅时长周期类型（1=周，2=月，3=双月，4=季度，5=半年，6=年） | 2 |
-| type | tinyint unsigned | 产品类型（1=会员时长，2=永久会员，99=自定义），默认1 | 1 |
+| type | tinyint unsigned | 功能模型（1=会员时长，2=永久会员），默认1 | 1 |
 | function_value | varchar(64) | 产品功能值，用于购买后逻辑处理 | 30 |
 | cross_price | int unsigned | 划线价，单位分 | 12900 |
 | sale_price | int unsigned | 售价，单位分 | 9900 |
