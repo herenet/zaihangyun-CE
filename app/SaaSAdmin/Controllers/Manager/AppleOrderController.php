@@ -103,6 +103,11 @@ class AppleOrderController extends AdminController
         return $grid;
     }
 
+    public function title()
+    {
+        return '订单列表';
+    }
+
     public function detail()
     {
         $oid = request()->route('list');

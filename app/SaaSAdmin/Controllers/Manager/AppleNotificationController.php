@@ -21,6 +21,11 @@ class AppleNotificationController extends AdminController
             ->body($this->grid());
     }
 
+    public function title()
+    {
+        return '苹果通知列表';
+    }
+
     public function grid()
     {
         $grid = new Grid(new AppleNotification());
@@ -40,8 +45,8 @@ class AppleNotificationController extends AdminController
         
         $grid->filter(function ($filter) {
             $filter->equal('notification_type', '通知类型');
-            $filter->equal('environment', '环境')->select(AppleOrder::$environmentMap);
-            $filter->equal('processed', '处理状态')->select(AppleNotification::$processedMap);
+            $filter->equal('environment', '环境')->select(AppleOrder::$environmentMap)->config('minimumResultsForSearch', 'Infinity');
+            $filter->equal('processed', '处理状态')->select(AppleNotification::$processedMap)->config('minimumResultsForSearch', 'Infinity');
             $filter->equal('transaction_id', '交易ID');
             $filter->equal('original_transaction_id', '原始交易ID');
         });
