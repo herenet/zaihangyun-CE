@@ -164,7 +164,7 @@ class ManagerMenu
                     'id' => 43,
                     'parent_id' => 4,
                     'title' => '苹果回调通知',
-                    'uri' => 'app/manager/' . $appKey. '/apple/notifications',
+                    'uri' => 'app/manager/' . $appKey. '/apple/notification',
                 ],
                 [
                     'id' => 44,

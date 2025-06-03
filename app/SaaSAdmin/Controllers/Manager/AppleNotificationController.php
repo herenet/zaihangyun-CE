@@ -27,31 +27,21 @@ class AppleNotificationController extends AdminController
         $grid->model()->where('app_key', $this->getAppKey())->orderBy('created_at', 'desc');
         
         $grid->column('id', 'ID');
+        $grid->column('notification_uuid', '通知UUID');
         $grid->column('notification_type', '通知类型');
         $grid->column('subtype', '子类型');
         $grid->column('transaction_id', '交易ID');
         $grid->column('original_transaction_id', '原始交易ID');
-        $grid->column('environment', '环境')->display(function ($value) {
-            return strtolower($value) === strtolower(AppleOrder::ENVIRONMENT_SANDBOX) ? 
-                AppleOrder::$environmentMap[AppleOrder::ENVIRONMENT_SANDBOX] : 
-                AppleOrder::$environmentMap[AppleOrder::ENVIRONMENT_PRODUCTION];
-        })->label([
-            'sandbox' => 'warning',
-            'production' => 'success',
-        ]);
-        $grid->column('processed', '处理状态')->display(function ($value) {
-            return $value ? '已处理' : '待处理';
-        })->label([
-            0 => 'warning',
-            1 => 'success',
-        ]);
+        $grid->column('environment', '环境')->using(AppleOrder::$environmentMap);
+        $grid->column('processed', '处理状态')->using(AppleNotification::$processedMap);
         $grid->column('process_result', '处理结果')->limit(50);
+        $grid->column('updated_at', '更新时间');
         $grid->column('created_at', '创建时间');
         
         $grid->filter(function ($filter) {
             $filter->equal('notification_type', '通知类型');
-            $filter->equal('environment', '环境')->select(['sandbox' => '沙盒', 'production' => '生产']);
-            $filter->equal('processed', '处理状态')->select([0 => '待处理', 1 => '已处理']);
+            $filter->equal('environment', '环境')->select(AppleOrder::$environmentMap);
+            $filter->equal('processed', '处理状态')->select(AppleNotification::$processedMap);
             $filter->equal('transaction_id', '交易ID');
             $filter->equal('original_transaction_id', '原始交易ID');
         });
@@ -68,7 +58,7 @@ class AppleNotificationController extends AdminController
 
     public function detail()
     {
-        $id = request()->route('notifications');
+        $id = request()->route('notification');
         $show = new Show(AppleNotification::find($id));
         
         $show->field('id', 'ID');
@@ -80,7 +70,7 @@ class AppleNotificationController extends AdminController
         $show->field('environment', '环境')->using(AppleOrder::$environmentMap);
         $show->field('processed', '处理状态')->using(AppleNotification::$processedMap);
         $show->field('process_result', '处理结果');
-        // $show->field('notification_data', '通知数据')->json();
+        $show->field('notification_data', '通知数据')->json();
         $show->field('created_at', '创建时间');
         $show->field('updated_at', '更新时间');
 
