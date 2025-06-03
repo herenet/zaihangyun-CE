@@ -33,6 +33,11 @@ class AppleNotification extends Model
 
     public $timestamps = false;
 
+    public static $processedMap = [
+        0 => '待处理',
+        1 => '已处理'
+    ];
+
     protected $fillable = [
         'tenant_id', 
         'app_key', 

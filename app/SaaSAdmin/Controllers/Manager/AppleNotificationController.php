@@ -77,11 +77,8 @@ class AppleNotificationController extends AdminController
         $show->field('subtype', '子类型');
         $show->field('transaction_id', '交易ID');
         $show->field('original_transaction_id', '原始交易ID');
-        $show->field('environment', '环境')->using([
-            'sandbox' => '沙盒环境',
-            'production' => '生产环境'
-        ]);
-        $show->field('processed', '处理状态')->using([0 => '待处理', 1 => '已处理']);
+        $show->field('environment', '环境')->using(AppleOrder::$environmentMap);
+        $show->field('processed', '处理状态')->using(AppleNotification::$processedMap);
         $show->field('process_result', '处理结果');
         $show->field('notification_data', '通知数据')->json();
         $show->field('created_at', '创建时间');
