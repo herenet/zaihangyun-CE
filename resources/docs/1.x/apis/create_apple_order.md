@@ -25,13 +25,24 @@
 2. 需要先配置Apple开发者S2S通知和IAP产品信息
 3. 支持沙盒环境和生产环境
 4. **创建订单后需要调用verify接口验证Apple凭证**
+5. **系统会根据产品类型自动进行重复购买检查**
+
+### 产品类型说明
+
+| 产品类型 | 重复购买规则 | 说明 |
+| -- | -- | -- |
+| 消耗型产品 | ✅ 允许重复购买 | 游戏币、道具等，每次购买后需要被消耗 |
+| 非消耗型产品 | ❌ 不允许重复购买 | 去广告、解锁功能等，一次购买永久拥有 |
+| 自动续期订阅 | ❌ 同时只能有一个活跃订阅 | 月度/年度会员，自动续费 |
+| 非续期订阅 | ❌ 有效期内不可重复购买 | 季度通行证等，不自动续费 |
 
 ### 特殊说明
 
 1. **限流提示**: 如果触发限流会返回 `operation too frequent` 错误
 2. **产品匹配**: apple_product_id必须与商品配置的IAP产品ID完全匹配
 3. **环境配置**: 沙盒环境用于测试，生产环境用于正式发布
-4. **后续步骤**: 创建订单成功后，需要调用 `/v1/apple/order/verify` 接口验证Apple支付凭证
+4. **重复购买检查**: 系统会自动检查用户是否已购买相同产品（消耗型产品除外）
+5. **后续步骤**: 创建订单成功后，需要调用 `/v1/apple/order/verify` 接口验证Apple支付凭证
 
 <a name="section-2"></a>
 ## 请求路径
@@ -108,7 +119,46 @@ curl --location --request POST 'https://api.zaihangyun.com/api/apple-order/creat
 }
 ```
 
-- 错误返回
+- 重复购买错误返回（非消耗型产品）
+
+```json
+{
+    "code": 400180,
+    "msg": "non-consumable product already purchased",
+    "data": {
+        "existing_oid": "32025052815063297469627",
+        "purchase_date": "2024-01-15 10:30:00"
+    }
+}
+```
+
+- 活跃订阅存在错误返回（自动续期订阅）
+
+```json
+{
+    "code": 400181,
+    "msg": "active subscription already exists",
+    "data": {
+        "existing_oid": "32025052815063297469627",
+        "expires_date": "2024-02-15 10:30:00",
+        "auto_renew_status": 1
+    }
+}
+```
+
+- 待验证订单存在错误返回
+
+```json
+{
+    "code": 400182,
+    "msg": "pending subscription order exists, please verify first",
+    "data": {
+        "existing_oid": "32025052815063297469627"
+    }
+}
+```
+
+- 其他错误返回
 
 ```json
 {
@@ -128,17 +178,29 @@ curl --location --request POST 'https://api.zaihangyun.com/api/apple-order/creat
 | amount | number | 商品价格（单位：分） |
 | environment | string | 环境类型（Sandbox/Production） |
 
+### 重复购买错误响应 data 对象
+| 字段名 | 类型 | 说明 |
+| -- | -- | -- |
+| existing_oid | string | 已存在的订单号 |
+| purchase_date | string | 购买日期（仅非消耗型产品） |
+| expires_date | string | 过期时间（仅订阅产品） |
+| auto_renew_status | integer | 自动续费状态：0=关闭，1=开启（仅自动续期订阅） |
+
 <a name="section-7"></a>
 ## 业务流程图
 
 ### Apple内购支付流程
 <image src="/images/docs/iap_buy.png" width="1300px"/>
 
+### 重复购买检查流程
+<image src="/images/docs/apple_order_create.png" width="1300px"/>
+
 <a name="section-8"></a>
 ## 错误码说明
 
 [查看全局错误码](/{{route}}/{{version}}/code#section-2)
 
+### 参数验证错误
 | 错误码 | 说明 |
 | -- | -- |
 | `400101` | pid参数缺失 |
@@ -148,6 +210,20 @@ curl --location --request POST 'https://api.zaihangyun.com/api/apple-order/creat
 | `400105` | apple_product_id参数长度不能超过128个字符 |
 | `400106` | environment参数类型必须是字符串 |
 | `400107` | environment参数值必须是Sandbox或Production |
+
+### 重复购买检查错误
+| 错误码 | 说明 | 适用产品类型 |
+| -- | -- | -- |
+| `400180` | 非消耗型产品已购买 | 非消耗型产品 |
+| `400181` | 活跃订阅已存在 | 自动续期订阅 |
+| `400182` | 待验证订阅订单存在，请先验证 | 自动续期订阅 |
+| `400183` | 有效期内非续期订阅已存在 | 非续期订阅 |
+| `400184` | 待验证非续期订阅订单存在，请先验证 | 非续期订阅 |
+| `400190` | 未知产品类型 | 所有类型 |
+
+### 配置相关错误
+| 错误码 | 说明 |
+| -- | -- |
 | `400192` | IAP接口检查未通过 |
 | `400193` | 未找到IAP配置 |
 | `400194` | 未开启Apple IAP购买功能 |
@@ -157,3 +233,18 @@ curl --location --request POST 'https://api.zaihangyun.com/api/apple-order/creat
 | `400198` | 商品已下架 |
 | `400199` | 商品不存在 |
 | `400250` | 创建订单失败 |
+
+### 错误处理建议
+
+1. **重复购买错误（400180-400184）**: 
+   - 提示用户已拥有该产品
+   - 对于待验证订单，引导用户完成验证流程
+   - 对于活跃订阅，显示当前订阅状态和到期时间
+
+2. **配置错误（400192-400199）**: 
+   - 联系技术支持检查后台配置
+   - 确认产品信息和Apple配置是否正确
+
+3. **系统错误（400250）**: 
+   - 稍后重试
+   - 如果持续失败，联系技术支持
