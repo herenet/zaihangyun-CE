@@ -80,6 +80,6 @@ Route::group([
         $router->post('api_tester/handle', 'Manager\ZaihangyunApiTesterController@handle')->name('api.tester.handle');
 
         // 苹果通知路由
-        $router->resource('apple/notifications', 'Manager\AppleNotificationController')->name('app.manager.apple.notifications');
+        $router->resource('apple/notifications', 'Manager\AppleNotificationController')->names('app.manager.apple.notifications');
     });
 });
