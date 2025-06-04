@@ -167,6 +167,12 @@ class ManagerMenu
                     'uri' => 'app/manager/' . $appKey. '/apple/notification',
                 ],
                 [
+                    'id' => 45,
+                    'parent_id' => 4,
+                    'title' => '票据验证记录',
+                    'uri' => 'app/manager/' . $appKey. '/apple/receipt/verification',
+                ],
+                [
                     'id' => 44,
                     'parent_id' => 4,
                     'title' => '接口配置',

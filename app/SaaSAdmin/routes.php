@@ -81,5 +81,8 @@ Route::group([
 
         // 苹果通知路由
         $router->resource('apple/notification', 'Manager\AppleNotificationController')->names('app.manager.apple.notification');
+        
+        // 苹果票据验证路由
+        $router->resource('apple/receipt/verification', 'Manager\AppleReceiptVerificationController')->names('app.manager.apple.receipt.verification');
     });
 });

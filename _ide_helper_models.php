@@ -383,6 +383,74 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\AppleReceiptData
+ *
+ * @property int $verification_id 验证记录ID
+ * @property int $tenant_id 租户ID（冗余）
+ * @property string $app_key 应用标识（冗余）
+ * @property string $receipt_data_hash 票据数据哈希（冗余）
+ * @property string $receipt_data 票据数据：成功时为解密后JSON，失败时为原始数据
+ * @property string $created_at 创建时间
+ * @property-read \App\Models\AppleReceiptVerification $verification
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptData newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptData newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptData query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptData whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptData whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptData whereReceiptData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptData whereReceiptDataHash($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptData whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptData whereVerificationId($value)
+ */
+	class AppleReceiptData extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\AppleReceiptVerification
+ *
+ * @property int $id 自增ID
+ * @property int $tenant_id 租户ID
+ * @property string $app_key 应用标识
+ * @property string $receipt_data_hash 票据数据SHA256哈希
+ * @property int $verification_status 验证状态：1=成功，2=失败
+ * @property int|null $apple_status_code 苹果返回的状态码
+ * @property string|null $error_message 错误信息
+ * @property string|null $bundle_id 应用Bundle ID
+ * @property string|null $environment 环境：sandbox或production
+ * @property string|null $transaction_id 交易ID
+ * @property string|null $original_transaction_id 原始交易ID
+ * @property string|null $product_id 产品ID
+ * @property \Illuminate\Support\Carbon|null $purchase_date 购买时间
+ * @property int|null $quantity 购买数量
+ * @property \Illuminate\Support\Carbon $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
+ * @property-read \App\Models\AppleReceiptData|null $receiptData
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereAppleStatusCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereBundleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereEnvironment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereErrorMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereOriginalTransactionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification wherePurchaseDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereReceiptDataHash($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereTransactionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification whereVerificationStatus($value)
+ */
+	class AppleReceiptVerification extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Article
  *
  * @property string $id
