@@ -21,12 +21,14 @@ use App\SaaSAdmin\Forms\AlipayConfig;
 use Illuminate\Support\Facades\Cache;
 use App\SaaSAdmin\Forms\OrderBaseConfig;
 use App\SaaSAdmin\Forms\WechatPayConfig;
+use App\SaaSAdmin\Forms\AppleVerifyConfig;
 use Illuminate\Support\Facades\Validator;
 use Readdle\AppStoreServerAPI\Environment;
 use Readdle\AppStoreServerAPI\AppStoreServerAPI;
 use App\Models\AlipayConfig as AlipayConfigModel;
 use Readdle\AppStoreServerAPI\Exception\AppStoreServerAPIException;
 use App\Models\IAPConfig as IAPConfigModel;
+use App\Models\AppleVerifyConfig as AppleVerifyConfigModel;
 
 class OrderConfigController extends Controller
 {
@@ -46,6 +48,7 @@ class OrderConfigController extends Controller
             $content->body(Tab::forms([
                 'base' => OrderBaseConfig::class,
                 'iap' => IAPConfig::class,
+                'apple_verify' => AppleVerifyConfig::class,
             ]));
         }else{
             $content->body(Tab::forms([
@@ -263,14 +266,65 @@ class OrderConfigController extends Controller
         }
     }
 
+    public function saveAppleVerify(Request $request)
+    {
+        $tenant_id = SaaSAdmin::user()->id;
+        $app_key = $this->getAppKey();
+
+        $validator = Validator::make($request->all(), [
+            'suport_apple_verify' => 'required|in:0,1',
+            'bundle_id' => 'required_if:suport_apple_verify,1|string|max:128',
+            'multiple_verify' => 'nullable|in:0,1',
+        ], [
+            'suport_apple_verify.required' => '是否启用苹果票据验证不能为空',
+            'suport_apple_verify.in' => '是否启用苹果票据验证必须为0或1',
+            'bundle_id.required_if' => '启用苹果票据验证时，应用包名不能为空',
+            'bundle_id.string' => '应用包名必须为字符串',
+            'bundle_id.max' => '应用包名最大长度为128个字符',
+            'multiple_verify.in' => '是否允许重复验证必须为0或1',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $order_config_data = [
+            'suport_apple_verify' => $request->input('suport_apple_verify'),
+        ];
+
+        try {
+            DB::beginTransaction();
+            
+            if ($request->input('suport_apple_verify') == 1) {
+                $apple_verify_config_data = [
+                    'bundle_id' => $request->input('bundle_id'),
+                    'multiple_verify' => $request->input('multiple_verify', 0),
+                ];
+                app(AppleVerifyConfigModel::class)->saveConfig($tenant_id, $app_key, $apple_verify_config_data);
+            }
+            
+            app(OrderInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $order_config_data);
+            $this->clearAPICache($app_key);
+            DB::commit();
+            admin_toastr('保存成功', 'success');
+            return back();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            admin_toastr($e->getMessage(), 'error');
+            return back()->withErrors($e->getMessage())->withInput();
+        }
+    }
+
     protected function clearAPICache($app_key)
     {
         $cache_key = 'order_interface_config|'.$app_key;
         $alipay_cache_key = 'alipay_config|'.$app_key;
         $iap_cache_key = 'iap_config|'.$app_key;
+        $apple_verify_cache_key = 'apple_verify_config|'.$app_key;
         Cache::store('api_cache')->forget($cache_key);
         Cache::store('api_cache')->forget($alipay_cache_key);
         Cache::store('api_cache')->forget($iap_cache_key);
+        Cache::store('api_cache')->forget($apple_verify_cache_key);
     }
 
     public function checkAlipayInterface(Request $request)

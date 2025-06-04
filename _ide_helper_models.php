@@ -451,6 +451,37 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * CREATE TABLE `apple_verify_config` (
+ *  `app_key` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+ *  `tenant_id` bigint unsigned NOT NULL,
+ *  `bundle_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+ *  `multiple_verify` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否允许多次验证：0不允许，1允许',
+ *  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+ *  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ *  PRIMARY KEY (`app_key`)
+ * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+ *
+ * @property string $app_key
+ * @property int $tenant_id
+ * @property string $bundle_id
+ * @property int $multiple_verify 是否允许多次验证：0不允许，1允许
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereBundleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereMultipleVerify($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereUpdatedAt($value)
+ */
+	class AppleVerifyConfig extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Article
  *
  * @property string $id
@@ -836,6 +867,7 @@ namespace App\Models{
  * @property int|null $wechat_payment_config_id
  * @property int|null $suport_alipay
  * @property int|null $suport_apple_pay
+ * @property int|null $suport_apple_verify
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig newModelQuery()
@@ -846,6 +878,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig whereOidPrefix($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig whereSuportAlipay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig whereSuportApplePay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig whereSuportAppleVerify($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig whereSuportWechatPay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig whereSwitch($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderInterfaceConfig whereTenantId($value)

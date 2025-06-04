@@ -21,6 +21,7 @@ class OrderInterfaceConfig extends Model
         'wechat_payment_config_id',
         'suport_alipay', 
         'suport_apple_pay', 
+        'suport_apple_verify',
     ];
 
     public function getConfig($tenantId, $appKey)
