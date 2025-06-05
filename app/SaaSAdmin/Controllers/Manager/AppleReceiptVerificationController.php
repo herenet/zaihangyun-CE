@@ -34,7 +34,7 @@ class AppleReceiptVerificationController extends AdminController
         
         // 基础信息
         $grid->column('id', 'ID');
-        $grid->column('receipt_data_hash', '票据哈希')->limit(16)->copyable();
+        $grid->column('receipt_data_hash', '票据哈希')->limit(16);
         
         // 验证结果
         $grid->column('verification_status', '验证状态')->using(AppleReceiptVerification::$statusMap)->label([
