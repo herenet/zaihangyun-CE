@@ -393,6 +393,59 @@ class OrderConfigController extends Controller
         }
     }
 
+    public function verifySubscription(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'bundle_id' => 'required|string|max:128',
+            'shared_secret' => 'required|string',
+            'receipt' => 'required|string',
+        ], [
+            'bundle_id.required' => '应用包名不能为空',
+            'bundle_id.string' => '应用包名必须为字符串',
+            'bundle_id.max' => '应用包名最大长度为128个字符',
+            'shared_secret.required' => '共享密钥不能为空',
+            'shared_secret.string' => '共享密钥必须为字符串',
+            'receipt.required' => '支付凭证不能为空',
+            'receipt.string' => '支付凭证必须为字符串',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'message' => $validator->errors()->first()]);
+        }
+        
+        $receipt = $request->input('receipt');
+        $bundle_id = $request->input('bundle_id');
+        $shared_secret = $request->input('shared_secret');
+
+        try {
+            $response = $this->callAppleVerifyApi($receipt, $shared_secret);
+            if ($response['status'] === 0 && isset($response['receipt'])) {
+                // 验证成功
+                if($response['receipt']['bundle_id'] == $bundle_id) {
+                    return response()->json([
+                        'status' => true,
+                        'data' => '验证成功',
+                    ]);
+                }else{
+                    return response()->json([
+                        'status' => false,
+                        'message' => '验证失败: 应用包名不匹配',
+                    ]);
+                }
+            }
+    
+            return response()->json([
+                'status' => false,
+                'message' => Helpers::getAppleReceiptStatusMessage($response['status']),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => '验证失败:'.$e->getMessage(),
+            ]);
+        }
+    }
+
     public function verifyOneTimePurchase(Request $request)
     {
         $validator = Validator::make($request->all(), [

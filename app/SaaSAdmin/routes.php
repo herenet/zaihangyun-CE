@@ -61,6 +61,7 @@ Route::group([
         $router->post('order/refund/send-code', 'Manager\OrderController@sendRefundCode')->name('app.manager.order.refund.send-code');
         $router->post('order/config/apple/verify-one-time-purchase', 'Manager\OrderConfigController@verifyOneTimePurchase')->name('app.manager.order.config.verify.one-time-purchase');
         $router->post('order/config/apple/verify-notify', 'Manager\OrderConfigController@verifyNotify')->name('app.manager.order.config.verify.notify');
+        $router->post('order/config/apple/verify-subscription', 'Manager\OrderConfigController@verifySubscription')->name('app.manager.order.config.verify.subscription');
         // $router->get('order/config/apple/callback-verify-status', 'Manager\OrderConfigController@getAppleCallbackVerifyStatus')->name('app.manager.order.config.verify.callback-status');
         $router->post('order/config/iap', 'Manager\OrderConfigController@saveIAP')->name('app.manager.order.config.save.iap');
         $router->post('order/config/apple-verify', 'Manager\OrderConfigController@saveAppleVerify')->name('app.manager.order.config.save.apple-verify');

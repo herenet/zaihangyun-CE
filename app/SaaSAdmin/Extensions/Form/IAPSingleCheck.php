@@ -12,6 +12,7 @@ class IAPSingleCheck extends Field
     protected $buttonText = '测试接口';
     protected $dependentFields = [];
     protected $modal = null;
+    protected $modalFieldName = '支付凭证';
 
     protected function initView()
     {
@@ -20,6 +21,12 @@ class IAPSingleCheck extends Field
             'failText' => '测试失败',
             'element' => $this->getElementClass()
         ]);
+    }
+
+    public function modalFieldName($name)
+    {
+        $this->modalFieldName = $name;
+        return $this;
     }
 
     public function dependentOn($fields)
@@ -84,8 +91,8 @@ class IAPSingleCheck extends Field
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>支付凭证</label>
-                                <textarea type="text" class="form-control receipt-input" placeholder="请输入APP内购买凭证"></textarea>
+                                <label>{$this->modalFieldName}</label>
+                                <textarea type="text" class="form-control receipt-input" placeholder="请输入{$this->modalFieldName}"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">

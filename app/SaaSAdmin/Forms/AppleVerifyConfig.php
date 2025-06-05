@@ -25,7 +25,7 @@ class AppleVerifyConfig extends Form
      */
     public function form()
     {
-        $this->radio('suport_apple_verify', '是否启用苹果票据验证')
+        $this->radio('suport_apple_verify', '启用苹果票据验证')
             ->required()
             ->options([
                 0 => '关闭',
@@ -37,12 +37,35 @@ class AppleVerifyConfig extends Form
                     ->rules('required_if:suport_apple_verify,1|string|max:128')
                     ->help('苹果应用的Bundle ID，用于验证苹果票据是否有效，请正确填写。');
 
-                $form->radioButton('multiple_verify', '是否允许重复验证')
-                    ->options([
-                        0 => '不允许',
-                        1 => '允许',
+                $form->switch('multiple_verify', '是否允许重复验证')
+                    ->states([
+                        'on' => ['value' => 1, 'text' => '允许'],
+                        'off' => ['value' => 0, 'text' => '不允许'],
                     ])
+                    ->default(0)
                     ->help('允许：同一个票据可以多次验证；不允许：同一个票据只能验证一次');
+
+                $form->radioButton('subscrip_switch', '订阅功能')
+                    ->options([
+                        0 => '关闭',
+                        1 => '开启',
+                    ])
+                    ->required()
+                    ->default(0)
+                    ->help('如在App Store Connect中配置了订阅，请选择开启订阅功能。并配置好以下共享密钥及回调地址。')
+                    ->when(1, function (Form $form) {
+                        $form->text('shared_secret', '共享密钥')
+                            ->rules(['string', 'max:255'])
+                            ->help('请输入共享密钥，在App Store Connect > App 信息 > App 专用共享密码，生成后获取。');
+
+                        $form->iapSingleCheck('interface_check', '验证配置')
+                            ->buttonText('验证配置是否正确')
+                            ->dependentOn(['bundle_id', 'shared_secret'])
+                            ->modalFieldName('支付凭证（必须是订阅购买的票据）')
+                            ->default(0)
+                            ->testUrl(admin_url('app/manager/'.$this->getAppKey().'/order/config/apple/verify-subscription'))
+                            ->help('通过调用苹果IAP接口的方式来验证配置是否正确');
+                    });
             });
 
         

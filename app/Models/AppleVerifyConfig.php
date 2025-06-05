@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Model;
  *  `tenant_id` bigint unsigned NOT NULL,
  *  `bundle_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
  *  `multiple_verify` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否允许多次验证：0不允许，1允许',
+ *  `subscrip_switch` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '是否开启订阅：0关闭，1开启',
+ *  `shared_secret` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '苹果共享密钥',
+ *  `interface_check` tinyint unsigned DEFAULT '0',
  *  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
  *  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  *  PRIMARY KEY (`app_key`)
@@ -28,6 +31,9 @@ class AppleVerifyConfig extends Model
         'tenant_id',
         'bundle_id',
         'multiple_verify',
+        'subscrip_switch',
+        'shared_secret',
+        'interface_check',
     ];
 
     public function getConfig($tenantId, $appKey)

@@ -456,6 +456,9 @@ namespace App\Models{
  *  `tenant_id` bigint unsigned NOT NULL,
  *  `bundle_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
  *  `multiple_verify` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否允许多次验证：0不允许，1允许',
+ *  `subscrip_switch` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '是否开启订阅：0关闭，1开启',
+ *  `shared_secret` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '苹果共享密钥',
+ *  `interface_check` tinyint unsigned DEFAULT '0',
  *  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
  *  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  *  PRIMARY KEY (`app_key`)
@@ -465,6 +468,9 @@ namespace App\Models{
  * @property int $tenant_id
  * @property string $bundle_id
  * @property int $multiple_verify 是否允许多次验证：0不允许，1允许
+ * @property int $subscrip_switch 是否开启订阅：0关闭，1开启
+ * @property string|null $shared_secret 苹果共享密钥
+ * @property int|null $interface_check
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon $created_at
  * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig newModelQuery()
@@ -473,7 +479,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereAppKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereBundleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereInterfaceCheck($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereMultipleVerify($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereSharedSecret($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereSubscripSwitch($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppleVerifyConfig whereUpdatedAt($value)
  */
