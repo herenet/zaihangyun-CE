@@ -167,7 +167,7 @@ class AppleReceiptVerificationController extends AdminController
         if ($verification->verification_status == AppleReceiptVerification::STATUS_SUCCESS) {
             $show->field('receiptData.receipt_data', '票据数据')->json();
         } else {
-            $show->field('receiptData.receipt_data', '票据数据')->as(function ($content) {
+            $show->receiptData()->receipt_data->as(function ($content) {
                 return "<pre>{$content}</pre>";
             });
         }
