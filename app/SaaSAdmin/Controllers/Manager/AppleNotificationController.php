@@ -38,7 +38,10 @@ class AppleNotificationController extends AdminController
         $grid->column('transaction_id', '交易ID');
         $grid->column('original_transaction_id', '原始交易ID');
         $grid->column('environment', '环境')->using(AppleOrder::$environmentMap);
-        $grid->column('processed', '处理状态')->using(AppleNotification::$processedMap);
+        $grid->column('processed', '处理状态')->using(AppleNotification::$processedMap)->label([
+            0 => 'warning',
+            1 => 'success'
+        ]);
         $grid->column('process_result', '处理结果')->limit(50);
         $grid->column('updated_at', '更新时间');
         $grid->column('created_at', '创建时间');
