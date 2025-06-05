@@ -164,23 +164,11 @@ class AppleReceiptVerificationController extends AdminController
         });
         
         // 票据数据
-        $show->field('receiptData.receipt_data', '票据数据')->json(function ($value) {
-            if (empty($value)) {
-                return '-';
-            }
-            
-            // 尝试解析JSON
-            $decoded = json_decode($value, true);
-            if (json_last_error() === JSON_ERROR_NONE) {
-                // 是有效的JSON，格式化显示
-                return $value;
-            } else {
-                // 不是JSON，按普通文本换行显示
-                return '<pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; max-height: 400px; overflow-y: auto; word-wrap: break-word; white-space: pre-wrap;">' . 
-                       htmlspecialchars($value) . 
-                       '</pre>';
-            }
-        })->help('成功时为解密后的JSON数据，失败时为原始票据数据');
+        if ($verification->verification_status == AppleReceiptVerification::STATUS_SUCCESS) {
+            $show->field('receiptData.receipt_data', '票据数据')->json();
+        } else {
+            $show->field('receiptData.receipt_data', '票据数据');
+        }
         
         // 时间信息
         $show->field('updated_at', '更新时间');
