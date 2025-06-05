@@ -301,6 +301,11 @@ class OrderConfigController extends Controller
             'suport_apple_verify' => $request->input('suport_apple_verify'),
         ];
 
+        if($request->input('subscrip_switch') == 1 && $request->input('interface_check') != 1) {
+            admin_error('必须验证配置成功才能提交');
+            return back()->withInput();
+        }
+
         try {
             DB::beginTransaction();
             
