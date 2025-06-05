@@ -275,6 +275,9 @@ class OrderConfigController extends Controller
             'suport_apple_verify' => 'required|in:0,1',
             'bundle_id' => 'required_if:suport_apple_verify,1|string|max:128',
             'multiple_verify' => 'nullable|in:on,off',
+            'subscrip_switch' => 'nullable|in:0,1',
+            'shared_secret' => 'required_if:subscrip_switch,1|string|max:128',
+            'interface_check' => 'required_if:subscrip_switch,1|in:0,1',
         ], [
             'suport_apple_verify.required' => '是否启用苹果票据验证不能为空',
             'suport_apple_verify.in' => '是否启用苹果票据验证必须为0或1',
@@ -282,6 +285,12 @@ class OrderConfigController extends Controller
             'bundle_id.string' => '应用包名必须为字符串',
             'bundle_id.max' => '应用包名最大长度为128个字符',
             'multiple_verify.in' => '是否允许重复验证必须为on或off',
+            'subscrip_switch.in' => '是否启用订阅验证必须为0或1',
+            'shared_secret.required_if' => '共享密钥不能为空',
+            'shared_secret.string' => '共享密钥必须为字符串',
+            'shared_secret.max' => '共享密钥最大长度为128个字符',
+            'interface_check.required_if' => '必须验证配置成功才能提交',
+            'interface_check.in' => '配置验证必须为0或1',
         ]);
 
         if ($validator->fails()) {
@@ -299,6 +308,9 @@ class OrderConfigController extends Controller
                 $apple_verify_config_data = [
                     'bundle_id' => $request->input('bundle_id'),
                     'multiple_verify' => $request->input('multiple_verify', 0) == 'on' ? 1 : 0,
+                    'subscrip_switch' => $request->input('subscrip_switch', 0),
+                    'shared_secret' => $request->input('shared_secret'),
+                    'interface_check' => $request->input('interface_check', 0),
                 ];
                 app(AppleVerifyConfigModel::class)->saveConfig($tenant_id, $app_key, $apple_verify_config_data);
             }
