@@ -8,7 +8,7 @@ use App\SaaSAdmin\AppKey;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Controllers\AdminController;
 use App\Models\AppleReceiptVerification;
-use App\Models\AppleReceiptData;
+use App\Models\AppleOrder;
 
 class AppleReceiptVerificationController extends AdminController
 {
@@ -51,12 +51,9 @@ class AppleReceiptVerificationController extends AdminController
         
         // 解析后的关键信息
         $grid->column('bundle_id', 'Bundle ID')->limit(20);
-        $grid->column('environment', '环境')->using([
-            'sandbox' => '沙盒环境',
-            'production' => '生产环境'
-        ])->label([
-            'sandbox' => 'warning',
-            'production' => 'success',
+        $grid->column('environment', '环境')->using(AppleOrder::$environmentMap)->label([
+            AppleOrder::ENVIRONMENT_SANDBOX => 'warning',
+            AppleOrder::ENVIRONMENT_PRODUCTION => 'success',
         ]);
         
         $grid->column('transaction_id', '交易ID')->limit(20)->copyable();
@@ -95,8 +92,7 @@ class AppleReceiptVerificationController extends AdminController
                 return AppleReceiptVerification::$statusMap[$original];
             });
             $export->column('environment', function ($value, $original) {
-                $envMap = ['sandbox' => '沙盒环境', 'production' => '生产环境'];
-                return $envMap[$original] ?? $original;
+                return AppleOrder::$environmentMap[$original];
             });
             $export->except(['app_key', 'tenant_id']);
         });
@@ -144,10 +140,7 @@ class AppleReceiptVerificationController extends AdminController
         
         // 解析后的信息
         $show->field('bundle_id', 'Bundle ID');
-        $show->field('environment', '环境')->using([
-            'sandbox' => '沙盒环境',
-            'production' => '生产环境'
-        ]);
+        $show->field('environment', '环境')->using(AppleOrder::$environmentMap);
         $show->field('transaction_id', '交易ID')->copyable();
         $show->field('original_transaction_id', '原始交易ID')->copyable();
         $show->field('product_id', '产品ID');

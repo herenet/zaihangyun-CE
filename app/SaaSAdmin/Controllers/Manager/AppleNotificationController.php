@@ -53,6 +53,16 @@ class AppleNotificationController extends AdminController
             $filter->equal('transaction_id', '交易ID');
             $filter->equal('original_transaction_id', '原始交易ID');
         });
+
+        $grid->export(function ($export) {
+            $export->filename('苹果通知列表-'.date('Y-m-d H:i:s').'-'.$this->getAppKey().'.csv');
+            $export->column('processed', function ($value, $original) {
+                return AppleNotification::$processedMap[$original];
+            });
+            $export->column('process_result', function ($value, $original) {
+                return $original;
+            });
+        });
         
         $grid->disableCreateButton();
         $grid->disableBatchActions();

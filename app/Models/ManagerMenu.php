@@ -161,16 +161,16 @@ class ManagerMenu
                     'uri' => 'app/manager/' . $appKey. '/order/apple/product',
                 ],
                 [
-                    'id' => 43,
-                    'parent_id' => 4,
-                    'title' => '苹果回调通知',
-                    'uri' => 'app/manager/' . $appKey. '/apple/notification',
-                ],
-                [
                     'id' => 45,
                     'parent_id' => 4,
                     'title' => '票据验证记录',
                     'uri' => 'app/manager/' . $appKey. '/apple/receipt/verification',
+                ],
+                [
+                    'id' => 43,
+                    'parent_id' => 4,
+                    'title' => '苹果回调通知',
+                    'uri' => 'app/manager/' . $appKey. '/apple/notification',
                 ],
                 [
                     'id' => 44,
