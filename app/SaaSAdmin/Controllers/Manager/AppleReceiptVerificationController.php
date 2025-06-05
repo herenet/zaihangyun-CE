@@ -110,7 +110,6 @@ class AppleReceiptVerificationController extends AdminController
         $grid->disableBatchActions();
         $grid->actions(function ($actions) {
             $actions->disableEdit();
-            $actions->disableDelete();
         });
 
         return $grid;
@@ -167,9 +166,9 @@ class AppleReceiptVerificationController extends AdminController
         if ($verification->verification_status == AppleReceiptVerification::STATUS_SUCCESS) {
             $show->field('receiptData.receipt_data', '票据数据')->json();
         } else {
-            $show->receiptData()->receipt_data->as(function ($content) {
-                return "<pre>{$content}</pre>";
-            });
+            $show->field('receiptData.receipt_data', '票据数据')->as(function ($content) {
+                return "<pre style='background: #f5f5f5; padding: 10px; border-radius: 4px; max-height: 400px; overflow-y: auto; white-space: pre-wrap;'>{$content}</pre>";
+            })->unescape();
         }
         
         // 时间信息
