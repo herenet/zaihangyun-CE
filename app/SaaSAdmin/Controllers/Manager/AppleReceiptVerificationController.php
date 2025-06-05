@@ -66,8 +66,8 @@ class AppleReceiptVerificationController extends AdminController
         });
         
         // 时间信息
-        $grid->column('created_at', '验证时间');
         $grid->column('updated_at', '更新时间');
+        $grid->column('created_at', '验证时间');
 
         // 筛选器
         $grid->filter(function ($filter) {

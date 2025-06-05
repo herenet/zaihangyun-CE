@@ -8,6 +8,8 @@ class AppleReceiptVerification extends Model
 {
     protected $table = 'apple_receipt_verifications';
 
+    public $timestamps = false;
+
     // 验证状态常量
     const STATUS_SUCCESS = 1;
     const STATUS_FAILED = 2;

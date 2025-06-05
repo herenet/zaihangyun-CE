@@ -391,7 +391,7 @@ namespace App\Models{
  * @property string $receipt_data_hash 票据数据哈希（冗余）
  * @property string $receipt_data 票据数据：成功时为解密后JSON，失败时为原始数据
  * @property string $created_at 创建时间
- * @property-read \App\Models\AppleReceiptVerification $verification
+ * @property-read \App\Models\AppleReceiptVerification|null $verification
  * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptData newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptData newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptData query()
@@ -423,8 +423,8 @@ namespace App\Models{
  * @property string|null $product_id 产品ID
  * @property \Illuminate\Support\Carbon|null $purchase_date 购买时间
  * @property int|null $quantity 购买数量
- * @property \Illuminate\Support\Carbon $created_at 创建时间
- * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
+ * @property string $created_at 创建时间
+ * @property string|null $updated_at 更新时间
  * @property-read \App\Models\AppleReceiptData|null $receiptData
  * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AppleReceiptVerification newQuery()
