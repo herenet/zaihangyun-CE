@@ -103,11 +103,15 @@ class AppleVerifyConfig extends Form
         $apple_verify_config = app(AppleVerifyConfigModel::class)->getConfig($tenant_id, $app_key);
         $bundle_id = $apple_verify_config->bundle_id ?? '';
         $multiple_verify = $apple_verify_config->multiple_verify ?? 0;
-
+        $subscrip_switch = $apple_verify_config->subscrip_switch ?? 0;
+        $shared_secret = $apple_verify_config->shared_secret ?? '';
+        
         return [
             'suport_apple_verify' => $suport_apple_verify,
             'bundle_id' => $bundle_id,
             'multiple_verify' => $multiple_verify,
+            'subscrip_switch' => $subscrip_switch,
+            'shared_secret' => $shared_secret,
         ];
     }
 } 
