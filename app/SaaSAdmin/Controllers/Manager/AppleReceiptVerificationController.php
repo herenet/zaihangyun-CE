@@ -60,7 +60,15 @@ class AppleReceiptVerificationController extends AdminController
         $grid->column('original_transaction_id', '原始交易ID')->limit(20)->copyable();
         $grid->column('product_id', '产品ID')->limit(25);
         
-        $grid->column('purchase_date', '购买时间');
+        $grid->column('purchase_date', '购买时间')->display(function ($value) {
+            if (empty($value)) {
+                return '-';
+            }
+            
+            // 如果是时间戳，直接格式化
+            return date('Y-m-d H:i:s', strtotime($value));
+        });
+        
         $grid->column('quantity', '购买数量')->display(function ($value) {
             return $value ?: '-';
         });
@@ -144,7 +152,13 @@ class AppleReceiptVerificationController extends AdminController
         $show->field('transaction_id', '交易ID')->copyable();
         $show->field('original_transaction_id', '原始交易ID')->copyable();
         $show->field('product_id', '产品ID');
-        $show->field('purchase_date', '购买时间');
+        $show->field('purchase_date', '购买时间')->as(function ($value) {
+            if (empty($value)) {
+                return '-';
+            }
+            
+            return date('Y-m-d H:i:s', strtotime($value));
+        });
         $show->field('quantity', '购买数量')->as(function ($value) {
             return $value ?: '-';
         });
