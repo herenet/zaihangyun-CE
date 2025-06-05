@@ -56,9 +56,9 @@ class AppleReceiptVerificationController extends AdminController
             AppleOrder::ENVIRONMENT_PRODUCTION => 'success',
         ]);
         
-        $grid->column('transaction_id', '交易ID')->limit(20)->copyable();
-        $grid->column('original_transaction_id', '原始交易ID')->limit(20)->copyable();
-        $grid->column('product_id', '产品ID')->limit(25);
+        $grid->column('transaction_id', '交易ID')->limit(20);
+        $grid->column('original_transaction_id', '原始交易ID')->limit(20);
+        $grid->column('product_id', '产品ID');
         
         $grid->column('purchase_date', '购买时间')->display(function ($value) {
             if (empty($value)) {
