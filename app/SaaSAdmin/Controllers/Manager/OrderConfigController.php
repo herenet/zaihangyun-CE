@@ -274,14 +274,14 @@ class OrderConfigController extends Controller
         $validator = Validator::make($request->all(), [
             'suport_apple_verify' => 'required|in:0,1',
             'bundle_id' => 'required_if:suport_apple_verify,1|string|max:128',
-            'multiple_verify' => 'nullable|in:0,1',
+            'multiple_verify' => 'nullable|in:on,off',
         ], [
             'suport_apple_verify.required' => '是否启用苹果票据验证不能为空',
             'suport_apple_verify.in' => '是否启用苹果票据验证必须为0或1',
             'bundle_id.required_if' => '启用苹果票据验证时，应用包名不能为空',
             'bundle_id.string' => '应用包名必须为字符串',
             'bundle_id.max' => '应用包名最大长度为128个字符',
-            'multiple_verify.in' => '是否允许重复验证必须为0或1',
+            'multiple_verify.in' => '是否允许重复验证必须为on或off',
         ]);
 
         if ($validator->fails()) {
@@ -298,7 +298,7 @@ class OrderConfigController extends Controller
             if ($request->input('suport_apple_verify') == 1) {
                 $apple_verify_config_data = [
                     'bundle_id' => $request->input('bundle_id'),
-                    'multiple_verify' => $request->input('multiple_verify', 0),
+                    'multiple_verify' => $request->input('multiple_verify', 0) == 'on' ? 1 : 0,
                 ];
                 app(AppleVerifyConfigModel::class)->saveConfig($tenant_id, $app_key, $apple_verify_config_data);
             }
