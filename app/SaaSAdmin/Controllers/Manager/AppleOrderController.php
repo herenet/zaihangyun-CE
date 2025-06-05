@@ -111,7 +111,7 @@ class AppleOrderController extends AdminController
     public function detail()
     {
         $oid = request()->route('list');
-        $order = new Show(AppleOrder::find($oid));
+        $order = new Show(AppleOrder::where('app_key', $this->getAppKey())->find($oid));
         $order->field('oid', '订单ID');
         $order->field('uid', '用户ID');
         $order->field('user.nickname', '用户昵称');

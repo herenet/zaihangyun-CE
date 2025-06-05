@@ -120,10 +120,20 @@ class AppleReceiptVerificationController extends AdminController
         return '票据验证记录';
     }
 
+    public function destroy($id)
+    {
+        $verification = AppleReceiptVerification::where('app_key', $this->getAppKey())->find($id);
+        if ($verification) {
+            $verification->delete();
+        }
+
+        return response()->json(['message' => '删除成功']);
+    }
+
     public function detail()
     {
         $id = request()->route('verification');
-        $verification = AppleReceiptVerification::with('receiptData')->find($id);
+        $verification = AppleReceiptVerification::with('receiptData')->where('app_key', $this->getAppKey())->find($id);
         
         if (!$verification) {
             abort(404, '记录不存在');
