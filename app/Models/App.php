@@ -6,6 +6,20 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Encore\Admin\Traits\DefaultDatetimeFormat;
 
+
+/**
+ * CREATE TABLE `apps` (
+ *  `app_key` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+ *  `tenant_id` bigint(20) unsigned NOT NULL,
+ *  `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+ *  `platform_type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '1为安卓，2为iphone',
+ *  `launcher_icon` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `app_secret` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+ *  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+ *  PRIMARY KEY (`app_key`)
+ * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+ */
 class App extends Model
 {
     use DefaultDatetimeFormat;
@@ -17,12 +31,18 @@ class App extends Model
 
     const PLATFORM_TYPE_ANDROID = 1;
     const PLATFORM_TYPE_IOS = 2;
-    const PLATFORM_TYPE_HARMONYOS = 3;
+    // const PLATFORM_TYPE_HARMONYOS = 3;
 
     public static $platformType = [
         self::PLATFORM_TYPE_ANDROID => 'Android',
         self::PLATFORM_TYPE_IOS => 'iOS',
-        self::PLATFORM_TYPE_HARMONYOS => 'HarmonyOS',
+        // self::PLATFORM_TYPE_HARMONYOS => 'HarmonyOS',
+    ];
+
+    public static $platformIcons = [
+        self::PLATFORM_TYPE_ANDROID => '<i class="fa fa-lg fa-android text-green"></i>',
+        self::PLATFORM_TYPE_IOS => '<i class="fa fa-lg fa-apple text-black"></i>',
+        // self::PLATFORM_TYPE_HARMONYOS => '<i class="fa fa-lg fa-harmonyos text-blue"></i>',
     ];
 
     const APP_INFO_CACHE_KEY = 'app_info_';

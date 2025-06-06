@@ -27,7 +27,7 @@ class AppleReceiptVerificationController extends AdminController
         $grid->model()->where('app_key', $this->getAppKey())->orderBy('created_at', 'desc');
         
         $grid->tools(function ($tools) {
-            $tools->append('<a href="/docs/1.x/apis/apple_receipt_verify" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-book"></i> 查看接口文档</a>');
+            $tools->append('<a href="/docs/1.x/apis/apple_notification_verify" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-book"></i> 查看接口文档</a>');
         });
         
         $grid->fixColumns(2, -2);

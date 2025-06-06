@@ -41,8 +41,8 @@ class DownloadWechatPlatformCert extends RowAction
             $content = $wechatPayService->downloadPlatformCert();
             $cert_content = $content['data'][0]['encrypt_certificate'];
             $decryptedContent = $this->decryptToString($cert_content['associated_data'], $cert_content['nonce'], $cert_content['ciphertext']);
-            // $this->response()->success('下载成功');
-            dd($decryptedContent);
+            $this->response()->success('下载成功');
+            // dd($decryptedContent);
          
         } catch (\Exception $e) {
             return $this->response()

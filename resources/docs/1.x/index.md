@@ -5,8 +5,8 @@
     - [数据结构](/{{route}}/{{version}}/struct)
     - [错误码规则](/{{route}}/{{version}}/code)
 
-- ## 功能介绍
-    - [产品列表](/{{route}}/{{version}}/app)
+<!-- - ## 功能介绍
+    - [产品列表](/{{route}}/{{version}}/app) -->
 
 - ## 接口列表
     - [获取应用配置](/{{route}}/{{version}}/apis/app_config)

@@ -31,7 +31,7 @@ class OrderAppleProductController extends AdminController
         $grid->model()->orderBy('order', 'asc')->orderBy('created_at', 'desc');
         $grid->fixColumns(2, -2);
         $grid->tools(function ($tools) {
-            $tools->append('<a href="/docs/1.x/apis/product_list" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-book"></i> 查看接口文档</a>');
+            $tools->append('<a href="/docs/1.x/apis/apple_product_list" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-book"></i> 查看接口文档</a>');
         });
         // 基础信息
         $grid->column('pid', 'PID');

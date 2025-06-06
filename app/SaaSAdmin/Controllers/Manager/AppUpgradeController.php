@@ -48,7 +48,7 @@ class AppUpgradeController extends AdminController
         if(!$config) {
             return response()->json(['status' => false, 'message' => '配置不存在']);
         }
-        $this->clearAPICache($channel_id, $config->platform_type);
+        $this->clearAPICache($channel_id);
         return parent::update($id);
     }
 
@@ -61,7 +61,7 @@ class AppUpgradeController extends AdminController
         if(!$config) {
             return response()->json(['status' => false, 'message' => '配置不存在']);
         }
-        $this->clearAPICache($channel_id, $config->platform_type);
+        $this->clearAPICache($channel_id);
         return parent::destroy($id);
     }
 
@@ -100,14 +100,6 @@ class AppUpgradeController extends AdminController
             ->help('升级开关，用于控制是否开启升级，同一渠道同一平台只允许开启一个版本的升级')
             ->value($sourceConfig ? $sourceConfig->enabled : 1);
 
-        $form->select('platform_type', '平台')
-            ->options(AppUpgrade::$platformMap)
-            ->required()
-            ->config('allowClear', false)
-            ->config('minimumResultsForSearch', 'Infinity')
-            ->rules('in:'.implode(',', array_keys(AppUpgrade::$platformMap)))
-            ->help('平台，用于选择平台')
-            ->value($sourceConfig ? $sourceConfig->platform_type : 1);
         $form->text('version_str', '版本号')
             ->required()
             ->rules('required|string|max:32')
@@ -186,7 +178,6 @@ class AppUpgradeController extends AdminController
                 AppUpgrade::where('tenant_id', $tenant_id)
                     ->where('app_key', $app_key)
                     ->where('channel_id', $channel_id)
-                    ->where('platform_type', $form->model()->platform_type)
                     ->update(['enabled' => 0]);
             }
         });
@@ -243,7 +234,7 @@ class AppUpgradeController extends AdminController
         $show->field('channel_name', '渠道名称')->as(function ($value) use ($channel) {
             return $channel->channel_name;
         });
-        $show->field('platform_type', '平台')->using(AppUpgrade::$platformMap);
+    
         $show->field('version_str', '版本号');
         $show->field('version_num', '版本值');
         $show->field('min_version_num', '最小版本值');
@@ -280,9 +271,9 @@ class AppUpgradeController extends AdminController
         return $show;
     }
 
-    protected function clearAPICache($channelId, $platformType)
+    protected function clearAPICache($channelId)
     {
-        $cache_key = 'app_upgrade|'.$channelId.'|'.$platformType;
+        $cache_key = 'app_upgrade|'.$channelId;
         Cache::store('api_cache')->forget($cache_key);
     }
 }

@@ -107,13 +107,7 @@ class AppUpgradeChannelController extends Controller
         
         $grid->column('id', 'ID')->hide();
         $grid->column('version_str', '版本号')->label();
-        $grid->column('version_num', '版本码');
-        $grid->column('platform_type', '平台')->icon([
-            1 => 'android',
-            2 => 'apple',
-            3 => 'circle-o',
-            99 => 'question',
-        ], 'question');
+        $grid->column('version_num', '版本码')->sortable();
         
         $grid->column('min_version_num', '最小版本值')->help('最小版本值，低于此版本将强制升级');
         $grid->column('force_upgrade', '强制升级')
@@ -165,15 +159,11 @@ class AppUpgradeChannelController extends Controller
         });
 
         $grid->filter(function ($filter) {
-            $filter->equal('platform_type', '平台')->select(AppUpgrade::$platformMap);
             $filter->equal('enabled', '升级开关')->select([
                 0 => '关闭',
                 1 => '开启',
-            ]);
-            $filter->scope('Android')->where('platform_type', 1);
-            $filter->scope('iOS')->where('platform_type', 2);
-            $filter->scope('HarmonyOS')->where('platform_type', 3);
-            $filter->scope('Others')->where('platform_type', 99);
+            ])->config('allowClear', false)
+            ->config('minimumResultsForSearch', 'Infinity');
         });
     
         $grid->disableBatchActions();

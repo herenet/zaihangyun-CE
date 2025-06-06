@@ -41,12 +41,12 @@ if(strpos($_SERVER['REQUEST_URI'], 'app/manager') === false){
     $layout_type = 'default';
 }
 
-Column::extend('password', function($value, $args) {
+Column::extend('password', function($value, $args, $length = null) {
     if(empty($value)){
         return '';
     }
     $maskChar = $args[0] ?? '*';
-    $maskLength = $args[1] ?? 6;
+    $maskLength = $length ?? strlen($value);
     
     $id = uniqid('pwd_');
     $mask = str_repeat($maskChar, $maskLength);

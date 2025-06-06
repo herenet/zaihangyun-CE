@@ -16,11 +16,13 @@ Route::group([
 
     $router->post('register', 'RegisterController@register');
     $router->post('send-verification', 'RegisterController@sendVerification');
+    $router->post('send-delete-app-code', 'ManagerController@sendDeleteAppCode');
     $router->post('send-login-verification', 'RegisterController@sendLoginVerification');
     $router->post('upload/article/image', 'UploadController@uploadImage')->name('upload.article.image');
 
     $router->resource('apps', 'AppController')->names('apps');
     $router->get('apps/list', 'AppController@list')->name('apps.list');
+    $router->resource('manager', 'ManagerController')->names('manager');
     $router->resource('global/config/wechat/payment', 'WechatPaymentConfigController')->names('global.wechat.payment.config');
     $router->post('global/config/wechat/payment/check-interface', 'WechatPaymentConfigController@checkInterface')->name('global.wechat.payment.check-interface');
     $router->resource('global/config/wechat/platform', 'WechatOpenPlatformConfigController')->names('global.wechat.platform.config');

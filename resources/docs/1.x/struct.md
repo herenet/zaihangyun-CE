@@ -118,7 +118,7 @@
 | pid | unsigned int | 产品唯一ID | 1001 |
 | name | string | 产品名称 | 高级会员月卡 |
 | sub_name | string | 子标题 | 尊享所有高级功能30天 |
-| type | unsigned int | 产品类型（1=会员时长，2=永久会员），默认1 | 1 |
+| type | unsigned int | 功能模型（1=会员时长，2=永久会员），默认1 | 1 |
 | function_value | string | 产品功能值，根据产品类型适配购买后逻辑处理 | 30 |
 | cross_price | unsigned int | 划线价（单位：分） | 12900 |
 | sale_price | unsigned int | 售价（单位：分） | 9900 |

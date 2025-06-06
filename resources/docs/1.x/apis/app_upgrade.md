@@ -47,7 +47,6 @@
 | 参数名 | 类型 | 是否必须 | 取值范围 | 默认值 | 说明 |
 | -- | -- | -- | -- | -- | -- |
 | device_uuid | string | 是 | 最大128字符 | - | 设备唯一标识，用于灰度发布判断 |
-| platform | integer | 是 | 1,2,3,99 | - | 平台类型（1:iOS, 2:Android, 3:HarmonyOS, 99:其他） |
 | version_number | integer | 是 | - | - | 当前版本值（整数） |
 | channel_name | string | 否 | 最大32字符 | default | 渠道名称 |
 
@@ -55,7 +54,7 @@
 ## 请求示例代码
 
 ```javascript
-curl --location --request GET 'https://api.zaihangyun.com/v1/app/upgrade?appkey=D5fceA1sVtmaMY1F&timestamp=1650381362&sign=5HC0kxCm2jsR3DpzhRJEFY3IfFvTcCN-8-qvvLCrKB8&device_uuid=abc123456789&platform=2&version_number=100&channel_name=official' \
+curl --location --request GET 'https://api.zaihangyun.com/v1/app/upgrade?appkey=D5fceA1sVtmaMY1F&timestamp=1650381362&sign=5HC0kxCm2jsR3DpzhRJEFY3IfFvTcCN-8-qvvLCrKB8&device_uuid=abc123456789&version_number=100&channel_name=official' \
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
 --header 'Accept: */*' \
 --header 'Host: api.zaihangyun.com' \
@@ -77,7 +76,6 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/app/upgrade?appkey=
         "last_version": "1.2.0",
         "last_version_number": 12,
         "upgrade_from": 1,
-        "platform": 1,
         "package_download_url": "https://download.example.com/app/v1.2.0.apk",
         "package_size": "10.1M",
         "package_md5": "a1b2c3d4e5f6g7h8i9j0",
@@ -98,7 +96,6 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/app/upgrade?appkey=
         "last_version": "1.2.0",
         "last_version_number": 12,
         "upgrade_from": 1,
-        "platform": 1,
         "package_download_url": "https://download.example.com/app/v1.2.0.apk",
         "package_size": "10.1M",
         "package_md5": "a1b2c3d4e5f6g7h8i9j0",
@@ -119,7 +116,6 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/app/upgrade?appkey=
         "last_version": "1.2.0",
         "last_version_number": 12,
         "upgrade_from": 1,
-        "platform": 1,
         "package_download_url": "https://download.example.com/app/v1.2.0.apk",
         "package_size": "10.1M",
         "package_md5": "a1b2c3d4e5f6g7h8i9j0",
@@ -147,7 +143,6 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/app/upgrade?appkey=
 | last_version | string | 最新版本号字符串 |
 | last_version_number | integer | 最新版本号数值 |
 | upgrade_from | integer | 升级方式：1:应用市场升级，2:官方链接下载或者其它方式 |
-| platform | string | 平台类型：1:iOS, 2:Android, 3:HarmonyOS, 99:其他 |
 | package_download_url | string | 安装包下载地址 |
 | package_size | string | 安装包大小 |
 | package_md5 | string | 安装包MD5校验值 |
@@ -165,9 +160,6 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/app/upgrade?appkey=
 | `400103` | device_uuid长度不能超过128个字符 |
 | `400104` | channel_name必须为字符串类型 |
 | `400105` | channel_name长度不能超过32个字符 |
-| `400106` | platform参数缺失 |
-| `400107` | platform必须为整数类型 |
-| `400108` | platform值必须在1,2,3,99范围内 |
 | `400109` | version_number参数缺失 |
 | `400110` | version_number必须为整数类型 |
 | `400198` | 升级渠道不存在 |

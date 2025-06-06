@@ -11,13 +11,6 @@ class AppUpgrade extends Model
 
     protected $table = 'app_upgrades';
 
-    public static $platformMap = [
-        1 => 'android',
-        2 => 'ios',
-        3 => 'harmonyOS',
-        99 => 'other',
-    ];
-
     public static $enabledMap = [
         0 => '未开启',
         1 => '已开启',

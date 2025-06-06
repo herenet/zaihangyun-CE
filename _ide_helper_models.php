@@ -69,7 +69,17 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\App
+ * CREATE TABLE `apps` (
+ *  `app_key` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+ *  `tenant_id` bigint(20) unsigned NOT NULL,
+ *  `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+ *  `platform_type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '1为安卓，2为iphone',
+ *  `launcher_icon` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `app_secret` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+ *  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+ *  PRIMARY KEY (`app_key`)
+ * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
  *
  * @property string $app_key
  * @property int $tenant_id
@@ -129,7 +139,6 @@ namespace App\Models{
  * @property int $tenant_id
  * @property string $app_key
  * @property int $channel_id
- * @property int $platform_type 1.android, 2.ios，99.others
  * @property string $version_str
  * @property int $version_num
  * @property int|null $min_version_num 最小支持版本
@@ -159,7 +168,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade wherePackageDownloadUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade wherePackageMd5($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade wherePackageSize($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade wherePlatformType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AppUpgrade whereUpgradeFrom($value)

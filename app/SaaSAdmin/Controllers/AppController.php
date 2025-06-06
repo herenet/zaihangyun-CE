@@ -41,8 +41,9 @@ class AppController extends Controller
         
         $grid->model()->where('tenant_id', SaaSAdmin::user()->id);
         $grid->model()->orderBy('created_at', 'desc');
+        $grid->column('', '');
         $grid->column('platform_type', '平台')->display(function ($value) {
-            return $value == 1 ? '<i class="fa fa-android"></i>' : ($value == 2 ? '<i class="fa fa-apple"></i>' : '<i class="fa fa-circle-o"></i>');
+            return App::$platformIcons[$value] ?? '';
         });
         $grid->column('name', '应用名称')->display(function ($value) {
             /** @var \App\Models\App $this */
@@ -82,10 +83,6 @@ class AppController extends Controller
         $form->text('name', '应用名称');
         $form->radio('platform_type', '平台')->options(App::$platformType)->default(App::PLATFORM_TYPE_ANDROID);
 
-        $form->tools(function (Form\Tools $tools) {
-            $tools->disableList();
-        });
-
         $form->setAction(admin_url('apps'));
 
         $form->saved(function (Form $form) {
@@ -97,6 +94,7 @@ class AppController extends Controller
             $footer->disableViewCheck();
             $footer->disableEditingCheck();
             $footer->disableCreatingCheck();
+            $footer->disableReset();
         });
 
         return $form;
