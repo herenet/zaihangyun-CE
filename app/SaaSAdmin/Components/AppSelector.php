@@ -47,7 +47,7 @@ class AppSelector implements Renderable
         
         // 返回完整的HTML
         return <<<HTML
-<div class="user-panel" style="padding: 10px;">
+<div class="user-panel" style="padding: 16px;">
     <select class="form-control" name="app_select" id="app_key_selector">
         {$options}
     </select>

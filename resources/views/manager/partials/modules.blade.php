@@ -29,9 +29,9 @@
                         <td>{{ $module['description'] }}</td>
                         <td class="text-center">
                             @if($module['enabled'])
-                                <span class="label label-success">已开通</span>
+                                <span class="label label-success" style="font-size: 12px;">已开通</span>
                             @else
-                            <a href="{{ $module['url'] }}" class="btn btn-xs btn-primary" style="margin-left: 5px;">
+                            <a href="{{ $module['url'] }}" class="btn btn-xs btn-primary" style="margin-left: 5px;font-size: 12px;">
                                         <i class="fa fa-plug"></i> 立即开通
                                     </a>
                             @endif

@@ -127,36 +127,88 @@ class IndexController extends AdminController
             ->where('status', 2)
             ->sum('payment_amount');
 
+        $user_yesterday = User::where('tenant_id', $tenant_id)
+            ->where('app_key', $app_key)
+            ->whereBetween('created_at', [now()->subDay()->startOfDay(), now()->subDay()->endOfDay()])
+            ->count();
+
+        $order_yesterday = Order::where('tenant_id', $tenant_id)
+            ->where('app_key', $app_key)
+            ->whereBetween('created_at', [now()->subDay()->startOfDay(), now()->subDay()->endOfDay()])
+            ->count();
+
+        $income_yesterday = Order::where('tenant_id', $tenant_id)
+            ->where('app_key', $app_key)
+            ->whereBetween('created_at', [now()->subDay()->startOfDay(), now()->subDay()->endOfDay()])
+            ->where('status', 2)
+            ->sum('payment_amount');
+
         $stats = [
             [
-                'title' => '总用户数',
-                'value' => $user_count ?? 0,
+                'title' => '用户统计',
                 'icon' => 'users',
-                'color' => '#0073b7'
+                'gradient' => 'linear-gradient(135deg, #4086F5 0%, #6B9BF7 100%)',
+                'primary' => [
+                    'label' => '今日新增用户',
+                    'value' => '156',
+                    'trend' => [
+                        'type' => 'up',
+                        'icon' => 'arrow-up',
+                        'text' => '+23.5%'
+                    ]
+                ],
+                'secondary' => [
+                    'label' => '总用户数',
+                    'value' => '12,845',
+                    'subtitle' => '累计总用户数'
+                ],
+                'yesterday' => [
+                    'value' => '126'
+                ]
             ],
             [
-                'title' => '当日新增用户',
-                'value' => $user_increate ?? 0,
-                'icon' => 'user-plus',
-                'color' => '#00c0ef'
+                'title' => '收入统计',
+                'icon' => 'yen',
+                'gradient' => 'linear-gradient(135deg, #10B981 0%, #1AE2D6 100%)',
+                'primary' => [
+                    'label' => '今日新增收入',
+                    'value' => '¥8,965',
+                    'trend' => [
+                        'type' => 'up',
+                        'icon' => 'arrow-up',
+                        'text' => '+18.2%'
+                    ]
+                ],
+                'secondary' => [
+                    'label' => '总收入',
+                    'value' => '¥1,286,430',
+                    'subtitle' => '累计总收入'
+                ],
+                'yesterday' => [
+                    'value' => '¥7,580'
+                ]
             ],
             [
-                'title' => '总收入',
-                'value' => '¥' . number_format($total_income/100 ?? 0, 2),
-                'icon' => 'rmb',
-                'color' => '#dd4b39'
-            ],
-            [
-                'title' => '当日新增订单',
-                'value' => $order_increate ?? 0,
+                'title' => '订单统计',
                 'icon' => 'shopping-cart',
-                'color' => '#00a65a'
-            ],
-            [
-                'title' => '当日新增收入',
-                'value' => '¥' . number_format($income_increate/100 ?? 0, 2),
-                'icon' => 'line-chart',
-                'color' => '#f39c12'
+                'gradient' => 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)',
+                'primary' => [
+                    'label' => '今日新增订单',
+                    'value' => '89',
+                    'trend' => [
+                        'type' => 'up',
+                        'icon' => 'arrow-up',
+                        'text' => '+12.8%'
+                    ]
+                ],
+                'secondary' => [
+                    'label' => '总订单数',
+                    'value' => '5,432',
+                    'subtitle' => '累计完成订单'
+                ],
+                'yesterday' => [
+                    'value' => '79'
+                ]
             ]
         ];
         

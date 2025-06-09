@@ -30,7 +30,6 @@ class ManagerController extends AdminController
         // 重要：只显示当前租户的应用
         $grid->model()->where('tenant_id', SaaSAdmin::user()->id);
         
-        $grid->column('', '');
         $grid->column('platform_type', '平台')->display(function ($value) {
             return App::$platformIcons[$value] ?? '';
         })->filter(App::$platformType);

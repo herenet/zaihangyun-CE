@@ -6,13 +6,12 @@ use App\Models\App;
 use App\Libs\Helpers;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Layout\Row;
 use Illuminate\Http\Request;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
-use Encore\Admin\Widgets\InfoBox;
 use App\Http\Controllers\Controller;
 use App\SaaSAdmin\Facades\SaaSAdmin;
+use App\SaaSAdmin\Extensions\Widget\StatsInfoBox;
 
 class AppController extends Controller
 {
@@ -41,7 +40,6 @@ class AppController extends Controller
         
         $grid->model()->where('tenant_id', SaaSAdmin::user()->id);
         $grid->model()->orderBy('created_at', 'desc');
-        $grid->column('', '');
         $grid->column('platform_type', '平台')->display(function ($value) {
             return App::$platformIcons[$value] ?? '';
         });
@@ -50,11 +48,13 @@ class AppController extends Controller
             $url = admin_url('app/manager/' . $this->app_key);
             return "<a href='{$url}' onclick='window.location.href=this.href;return false;'>{$value}</a>";
         });
-        $grid->column('app_key', 'AppKey');
         
-        $grid->column('user_increate', '新增注册')->sortable();
-        $grid->column('order_increate', '新增订单')->sortable();
-        $grid->column('income_increate', '新增收入')->sortable();
+        $grid->column('user_increate', '今日新增注册')->sortable();
+        $grid->column('user_increate', '昨日新增注册')->sortable();
+        $grid->column('order_increate', '今日新增订单')->sortable();
+        $grid->column('order_increate', '昨日新增订单')->sortable();
+        $grid->column('income_increate', '今日新增收入')->sortable();
+        $grid->column('income_increate', '昨日新增收入')->sortable();
         $grid->disableActions();
         $grid->disableCreateButton();
         $grid->disableExport();
@@ -67,13 +67,61 @@ class AppController extends Controller
 
     protected function infoBox(Content $content)
     {
-        $content->row(function ($row) {
-            $row->column(4, new InfoBox('当日新增注册', 'users', 'aqua', '/demo/users', '1024'));
-            $row->column(4, new InfoBox('当日新增订单', 'shopping-cart', 'green', '/demo/orders', '150%'));
-            $row->column(4, new InfoBox('当日新增收入', 'money', 'yellow', '/demo/articles', '2786'));
+        // 模拟数据 - 后续可以替换为真实数据查询
+        $statsData = $this->getMockStatsData();
+        
+        $content->row(function ($row) use ($statsData) {
+            // 新增注册
+            $row->column(4, new StatsInfoBox(
+                '新增注册',
+                'users',
+                'aqua',
+                $statsData['users']['today'],
+                $statsData['users']['yesterday']
+            ));
+            
+            // 新增订单
+            $row->column(4, new StatsInfoBox(
+                '新增订单',
+                'shopping-cart',
+                'green',
+                $statsData['orders']['today'],
+                $statsData['orders']['yesterday']
+            ));
+            
+            // 新增收入
+            $row->column(4, new StatsInfoBox(
+                '新增收入',
+                'money',
+                'yellow',
+                $statsData['income']['today'],
+                $statsData['income']['yesterday']
+            ));
         });
 
         return $content;
+    }
+
+    /**
+     * 获取模拟统计数据
+     * 后续可以替换为真实的数据库查询
+     */
+    protected function getMockStatsData()
+    {
+        return [
+            'users' => [
+                'today' => 1024,
+                'yesterday' => 856
+            ],
+            'orders' => [
+                'today' => 120,  // 改为下降的数据
+                'yesterday' => 150
+            ],
+            'income' => [
+                'today' => 278600, // 以分为单位，显示时会转换为元
+                'yesterday' => 245300
+            ]
+        ];
     }
 
     public function form()
