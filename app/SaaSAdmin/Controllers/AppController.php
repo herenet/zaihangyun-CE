@@ -62,42 +62,42 @@ class AppController extends Controller
             /** @var \App\Models\App $this */
             $stats = $controller->getAppStatsData($this->tenant_id, $this->app_key);
             return number_format($stats['users']['today']);
-        })->sortable();
+        });
         
         // 昨日新增注册
         $grid->column('user_yesterday', '昨日新增注册')->display(function () use ($controller) {
             /** @var \App\Models\App $this */
             $stats = $controller->getAppStatsData($this->tenant_id, $this->app_key);
             return number_format($stats['users']['yesterday']);
-        })->sortable();
+        });
         
         // 今日新增订单
         $grid->column('order_today', '今日新增订单')->display(function () use ($controller) {
             /** @var \App\Models\App $this */
             $stats = $controller->getAppStatsData($this->tenant_id, $this->app_key);
             return number_format($stats['orders']['today']);
-        })->sortable();
+        });
         
         // 昨日新增订单
         $grid->column('order_yesterday', '昨日新增订单')->display(function () use ($controller) {
             /** @var \App\Models\App $this */
             $stats = $controller->getAppStatsData($this->tenant_id, $this->app_key);
             return number_format($stats['orders']['yesterday']);
-        })->sortable();
+        });
         
         // 今日新增收入
         $grid->column('income_today', '今日新增收入')->display(function () use ($controller) {
             /** @var \App\Models\App $this */
             $stats = $controller->getAppStatsData($this->tenant_id, $this->app_key);
             return '¥' . number_format($stats['income']['today'] / 100, 2);
-        })->sortable();
+        });
         
         // 昨日新增收入
         $grid->column('income_yesterday', '昨日新增收入')->display(function () use ($controller) {
             /** @var \App\Models\App $this */
             $stats = $controller->getAppStatsData($this->tenant_id, $this->app_key);
             return '¥' . number_format($stats['income']['yesterday'] / 100, 2);
-        })->sortable();
+        });
         
         $grid->disableActions();
         $grid->disableCreateButton();
