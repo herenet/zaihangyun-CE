@@ -254,28 +254,6 @@ class IndexController extends AdminController
                 ]
             ],
             [
-                'title' => '收入统计',
-                'icon' => 'yen',
-                'gradient' => 'linear-gradient(135deg, #10B981 0%, #1AE2D6 100%)',
-                'primary' => [
-                    'label' => '今日新增收入',
-                    'value' => '¥' . number_format($income_increate / 100, 2),
-                    'trend' => [
-                        'type' => $income_growth_type,
-                        'icon' => $income_growth_icon,
-                        'text' => ($income_growth_rate >= 0 ? '+' : '') . number_format($income_growth_rate, 1) . '%'
-                    ]
-                ],
-                'secondary' => [
-                    'label' => '总收入',
-                    'value' => '¥' . number_format($total_income / 100, 2),
-                    'subtitle' => '累计总收入'
-                ],
-                'yesterday' => [
-                    'value' => '¥' . number_format($income_yesterday / 100, 2)
-                ]
-            ],
-            [
                 'title' => '订单统计',
                 'icon' => 'shopping-cart',
                 'gradient' => 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)',
@@ -295,6 +273,28 @@ class IndexController extends AdminController
                 ],
                 'yesterday' => [
                     'value' => number_format($order_yesterday)
+                ]
+            ],
+            [
+                'title' => '收入统计',
+                'icon' => 'yen',
+                'gradient' => 'linear-gradient(135deg, #10B981 0%, #1AE2D6 100%)',
+                'primary' => [
+                    'label' => '今日新增收入',
+                    'value' => '¥' . number_format($income_increate / 100, 2),
+                    'trend' => [
+                        'type' => $income_growth_type,
+                        'icon' => $income_growth_icon,
+                        'text' => ($income_growth_rate >= 0 ? '+' : '') . number_format($income_growth_rate, 1) . '%'
+                    ]
+                ],
+                'secondary' => [
+                    'label' => '总收入',
+                    'value' => '¥' . number_format($total_income / 100, 2),
+                    'subtitle' => '累计总收入'
+                ],
+                'yesterday' => [
+                    'value' => '¥' . number_format($income_yesterday / 100, 2)
                 ]
             ]
         ];
@@ -331,28 +331,6 @@ class IndexController extends AdminController
                 ]
             ],
             [
-                'title' => '收入统计',
-                'icon' => 'yen',
-                'gradient' => 'linear-gradient(135deg, #10B981 0%, #1AE2D6 100%)',
-                'primary' => [
-                    'label' => '今日新增收入',
-                    'value' => '¥0.00',
-                    'trend' => [
-                        'type' => 'neutral',
-                        'icon' => 'minus',
-                        'text' => '0%'
-                    ]
-                ],
-                'secondary' => [
-                    'label' => '总收入',
-                    'value' => '¥0.00',
-                    'subtitle' => '累计总收入'
-                ],
-                'yesterday' => [
-                    'value' => '¥0.00'
-                ]
-            ],
-            [
                 'title' => '订单统计',
                 'icon' => 'shopping-cart',
                 'gradient' => 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)',
@@ -372,6 +350,28 @@ class IndexController extends AdminController
                 ],
                 'yesterday' => [
                     'value' => '0'
+                ]
+            ],
+            [
+                'title' => '收入统计',
+                'icon' => 'yen',
+                'gradient' => 'linear-gradient(135deg, #10B981 0%, #1AE2D6 100%)',
+                'primary' => [
+                    'label' => '今日新增收入',
+                    'value' => '¥0.00',
+                    'trend' => [
+                        'type' => 'neutral',
+                        'icon' => 'minus',
+                        'text' => '0%'
+                    ]
+                ],
+                'secondary' => [
+                    'label' => '总收入',
+                    'value' => '¥0.00',
+                    'subtitle' => '累计总收入'
+                ],
+                'yesterday' => [
+                    'value' => '¥0.00'
                 ]
             ]
         ];
