@@ -2,13 +2,14 @@
 
 namespace App\SaaSAdmin\Controllers\Manager;
 
+use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Show;
 use App\Models\Feedback;
 use App\SaaSAdmin\AppKey;
 use Encore\Admin\Layout\Content;
-use Encore\Admin\Show;
-use Encore\Admin\Form;
 use App\SaaSAdmin\Facades\SaaSAdmin;
+use App\SaaSAdmin\Actions\FeedbackReply;
 use Encore\Admin\Controllers\AdminController;
 
 class FeedbackController extends AdminController
@@ -63,7 +64,7 @@ class FeedbackController extends AdminController
             $actions->disableEdit();
             
             // 添加回复按钮
-            $actions->prepend('<a href="'.admin_url('app/manager/'.$app_key.'/feedback/'.$actions->getKey().'/reply').'"><i class="fa fa-reply"></i> </a>');
+            $actions->add(new FeedbackReply($app_key));
         });
 
         $grid->filter(function ($filter) {

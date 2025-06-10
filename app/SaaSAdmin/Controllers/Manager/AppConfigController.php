@@ -11,8 +11,9 @@ use Illuminate\Validation\Rule;
 use Encore\Admin\Layout\Content;
 use Illuminate\Support\MessageBag;
 use App\SaaSAdmin\Facades\SaaSAdmin;
-use Encore\Admin\Controllers\AdminController;
 use Illuminate\Support\Facades\Cache;
+use App\SaaSAdmin\Actions\AppConfigCopy;
+use Encore\Admin\Controllers\AdminController;
 
 
 class AppConfigController extends AdminController
@@ -46,7 +47,7 @@ class AppConfigController extends AdminController
 
         $grid->actions(function ($actions) use ($app_key) {
             // 添加复制按钮，直接链接到创建页面并带上源ID参数
-            $actions->prepend('<a href="' . admin_url('/app/manager/'.$app_key.'/config/create?copy_from=' . $actions->row->id) . '" title="复制配置"><i class="fa fa-copy"></i></a>');
+            $actions->add(new AppConfigCopy($app_key));
         });
         
         $grid->disableExport();

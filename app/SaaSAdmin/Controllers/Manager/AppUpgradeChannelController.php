@@ -10,6 +10,7 @@ use App\Models\AppUpgradeChannel;
 use App\Http\Controllers\Controller;
 use App\SaaSAdmin\Facades\SaaSAdmin;
 use Illuminate\Support\Facades\Validator;
+use App\SaaSAdmin\Actions\VersionConfigCopy;
 
 class AppUpgradeChannelController extends Controller
 {
@@ -155,7 +156,7 @@ class AppUpgradeChannelController extends Controller
 
         $grid->actions(function ($actions) use ($app_key) {
             // 添加复制按钮，直接链接到创建页面并带上源ID参数
-            $actions->prepend('<a href="' . admin_url('/app/manager/'.$app_key.'/version/'.$actions->row->channel_id.'/item/create?copy_from=' . $actions->row->id) . '" title="复制配置"><i class="fa fa-copy"></i></a>');
+            $actions->add(new VersionConfigCopy($app_key, $actions->row->channel_id));
         });
 
         $grid->filter(function ($filter) {
