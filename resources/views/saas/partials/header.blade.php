@@ -1,18 +1,22 @@
 <!-- Main Header -->
-<header class="main-header">
+<header class="main-header" style="height: 60px !important;">
 
     <!-- Logo -->
-    <a href="javascript:void(0)" class="logo" onclick="window.location.href = '{{ admin_url('/') }}'">
+    <a href="javascript:void(0)" class="logo" style="height: 60px !important; line-height: 60px !important;" onclick="window.location.href = '{{ admin_url('/') }}'">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini">{!! config('admin.logo-mini', config('admin.name')) !!}</span>
+        <span class="logo-mini">
+            <img src="/images/logo-mini.png" style="height: 20px !important;">
+        </span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg">{!! config('admin.logo', config('admin.name')) !!}</span>
+        <span class="logo-lg">
+            <img src="/images/logo-baas.png" style="height: 36px !important;">
+        </span>
     </a>
 
     <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation">
+    <nav class="navbar navbar-static-top" style="min-height: 60px !important;" role="navigation">
         <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <a href="#" class="sidebar-toggle" style="padding: 20px 18px;" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
         </a>
         <ul class="nav navbar-nav hidden-sm visible-lg-block">

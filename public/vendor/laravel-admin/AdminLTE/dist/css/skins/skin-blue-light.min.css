@@ -45,7 +45,7 @@
 .skin-blue-light .content-wrapper {
     background: linear-gradient(135deg, #FAFBFC 0%, #F5F7FA 100%);
     border-left: none;
-    min-height: calc(100vh - 50px);
+    min-height: calc(100vh - 60px);
 }
 
 .skin-blue-light .main-footer {
@@ -71,6 +71,8 @@
     color: var(--text-dark);
     transition: background-color 0.3s ease, color 0.3s ease;
     font-weight: 500;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
 }
 
 .skin-blue-light .main-header .navbar .nav > li > a:hover,
@@ -814,4 +816,105 @@ td.column-order button.grid-row-orderable {
 
 .box-footer {
     background-color: transparent !important;
+}
+
+/* === 侧边栏菜单垂直居中优化 === */
+.skin-blue-light .main-sidebar .sidebar-menu > li > a {
+    display: flex !important;
+    align-items: center !important;
+    padding: 12px 15px !important;
+    min-height: 44px !important;
+    line-height: 1.4 !important;
+}
+
+.skin-blue-light .main-sidebar .sidebar-menu > li > a > i {
+    margin-right: 10px !important;
+    width: 20px !important;
+    text-align: center !important;
+    flex-shrink: 0 !important;
+}
+
+.skin-blue-light .main-sidebar .sidebar-menu > li > a > span {
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* === 子菜单项也垂直居中 === */
+.skin-blue-light .main-sidebar .sidebar-menu .treeview-menu > li > a {
+    display: flex !important;
+    align-items: center !important;
+    padding: 8px 15px 8px 35px !important;
+    min-height: 36px !important;
+    line-height: 1.4 !important;
+}
+
+.skin-blue-light .main-sidebar .sidebar-menu .treeview-menu > li > a > i {
+    margin-right: 8px !important;
+    width: 16px !important;
+    text-align: center !important;
+    flex-shrink: 0 !important;
+}
+
+/* === 展开箭头居中 === */
+.skin-blue-light .main-sidebar .sidebar-menu > li.treeview > a > .pull-right {
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* === 菜单项悬停效果优化 === */
+.skin-blue-light .main-sidebar .sidebar-menu > li:hover > a,
+.skin-blue-light .main-sidebar .sidebar-menu > li.active > a {
+    background: linear-gradient(135deg, rgba(64, 134, 245, 0.1) 0%, rgba(107, 155, 247, 0.05) 100%) !important;
+    border-left: 3px solid var(--primary-color) !important;
+    padding-left: 12px !important;
+}
+
+/* === 活动菜单项样式 === */
+.skin-blue-light .main-sidebar .sidebar-menu > li.active > a {
+    background: linear-gradient(135deg, rgba(64, 134, 245, 0.15) 0%, rgba(107, 155, 247, 0.08) 100%) !important;
+    color: var(--primary-color) !important;
+    font-weight: 600 !important;
+}
+
+.skin-blue-light .main-sidebar .sidebar-menu > li.active > a > i {
+    color: var(--primary-color) !important;
+}
+
+/* === 菜单分组标题 === */
+.skin-blue-light .main-sidebar .sidebar-menu > .header {
+    padding: 10px 15px 5px 15px !important;
+    font-size: 11px !important;
+    color: #9CA3AF !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    font-weight: 600 !important;
+}
+
+/* === 响应式调整 === */
+@media (max-width: 768px) {
+    .skin-blue-light .main-sidebar .sidebar-menu > li > a {
+        padding: 10px 12px !important;
+        min-height: 40px !important;
+    }
+    
+    .skin-blue-light .main-sidebar .sidebar-menu > li > a > i {
+        margin-right: 8px !important;
+        width: 18px !important;
+    }
+    
+    .skin-blue-light .main-sidebar .sidebar-menu .treeview-menu > li > a {
+        padding: 6px 12px 6px 30px !important;
+        min-height: 32px !important;
+    }
+}
+
+/* === 菜单过渡动画 === */
+.skin-blue-light .main-sidebar .sidebar-menu > li > a,
+.skin-blue-light .main-sidebar .sidebar-menu .treeview-menu > li > a {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.skin-blue-light .main-sidebar .sidebar-menu > li > a > i {
+    transition: color 0.3s ease !important;
 }

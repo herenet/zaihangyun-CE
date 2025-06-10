@@ -5,6 +5,7 @@ namespace App\SaaSAdmin\Controllers\Manager;
 use App\Models\App;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\AppleOrder;
 use App\SaaSAdmin\AppKey;
 use Illuminate\Support\Arr;
 use Encore\Admin\Layout\Row;
@@ -107,41 +108,127 @@ class IndexController extends AdminController
         $app_key = $this->getAppKey();
         $tenant_id = SaaSAdmin::user()->id;
 
+        // 获取应用信息以判断平台类型
+        $app = App::where('tenant_id', $tenant_id)
+            ->where('app_key', $app_key)
+            ->first(['platform_type']);
+            
+        if (!$app) {
+            // 如果应用不存在，返回空数据
+            return $this->getEmptyStats();
+        }
+
+        // 根据平台类型选择订单表和相关字段
+        $is_ios = ($app->platform_type == App::PLATFORM_TYPE_IOS);
+        $order_model = $is_ios ? AppleOrder::class : Order::class;
+        $amount_field = $is_ios ? 'amount' : 'payment_amount';
+        $status_field = $is_ios ? 'payment_status' : 'status';
+        $success_status = $is_ios ? AppleOrder::PAYMENT_STATUS_SUCCESS : Order::STATUS_PAID;
+
+        // 时间范围定义
+        $today_start = now()->startOfDay();
+        $today_end = now()->endOfDay();
+        $yesterday_start = now()->subDay()->startOfDay();
+        $yesterday_end = now()->subDay()->endOfDay();
+
+        // 用户统计
         $user_count = User::where('tenant_id', $tenant_id)
             ->where('app_key', $app_key)
             ->count();
         $user_increate = User::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)->where('created_at', '>=', now()->startOfDay())
+            ->where('app_key', $app_key)
+            ->whereBetween('created_at', [$today_start, $today_end])
             ->count();
-        $order_increate = Order::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)
-            ->where('created_at', '>=', now()->startOfDay())
-            ->count();
-        $income_increate = Order::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)
-            ->where('created_at', '>=', now()->startOfDay())
-            ->where('status', 2)
-            ->sum('payment_amount');
-        $total_income = Order::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)
-            ->where('status', 2)
-            ->sum('payment_amount');
-
         $user_yesterday = User::where('tenant_id', $tenant_id)
             ->where('app_key', $app_key)
-            ->whereBetween('created_at', [now()->subDay()->startOfDay(), now()->subDay()->endOfDay()])
+            ->whereBetween('created_at', [$yesterday_start, $yesterday_end])
             ->count();
 
-        $order_yesterday = Order::where('tenant_id', $tenant_id)
+        // 订单统计
+        $order_total = $order_model::where('tenant_id', $tenant_id)
             ->where('app_key', $app_key)
-            ->whereBetween('created_at', [now()->subDay()->startOfDay(), now()->subDay()->endOfDay()])
+            ->count();
+        $order_increate = $order_model::where('tenant_id', $tenant_id)
+            ->where('app_key', $app_key)
+            ->whereBetween('created_at', [$today_start, $today_end])
+            ->count();
+        $order_yesterday = $order_model::where('tenant_id', $tenant_id)
+            ->where('app_key', $app_key)
+            ->whereBetween('created_at', [$yesterday_start, $yesterday_end])
             ->count();
 
-        $income_yesterday = Order::where('tenant_id', $tenant_id)
+        // 收入统计（只统计已支付的订单）
+        $total_income = $order_model::where('tenant_id', $tenant_id)
             ->where('app_key', $app_key)
-            ->whereBetween('created_at', [now()->subDay()->startOfDay(), now()->subDay()->endOfDay()])
-            ->where('status', 2)
-            ->sum('payment_amount');
+            ->where($status_field, $success_status)
+            ->sum($amount_field);
+        $income_increate = $order_model::where('tenant_id', $tenant_id)
+            ->where('app_key', $app_key)
+            ->whereBetween('created_at', [$today_start, $today_end])
+            ->where($status_field, $success_status)
+            ->sum($amount_field);
+        $income_yesterday = $order_model::where('tenant_id', $tenant_id)
+            ->where('app_key', $app_key)
+            ->whereBetween('created_at', [$yesterday_start, $yesterday_end])
+            ->where($status_field, $success_status)
+            ->sum($amount_field);
+
+        // 计算用户增长率
+        $user_growth_rate = 0;
+        $user_growth_type = 'neutral';
+        $user_growth_icon = 'minus';
+        if ($user_yesterday > 0) {
+            $user_growth_rate = (($user_increate - $user_yesterday) / $user_yesterday) * 100;
+            if ($user_growth_rate > 0) {
+                $user_growth_type = 'up';
+                $user_growth_icon = 'arrow-up';
+            } elseif ($user_growth_rate < 0) {
+                $user_growth_type = 'down';
+                $user_growth_icon = 'arrow-down';
+            }
+        } elseif ($user_increate > 0) {
+            $user_growth_rate = 100;
+            $user_growth_type = 'up';
+            $user_growth_icon = 'arrow-up';
+        }
+
+        // 计算订单增长率
+        $order_growth_rate = 0;
+        $order_growth_type = 'neutral';
+        $order_growth_icon = 'minus';
+        if ($order_yesterday > 0) {
+            $order_growth_rate = (($order_increate - $order_yesterday) / $order_yesterday) * 100;
+            if ($order_growth_rate > 0) {
+                $order_growth_type = 'up';
+                $order_growth_icon = 'arrow-up';
+            } elseif ($order_growth_rate < 0) {
+                $order_growth_type = 'down';
+                $order_growth_icon = 'arrow-down';
+            }
+        } elseif ($order_increate > 0) {
+            $order_growth_rate = 100;
+            $order_growth_type = 'up';
+            $order_growth_icon = 'arrow-up';
+        }
+
+        // 计算收入增长率
+        $income_growth_rate = 0;
+        $income_growth_type = 'neutral';
+        $income_growth_icon = 'minus';
+        if ($income_yesterday > 0) {
+            $income_growth_rate = (($income_increate - $income_yesterday) / $income_yesterday) * 100;
+            if ($income_growth_rate > 0) {
+                $income_growth_type = 'up';
+                $income_growth_icon = 'arrow-up';
+            } elseif ($income_growth_rate < 0) {
+                $income_growth_type = 'down';
+                $income_growth_icon = 'arrow-down';
+            }
+        } elseif ($income_increate > 0) {
+            $income_growth_rate = 100;
+            $income_growth_type = 'up';
+            $income_growth_icon = 'arrow-up';
+        }
 
         $stats = [
             [
@@ -150,20 +237,20 @@ class IndexController extends AdminController
                 'gradient' => 'linear-gradient(135deg, #4086F5 0%, #6B9BF7 100%)',
                 'primary' => [
                     'label' => '今日新增用户',
-                    'value' => '156',
+                    'value' => number_format($user_increate),
                     'trend' => [
-                        'type' => 'up',
-                        'icon' => 'arrow-up',
-                        'text' => '+23.5%'
+                        'type' => $user_growth_type,
+                        'icon' => $user_growth_icon,
+                        'text' => ($user_growth_rate >= 0 ? '+' : '') . number_format($user_growth_rate, 1) . '%'
                     ]
                 ],
                 'secondary' => [
                     'label' => '总用户数',
-                    'value' => '12,845',
+                    'value' => number_format($user_count),
                     'subtitle' => '累计总用户数'
                 ],
                 'yesterday' => [
-                    'value' => '126'
+                    'value' => number_format($user_yesterday)
                 ]
             ],
             [
@@ -172,20 +259,20 @@ class IndexController extends AdminController
                 'gradient' => 'linear-gradient(135deg, #10B981 0%, #1AE2D6 100%)',
                 'primary' => [
                     'label' => '今日新增收入',
-                    'value' => '¥8,965',
+                    'value' => '¥' . number_format($income_increate / 100, 2),
                     'trend' => [
-                        'type' => 'up',
-                        'icon' => 'arrow-up',
-                        'text' => '+18.2%'
+                        'type' => $income_growth_type,
+                        'icon' => $income_growth_icon,
+                        'text' => ($income_growth_rate >= 0 ? '+' : '') . number_format($income_growth_rate, 1) . '%'
                     ]
                 ],
                 'secondary' => [
                     'label' => '总收入',
-                    'value' => '¥1,286,430',
+                    'value' => '¥' . number_format($total_income / 100, 2),
                     'subtitle' => '累计总收入'
                 ],
                 'yesterday' => [
-                    'value' => '¥7,580'
+                    'value' => '¥' . number_format($income_yesterday / 100, 2)
                 ]
             ],
             [
@@ -194,24 +281,99 @@ class IndexController extends AdminController
                 'gradient' => 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)',
                 'primary' => [
                     'label' => '今日新增订单',
-                    'value' => '89',
+                    'value' => number_format($order_increate),
                     'trend' => [
-                        'type' => 'up',
-                        'icon' => 'arrow-up',
-                        'text' => '+12.8%'
+                        'type' => $order_growth_type,
+                        'icon' => $order_growth_icon,
+                        'text' => ($order_growth_rate >= 0 ? '+' : '') . number_format($order_growth_rate, 1) . '%'
                     ]
                 ],
                 'secondary' => [
                     'label' => '总订单数',
-                    'value' => '5,432',
+                    'value' => number_format($order_total),
                     'subtitle' => '累计完成订单'
                 ],
                 'yesterday' => [
-                    'value' => '79'
+                    'value' => number_format($order_yesterday)
                 ]
             ]
         ];
         
         return $stats;
+    }
+
+    /**
+     * 获取空的统计数据（当应用不存在时）
+     */
+    protected function getEmptyStats()
+    {
+        return [
+            [
+                'title' => '用户统计',
+                'icon' => 'users',
+                'gradient' => 'linear-gradient(135deg, #4086F5 0%, #6B9BF7 100%)',
+                'primary' => [
+                    'label' => '今日新增用户',
+                    'value' => '0',
+                    'trend' => [
+                        'type' => 'neutral',
+                        'icon' => 'minus',
+                        'text' => '0%'
+                    ]
+                ],
+                'secondary' => [
+                    'label' => '总用户数',
+                    'value' => '0',
+                    'subtitle' => '累计总用户数'
+                ],
+                'yesterday' => [
+                    'value' => '0'
+                ]
+            ],
+            [
+                'title' => '收入统计',
+                'icon' => 'yen',
+                'gradient' => 'linear-gradient(135deg, #10B981 0%, #1AE2D6 100%)',
+                'primary' => [
+                    'label' => '今日新增收入',
+                    'value' => '¥0.00',
+                    'trend' => [
+                        'type' => 'neutral',
+                        'icon' => 'minus',
+                        'text' => '0%'
+                    ]
+                ],
+                'secondary' => [
+                    'label' => '总收入',
+                    'value' => '¥0.00',
+                    'subtitle' => '累计总收入'
+                ],
+                'yesterday' => [
+                    'value' => '¥0.00'
+                ]
+            ],
+            [
+                'title' => '订单统计',
+                'icon' => 'shopping-cart',
+                'gradient' => 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)',
+                'primary' => [
+                    'label' => '今日新增订单',
+                    'value' => '0',
+                    'trend' => [
+                        'type' => 'neutral',
+                        'icon' => 'minus',
+                        'text' => '0%'
+                    ]
+                ],
+                'secondary' => [
+                    'label' => '总订单数',
+                    'value' => '0',
+                    'subtitle' => '累计完成订单'
+                ],
+                'yesterday' => [
+                    'value' => '0'
+                ]
+            ]
+        ];
     }
 }

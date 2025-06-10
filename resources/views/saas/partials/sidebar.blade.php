@@ -1,4 +1,4 @@
-<aside class="main-sidebar">
+<aside class="main-sidebar" style="padding-top: 60px !important;">
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
