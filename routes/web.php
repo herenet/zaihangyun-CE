@@ -17,6 +17,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/pricing', function () {
+    return view('pricing');
+});
+
+Route::get('/about', function () {
+    return view('about');
+});
+
 Route::get('/article/{app_key}/{id}', [ShowController::class, 'show'])->name('article.show');
 Route::get('/article/category/{app_key}/{id}', [ShowController::class, 'category'])->name('article.category.show');
 Route::get('/article/category/{app_key}/{id}/load', [ShowController::class, 'category'])->name('article.category.load');
