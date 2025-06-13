@@ -243,7 +243,7 @@
         }
 
         .hero-svg {
-            width: 100%;
+        width: 100%;
             max-width: 700px;
             height: 100%;
             filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1));
@@ -1104,7 +1104,7 @@
         .animate-on-scroll {
             opacity: 0;
             animation: fadeInUp 0.6s ease forwards;
-        }
+    }
   </style>
 </head>
 <body>
@@ -1119,7 +1119,7 @@
                 <a href="/pricing" class="nav-link{{ request()->is('pricing') ? ' active' : '' }}">价格</a>
                 <a href="https://github.com/zaihangyun" target="_blank" class="nav-link">社区</a>
                 <a href="/about" class="nav-link{{ request()->is('about') ? ' active' : '' }}">关于我们</a>
-                <a href="/login" class="cta-button">开启免费体验</a>
+                <a href="/login" class="cta-button" style="background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%); color: white; padding: 8px 20px; border-radius: 20px; font-weight: 600; transition: all 0.3s ease;">注册登录</a>
             </div>
         </div>
     </nav>
@@ -1159,21 +1159,21 @@
                 </h1>
 
                 <p style="font-size: 1.4rem; line-height: 1.6; margin-bottom: 40px; opacity: 0.95; max-width: 500px;">
-                    专为APP开发者打造的轻量级BaaS平台，5分钟搭建完整后端系统，让你专注于打造出色的用户体验
+                    专为APP开发者打造的轻量级BaaS平台，提供完整的后端服务支持，让你专注于打造出色的用户体验
                 </p>
 
                 <div class="hero-stats" style="display: flex; gap: 40px; margin-bottom: 50px;">
                     <div>
-                        <div style="font-size: 2rem; font-weight: 700; color: #1AE2D6;">5分钟</div>
-                        <div style="font-size: 0.9rem; opacity: 0.8;">即可上线</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #1AE2D6;">即开即用</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">注册即可使用</div>
                     </div>
                     <div>
-                        <div style="font-size: 2rem; font-weight: 700; color: #1AE2D6;">0行代码</div>
-                        <div style="font-size: 0.9rem; opacity: 0.8;">后端开发</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #1AE2D6;">0学习成本</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">简单易用</div>
                     </div>
                     <div>
-                        <div style="font-size: 2rem; font-weight: 700; color: #1AE2D6;">100%</div>
-                        <div style="font-size: 0.9rem; opacity: 0.8;">云端托管</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #1AE2D6;">99.9%</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">服务可用性</div>
                     </div>
                 </div>
 
@@ -1181,7 +1181,7 @@
                     <a href="/login" style="background: linear-gradient(135deg, #1AE2D6 0%, #FFFFFF 100%); color: #4086F5; padding: 16px 32px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 16px; box-shadow: 0 10px 30px rgba(26,226,214,0.3); transition: all 0.3s ease; border: none;">
                         开启免费体验 →
                     </a>
-                    <a href="#benefits" style="color: white; text-decoration: none; font-weight: 600; padding: 16px 24px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50px; backdrop-filter: blur(10px); transition: all 0.3s ease;">
+                    <a href="#features" style="color: white; text-decoration: none; font-weight: 600; padding: 16px 24px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50px; backdrop-filter: blur(10px); transition: all 0.3s ease;">
                         了解更多
                     </a>
                 </div>
@@ -1314,30 +1314,36 @@
         </div>
     </section>
 
-    <!-- 为什么选择在行云 - 重新设计 -->
+    <!-- AI时代，为什么选择在行云 -->
     <section class="features" id="features" style="padding: 100px 0; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); position: relative;">
         <div style="max-width: 1400px; margin: 0 auto; padding: 0 40px;">
             <div style="text-align: center; margin-bottom: 80px;">
+                <div style="display: inline-flex; align-items: center; gap: 12px; background: rgba(64,134,245,0.1); border: 1px solid rgba(64,134,245,0.3); border-radius: 50px; padding: 8px 20px; margin-bottom: 30px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#4086F5">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <span style="color: #4086F5; font-weight: 600; font-size: 14px;">AI时代机遇</span>
+                </div>
                 <h2 style="font-size: 3.5rem; font-weight: 800; color: #1e293b; margin-bottom: 20px; line-height: 1.2;">
-                    为什么选择<span style="background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">在行云</span>？
+                    AI时代，专注创意就够了
                 </h2>
-                <p style="font-size: 1.3rem; color: #64748b; max-width: 700px; margin: 0 auto; line-height: 1.6;">
-                    专为独立开发者量身打造，让你专注于产品创意和用户体验
+                <p style="font-size: 1.3rem; color: #64748b; max-width: 800px; margin: 0 auto; line-height: 1.6;">
+                    人工智能降低了开发门槛，在行云解决产品变现能力
                 </p>
             </div>
 
             <!-- 对比式设计 -->
             <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 60px; align-items: start; margin-bottom: 80px;">
-                <!-- 传统开发方式 -->
+                <!-- 传统开发困境 -->
                 <div style="background: white; border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #e5e7eb; position: relative;">
                     <div style="text-align: center; margin-bottom: 30px;">
                         <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                             <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                             </svg>
                         </div>
-                        <h3 style="font-size: 1.8rem; font-weight: 700; color: #ef4444; margin-bottom: 15px;">传统开发方式</h3>
-                        <p style="color: #64748b; font-size: 1rem;">复杂、耗时、成本高</p>
+                        <h3 style="font-size: 1.8rem; font-weight: 700; color: #ef4444; margin-bottom: 15px;">传统开发困境</h3>
+                        <p style="color: #64748b; font-size: 1rem;">重重障碍，创意难以变现</p>
                     </div>
                     
                     <div style="space-y: 20px;">
@@ -1348,8 +1354,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">需要掌握全栈开发技能</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">数据库设计、API开发、服务器配置、安全防护等后端技术</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">AI降低了编程门槛，但...</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">后端架构、数据库设计、服务器运维仍然复杂</p>
                             </div>
                         </div>
                         
@@ -1360,8 +1366,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">高昂的基础设施成本</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">服务器、域名、CDN、SSL证书、监控工具等</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">支付集成依然困难</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">Apple IAP、微信支付、支付宝等各有复杂规则</p>
                             </div>
                         </div>
                         
@@ -1372,8 +1378,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">复杂的第三方对接</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">支付接口、短信服务、推送服务、登录授权等</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">运维成本居高不下</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">服务器、监控、备份、安全防护等持续投入</p>
                             </div>
                         </div>
                         
@@ -1384,8 +1390,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">持续的运维压力</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">系统监控、数据备份、安全更新、性能优化等</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">合规流程繁琐</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">ICP备案、等保认证、隐私政策等合规要求复杂</p>
                             </div>
                         </div>
                         
@@ -1396,8 +1402,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">漫长的开发和部署周期</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">从后端开发到生产环境部署通常需要数月时间</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">从想法到变现路径漫长</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">技术实现、商业化部署通常需要数月甚至更久</p>
                             </div>
                         </div>
                     </div>
@@ -1418,8 +1424,8 @@
                                 <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
                             </svg>
                         </div>
-                        <h3 style="font-size: 1.8rem; font-weight: 700; color: #4086F5; margin-bottom: 15px;">在行云开发方式</h3>
-                        <p style="color: #64748b; font-size: 1rem;">简单、快速、低成本</p>
+                        <h3 style="font-size: 1.8rem; font-weight: 700; color: #4086F5; margin-bottom: 15px;">AI + 在行云</h3>
+                        <p style="color: #64748b; font-size: 1rem;">专注创意，快速变现</p>
                     </div>
                     
                     <div style="space-y: 20px;">
@@ -1430,8 +1436,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">零后端开发门槛</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">专注前端和业务逻辑，后端服务开箱即用</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">AI助力快速开发</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">专注创意和用户体验，后端服务交给在行云</p>
                             </div>
                         </div>
                         
@@ -1454,8 +1460,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">一键集成所有服务</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">支付、登录、推送等服务统一管理，无需逐一对接</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">一键支付集成</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">Apple IAP、微信、支付宝统一接入，商业化从未如此简单</p>
                             </div>
                         </div>
                         
@@ -1466,8 +1472,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">专业运维团队托管</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">7x24小时监控，自动备份，企业级安全保障</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">一站式合规托管</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">ICP备案、等保认证、隐私政策等合规流程全包</p>
                             </div>
                         </div>
                         
@@ -1478,8 +1484,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">5分钟快速部署</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">从创建项目到生产环境上线，最快当天完成</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">即开即用</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">注册账号即可使用，无需服务器配置和部署</p>
                             </div>
                         </div>
                     </div>
@@ -1492,9 +1498,9 @@
                 <div style="position: absolute; bottom: -80px; left: -80px; width: 160px; height: 160px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
                 
                 <div style="position: relative; z-index: 1;">
-                    <h3 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 20px;">让开发回归本质</h3>
+                    <h3 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 20px;">AI助力开发，在行云助力变现</h3>
                     <p style="font-size: 1.3rem; margin-bottom: 40px; opacity: 0.95; max-width: 800px; margin-left: auto; margin-right: auto;">
-                        在行云让你专注于用户体验和产品打磨。我们相信，最好的产品来自于对用户需求的深度理解和持续的产品优化。
+                        在AI时代，创意比技术更重要。在行云解决产品变现的技术难题，让你专注于打造用户喜爱的产品。
                     </p>
                     
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-top: 50px;">
@@ -1503,8 +1509,8 @@
                             <div style="font-size: 1.1rem; opacity: 0.9;">开发成本节省</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">5分钟</div>
-                            <div style="font-size: 1.1rem; opacity: 0.9;">即可上线</div>
+                            <div style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">即开</div>
+                            <div style="font-size: 1.1rem; opacity: 0.9;">即用</div>
                         </div>
                         <div style="text-align: center;">
                             <div style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">0行</div>
@@ -2025,6 +2031,255 @@
             </div>
         </div>
     </section>
+
+    <!-- 用户反馈评价 -->
+    <section style="padding: 100px 0; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); position: relative;">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 40px;">
+            <div style="text-align: center; margin-bottom: 80px;">
+                <h2 style="font-size: 3rem; font-weight: 800; color: #1e293b; margin-bottom: 20px;">
+                    开发者的真实反馈
+                </h2>
+                <p style="font-size: 1.2rem; color: #64748b; max-width: 600px; margin: 0 auto;">
+                    听听那些已经在使用在行云的开发者们怎么说
+                </p>
+            </div>
+
+            <!-- 评价卡片网格 -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-bottom: 60px;">
+                
+                <!-- 评价卡片 1 -->
+                <div style="background: white; border-radius: 20px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #e5e7eb; position: relative; transition: transform 0.3s ease;">
+                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; color: white; font-weight: 700; font-size: 1.2rem;">
+                            李
+                        </div>
+                        <div>
+                            <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">李先生</h4>
+                            <p style="color: #64748b; font-size: 0.9rem;">独立开发者 · 智能记账APP</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; margin-bottom: 15px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <p style="color: #374151; line-height: 1.6; font-size: 1rem;">
+                        "作为一个前端开发者，在行云让我能够快速构建完整的APP后端。支付集成特别简单，Apple IAP的对接只用了半天就完成了，以前这至少要折腾一周。"
+                    </p>
+                    <div style="position: absolute; top: 20px; right: 20px; opacity: 0.1;">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="#4086F5">
+                            <path d="M14,17H17L19,13V7H13V13H16M6,17H9L11,13V7H5V13H8L6,17Z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- 评价卡片 2 -->
+                <div style="background: white; border-radius: 20px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #e5e7eb; position: relative; transition: transform 0.3s ease;">
+                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; color: white; font-weight: 700; font-size: 1.2rem;">
+                            王
+                        </div>
+                        <div>
+                            <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">王女士</h4>
+                            <p style="color: #64748b; font-size: 0.9rem;">产品经理 · 健身社交APP</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; margin-bottom: 15px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <p style="color: #374151; line-height: 1.6; font-size: 1rem;">
+                        "没有技术背景的我也能快速搭建APP后端，用户管理、数据统计、推送通知都有现成的方案。团队开发效率提升了至少3倍，成本节省了80%以上。"
+                    </p>
+                    <div style="position: absolute; top: 20px; right: 20px; opacity: 0.1;">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="#10b981">
+                            <path d="M14,17H17L19,13V7H13V13H16M6,17H9L11,13V7H5V13H8L6,17Z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- 评价卡片 3 -->
+                <div style="background: white; border-radius: 20px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #e5e7eb; position: relative; transition: transform 0.3s ease;">
+                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; color: white; font-weight: 700; font-size: 1.2rem;">
+                            张
+                        </div>
+                        <div>
+                            <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">张老板</h4>
+                            <p style="color: #64748b; font-size: 0.9rem;">创业者 · 时间管理工具</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; margin-bottom: 15px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <p style="color: #374151; line-height: 1.6; font-size: 1rem;">
+                        "在行云帮我快速搭建了时间管理工具的后端。用户数据同步、提醒推送、统计分析都很完善，从想法到上线只用了1个月，现在已经有3万+活跃用户。"
+                    </p>
+                    <div style="position: absolute; top: 20px; right: 20px; opacity: 0.1;">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="#f59e0b">
+                            <path d="M14,17H17L19,13V7H13V13H16M6,17H9L11,13V7H5V13H8L6,17Z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- 评价卡片 4 -->
+                <div style="background: white; border-radius: 20px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #e5e7eb; position: relative; transition: transform 0.3s ease;">
+                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; color: white; font-weight: 700; font-size: 1.2rem;">
+                            陈
+                        </div>
+                        <div>
+                            <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">陈设计师</h4>
+                            <p style="color: #64748b; font-size: 0.9rem;">UI设计师 · 创意工具APP</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; margin-bottom: 15px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <p style="color: #374151; line-height: 1.6; font-size: 1rem;">
+                        "作为设计师转型做产品，在行云让我能够把设计想法快速变成可用的APP。API文档清晰，技术支持响应很快，真正做到了让非技术人员也能做产品。"
+                    </p>
+                    <div style="position: absolute; top: 20px; right: 20px; opacity: 0.1;">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="#8b5cf6">
+                            <path d="M14,17H17L19,13V7H13V13H16M6,17H9L11,13V7H5V13H8L6,17Z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- 评价卡片 5 -->
+                <div style="background: white; border-radius: 20px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #e5e7eb; position: relative; transition: transform 0.3s ease;">
+                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; color: white; font-weight: 700; font-size: 1.2rem;">
+                            刘
+                        </div>
+                        <div>
+                            <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">刘工</h4>
+                            <p style="color: #64748b; font-size: 0.9rem;">全栈开发者 · 密码管理器</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; margin-bottom: 15px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <p style="color: #374151; line-height: 1.6; font-size: 1rem;">
+                        "即使作为有经验的全栈开发者，在行云也大大提升了我的开发效率。密码管理器需要高安全性的数据存储和同步，在行云的安全机制让我很放心。"
+                    </p>
+                    <div style="position: absolute; top: 20px; right: 20px; opacity: 0.1;">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="#ef4444">
+                            <path d="M14,17H17L19,13V7H13V13H16M6,17H9L11,13V7H5V13H8L6,17Z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- 评价卡片 6 -->
+                <div style="background: white; border-radius: 20px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #e5e7eb; position: relative; transition: transform 0.3s ease;">
+                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; color: white; font-weight: 700; font-size: 1.2rem;">
+                            赵
+                        </div>
+                        <div>
+                            <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">小赵</h4>
+                            <p style="color: #64748b; font-size: 0.9rem;">计算机专业学生 · 校园服务APP</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; margin-bottom: 15px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" style="margin-right: 2px;">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <p style="color: #374151; line-height: 1.6; font-size: 1rem;">
+                        "作为学生党，预算有限但想法很多。在行云的免费额度让我能够免费验证想法，付费价格也很亲民。现在我的校园APP已经有5000+用户了！"
+                    </p>
+                    <div style="position: absolute; top: 20px; right: 20px; opacity: 0.1;">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="#06b6d4">
+                            <path d="M14,17H17L19,13V7H13V13H16M6,17H9L11,13V7H5V13H8L6,17Z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
 
 
     <!-- 右侧悬浮技术支持 -->
