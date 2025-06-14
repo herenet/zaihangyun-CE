@@ -599,7 +599,7 @@
       <!-- 主标题 -->
       <h1 class="brand-title">在行云BaaS</h1>
       
-      <p class="brand-subtitle">无需后端开发，快速为APP接入变现能力</p>
+      <p class="brand-subtitle">无需后端开发，APP快速构建后端能力</p>
       
       <div class="features-grid">
         <div class="feature-card">
@@ -615,7 +615,7 @@
             <i class="fa fa-credit-card"></i>
           </div>
           <div class="feature-title">订单变现</div>
-          <div class="feature-desc">集成支付宝、微信、Apple Pay等主流支付</div>
+          <div class="feature-desc">集成支付宝、微信、Apple IAP等主流支付</div>
         </div>
         
         <div class="feature-card">

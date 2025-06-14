@@ -7,1105 +7,7 @@
     <meta name="description" content="专为APP开发者打造的轻量级BaaS平台，无需写一行后端代码，即可拥有完整的用户、支付、内容管理系统">
     <meta name="keywords" content="在行云,BaaS,后端服务,APP开发,独立开发者,无服务器,云服务">
     <link rel="icon" href="/favicon.ico">
-  <style>
-        * {
-        margin: 0;
-        padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            overflow-x: hidden;
-        }
-
-        /* 导航栏 */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            padding: 15px 0;
-            transition: all 0.3s ease;
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo img {
-            height: 32px;
-            width: auto;
-        }
-
-        .logo-text {
-            font-size: 20px;
-            font-weight: 600;
-            background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #666;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: #4086F5;
-        }
-
-        .nav-links a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%);
-            border-radius: 1px;
-        }
-
-        .cta-button {
-            background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(64, 134, 245, 0.3);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(64, 134, 245, 0.4);
-            background: linear-gradient(135deg, #3574E3 0%, #15C7BB 100%);
-        }
-
-        /* Hero Section */
-        .hero {
-        min-height: 100vh;
-            background: linear-gradient(135deg, #4086F5 0%, #6B9BF7 50%, #1AE2D6 100%);
-        display: flex;
-            align-items: center;
-            padding: 120px 0 80px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100%" height="100%" fill="url(%23dots)"/></svg>');
-            opacity: 0.6;
-        }
-
-        .hero-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 100px;
-            align-items: center;
-            padding: 0 40px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-content {
-            color: white;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes scrollRight {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-340px * 6)); }
-        }
-
-        @keyframes scrollLeft {
-            0% { transform: translateX(calc(-340px * 6)); }
-            100% { transform: translateX(0); }
-        }
-
-        .scroll-container {
-            animation-timing-function: linear;
-        }
-
-        .scroll-container:hover {
-            animation-play-state: paused;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes dataFlow {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(200%); }
-        }
-
-        @keyframes particle1 {
-            0% { transform: translate(0, 0) scale(1); opacity: 0; }
-            10% { opacity: 1; }
-            50% { transform: translate(100px, -50px) scale(1.2); opacity: 0.8; }
-            90% { opacity: 1; }
-            100% { transform: translate(200px, -100px) scale(0.8); opacity: 0; }
-        }
-
-        @keyframes particle2 {
-            0% { transform: translate(0, 0) scale(1); opacity: 0; }
-            10% { opacity: 1; }
-            50% { transform: translate(-80px, 60px) scale(1.1); opacity: 0.9; }
-            90% { opacity: 1; }
-            100% { transform: translate(-160px, 120px) scale(0.9); opacity: 0; }
-        }
-
-        @keyframes particle3 {
-            0% { transform: translate(0, 0) scale(1); opacity: 0; }
-            10% { opacity: 1; }
-            50% { transform: translate(120px, -80px) scale(1.3); opacity: 0.7; }
-            90% { opacity: 1; }
-            100% { transform: translate(240px, -160px) scale(0.7); opacity: 0; }
-        }
-
-        .hero h1 {
-            font-size: 4.5rem;
-            font-weight: 800;
-            margin-bottom: 30px;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-        }
-
-        .hero .subtitle {
-            font-size: 1.4rem;
-            margin-bottom: 50px;
-            opacity: 0.95;
-            line-height: 1.6;
-            font-weight: 400;
-        }
-
-        .hero-visual {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            height: 700px;
-        }
-
-        .hero-svg {
-        width: 100%;
-            max-width: 700px;
-            height: 100%;
-            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1));
-        }
-
-        .hero-buttons {
-        display: flex;
-            gap: 20px;
-        justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary, .btn-secondary {
-            padding: 15px 30px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: white;
-            color: #4086F5;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
-            color: #3574E3;
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* Features Section */
-        .features {
-            padding: 100px 0;
-            background: #f8fafc;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 40px;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .section-title p {
-            font-size: 1.2rem;
-            color: #666;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            margin-bottom: 80px;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            border: 1px solid #eee;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%);
-            border-radius: 20px;
-            display: flex;
-        align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 24px;
-            color: white;
-            box-shadow: 0 10px 30px rgba(64, 134, 245, 0.3);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .feature-icon::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: rotate(45deg);
-            transition: all 0.6s ease;
-            opacity: 0;
-        }
-
-        .feature-card:hover .feature-icon::before {
-            animation: shimmer 1.5s ease-in-out;
-            opacity: 1;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-
-        .feature-card h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .feature-card p {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        /* Product Modules - 大卡片重设计 */
-        .modules {
-            padding: 120px 0;
-            background: linear-gradient(135deg, #F8FAFC 0%, #EDF2F7 100%);
-        }
-
-        .modules-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
-            margin-top: 60px;
-        }
-
-        .module-card {
-            background: white;
-            padding: 50px 40px;
-            border-radius: 20px;
-            border: 1px solid #E5E7EB;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-        }
-
-        .module-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%);
-        }
-
-        .module-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(64, 134, 245, 0.15);
-            border-color: #4086F5;
-        }
-
-        .module-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%);
-            border-radius: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-            margin-bottom: 24px;
-            font-size: 32px;
-            color: white;
-            box-shadow: 0 8px 20px rgba(64, 134, 245, 0.3);
-        }
-
-        .module-card h4 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: #1F2937;
-        }
-
-        .module-card p {
-            color: #6B7280;
-            font-size: 1rem;
-            line-height: 1.7;
-            margin-bottom: 20px;
-        }
-
-        .module-features {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .module-features li {
-            color: #4B5563;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            position: relative;
-            padding-left: 20px;
-        }
-
-        .module-features li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: #4086F5;
-            font-weight: bold;
-        }
-
-        /* Pricing Section */
-        .pricing {
-            padding: 100px 0;
-            background: #f8fafc;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .pricing-card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 15px;
-        text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            border: 2px solid #eee;
-        transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .pricing-card.featured {
-            border-color: #4086F5;
-            transform: scale(1.05);
-        }
-
-        .pricing-card.featured::before {
-            content: '推荐';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%);
-            color: white;
-            padding: 5px 20px;
-            border-radius: 15px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .pricing-card h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .pricing-card .price {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #4086F5;
-        margin-bottom: 20px;
-        }
-
-        .pricing-card .price span {
-            font-size: 1rem;
-            color: #666;
-        }
-
-        .pricing-features {
-            list-style: none;
-            margin-bottom: 30px;
-        }
-
-        .pricing-features li {
-            padding: 8px 0;
-            color: #666;
-        }
-
-        .pricing-features li:before {
-            content: '✓';
-            color: #4086F5;
-        font-weight: bold;
-            margin-right: 10px;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 100px 0;
-            background: white;
-            text-align: center;
-        }
-
-        .contact-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .wechat-qr {
-        width: 200px;
-        height: 200px;
-            margin: 30px auto;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Footer - 丰富页脚 */
-        .footer {
-            background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
-            color: white;
-            padding: 60px 0 30px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #4086F5, #1AE2D6, transparent);
-    }
-    
-    .footer-content {
-            max-width: 1400px;
-        margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.5fr auto;
-            gap: 480px;
-            margin-bottom: 40px;
-            align-items: start;
-        }
-
-        .footer-nav-group {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 60px;
-            justify-self: end;
-        }
-
-        .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .footer-brand img {
-            height: 40px;
-            filter: brightness(0) invert(1);
-        }
-
-        .footer-brand-text {
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .footer-desc {
-            color: #9CA3AF;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .footer-section h4 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: white;
-            position: relative;
-            padding-bottom: 8px;
-        }
-
-        .footer-section h4::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 30px;
-            height: 2px;
-            background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%);
-            border-radius: 1px;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            color: #9CA3AF;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        font-size: 14px;
-            display: inline-block;
-        }
-
-        .footer-links a:hover {
-            color: #4086F5;
-            transform: translateX(5px);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #374151;
-            padding-top: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 15px;
-            text-align: center;
-        }
-
-        .footer-bottom p {
-        margin: 0;
-            color: #9CA3AF;
-            font-size: 14px;
-    }
-    
-        .footer-bottom a {
-            color: #4086F5;
-        text-decoration: none;
-    }
-    
-        .footer-bottom a:hover {
-        text-decoration: underline;
-    }
-    
-        .footer-social {
-            display: flex;
-            gap: 16px;
-        }
-
-        .footer-social a {
-            width: 36px;
-            height: 36px;
-            background: #374151;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #9CA3AF;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .footer-social a:hover {
-            background: #4086F5;
-            color: white;
-        }
-
-        /* App Showcase Animations */
-
-        .app-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1) !important;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero-container {
-                grid-template-columns: 1fr;
-                gap: 40px;
-                text-align: center;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero .subtitle {
-                font-size: 1.1rem;
-            }
-
-            .hero-buttons {
-            flex-direction: column;
-                align-items: center;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .modules-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .apps-row {
-                flex-direction: column !important;
-                align-items: center !important;
-                animation: none !important;
-            }
-
-            .app-card {
-                margin-bottom: 20px !important;
-            }
-
-            .pricing-card.featured {
-                transform: none;
-            }
-
-            .section-title h2 {
-                font-size: 2rem;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .footer-nav-group {
-                grid-template-columns: 1fr;
-            gap: 30px;
-                justify-self: start;
-            }
-
-            .footer-section h4::after {
-                width: 50px;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-                gap: 10px;
-            }
-
-            .footer-bottom p {
-            font-size: 12px;
-        }
-    }
-
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Animation */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(2deg); }
-        }
-
-        @keyframes dataFlow {
-            0% { transform: translateX(-100%); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateX(100%); opacity: 0; }
-        }
-
-        @keyframes cloudPulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-            50% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
-        }
-
-        @keyframes particle1 {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.6; }
-            25% { transform: translate(40px, -30px) scale(1.3); opacity: 1; }
-            50% { transform: translate(-20px, -60px) scale(0.7); opacity: 0.4; }
-            75% { transform: translate(-50px, -20px) scale(1.1); opacity: 0.8; }
-            100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
-        }
-
-        @keyframes particle2 {
-            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.5; }
-            30% { transform: translate(-35px, 25px) rotate(108deg) scale(1.4); opacity: 1; }
-            60% { transform: translate(30px, -35px) rotate(216deg) scale(0.8); opacity: 0.7; }
-            100% { transform: translate(0, 0) rotate(360deg) scale(1); opacity: 0.5; }
-        }
-
-        @keyframes particle3 {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
-            20% { transform: translate(25px, -45px) scale(0.6); opacity: 0.4; }
-            40% { transform: translate(-30px, -25px) scale(1.5); opacity: 1; }
-            60% { transform: translate(35px, 15px) scale(0.9); opacity: 0.6; }
-            80% { transform: translate(-15px, 30px) scale(1.3); opacity: 0.9; }
-            100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
-        }
-
-        /* APP专用科技感动画效果 */
-        @keyframes gridFlow {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(30px, 30px); }
-        }
-
-        @keyframes serverPulse {
-            0%, 100% { 
-                transform: translate(-50%, -50%) scale(1); 
-                box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            }
-            50% { 
-                transform: translate(-50%, -50%) scale(1.02); 
-                box-shadow: 0 25px 50px rgba(0,0,0,0.25);
-            }
-        }
-
-        @keyframes statusLight {
-            0%, 100% { 
-                opacity: 0.8; 
-                transform: scale(1); 
-            }
-            50% { 
-                opacity: 1; 
-                transform: scale(1.1); 
-            }
-        }
-
-        @keyframes dataProcess {
-            0%, 100% { 
-                opacity: 0.5; 
-                transform: scaleY(0.6); 
-            }
-            50% { 
-                opacity: 1; 
-                transform: scaleY(1.2); 
-            }
-        }
-
-        @keyframes appFloat {
-            0%, 100% { 
-                transform: translateY(0px); 
-            }
-            50% { 
-                transform: translateY(-8px); 
-            }
-        }
-
-        @keyframes dataFlow {
-            0% { 
-                opacity: 0.3; 
-                transform: scaleX(0.5); 
-            }
-            50% { 
-                opacity: 1; 
-                transform: scaleX(1); 
-            }
-            100% { 
-                opacity: 0.3; 
-                transform: scaleX(0.5); 
-            }
-        }
-
-        @keyframes dataUpload {
-            0% { 
-                transform: translateY(20px); 
-                opacity: 0; 
-            }
-            50% { 
-                opacity: 1; 
-            }
-            100% { 
-                transform: translateY(-20px); 
-                opacity: 0; 
-            }
-        }
-
-        @keyframes dataDownload {
-            0% { 
-                transform: translateY(-20px); 
-                opacity: 0; 
-            }
-            50% { 
-                opacity: 1; 
-            }
-            100% { 
-                transform: translateY(20px); 
-                opacity: 0; 
-            }
-        }
-
-        @keyframes serviceOrbit {
-            0% { 
-                transform: rotate(0deg) translateX(60px) rotate(0deg); 
-                opacity: 0.7;
-            }
-            50% {
-                opacity: 1;
-            }
-            100% { 
-                transform: rotate(360deg) translateX(60px) rotate(-360deg); 
-                opacity: 0.7;
-            }
-        }
-
-        @keyframes floatParticle {
-            0%, 100% { 
-                opacity: 0.4; 
-                transform: translateY(0px) scale(0.8); 
-            }
-            25% { 
-                opacity: 0.8; 
-                transform: translateY(-10px) scale(1); 
-            }
-            50% { 
-                opacity: 1; 
-                transform: translateY(-15px) scale(1.2); 
-            }
-            75% { 
-                opacity: 0.8; 
-                transform: translateY(-10px) scale(1); 
-            }
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .nav-container {
-                max-width: 100%;
-                padding: 0 20px;
-            }
-            
-            .hero-container {
-                grid-template-columns: 1fr !important;
-                gap: 40px !important;
-                text-align: center;
-                max-width: 100%;
-                padding: 0 20px;
-            }
-            
-            .hero h1 {
-                font-size: 3rem !important;
-            }
-            
-            .hero-stats {
-                justify-content: center !important;
-            }
-            
-            .hero-visual {
-                height: 400px !important;
-            }
-            
-            .container {
-                max-width: 100%;
-                padding: 0 20px;
-            }
-            
-            /* 为什么选择在行云 - 移动端适配 */
-            .features {
-                padding: 60px 0 !important;
-            }
-            
-            .features h2 {
-                font-size: 2.5rem !important;
-            }
-            
-            .features > div {
-                padding: 0 20px !important;
-            }
-            
-            /* 对比式设计移动端 */
-            .features > div > div:first-of-type {
-                grid-template-columns: 1fr !important;
-                gap: 40px !important;
-            }
-            
-            /* VS分隔符移动端 */
-            .features > div > div:first-of-type > div:nth-child(2) {
-                order: 2;
-                margin: 20px 0;
-            }
-            
-            /* 传统方式移动端 */
-            .features > div > div:first-of-type > div:first-child {
-                order: 1;
-            }
-            
-            /* 在行云方式移动端 */
-            .features > div > div:first-of-type > div:last-child {
-                order: 3;
-            }
-            
-            /* 核心优势总结移动端 */
-            .features > div > div:last-child {
-                padding: 30px 20px !important;
-                margin: 0 -20px;
-            }
-            
-            .features > div > div:last-child h3 {
-                font-size: 2rem !important;
-            }
-            
-            .features > div > div:last-child p {
-                font-size: 1.1rem !important;
-            }
-            
-            .features > div > div:last-child > div > div:last-child {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 30px !important;
-            }
-            
-            .features > div > div:last-child > div > div:last-child > div > div:first-child {
-                font-size: 2.5rem !important;
-            }
-        }
-
-        .animate-on-scroll {
-            opacity: 0;
-            animation: fadeInUp 0.6s ease forwards;
-    }
-  </style>
+    <link href="{{ asset('css/common.css') }}" rel="stylesheet">
 </head>
 <body>
     <!-- 导航栏 -->
@@ -1120,6 +22,22 @@
                 <a href="https://github.com/zaihangyun" target="_blank" class="nav-link">社区</a>
                 <a href="/about" class="nav-link{{ request()->is('about') ? ' active' : '' }}">关于我们</a>
                 <a href="/login" class="cta-button" style="background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%); color: white; padding: 8px 20px; border-radius: 20px; font-weight: 600; transition: all 0.3s ease;">注册登录</a>
+            </div>
+            <!-- 移动端汉堡菜单按钮 -->
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <!-- 移动端菜单 -->
+        <div class="mobile-menu" id="mobile-menu">
+            <div class="mobile-nav-links">
+                <a href="/" class="nav-link{{ request()->is('/') ? ' active' : '' }}">首页</a>
+                <a href="/pricing" class="nav-link{{ request()->is('pricing') ? ' active' : '' }}">价格</a>
+                <a href="https://github.com/zaihangyun" target="_blank" class="nav-link">社区</a>
+                <a href="/about" class="nav-link{{ request()->is('about') ? ' active' : '' }}">关于我们</a>
+                <a href="/login" class="cta-button" style="background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%); color: white; padding: 12px 24px; border-radius: 20px; font-weight: 600; text-align: center; margin-top: 10px;">注册登录</a>
             </div>
         </div>
     </nav>
@@ -1150,16 +68,16 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                     </svg>
-                    <span>专为独立开发者设计</span>
+                    <span>专为独立开发者打造</span>
                 </div>
 
                 <h1 style="font-size: 4.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 30px; letter-spacing: -0.02em;">
-                    不写后端代码<br>
-                    <span style="background: linear-gradient(135deg, #1AE2D6 0%, #FFFFFF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">也能快速上线</span>
+                    无需后端开发<br>
+                    <span style="background: linear-gradient(135deg, #1AE2D6 0%, #FFFFFF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; white-space: nowrap;">APP快速构建后端能力</span>
                 </h1>
 
                 <p style="font-size: 1.4rem; line-height: 1.6; margin-bottom: 40px; opacity: 0.95; max-width: 500px;">
-                    专为APP开发者打造的轻量级BaaS平台，提供完整的后端服务支持，让你专注于打造出色的用户体验
+                    专为独立开发者打造的BaaS平台，一站式解决后端需求，让您专注产品创新
                 </p>
 
                 <div class="hero-stats" style="display: flex; gap: 40px; margin-bottom: 50px;">
@@ -1179,7 +97,7 @@
 
                 <div class="hero-buttons" style="display: flex; gap: 20px; align-items: center;">
                     <a href="/login" style="background: linear-gradient(135deg, #1AE2D6 0%, #FFFFFF 100%); color: #4086F5; padding: 16px 32px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 16px; box-shadow: 0 10px 30px rgba(26,226,214,0.3); transition: all 0.3s ease; border: none;">
-                        开启免费体验 →
+                        立即免费体验 →
                     </a>
                     <a href="#features" style="color: white; text-decoration: none; font-weight: 600; padding: 16px 24px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50px; backdrop-filter: blur(10px); transition: all 0.3s ease;">
                         了解更多
@@ -1199,21 +117,11 @@
                     <div style="position: relative; width: 700px; height: 550px;">
                         
                         <!-- 核心云服务器 -->
-                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 280px; height: 200px; background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.25)); border-radius: 25px; backdrop-filter: blur(20px); border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 25px 50px rgba(0,0,0,0.2); animation: serverPulse 4s ease-in-out infinite;">
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 120px; display: flex; align-items: center; justify-content: center; position: relative;">
                             
-                            <!-- 服务器标识 -->
-                            <div style="position: absolute; top: 30px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px;">
-                                <div style="width: 16px; height: 16px; background: linear-gradient(135deg, #4086F5, #1AE2D6); border-radius: 50%; animation: statusLight 2s ease-in-out infinite;"></div>
-                                <span style="color: rgba(255,255,255,0.9); font-size: 18px; font-weight: 600;">BaaS 云服务</span>
-                            </div>
+                            <!-- 云朵图片 -->
+                            <img src="{{ asset('images/logo-mini.png') }}" alt="云服务" style="width: 180px; height: auto;">
                             
-                            <!-- 数据处理指示器 -->
-                            <div style="position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px;">
-                                <div style="width: 8px; height: 20px; background: linear-gradient(180deg, #4086F5, #1AE2D6); border-radius: 4px; animation: dataProcess 1.5s ease-in-out infinite;"></div>
-                                <div style="width: 8px; height: 28px; background: linear-gradient(180deg, #10b981, #059669); border-radius: 4px; animation: dataProcess 1.5s ease-in-out infinite 0.2s;"></div>
-                                <div style="width: 8px; height: 16px; background: linear-gradient(180deg, #f59e0b, #d97706); border-radius: 4px; animation: dataProcess 1.5s ease-in-out infinite 0.4s;"></div>
-                                <div style="width: 8px; height: 24px; background: linear-gradient(180deg, #8b5cf6, #7c3aed); border-radius: 4px; animation: dataProcess 1.5s ease-in-out infinite 0.6s;"></div>
-                            </div>
                         </div>
 
                         <!-- 多个手机APP终端 -->
@@ -1302,12 +210,12 @@
                         </div>
 
                         <!-- 浮动数据粒子 -->
-                        <div style="position: absolute; top: 12%; left: 75%; width: 8px; height: 8px; background: radial-gradient(circle, rgba(64,134,245,0.8), rgba(64,134,245,0.3)); border-radius: 50%; animation: floatParticle 5s ease-in-out infinite; box-shadow: 0 0 16px rgba(64,134,245,0.6);"></div>
-                        <div style="position: absolute; top: 80%; left: 20%; width: 7px; height: 7px; background: radial-gradient(circle, rgba(26,226,214,0.8), rgba(26,226,214,0.3)); border-radius: 50%; animation: floatParticle 5s ease-in-out infinite 2s; box-shadow: 0 0 16px rgba(26,226,214,0.6);"></div>
-                        <div style="position: absolute; top: 65%; left: 85%; width: 9px; height: 9px; background: radial-gradient(circle, rgba(16,185,129,0.8), rgba(16,185,129,0.3)); border-radius: 50%; animation: floatParticle 5s ease-in-out infinite 3s; box-shadow: 0 0 16px rgba(16,185,129,0.6);"></div>
-                        <div style="position: absolute; top: 35%; left: 10%; width: 7px; height: 7px; background: radial-gradient(circle, rgba(139,92,246,0.8), rgba(139,92,246,0.3)); border-radius: 50%; animation: floatParticle 5s ease-in-out infinite 1s; box-shadow: 0 0 16px rgba(139,92,246,0.6);"></div>
-                        <div style="position: absolute; top: 25%; left: 90%; width: 6px; height: 6px; background: radial-gradient(circle, rgba(245,101,101,0.8), rgba(245,101,101,0.3)); border-radius: 50%; animation: floatParticle 5s ease-in-out infinite 4s; box-shadow: 0 0 16px rgba(245,101,101,0.6);"></div>
-                        <div style="position: absolute; top: 90%; left: 50%; width: 8px; height: 8px; background: radial-gradient(circle, rgba(251,191,36,0.8), rgba(251,191,36,0.3)); border-radius: 50%; animation: floatParticle 5s ease-in-out infinite 2.5s; box-shadow: 0 0 16px rgba(251,191,36,0.6);"></div>
+                        <div style="position: absolute; top: 20%; left: 70%; width: 8px; height: 8px; background: radial-gradient(circle, rgba(64,134,245,0.8), rgba(64,134,245,0.3)); border-radius: 50%; animation: floatParticle 5s ease-in-out infinite; box-shadow: 0 0 16px rgba(64,134,245,0.6);"></div>
+                        <div style="position: absolute; top: 75%; left: 25%; width: 7px; height: 7px; background: radial-gradient(circle, rgba(26,226,214,0.8), rgba(26,226,214,0.3)); border-radius: 50%; animation: floatParticle 5s ease-in-out infinite 2s; box-shadow: 0 0 16px rgba(26,226,214,0.6);"></div>
+                        <div style="position: absolute; top: 60%; left: 75%; width: 9px; height: 9px; background: radial-gradient(circle, rgba(16,185,129,0.8), rgba(16,185,129,0.3)); border-radius: 50%; animation: floatParticle 5s ease-in-out infinite 3s; box-shadow: 0 0 16px rgba(16,185,129,0.6);"></div>
+                        <div style="position: absolute; top: 40%; left: 20%; width: 7px; height: 7px; background: radial-gradient(circle, rgba(139,92,246,0.8), rgba(139,92,246,0.3)); border-radius: 50%; animation: floatParticle 5s ease-in-out infinite 1s; box-shadow: 0 0 16px rgba(139,92,246,0.6);"></div>
+                        <div style="position: absolute; top: 30%; left: 80%; width: 6px; height: 6px; background: radial-gradient(circle, rgba(245,101,101,0.8), rgba(245,101,101,0.3)); border-radius: 50%; animation: floatParticle 5s ease-in-out infinite 4s; box-shadow: 0 0 16px rgba(245,101,101,0.6);"></div>
+                        <div style="position: absolute; top: 80%; left: 50%; width: 8px; height: 8px; background: radial-gradient(circle, rgba(251,191,36,0.8), rgba(251,191,36,0.3)); border-radius: 50%; animation: floatParticle 5s ease-in-out infinite 2.5s; box-shadow: 0 0 16px rgba(251,191,36,0.6);"></div>
                     </div>
                 </div>
             </div>
@@ -1316,7 +224,7 @@
 
     <!-- AI时代，为什么选择在行云 -->
     <section class="features" id="features" style="padding: 100px 0; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); position: relative;">
-        <div style="max-width: 1400px; margin: 0 auto; padding: 0 40px;">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 20px;">
             <div style="text-align: center; margin-bottom: 80px;">
                 <div style="display: inline-flex; align-items: center; gap: 12px; background: rgba(64,134,245,0.1); border: 1px solid rgba(64,134,245,0.3); border-radius: 50px; padding: 8px 20px; margin-bottom: 30px;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="#4086F5">
@@ -1325,10 +233,10 @@
                     <span style="color: #4086F5; font-weight: 600; font-size: 14px;">AI时代机遇</span>
                 </div>
                 <h2 style="font-size: 3.5rem; font-weight: 800; color: #1e293b; margin-bottom: 20px; line-height: 1.2;">
-                    AI时代，专注创意就够了
+                    专注产品创新，后端交给在行云
                 </h2>
                 <p style="font-size: 1.3rem; color: #64748b; max-width: 800px; margin: 0 auto; line-height: 1.6;">
-                    人工智能降低了开发门槛，在行云解决产品变现能力
+                    AI时代降低了前端开发门槛，在行云为您解决后端技术难题和变现能力
                 </p>
             </div>
 
@@ -1342,8 +250,8 @@
                                 <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                             </svg>
                         </div>
-                        <h3 style="font-size: 1.8rem; font-weight: 700; color: #ef4444; margin-bottom: 15px;">传统开发困境</h3>
-                        <p style="color: #64748b; font-size: 1rem;">重重障碍，创意难以变现</p>
+                        <h3 style="font-size: 1.8rem; font-weight: 700; color: #ef4444; margin-bottom: 15px;">传统开发痛点</h3>
+                        <p style="color: #64748b; font-size: 1rem;">技术门槛高，变现路径长</p>
                     </div>
                     
                     <div style="space-y: 20px;">
@@ -1403,7 +311,7 @@
                             </div>
                             <div>
                                 <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">从想法到变现路径漫长</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">技术实现、商业化部署通常需要数月甚至更久</p>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">技术实现、产品部署通常需要数月甚至更久</p>
                             </div>
                         </div>
                     </div>
@@ -1424,8 +332,8 @@
                                 <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
                             </svg>
                         </div>
-                        <h3 style="font-size: 1.8rem; font-weight: 700; color: #4086F5; margin-bottom: 15px;">AI + 在行云</h3>
-                        <p style="color: #64748b; font-size: 1rem;">专注创意，快速变现</p>
+                        <h3 style="font-size: 1.8rem; font-weight: 700; color: #4086F5; margin-bottom: 15px;">在行云BaaS</h3>
+                        <p style="color: #64748b; font-size: 1rem;">专注产品，极速上线</p>
                     </div>
                     
                     <div style="space-y: 20px;">
@@ -1436,8 +344,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">AI助力快速开发</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">专注创意和用户体验，后端服务交给在行云</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">专注产品创新</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">无需后端开发，专注产品功能和用户体验</p>
                             </div>
                         </div>
                         
@@ -1448,8 +356,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">按需付费，成本可控</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">无需前期投入，用多少付多少，节省90%成本</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">成本可控，按需付费</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">无需前期投入，用多少付多少，大幅降低开发成本</p>
                             </div>
                         </div>
                         
@@ -1460,8 +368,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">一键支付集成</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">Apple IAP、微信、支付宝统一接入，商业化从未如此简单</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">支付集成，一键搞定</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">Apple IAP、微信、支付宝统一接入，快速实现商业变现</p>
                             </div>
                         </div>
                         
@@ -1472,7 +380,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">一站式合规托管</h4>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">合规托管，省心省力</h4>
                                 <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">ICP备案、等保认证、隐私政策等合规流程全包</p>
                             </div>
                         </div>
@@ -1484,7 +392,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">即开即用</h4>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">即开即用，快速上线</h4>
                                 <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">注册账号即可使用，无需服务器配置和部署</p>
                             </div>
                         </div>
@@ -1498,9 +406,9 @@
                 <div style="position: absolute; bottom: -80px; left: -80px; width: 160px; height: 160px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
                 
                 <div style="position: relative; z-index: 1;">
-                    <h3 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 20px;">AI助力开发，在行云助力变现</h3>
+                    <h3 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 20px;">专注产品创新，后端能力一键拥有</h3>
                     <p style="font-size: 1.3rem; margin-bottom: 40px; opacity: 0.95; max-width: 800px; margin-left: auto; margin-right: auto;">
-                        在AI时代，创意比技术更重要。在行云解决产品变现的技术难题，让你专注于打造用户喜爱的产品。
+                        在行云BaaS为您提供企业级后端服务，从用户管理到支付变现，从内容发布到数据分析，让您的APP快速具备完整变现能力。
                     </p>
                     
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-top: 50px;">
@@ -1509,12 +417,12 @@
                             <div style="font-size: 1.1rem; opacity: 0.9;">开发成本节省</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">即开</div>
-                            <div style="font-size: 1.1rem; opacity: 0.9;">即用</div>
+                            <div style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">0学习</div>
+                            <div style="font-size: 1.1rem; opacity: 0.9;">成本</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">0行</div>
-                            <div style="font-size: 1.1rem; opacity: 0.9;">后端代码</div>
+                            <div style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">即开</div>
+                            <div style="font-size: 1.1rem; opacity: 0.9;">即用</div>
                         </div>
                         <div style="text-align: center;">
                             <div style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">24/7</div>
@@ -1530,8 +438,8 @@
     <section class="modules" id="modules">
     <div class="container">
             <div class="section-title">
-                <h2>核心功能模块</h2>
-                <p>一站式轻量解决方案，覆盖APP开发常用后端需求</p>
+                <h2>完整后端能力，开箱即用</h2>
+                <p>涵盖APP变现所需的核心后端服务，无需开发即可拥有</p>
             </div>
             
             <div class="modules-grid">
@@ -1542,7 +450,7 @@
                         </svg>
             </div>
                     <h4>用户管理系统</h4>
-                    <p>完整的用户生命周期管理，从注册认证到权限控制，为你的APP提供企业级用户体系支撑。</p>
+                    <p>多种登录方式集成，完整用户生命周期管理，为您的APP提供企业级用户体系。</p>
                     <ul class="module-features">
                         <li>多种登录方式（手机号、微信、Apple ID）</li>
                         <li>用户信息管理与数据统计</li>
@@ -1558,9 +466,9 @@
                         </svg>
                     </div>
                     <h4>订单支付系统</h4>
-                    <p>完整的电商级订单管理和支付系统，支持多种支付方式，助力APP快速实现商业变现。</p>
+                    <p>一键集成主流支付方式，完整订单管理流程，助力APP快速实现商业变现。</p>
                     <ul class="module-features">
-                        <li>支付宝、微信、Apple Pay集成</li>
+                        <li>支付宝、微信、Apple IAP集成</li>
                         <li>订单管理与状态跟踪</li>
                         <li>会员订阅与续费管理</li>
                         <li>退款处理与财务对账</li>
@@ -1574,12 +482,12 @@
                         </svg>
                     </div>
                     <h4>内容管理系统</h4>
-                    <p>灵活的内容发布与管理平台，支持富文本编辑，让你轻松管理APP内的各类文档内容。</p>
+                    <p>无需服务器即可发布内容，轻松管理用户协议、帮助文档等APP必需内容。</p>
                     <ul class="module-features">
                         <li>帮助文档与FAQ管理</li>
                         <li>用户协议与隐私政策</li>
                         <li>公告通知与版本说明</li>
-                        <li>富文本编辑与多媒体支持</li>
+                        <li>富文本编辑与Markdown支持</li>
                     </ul>
                 </div>
                 
@@ -1590,7 +498,7 @@
                         </svg>
                     </div>
                     <h4>数据分析系统</h4>
-                    <p>深度洞察用户行为与APP运营数据，为产品优化提供数据驱动的决策支持。</p>
+                    <p>用户行为分析与运营数据统计，为产品优化提供数据驱动的决策支持。</p>
                     <ul class="module-features">
                         <li>用户行为埋点与分析</li>
                         <li>业务数据统计与报表</li>
@@ -1602,11 +510,11 @@
                 <div class="module-card">
                     <div class="module-icon">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12,17.56L16.07,16.43L16.62,10.33H9.38L9.2,8.3H16.8L17,6.31H7L7.56,12.32H14.45L14.22,14.9L12,15.5L9.78,14.9L9.64,13.24H7.64L7.93,16.43L12,17.56M4.07,3H19.93L18.5,19.2L12,21L5.5,19.2L4.07,3Z"/>
+                            <path d="M12,3C13.11,3 14,3.89 14,5C14,6.11 13.11,7 12,7C10.89,7 10,6.11 10,5C10,3.89 10.89,3 12,3M12,9C13.11,9 14,9.89 14,11C14,12.11 13.11,13 12,13C10.89,13 10,12.11 10,11C10,9.89 10.89,9 12,9M12,15C13.11,15 14,15.89 14,17C14,18.11 13.11,19 12,19C10.89,19 10,18.11 10,17C10,15.89 10.89,15 12,15M12,21C13.11,21 14,21.89 14,23H10C10,21.89 10.89,21 12,21M12,7V9M12,13V15M6,11C7.11,11 8,11.89 8,13C8,14.11 7.11,15 6,15C4.89,15 4,14.11 4,13C4,11.89 4.89,11 6,11M18,11C19.11,11 20,11.89 20,13C20,14.11 19.11,15 18,15C16.89,15 16,14.11 16,13C16,11.89 16.89,11 18,11M8,13H10M14,13H16"/>
                         </svg>
                     </div>
                     <h4>版本控制系统</h4>
-                    <p>专业的APP版本发布与管理工具，支持灰度发布、强制更新等策略，确保APP稳定迭代。</p>
+                    <p>APP版本发布与更新管理，支持灰度发布和强制更新，确保产品稳定迭代。</p>
                     <ul class="module-features">
                         <li>版本发布与回滚管理</li>
                         <li>灰度发布与A/B测试</li>
@@ -1622,7 +530,7 @@
                         </svg>
                     </div>
                     <h4>安全防护系统</h4>
-                    <p>企业级安全保障，从数据加密到访问控制，全方位保护你的APP和用户数据安全。</p>
+                    <p>企业级安全保障，数据加密传输与访问控制，全方位保护APP和用户数据安全。</p>
                     <ul class="module-features">
                         <li>数据加密与传输安全</li>
                         <li>API访问频率限制</li>
@@ -1638,13 +546,13 @@
 
     <!-- 成功案例展示 - 循环滚动展示 -->
     <section style="padding: 100px 0; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); position: relative; overflow: hidden;">
-        <div style="max-width: 1400px; margin: 0 auto; padding: 0 40px;">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 20px;">
             <div style="text-align: center; margin-bottom: 60px;">
                 <h2 style="font-size: 3rem; font-weight: 800; color: white; margin-bottom: 20px;">
-                    优秀开发者的选择
+                    独立开发者的首选
                 </h2>
-                <p style="font-size: 1.1rem; color: #94a3b8; max-width: 700px; margin: 0 auto; white-space: nowrap;">
-                    各行各业的独立开发者都在使用在行云快速构建他们的梦想APP
+                <p style="font-size: 1.1rem; color: #94a3b8; max-width: 700px; margin: 0 auto;">
+                    各行各业的独立开发者和小团队都在使用在行云快速构建完整后端能力
                 </p>
             </div>
 
@@ -2023,7 +931,7 @@
 
             <div style="text-align: center;">
                 <p style="color: #94a3b8; font-size: 1rem; margin-bottom: 30px;">
-                    还有更多优秀开发者正在使用在行云构建他们的创意项目
+                    还有更多独立开发者正在使用在行云快速构建完整后端能力
                 </p>
                 <a href="/login" style="background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%); color: white; padding: 14px 28px; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(64, 134, 245, 0.3);">
                     加入他们 →
@@ -2034,13 +942,13 @@
 
     <!-- 用户反馈评价 -->
     <section style="padding: 100px 0; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); position: relative;">
-        <div style="max-width: 1400px; margin: 0 auto; padding: 0 40px;">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 20px;">
             <div style="text-align: center; margin-bottom: 80px;">
                 <h2 style="font-size: 3rem; font-weight: 800; color: #1e293b; margin-bottom: 20px;">
-                    开发者的真实反馈
+                    开发者真实评价
                 </h2>
                 <p style="font-size: 1.2rem; color: #64748b; max-width: 600px; margin: 0 auto;">
-                    听听那些已经在使用在行云的开发者们怎么说
+                    听听正在使用在行云的独立开发者和小团队怎么说
                 </p>
             </div>
 
@@ -2093,7 +1001,7 @@
                         </div>
                         <div>
                             <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">王女士</h4>
-                            <p style="color: #64748b; font-size: 0.9rem;">产品经理 · 健身社交APP</p>
+                            <p style="color: #64748b; font-size: 0.9rem;">产品经理 · 桌面组件APP</p>
                         </div>
                     </div>
                     <div style="display: flex; margin-bottom: 15px;">
@@ -2114,7 +1022,7 @@
                         </svg>
                     </div>
                     <p style="color: #374151; line-height: 1.6; font-size: 1rem;">
-                        "没有技术背景的我也能快速搭建APP后端，用户管理、数据统计、推送通知都有现成的方案。团队开发效率提升了至少3倍，成本节省了80%以上。"
+                        "没有技术背景的我也能快速搭建桌面组件APP的后端，用户登录、数据存储、内容管理都有现成的方案。不用担心服务器运维，专注产品功能开发，团队效率提升了至少3倍。"
                     </p>
                     <div style="position: absolute; top: 20px; right: 20px; opacity: 0.1;">
                         <svg width="30" height="30" viewBox="0 0 24 24" fill="#10b981">
@@ -2207,7 +1115,7 @@
                         </div>
                         <div>
                             <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">刘工</h4>
-                            <p style="color: #64748b; font-size: 0.9rem;">全栈开发者 · 密码管理器</p>
+                            <p style="color: #64748b; font-size: 0.9rem;">全栈开发者 · 解压缩工具</p>
                         </div>
                     </div>
                     <div style="display: flex; margin-bottom: 15px;">
@@ -2228,7 +1136,7 @@
                         </svg>
                     </div>
                     <p style="color: #374151; line-height: 1.6; font-size: 1rem;">
-                        "即使作为有经验的全栈开发者，在行云也大大提升了我的开发效率。密码管理器需要高安全性的数据存储和同步，在行云的安全机制让我很放心。"
+                        "即使作为有经验的全栈开发者，在行云也大大提升了我的开发效率。解压缩工具的用户登录和应用内购买功能都交给在行云处理，我只需专注核心功能开发，省去了大量后端工作。"
                     </p>
                     <div style="position: absolute; top: 20px; right: 20px; opacity: 0.1;">
                         <svg width="30" height="30" viewBox="0 0 24 24" fill="#ef4444">
@@ -2316,7 +1224,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
@@ -2325,10 +1233,9 @@
                 <div class="footer-column">
                     <div class="footer-brand">
                         <img src="/images/logo-baas.png" alt="在行云">
-                        <span class="footer-brand-text">在行云</span>
                     </div>
                     <p class="footer-desc">
-                        专为APP开发者打造的轻量级BaaS平台，让独立开发者专注于打造优质的前端体验，无需后端开发即可拥有完整的系统支撑。
+                        专为独立开发者和小团队打造的BaaS平台，无需后端开发，快速拥有后端能力，专注产品创新。
                     </p>
                     <div class="footer-social">
                         <a href="https://github.com/zaihangyun" target="_blank" title="GitHub">
@@ -2352,7 +1259,6 @@
                         <ul class="footer-links">
                             <li><a href="/pricing">定价方案</a></li>
                             <li><a href="/">功能特性</a></li>
-                            <li><a href="/about">技术架构</a></li>
                             <li><a href="/about">安全保障</a></li>
                         </ul>
                     </div>
@@ -2363,7 +1269,7 @@
                         <ul class="footer-links">
                             <li><a href="https://github.com/zaihangyun" target="_blank">GitHub</a></li>
                             <li><a href="/about">API文档</a></li>
-                            <li><a href="/about">SDK下载</a></li>
+
                             <li><a href="/about">技术支持</a></li>
                         </ul>
                     </div>
@@ -2375,7 +1281,7 @@
                             <li><a href="/about">关于我们</a></li>
                             <li><a href="/about">服务条款</a></li>
                             <li><a href="/about">隐私政策</a></li>
-                            <li><a href="/about">联系我们</a></li>
+       
                         </ul>
                     </div>
                 </div>
@@ -2446,6 +1352,30 @@
             });
         });
 
+        // 移动端菜单控制
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (mobileMenu.classList.contains('active')) {
+                mobileMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
+            } else {
+                mobileMenu.classList.add('active');
+                menuToggle.classList.add('active');
+            }
+        }
+
+        // 点击菜单项后关闭移动端菜单
+        document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                const mobileMenu = document.getElementById('mobile-menu');
+                const menuToggle = document.querySelector('.mobile-menu-toggle');
+                mobileMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        });
+
         // 悬浮支持面板
         function toggleSupportPanel() {
             const panel = document.getElementById('support-panel');
@@ -2458,8 +1388,18 @@
         document.addEventListener('click', function(e) {
             const support = document.getElementById('floating-support');
             const panel = document.getElementById('support-panel');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+            
+            // 关闭支持面板
             if (support && panel && !support.contains(e.target)) {
                 panel.style.display = 'none';
+            }
+            
+            // 关闭移动端菜单
+            if (mobileMenu && menuToggle && !menuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
             }
         });
     </script>
