@@ -546,20 +546,6 @@
         transform: scale(1.05);
     }
 
-    .pricing-card.featured::before {
-        content: '推荐';
-        position: absolute;
-        top: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%);
-        color: white;
-        padding: 5px 20px;
-        border-radius: 15px;
-        font-size: 0.9rem;
-        font-weight: 600;
-    }
-
     .pricing-card h3 {
         font-size: 1.5rem;
         font-weight: 600;

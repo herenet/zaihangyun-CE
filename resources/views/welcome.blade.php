@@ -417,12 +417,12 @@
                             <div style="font-size: 1.1rem; opacity: 0.9;">开发成本节省</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">0学习</div>
-                            <div style="font-size: 1.1rem; opacity: 0.9;">成本</div>
+                            <div style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">0学习成本</div>
+                            <div style="font-size: 1.1rem; opacity: 0.9;">简单易用</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">即开</div>
-                            <div style="font-size: 1.1rem; opacity: 0.9;">即用</div>
+                            <div style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">即开即用</div>
+                            <div style="font-size: 1.1rem; opacity: 0.9;">注册即可使用</div>
                         </div>
                         <div style="text-align: center;">
                             <div style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">24/7</div>
