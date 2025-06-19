@@ -34,9 +34,25 @@
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
-                        <img src="{{ Admin::user()->avatar }}" class="user-image" alt="User Image">
+                        <img src="{{ Admin::user()->avatar }}" class="user-image" alt="User Image" style="margin-right:5px">
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        <span class="hidden-xs">{{ Admin::user()->name }}</span>
+                        @php
+                            $product = Admin::user()->product ?? 'free';
+                            $productColors = [
+                                'free' => '#95a5a6',     // 灰色
+                                'basic' => '#3498db',    // 蓝色
+                                'adv' => '#27ae60',      // 绿色
+                                'pro' => '#f39c12',      // 橙色
+                                'company' => '#8e44ad'   // 紫色
+                            ];
+                            $color = $productColors[$product] ?? '#95a5a6';
+                            $productName = config('product.' . $product . '.name', '未知版本');
+                        @endphp
+                        <span class="hidden-xs" style="margin-left: 5px; line-height: normal;" title="当前版本: {{ $productName }}">{{ Admin::user()->name }}</span>
+                        <span class="hidden-xs" style="background-color: {{ $color }}; color: white; font-size: 10px; padding: 1px 3px; border-radius: 2px; margin-left: 3px; vertical-align: baseline; line-height: 1;">{{ $productName }}</span>
+                        <span class="hidden-xs" style="margin-left: 2px; font-size: 14px;">
+                            <i class="fa fa-caret-down"></i>
+                        </span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
@@ -45,8 +61,13 @@
 
                             <p>
                                 {{ Admin::user()->name }}
-                                <small>Member since admin {{ Admin::user()->created_at }}</small>
+                                <small>{{ Admin::user()->created_at }}</small>
                             </p>
+                            <div style="text-align: center; margin-top: 8px;">
+                                <span class="label" style="background-color: {{ $color }}; color: white; font-size: 10px; padding: 3px 8px; border-radius: 3px;">
+                                    {{ $productName }}
+                                </span>
+                            </div>
                         </li>
                         <li class="user-footer">
                             <div class="pull-left">

@@ -19,6 +19,11 @@ Route::group([
     $router->post('send-delete-app-code', 'ManagerController@sendDeleteAppCode');
     $router->post('send-login-verification', 'RegisterController@sendLoginVerification');
     $router->post('upload/article/image', 'UploadController@uploadImage')->name('upload.article.image');
+    
+    // API统计相关路由
+    $router->get('api-stats/today', 'ApiStatsController@getTodayStats')->name('api.stats.today');
+$router->get('api-stats/details', 'ApiStatsController@details')->name('api.stats.details');
+$router->get('api-stats/realtime', 'ApiStatsController@getRealtimeUpdate')->name('api.stats.realtime');
 
     $router->resource('apps', 'AppController')->names('apps');
     $router->get('apps/list', 'AppController@list')->name('apps.list');

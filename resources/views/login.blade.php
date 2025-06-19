@@ -592,7 +592,7 @@
   <div class="brand-section">
     <!-- 左上角logo -->
     <div class="brand-logo-corner">
-      <img src="{{ admin_asset('images/logo-mini.png') }}" alt="在行云">
+      <a href="/"><img src="{{ admin_asset('images/logo-mini.png') }}" alt="在行云"></a>
     </div>
     
     <div class="brand-content">

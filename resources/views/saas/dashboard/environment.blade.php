@@ -21,6 +21,11 @@
                         @if($env['name'] == 'AppSecret')
                             <i class="fa fa-eye-slash toggle-secret" style="cursor:pointer; margin-left:10px;"></i>
                         @endif
+                        @if($env['name'] == '今日API调用')
+                            <span style="color: #5cb85c; font-size: 12px; margin-left: 8px;">
+                                <i class="fa fa-clock-o"></i> 实时统计
+                            </span>
+                        @endif
                     </td>
                 </tr>
                 @endforeach

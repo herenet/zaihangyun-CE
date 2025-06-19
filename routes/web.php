@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\SaaSAdmin\Controllers\ShowController;
+use App\Http\Controllers\WebsiteController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,17 +14,9 @@ use App\SaaSAdmin\Controllers\ShowController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/pricing', function () {
-    return view('pricing');
-});
-
-Route::get('/about', function () {
-    return view('about');
-});
+Route::get('/', [WebsiteController::class, 'index']);
+Route::get('/pricing', [WebsiteController::class, 'pricing']);
+Route::get('/about', [WebsiteController::class, 'about']);
 
 Route::get('/article/{app_key}/{id}', [ShowController::class, 'show'])->name('article.show');
 Route::get('/article/category/{app_key}/{id}', [ShowController::class, 'category'])->name('article.category.show');

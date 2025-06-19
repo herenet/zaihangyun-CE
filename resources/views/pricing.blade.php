@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>价格方案 - 在行云 BaaS 平台</title>
     <meta name="description" content="选择适合您的在行云BaaS方案，从免费开始，随业务增长升级。专为独立开发者和团队打造的灵活定价。">
+    <meta name="keywords" content="在行云,BaaS,后端服务,APP开发,独立开发者,无服务器,云服务">
     <link rel="icon" href="/favicon.ico">
     <link href="{{ asset('css/common.css') }}" rel="stylesheet">
     <style>
@@ -16,7 +17,7 @@
         /* 页面标题区域 */
         .page-hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 100px 0 80px;
+            padding: 140px 0 120px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -654,7 +655,7 @@
                     </svg>
                     <span>灵活定价，按需选择</span>
                 </div>
-                <h1 class="page-title">为团队选择更佳的方案</h1>
+                <h1 class="page-title">选择更佳的方案</h1>
                 <p class="page-subtitle">
                     适用各种规模的开发团队——从独立开发者到大企业<br>
                     从免费开始，随着业务增长升级到更高级的方案
@@ -666,150 +667,88 @@
         <section class="pricing-section">
             <div class="container">
                 <div class="pricing-grid">
-                    <!-- 免费版 -->
-                    <div class="pricing-card">
+                    @foreach($products as $product)
+                    <div class="pricing-card @if($product['key'] == 'adv') featured @endif">
                         <div class="plan-header">
-                            <h3 class="plan-name">免费版</h3>
-                            <p class="plan-description">适用于个人开发者试用</p>
+                            <h3 class="plan-name">{{ $product['name'] }}</h3>
+                            <p class="plan-description">
+                                @switch($product['key'])
+                                    @case('free')
+                                        适用于个人开发者试用
+                                        @break
+                                    @case('basic')
+                                        适用于个人独立开发者
+                                        @break
+                                    @case('adv')
+                                        适用于小团队和多项目
+                                        @break
+                                    @case('pro')
+                                        适用于成熟开发者和小公司
+                                        @break
+                                    @case('company')
+                                        适用于大企业和高要求客户
+                                        @break
+                                @endswitch
+                            </p>
                             <div class="plan-price">
                                 <div class="price-display">
                                     <span class="price-currency">¥</span>
-                                    <span class="price-amount">0</span>
+                                    <span class="price-amount">{{ $product['price_yuan'] }}</span>
                                     <span class="price-period">/年</span>
                                 </div>
-                                <div class="price-note">永久免费</div>
+                                <div class="price-note">
+                                    @if($product['key'] == 'free')
+                                        永久免费
+                                    @elseif($product['key'] == 'adv')
+                                        最受欢迎的方案
+                                    @else
+                                        约{{ round($product['price_yuan'] / 12, 1) }}元/月
+                                    @endif
+                                </div>
                             </div>
                         </div>
                         <ul class="plan-features">
-                            <li>1个应用项目</li>
-                            <li>1万次/天 API请求</li>
-                            <li>100MB 数据存储</li>
+                            <li>{{ $product['app_limit'] == 9999 ? '不限' : $product['app_limit'] }}个应用项目</li>
+                            <li>
+                                @if($product['key'] == 'company')
+                                    不限 API请求
+                                @else
+                                    {{ number_format($product['request_limit']) }}次/天 API请求
+                                @endif
+                            </li>
+                            <li>{{ $product['attach_size'] }} 数据存储</li>
                             <li>应用设置</li>
                             <li>用户管理</li>
                             <li>文档管理</li>
                             <li>用户互动</li>
-                            <li class="unavailable">售卖管理</li>
-                            <li class="unavailable">技术支持</li>
-                            <li class="unavailable">数据迁移</li>
+                            @if($product['module_enable']['sales_mng'])
+                                <li>售卖管理</li>
+                            @else
+                                <li class="unavailable">售卖管理</li>
+                            @endif
+                            @if($product['key'] != 'free')
+                                <li>技术支持</li>
+                            @else
+                                <li class="unavailable">技术支持</li>
+                            @endif
+                            @if(in_array($product['key'], ['adv', 'pro', 'company']))
+                                <li>数据迁移</li>
+                            @else
+                                <li class="unavailable">数据迁移</li>
+                            @endif
                         </ul>
-                        <a href="/register" class="plan-button secondary">免费开始</a>
+                        <a href="@if($product['key'] == 'free')/register@elseif($product['key'] == 'company')/contact@else/register?plan={{ $product['key'] }}@endif" 
+                           class="plan-button @if($product['key'] == 'adv') primary @else secondary @endif">
+                            @if($product['key'] == 'free')
+                                免费开始
+                            @elseif($product['key'] == 'company')
+                                联系销售
+                            @else
+                                选择{{ $product['name'] }}
+                            @endif
+                        </a>
                     </div>
-
-                    <!-- 基础版 -->
-                    <div class="pricing-card">
-                        <div class="plan-header">
-                            <h3 class="plan-name">基础版</h3>
-                            <p class="plan-description">适用于个人独立开发者</p>
-                            <div class="plan-price">
-                                <div class="price-display">
-                                    <span class="price-currency">¥</span>
-                                    <span class="price-amount">199</span>
-                                    <span class="price-period">/年</span>
-                                </div>
-                                <div class="price-note">约16.6元/月</div>
-                            </div>
-                        </div>
-                        <ul class="plan-features">
-                            <li>3个应用项目</li>
-                            <li>3万次/天 API请求</li>
-                            <li>1GB 数据存储</li>
-                            <li>应用设置</li>
-                            <li>用户管理</li>
-                            <li>文档管理</li>
-                            <li>用户互动</li>
-                            <li>售卖管理</li>
-                            <li>技术支持</li>
-                            <li class="unavailable">数据迁移</li>
-                        </ul>
-                        <a href="/register?plan=basic" class="plan-button secondary">选择基础版</a>
-                    </div>
-
-                    <!-- 进阶版 -->
-                    <div class="pricing-card featured">
-                        <div class="plan-header">
-                            <h3 class="plan-name">进阶版</h3>
-                            <p class="plan-description">适用于小团队和多项目</p>
-                            <div class="plan-price">
-                                <div class="price-display">
-                                    <span class="price-currency">¥</span>
-                                    <span class="price-amount">999</span>
-                                    <span class="price-period">/年</span>
-                                </div>
-                                <div class="price-note">最受欢迎的方案</div>
-                            </div>
-                        </div>
-                        <ul class="plan-features">
-                            <li>10个应用项目</li>
-                            <li>10万次/天 API请求</li>
-                            <li>10GB 数据存储</li>
-                            <li>应用设置</li>
-                            <li>用户管理</li>
-                            <li>文档管理</li>
-                            <li>用户互动</li>
-                            <li>售卖管理</li>
-                            <li>技术支持</li>
-                            <li>数据迁移</li>
-                        </ul>
-                        <a href="/register?plan=advanced" class="plan-button primary">选择进阶版</a>
-                    </div>
-
-                    <!-- 专业版 -->
-                    <div class="pricing-card">
-                        <div class="plan-header">
-                            <h3 class="plan-name">专业版</h3>
-                            <p class="plan-description">适用于成熟开发者和小公司</p>
-                            <div class="plan-price">
-                                <div class="price-display">
-                                    <span class="price-currency">¥</span>
-                                    <span class="price-amount">2999</span>
-                                    <span class="price-period">/年</span>
-                                </div>
-                                <div class="price-note">约250元/月</div>
-                            </div>
-                        </div>
-                        <ul class="plan-features">
-                            <li>50个应用项目</li>
-                            <li>50万次/天 API请求</li>
-                            <li>100GB 数据存储</li>
-                            <li>应用设置</li>
-                            <li>用户管理</li>
-                            <li>文档管理</li>
-                            <li>用户互动</li>
-                            <li>售卖管理</li>
-                            <li>技术支持</li>
-                            <li>数据迁移</li>
-                        </ul>
-                        <a href="/register?plan=pro" class="plan-button secondary">选择专业版</a>
-                    </div>
-
-                    <!-- 企业版 -->
-                    <div class="pricing-card">
-                        <div class="plan-header">
-                            <h3 class="plan-name">企业版</h3>
-                            <p class="plan-description">适用于大企业和高要求客户</p>
-                            <div class="plan-price">
-                                <div class="price-display">
-                                    <span class="price-currency">¥</span>
-                                    <span class="price-amount">9999</span>
-                                    <span class="price-period">/年</span>
-                                </div>
-                                <div class="price-note">约833元/月</div>
-                            </div>
-                        </div>
-                        <ul class="plan-features">
-                            <li>不限应用项目</li>
-                            <li>不限 API请求</li>
-                            <li>1TB 数据存储</li>
-                            <li>应用设置</li>
-                            <li>用户管理</li>
-                            <li>文档管理</li>
-                            <li>用户互动</li>
-                            <li>售卖管理</li>
-                            <li>技术支持</li>
-                            <li>数据迁移</li>
-                        </ul>
-                        <a href="/contact" class="plan-button secondary">联系销售</a>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </section>
@@ -823,11 +762,9 @@
                         <thead>
                             <tr>
                                 <th>功能特性</th>
-                                <th class="plan-column">免费版</th>
-                                <th class="plan-column">基础版</th>
-                                <th class="plan-column">进阶版</th>
-                                <th class="plan-column">专业版</th>
-                                <th class="plan-column">企业版</th>
+                                @foreach($products as $product)
+                                <th class="plan-column">{{ $product['name'] }}</th>
+                                @endforeach
                             </tr>
                         </thead>
                         <tbody>
@@ -841,27 +778,27 @@
                             </tr>
                             <tr>
                                 <td>应用项目数量</td>
-                                <td class="plan-column">1个</td>
-                                <td class="plan-column">3个</td>
-                                <td class="plan-column">10个</td>
-                                <td class="plan-column">50个</td>
-                                <td class="plan-column">不限</td>
+                                @foreach($products as $product)
+                                <td class="plan-column">{{ $product['app_limit'] == 9999 ? '不限' : $product['app_limit'] }}个</td>
+                                @endforeach
                             </tr>
                             <tr>
                                 <td>API调用次数</td>
-                                <td class="plan-column">1万次/天</td>
-                                <td class="plan-column">3万次/天</td>
-                                <td class="plan-column">10万次/天</td>
-                                <td class="plan-column">50万次/天</td>
-                                <td class="plan-column">不限</td>
+                                @foreach($products as $product)
+                                <td class="plan-column">
+                                    @if($product['key'] == 'company')
+                                        不限
+                                    @else
+                                        {{ number_format($product['request_limit']) }}次/天
+                                    @endif
+                                </td>
+                                @endforeach
                             </tr>
                             <tr>
                                 <td>数据存储空间</td>
-                                <td class="plan-column">100MB</td>
-                                <td class="plan-column">1GB</td>
-                                <td class="plan-column">10GB</td>
-                                <td class="plan-column">100GB</td>
-                                <td class="plan-column">1TB</td>
+                                @foreach($products as $product)
+                                <td class="plan-column">{{ $product['attach_size'] }}</td>
+                                @endforeach
                             </tr>
                             <tr>
                                 <td><strong>应用设置</strong></td>
@@ -1118,7 +1055,7 @@
         </section>
 
         <!-- FAQ 部分 -->
-        <section class="faq-section">
+        <section class="faq-section" id="faq-section">
             <div class="container">
                 <h2 class="faq-title">常见问题</h2>
                 <div class="faq-container">
@@ -1212,7 +1149,7 @@
                     包括私有化部署、定制功能开发和专业技术支持服务。
                 </p>
                 <div class="contact-buttons">
-                    <a href="/contact" class="contact-button">联系销售团队</a>
+                    <a href="/about#contact-info-section" class="contact-button">联系销售团队</a>
                     <a href="/about" class="contact-button secondary">了解更多</a>
                 </div>
             </div>

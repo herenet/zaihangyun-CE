@@ -5,13 +5,14 @@ namespace App\SaaSAdmin\Controllers\Manager;
 use App\Models\App;
 use App\Models\User;
 use App\Models\Order;
-use App\Models\AppleOrder;
+use GuzzleHttp\Client;
 use App\SaaSAdmin\AppKey;
-use Illuminate\Support\Arr;
+use App\Models\AppleOrder;
 use Encore\Admin\Layout\Row;
 use App\Models\ArticleConfig;
 use App\Models\MessageConfig;
 use Encore\Admin\Layout\Content;
+use Illuminate\Support\Facades\Log;
 use App\Models\LoginInterfaceConfig;
 use App\Models\OrderInterfaceConfig;
 use App\SaaSAdmin\Facades\SaaSAdmin;
@@ -37,16 +38,41 @@ class IndexController extends AdminController
     {
         $app_key = $this->getAppKey();
         $app_info = app(App::class)->getAppInfo($app_key);
+        
         $envs = [
             ['name' => '名称',       'value' => $app_info['name']],
             ['name' => 'AppKey',   'value' => $app_info['app_key']],
             ['name' => 'AppSecret',   'value' => $app_info['app_secret']],
             ['name' => '平台',       'value' => App::$platformType[$app_info['platform_type']]],
             ['name' => '创建时间',   'value' => $app_info['created_at']],
+            ['name' => '今日API调用',   'value' => $this->getApiRequestCount() . ' 次'],
         ];
 
-
         return view('saas.dashboard.environment', compact('envs'));
+    }
+
+    protected function getApiRequestCount()
+    {
+        $app_key = $this->getAppKey();
+        $tenant_id = SaaSAdmin::user()->id;
+        $today = date('Y-m-d');
+        $client = new Client();
+        try{
+            $ret = $client->get(config('app.api_url').'/v1/stats/app?appkey='.$app_key.'&tenant_id='.$tenant_id.'&date='.$today, [
+                'timeout' => 5, // 设置超时时间
+                'connect_timeout' => 3
+            ]);
+            if ($ret->getStatusCode() == 200) {
+                $data = json_decode($ret->getBody(), true);
+                if (isset($data['code']) && $data['code'] == 200 && isset($data['data']['total_calls'])) {
+                    return $data['data']['total_calls'];
+                }
+            }
+            return 0;
+        } catch (\Exception $e) {
+            Log::error('API用量统计失败: ' . $e->getMessage());
+            return 0;
+        }
     }
 
     protected function moduleList()
