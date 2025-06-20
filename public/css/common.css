@@ -1943,3 +1943,104 @@
             margin: 0 !important;
         }
     }
+
+/* 案例展示无缝滚动样式 */
+.seamless-scroll-right, .seamless-scroll-left {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.scroll-content {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+}
+
+/* 鼠标悬停暂停动画 */
+.seamless-scroll-right:hover .scroll-content,
+.seamless-scroll-left:hover .scroll-content {
+    animation-play-state: paused;
+}
+
+/* 案例卡片悬停效果 */
+.case-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 安全的滚动动画 */
+@keyframes scrollRightSafe {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@keyframes scrollLeftSafe {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+}
+
+/* 案例展示移动端适配 - 保持水平滚动 */
+@media (max-width: 768px) {
+    /* 案例展示区域特殊处理 - 保持水平滚动 */
+    .seamless-scroll-right, .seamless-scroll-left {
+        position: relative !important;
+        overflow: hidden !important;
+        width: 100% !important;
+    }
+    
+    .seamless-scroll-right .scroll-content,
+    .seamless-scroll-left .scroll-content {
+        display: flex !important;
+        gap: 15px !important;
+        width: max-content !important;
+    }
+    
+    .case-card {
+        width: 280px !important;
+        padding: 25px !important;
+        flex-shrink: 0 !important;
+    }
+    
+    /* 案例展示外层容器 */
+    section[style*="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"] {
+        padding: 60px 0 !important;
+    }
+    
+    /* 案例展示内容区域 */
+    section[style*="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"] > div {
+        max-width: 100% !important;
+        padding: 0 20px !important;
+    }
+    
+    /* 案例展示标题 */
+    section[style*="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"] h2 {
+        font-size: 2rem !important;
+        margin-bottom: 15px !important;
+    }
+    
+    section[style*="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"] p {
+        font-size: 1rem !important;
+        margin-bottom: 40px !important;
+    }
+    
+    /* 案例展示无缝滚动容器 */
+    div[style*="position: relative; overflow: hidden; margin-bottom: 60px;"] {
+        margin-bottom: 40px !important;
+        padding: 0 !important;
+    }
+    
+    /* 底部按钮区域 */
+    section[style*="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"] div[style*="text-align: center;"] {
+        padding: 0 20px !important;
+    }
+    
+    section[style*="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"] div[style*="text-align: center;"] p {
+        font-size: 0.9rem !important;
+        margin-bottom: 20px !important;
+    }
+    
+    section[style*="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"] div[style*="text-align: center;"] a {
+        padding: 12px 24px !important;
+        font-size: 14px !important;
+    }
+}

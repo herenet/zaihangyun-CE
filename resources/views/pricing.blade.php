@@ -737,7 +737,7 @@
                                 <li class="unavailable">数据迁移</li>
                             @endif
                         </ul>
-                        <a href="@if($product['key'] == 'free')/register@elseif($product['key'] == 'company')/contact@else/register?plan={{ $product['key'] }}@endif" 
+                        <a href="@if($product['key'] == 'company')/about#contact-info-section @else /console/auth/login @endif" 
                            class="plan-button @if($product['key'] == 'adv') primary @else secondary @endif">
                             @if($product['key'] == 'free')
                                 免费开始

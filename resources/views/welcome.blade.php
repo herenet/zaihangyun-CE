@@ -423,10 +423,10 @@
                     <h4>用户管理系统</h4>
                     <p>多种登录方式集成，完整用户生命周期管理，为您的APP提供企业级用户体系。</p>
                     <ul class="module-features">
-                        <li>多种登录方式（手机号、微信、Apple ID）</li>
+                        <li>多种登录方式（手机号、微信、Apple ID等）</li>
                         <li>用户信息管理与数据统计</li>
-                        <li>权限角色分配与访问控制</li>
-                        <li>用户行为分析与画像</li>
+                        <li>登录互踢策略（管控多设备同时登录）</li>
+                        <li>注销延时删除机制（自定义缓冲期）</li>
                     </ul>
         </div>
                 
@@ -469,12 +469,12 @@
                         </svg>
                     </div>
                     <h4>数据分析系统</h4>
-                    <p>用户行为分析与运营数据统计，为产品优化提供数据驱动的决策支持。</p>
+                    <p>基础数据统计与实时监控，为业务运营提供关键指标分析和决策支持。</p>
                     <ul class="module-features">
-                        <li>用户行为埋点与分析</li>
-                        <li>业务数据统计与报表</li>
-                        <li>实时监控与告警通知</li>
-                        <li>自定义数据看板</li>
+                        <li>API调用统计与实时监控</li>
+                        <li>用户增长与订单收入分析</li>
+                        <li>多应用数据汇总与对比</li>
+                        <li>趋势图表与数据可视化</li>
                     </ul>
                 </div>
                 
@@ -490,7 +490,7 @@
                         <li>版本发布与回滚管理</li>
                         <li>灰度发布与A/B测试</li>
                         <li>强制更新与兼容性检查</li>
-                        <li>发布审核与流程控制</li>
+                        <li>自定义应用配置发布</li>
                     </ul>
                 </div>
                 
@@ -515,7 +515,7 @@
 
 
 
-    <!-- 成功案例展示 - 循环滚动展示 -->
+    <!-- 成功案例展示 - 真正无缝循环滚动 -->
     <section style="padding: 100px 0; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); position: relative; overflow: hidden;">
         <div style="max-width: 1400px; margin: 0 auto; padding: 0 20px;">
             <div style="text-align: center; margin-bottom: 60px;">
@@ -527,375 +527,51 @@
                 </p>
             </div>
 
-            <!-- 循环滚动容器 -->
+            <!-- 真正无缝循环容器 -->
             <div style="position: relative; overflow: hidden; margin-bottom: 60px;">
                 <!-- 第一行 - 向右滚动 -->
-                <div class="scroll-container" style="display: flex; gap: 20px; animation: scrollRight 60s linear infinite; margin-bottom: 30px; width: max-content;">
-                    <!-- 第一组 -->
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
+                <div class="seamless-scroll-right" style="margin-bottom: 30px;">
+                    <div class="scroll-content">
+                        @foreach($cases['row1'] as $case)
+                        <div class="case-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
                         <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
-                            </svg>
+                            <div style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                                <img src="{{ asset('images/icons/' . $case['icon']) }}" 
+                                     alt="{{ $case['name'] }}" 
+                                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; backface-visibility: hidden; transform: translateZ(0);"
+                                     onerror="this.src='{{ asset('images/icons/default.png') }}'">
                         </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">云端笔记</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">跨平台笔记应用，支持实时同步</p>
+                            <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">{{ $case['name'] }}</h3>
+                            <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">{{ $case['description'] }}</p>
                         <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #1AE2D6; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #4086F5; border-radius: 50%;"></div>
+                                <div style="width: 8px; height: 8px; background: {{ $case['dot_color'] }}; border-radius: 50%; margin-bottom: 4px;"></div>
+                                <div style="width: 6px; height: 6px; background: {{ $case['dot_color_small'] }}; border-radius: 50%;"></div>
                         </div>
                     </div>
-                    
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,17L7,12L8.41,10.59L12,14.17L15.59,10.59L17,12L12,17Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">轻松健身</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">个人健身教练，智能训练计划</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #059669; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M7,15H9C9,16.08 10.37,17 12,17C13.63,17 15,16.08 15,15C15,13.9 13.96,13.5 11.76,12.97C9.64,12.44 7,11.78 7,9C7,7.21 8.47,5.69 10.5,5.18V3H13.5V5.18C15.53,5.69 17,7.21 17,9H15C15,7.92 13.63,7 12,7C10.37,7 9,7.92 9,9C9,10.1 10.04,10.5 12.24,11.03C14.36,11.56 17,12.22 17,15C17,16.79 15.53,18.31 13.5,18.82V21H10.5V18.82C8.47,18.31 7,16.79 7,15Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">智能记账</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">AI驱动的个人财务管理工具</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #f59e0b; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #d97706; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V5H19V19Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">悦读时光</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">沉浸式阅读体验，个性化推荐</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #8b5cf6; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #7c3aed; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,16.59L3.41,18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">高效办公</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">团队协作与项目管理平台</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #ef4444; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #dc2626; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M14.6,16.6L19.2,12L14.6,7.4L13.2,8.8L16.4,12L13.2,15.2L14.6,16.6M9.4,16.6L10.8,15.2L7.6,12L10.8,8.8L9.4,7.4L4.8,12L9.4,16.6Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">漫步旅行</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">智能旅行规划与分享社区</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #06b6d4; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #0891b2; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <!-- 重复第一组以实现无缝循环 -->
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">云端笔记</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">跨平台笔记应用，支持实时同步</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #1AE2D6; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #4086F5; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-                    
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,17L7,12L8.41,10.59L12,14.17L15.59,10.59L17,12L12,17Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">轻松健身</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">个人健身教练，智能训练计划</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #059669; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M7,15H9C9,16.08 10.37,17 12,17C13.63,17 15,16.08 15,15C15,13.9 13.96,13.5 11.76,12.97C9.64,12.44 7,11.78 7,9C7,7.21 8.47,5.69 10.5,5.18V3H13.5V5.18C15.53,5.69 17,7.21 17,9H15C15,7.92 13.63,7 12,7C10.37,7 9,7.92 9,9C9,10.1 10.04,10.5 12.24,11.03C14.36,11.56 17,12.22 17,15C17,16.79 15.53,18.31 13.5,18.82V21H10.5V18.82C8.47,18.31 7,16.79 7,15Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">智能记账</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">AI驱动的个人财务管理工具</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #f59e0b; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #d97706; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V5H19V19Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">悦读时光</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">沉浸式阅读体验，个性化推荐</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #8b5cf6; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #7c3aed; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,16.59L3.41,18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">高效办公</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">团队协作与项目管理平台</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #ef4444; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #dc2626; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M14.6,16.6L19.2,12L14.6,7.4L13.2,8.8L16.4,12L13.2,15.2L14.6,16.6M9.4,16.6L10.8,15.2L7.6,12L10.8,8.8L9.4,7.4L4.8,12L9.4,16.6Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">漫步旅行</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">智能旅行规划与分享社区</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #06b6d4; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #0891b2; border-radius: 50%;"></div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
 
                 <!-- 第二行 - 向左滚动 -->
-                <div class="scroll-container" style="display: flex; gap: 20px; animation: scrollLeft 50s linear infinite; width: max-content;">
-                    <!-- 第二组 -->
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
+                <div class="seamless-scroll-left">
+                    <div class="scroll-content">
+                        @foreach($cases['row2'] as $case)
+                        <div class="case-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
                         <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M7.5,4A5.5,5.5 0 0,0 2,9.5C2,10 2,10.5 2.1,11H6.1L10.5,9L15,11H22C22,9.5 21.5,8 20.5,7C19.5,6 18,5.5 16.5,5.5H16.3C15.8,4.6 14.8,4 13.5,4C11.1,4 9.1,5.6 8.5,7.8C8,6.4 7.8,4.9 7.5,4M2.1,13C2,13.5 2,14 2,14.5A5.5,5.5 0 0,0 7.5,20A5.5,5.5 0 0,0 13,14.5H22V13H2.1Z"/>
-                            </svg>
+                            <div style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                                <img src="{{ asset('images/icons/' . $case['icon']) }}" 
+                                     alt="{{ $case['name'] }}" 
+                                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; backface-visibility: hidden; transform: translateZ(0);"
+                                     onerror="this.src='{{ asset('images/icons/default.png') }}'">
                         </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">休闲游戏</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">轻松有趣的休闲游戏平台</p>
+                            <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">{{ $case['name'] }}</h3>
+                            <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">{{ $case['description'] }}</p>
                         <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #ec4899; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #be185d; border-radius: 50%;"></div>
+                                <div style="width: 8px; height: 8px; background: {{ $case['dot_color'] }}; border-radius: 50%; margin-bottom: 4px;"></div>
+                                <div style="width: 6px; height: 6px; background: {{ $case['dot_color_small'] }}; border-radius: 50%;"></div>
                         </div>
                     </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,16.59L3.41,18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">投资理财</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">智能投资建议和理财规划</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #0ea5e9; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #0284c7; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">创意设计</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">专业的设计工具和创意平台</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #a855f7; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #9333ea; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">在线教育</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">优质的在线学习和教育资源</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #f97316; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #ea580c; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M18.06 22.99H1.94C1.28 22.99 0.729999 22.45 0.729999 21.79V2.21C0.729999 1.55 1.28 1.01 1.94 1.01H18.06C18.72 1.01 19.27 1.55 19.27 2.21V21.79C19.27 22.45 18.72 22.99 18.06 22.99ZM8.5 6C7.67 6 7 6.67 7 7.5S7.67 9 8.5 9 10 8.33 10 7.5 9.33 6 8.5 6ZM8.5 11C7.67 11 7 11.67 7 12.5S7.67 14 8.5 14 10 13.33 10 12.5 9.33 11 8.5 11ZM8.5 16C7.67 16 7 16.67 7 17.5S7.67 19 8.5 19 10 18.33 10 17.5 9.33 16 8.5 16Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">美食地图</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">发现身边的美食和餐厅推荐</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #84cc16; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #65a30d; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M17.753,14A2.25,2.25 0 0,1 20,16.25C20,17.77 18.77,19 17.25,19H6.75C5.23,19 4,17.77 4,16.25A2.25,2.25 0 0,1 6.25,14H6.5A4.5,4.5 0 0,1 11,9.5A4.5,4.5 0 0,1 15.5,14H17.753M12,2A1,1 0 0,1 13,3A1,1 0 0,1 12,4A1,1 0 0,1 11,3A1,1 0 0,1 12,2M8,5A1,1 0 0,1 9,6A1,1 0 0,1 8,7A1,1 0 0,1 7,6A1,1 0 0,1 8,5M16,5A1,1 0 0,1 17,6A1,1 0 0,1 16,7A1,1 0 0,1 15,6A1,1 0 0,1 16,5Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">智能助手</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">AI驱动的个人智能助手</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #6366f1; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #4f46e5; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <!-- 重复第二组以实现无缝循环 -->
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M7.5,4A5.5,5.5 0 0,0 2,9.5C2,10 2,10.5 2.1,11H6.1L10.5,9L15,11H22C22,9.5 21.5,8 20.5,7C19.5,6 18,5.5 16.5,5.5H16.3C15.8,4.6 14.8,4 13.5,4C11.1,4 9.1,5.6 8.5,7.8C8,6.4 7.8,4.9 7.5,4M2.1,13C2,13.5 2,14 2,14.5A5.5,5.5 0 0,0 7.5,20A5.5,5.5 0 0,0 13,14.5H22V13H2.1Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">休闲游戏</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">轻松有趣的休闲游戏平台</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #ec4899; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #be185d; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,16.59L3.41,18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">投资理财</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">智能投资建议和理财规划</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #0ea5e9; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #0284c7; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">创意设计</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">专业的设计工具和创意平台</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #a855f7; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #9333ea; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">在线教育</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">优质的在线学习和教育资源</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #f97316; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #ea580c; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M18.06 22.99H1.94C1.28 22.99 0.729999 22.45 0.729999 21.79V2.21C0.729999 1.55 1.28 1.01 1.94 1.01H18.06C18.72 1.01 19.27 1.55 19.27 2.21V21.79C19.27 22.45 18.72 22.99 18.06 22.99ZM8.5 6C7.67 6 7 6.67 7 7.5S7.67 9 8.5 9 10 8.33 10 7.5 9.33 6 8.5 6ZM8.5 11C7.67 11 7 11.67 7 12.5S7.67 14 8.5 14 10 13.33 10 12.5 9.33 11 8.5 11ZM8.5 16C7.67 16 7 16.67 7 17.5S7.67 19 8.5 19 10 18.33 10 17.5 9.33 16 8.5 16Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">美食地图</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">发现身边的美食和餐厅推荐</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #84cc16; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #65a30d; border-radius: 50%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; color: white; position: relative; overflow: hidden; width: 320px; flex-shrink: 0; backdrop-filter: blur(10px);">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                <path d="M17.753,14A2.25,2.25 0 0,1 20,16.25C20,17.77 18.77,19 17.25,19H6.75C5.23,19 4,17.77 4,16.25A2.25,2.25 0 0,1 6.25,14H6.5A4.5,4.5 0 0,1 11,9.5A4.5,4.5 0 0,1 15.5,14H17.753M12,2A1,1 0 0,1 13,3A1,1 0 0,1 12,4A1,1 0 0,1 11,3A1,1 0 0,1 12,2M8,5A1,1 0 0,1 9,6A1,1 0 0,1 8,7A1,1 0 0,1 7,6A1,1 0 0,1 8,5M16,5A1,1 0 0,1 17,6A1,1 0 0,1 16,7A1,1 0 0,1 15,6A1,1 0 0,1 16,5Z"/>
-                            </svg>
-                        </div>
-                        <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 10px;">智能助手</h3>
-                        <p style="opacity: 0.8; font-size: 0.9rem; line-height: 1.4;">AI驱动的个人智能助手</p>
-                        <div style="position: absolute; bottom: 15px; right: 15px; opacity: 0.3;">
-                            <div style="width: 8px; height: 8px; background: #6366f1; border-radius: 50%; margin-bottom: 4px;"></div>
-                            <div style="width: 6px; height: 6px; background: #4f46e5; border-radius: 50%;"></div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -904,7 +580,7 @@
                 <p style="color: #94a3b8; font-size: 1rem; margin-bottom: 30px;">
                     还有更多独立开发者正在使用在行云快速构建完整后端能力
                 </p>
-                <a href="/login" style="background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%); color: white; padding: 14px 28px; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(64, 134, 245, 0.3);">
+                <a href="/console/auth/login" style="background: linear-gradient(135deg, #4086F5 0%, #1AE2D6 100%); color: white; padding: 14px 28px; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(64, 134, 245, 0.3);">
                     加入他们 →
                 </a>
             </div>
@@ -934,7 +610,7 @@
                         </div>
                         <div>
                             <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">李先生</h4>
-                            <p style="color: #64748b; font-size: 0.9rem;">独立开发者 · 智能记账APP</p>
+                            <p style="color: #64748b; font-size: 0.9rem;">小团队 · 防沉迷APP</p>
                         </div>
                     </div>
                     <div style="display: flex; margin-bottom: 15px;">
@@ -955,7 +631,7 @@
                         </svg>
                     </div>
                     <p style="color: #374151; line-height: 1.6; font-size: 1rem;">
-                        "作为一个前端开发者，在行云让我能够快速构建完整的APP后端。支付集成特别简单，Apple IAP的对接只用了半天就完成了，以前这至少要折腾一周。"
+                        "我们是小规模团队，专注开发防沉迷APP。在行云BaaS提供的标准模块解决了除核心管控功能之外的全部需求，让我们可以专注于各种品牌机型的适配和管控算法的实现。相比自建后端，节省了大量计算资源和运维成本。"
                     </p>
                     <div style="position: absolute; top: 20px; right: 20px; opacity: 0.1;">
                         <svg width="30" height="30" viewBox="0 0 24 24" fill="#4086F5">
@@ -1124,7 +800,7 @@
                         </div>
                         <div>
                             <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">小赵</h4>
-                            <p style="color: #64748b; font-size: 0.9rem;">计算机专业学生 · 校园服务APP</p>
+                            <p style="color: #64748b; font-size: 0.9rem;">计算机专业学生 · 编程学习APP</p>
                         </div>
                     </div>
                     <div style="display: flex; margin-bottom: 15px;">
@@ -1199,111 +875,37 @@
     <!-- Footer -->
     @include('layouts.footer')
 
+    <!-- 案例展示滚动动画脚本 -->
     <script>
-        // 滚动时导航栏样式变化
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 100) {
-                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-                navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-            } else {
-                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-                navbar.style.boxShadow = 'none';
-            }
-        });
-
-        // 平滑滚动到锚点
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // 监听滚动，添加动画效果
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // 为所有卡片添加滚动动画
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.feature-card, .module-card, .pricing-card');
-            cards.forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(30px)';
-                card.style.transition = 'all 0.6s ease';
-                observer.observe(card);
-            });
-        });
-
-        // 移动端菜单控制
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuToggle = document.querySelector('.mobile-menu-toggle');
+    // 案例展示无缝滚动动画
+    document.addEventListener('DOMContentLoaded', function() {
+        // 为滚动容器添加CSS动画
+        const rightScroll = document.querySelector('.seamless-scroll-right .scroll-content');
+        const leftScroll = document.querySelector('.seamless-scroll-left .scroll-content');
+        
+        if (rightScroll) {
+            // 克隆内容以实现无缝效果
+            const originalContent = rightScroll.innerHTML;
+            rightScroll.innerHTML = originalContent + originalContent;
             
-            if (mobileMenu.classList.contains('active')) {
-                mobileMenu.classList.remove('active');
-                menuToggle.classList.remove('active');
-            } else {
-                mobileMenu.classList.add('active');
-                menuToggle.classList.add('active');
-            }
+            // 添加CSS动画
+            rightScroll.style.animation = 'scrollRightSafe 60s linear infinite';
         }
-
-        // 点击菜单项后关闭移动端菜单
-        document.querySelectorAll('.mobile-nav-links a').forEach(link => {
-            link.addEventListener('click', function() {
-                const mobileMenu = document.getElementById('mobile-menu');
-                const menuToggle = document.querySelector('.mobile-menu-toggle');
-                mobileMenu.classList.remove('active');
-                menuToggle.classList.remove('active');
-            });
-        });
-
-        // 悬浮支持面板
-        function toggleSupportPanel() {
-            const panel = document.getElementById('support-panel');
-            if (panel) {
-                panel.style.display = panel.style.display === 'none' || panel.style.display === '' ? 'block' : 'none';
-            }
+        
+        if (leftScroll) {
+            // 克隆内容以实现无缝效果
+            const originalContent = leftScroll.innerHTML;
+            leftScroll.innerHTML = originalContent + originalContent;
+            
+            // 添加CSS动画
+            leftScroll.style.animation = 'scrollLeftSafe 60s linear infinite';
         }
-
-        // 点击其他地方关闭面板
-        document.addEventListener('click', function(e) {
-            const support = document.getElementById('floating-support');
-            const panel = document.getElementById('support-panel');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuToggle = document.querySelector('.mobile-menu-toggle');
-            
-            // 关闭支持面板
-            if (support && panel && !support.contains(e.target)) {
-                panel.style.display = 'none';
-            }
-            
-            // 关闭移动端菜单
-            if (mobileMenu && menuToggle && !menuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
-                mobileMenu.classList.remove('active');
-                menuToggle.classList.remove('active');
-            }
-        });
+    });
     </script>
-</body>
-</html>
+
+    <!-- 引入公共脚本 -->
+    @include('layouts.scripts')
+    
+
 </body>
 </html>
