@@ -1641,7 +1641,7 @@
             font-size: 14px !important;
         }
         
-        div[id="floating-support"] span {
+        div[id="floating-support"] div:first-child > span {
             display: none !important;
         }
         
