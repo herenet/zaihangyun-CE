@@ -328,7 +328,7 @@
                             </div>
                             <div>
                                 <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">成本可控，按需付费</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">无需前期投入，用多少付多少，大幅降低开发成本</p>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">无需自建IDC和运维，一站式服务，大幅降低开发成本</p>
                             </div>
                         </div>
                         
