@@ -923,7 +923,7 @@ function startAutoRefresh() {
     updateCountdown();
     
     // 每秒更新倒计时，保存定时器引用
-    window.apiStatsTimer = setInterval(updateCountdown, 1000);
+    window.apiStatsTimer = setInterval(updateCountdown, 6000);
 }
 
 // 初始化进度条动画
