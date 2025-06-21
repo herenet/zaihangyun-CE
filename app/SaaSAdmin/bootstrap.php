@@ -140,11 +140,16 @@ window.ApiStatsManager = window.ApiStatsManager || {
         if (loading.length === 0) return; // DOM不存在，跳过更新
         
         // 更新数据元素
-        \$('#api-stats-numbers').text(apiData.current + '/' + apiData.limit);
+        if (apiData.is_unlimited) {
+            \$('#api-stats-numbers').html(apiData.current);
+        } else {
+            \$('#api-stats-numbers').text(apiData.current + '/' + apiData.limit);
+        }
+        
         \$('#api-stats-progress')
             .css('width', apiData.percentage + '%')
             .css('background', status.color)
-            .attr('title', '使用率: ' + apiData.percentage + '%');
+            .attr('title', apiData.is_unlimited ? '无限制使用' : ('使用率: ' + apiData.percentage + '%'));
         \$('#api-stats-status')
             .css('color', status.color)
             .html('<i class="fa fa-' + status.icon + '" style="margin-right: 2px;"></i>' + status.text);

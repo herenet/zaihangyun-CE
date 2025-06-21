@@ -10,6 +10,7 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Layout\Content;
 use App\Models\TenantApiStats;
 use App\Models\App;
+use App\Models\Tenant;
 
 class ApiStatsController extends AdminController
 {
@@ -39,11 +40,24 @@ class ApiStatsController extends AdminController
                 $data = json_decode($ret->getBody(), true);
                 if (isset($data['code']) && $data['code'] == 200 && isset($data['data'])) {
                     $current = $data['data']['total_calls'] ?? 0;
-                    $limit = $data['data']['daily_limit'] ?? 10;
-                    $percentage = $limit > 0 ? min(($current / $limit) * 100, 100) : 0;
                     
-                    // 确定状态信息
-                    $statusInfo = $this->getStatusInfo($percentage);
+                    // 从租户的product字段获取API限制数
+                    $limit = $this->getTenantApiLimit($tenant_id);
+                    $isUnlimited = $this->isUnlimitedTenant($tenant_id);
+                    
+                    if ($isUnlimited) {
+                        // 无限制租户的特殊处理
+                        $percentage = 100; // 进度条显示100%但为绿色
+                        $statusInfo = [
+                            'class' => 'success',
+                            'color' => '#5cb85c',
+                            'text' => '无限制',
+                            'icon' => 'infinity'
+                        ];
+                    } else {
+                        $percentage = $limit > 0 ? min(($current / $limit) * 100, 100) : 0;
+                        $statusInfo = $this->getStatusInfo($percentage);
+                    }
                     
                     return response()->json([
                         'success' => true,
@@ -51,8 +65,9 @@ class ApiStatsController extends AdminController
                             'current' => $current,
                             'limit' => $limit,
                             'percentage' => round($percentage, 1),
-                            'remaining' => max($limit - $current, 0),
+                            'remaining' => $isUnlimited ? '无限制' : max($limit - $current, 0),
                             'status' => $statusInfo,
+                            'is_unlimited' => $isUnlimited,
                             'last_updated' => date('Y-m-d H:i:s')
                         ]
                     ]);
@@ -95,7 +110,8 @@ class ApiStatsController extends AdminController
                     'total_calls' => $todayData['total_calls'],
                     'limit' => $todayData['limit'],
                     'usage_percentage' => $todayData['usage_percentage'],
-                    'remaining' => max($todayData['limit'] - $todayData['total_calls'], 0),
+                    'remaining' => $todayData['is_unlimited'] ? '无限制' : max($todayData['limit'] - $todayData['total_calls'], 0),
+                    'is_unlimited' => $todayData['is_unlimited'],
                     'last_updated' => date('Y-m-d H:i:s')
                 ]
             ]);
@@ -107,6 +123,29 @@ class ApiStatsController extends AdminController
                 'message' => '获取数据失败: ' . $e->getMessage()
             ]);
         }
+    }
+    
+    /**
+     * 获取租户的API限制数
+     */
+    private function getTenantApiLimit($tenant_id)
+    {
+        $tenant = Tenant::find($tenant_id);
+        if (!$tenant) {
+            return config('product.free.request_limit', 10000); // 默认免费版限制
+        }
+        
+        $product = $tenant->product ?? 'free';
+        return config("product.{$product}.request_limit", 10000);
+    }
+    
+    /**
+     * 判断是否为无限制租户
+     */
+    private function isUnlimitedTenant($tenant_id)
+    {
+        $limit = $this->getTenantApiLimit($tenant_id);
+        return $limit >= 999999999; // 企业版的无限制标识
     }
     
     /**
@@ -206,7 +245,10 @@ class ApiStatsController extends AdminController
             $data = $result['data'];
             $apiStats = $data['app_stats'] ?? [];
             $totalCalls = $data['total_calls'] ?? 0;
-            $limit = $data['daily_limit'] ?? 20;
+            
+            // 从租户的product字段获取API限制数
+            $limit = $this->getTenantApiLimit($tenant_id);
+            $isUnlimited = $this->isUnlimitedTenant($tenant_id);
             
             // 获取租户下所有应用
             $allApps = App::where('tenant_id', $tenant_id)->get(['app_key', 'name', 'platform_type']);
@@ -237,7 +279,8 @@ class ApiStatsController extends AdminController
                 'date' => date('Y-m-d'),
                 'total_calls' => $totalCalls,
                 'limit' => $limit,
-                'usage_percentage' => $limit > 0 ? round(($totalCalls / $limit) * 100, 2) : 0,
+                'usage_percentage' => $isUnlimited ? 100 : ($limit > 0 ? round(($totalCalls / $limit) * 100, 2) : 0),
+                'is_unlimited' => $isUnlimited,
                 'app_count' => count($allApps),
                 'active_app_count' => count(array_filter($appStats, function($app) { return $app['call_count'] > 0; })),
                 'app_stats' => $appStats,
@@ -259,14 +302,19 @@ class ApiStatsController extends AdminController
         // 获取租户下所有应用
         $allApps = App::where('tenant_id', $tenant_id)->get(['app_key', 'name', 'platform_type']);
         
+        // 从租户的product字段获取API限制数
+        $limit = $this->getTenantApiLimit($tenant_id);
+        $isUnlimited = $this->isUnlimitedTenant($tenant_id);
+        
         if ($allApps->isEmpty()) {
             // 如果没有应用，返回空数据
             return [
                 'tenant_id' => $tenant_id,
                 'date' => date('Y-m-d'),
                 'total_calls' => 0,
-                'limit' => 1000,
+                'limit' => $limit,
                 'usage_percentage' => 0,
+                'is_unlimited' => $isUnlimited,
                 'app_count' => 0,
                 'active_app_count' => 0,
                 'app_stats' => [],
@@ -307,8 +355,9 @@ class ApiStatsController extends AdminController
             'tenant_id' => $tenant_id,
             'date' => date('Y-m-d'),
             'total_calls' => $totalCalls,
-            'limit' => 1000,
-            'usage_percentage' => round(($totalCalls / 1000) * 100, 2),
+            'limit' => $limit,
+            'usage_percentage' => $isUnlimited ? 100 : round(($totalCalls / $limit) * 100, 2),
+            'is_unlimited' => $isUnlimited,
             'app_count' => count($allApps),
             'active_app_count' => count(array_filter($appStats, function($app) { return $app['call_count'] > 0; })),
             'app_stats' => $appStats,

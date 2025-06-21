@@ -38,7 +38,7 @@
                     padding: 2px 6px;
                     border-radius: 8px;
                     line-height: 1;
-                ">0/1000</span>
+                ">0/10000</span>
                 
                 <div style="
                     width: 35px; 

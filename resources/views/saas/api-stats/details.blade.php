@@ -56,15 +56,33 @@
                         </div>
                         <div class="sub-stats">
                             <div class="sub-stat">
-                                <span class="value">{{ number_format($data['limit']) }}</span>
+                                <span class="value">
+                                    @if($data['is_unlimited'] ?? false)
+                                        <i class="fa fa-infinity text-success"></i> 无限制
+                                    @else
+                                        {{ number_format($data['limit']) }}
+                                    @endif
+                                </span>
                                 <span class="label">调用限额</span>
                             </div>
                             <div class="sub-stat">
-                                <span class="value">{{ number_format($data['limit'] - $data['total_calls']) }}</span>
+                                <span class="value">
+                                    @if($data['is_unlimited'] ?? false)
+                                        <i class="fa fa-infinity text-success"></i> 无限制
+                                    @else
+                                        {{ number_format($data['limit'] - $data['total_calls']) }}
+                                    @endif
+                                </span>
                                 <span class="label">剩余次数</span>
                             </div>
                             <div class="sub-stat">
-                                <span class="value">{{ $data['usage_percentage'] }}%</span>
+                                <span class="value">
+                                    @if($data['is_unlimited'] ?? false)
+                                        <i class="fa fa-check-circle text-success"></i> 畅享
+                                    @else
+                                        {{ $data['usage_percentage'] }}%
+                                    @endif
+                                </span>
                                 <span class="label">使用率</span>
                             </div>
                         </div>
@@ -78,35 +96,56 @@
                 <div class="usage-progress-container">
                     <div class="progress-info">
                         <span class="progress-label">使用进度</span>
-                        <span class="progress-percentage">{{ $data['usage_percentage'] }}%</span>
+                        <span class="progress-percentage">
+                            @if($data['is_unlimited'] ?? false)
+                                <i class="fa fa-infinity text-success"></i> 畅享无限
+                            @else
+                                {{ $data['usage_percentage'] }}%
+                            @endif
+                        </span>
                     </div>
                     <div class="usage-progress-bar">
                         <div class="progress-track"></div>
                         @php
+                            $isUnlimited = $data['is_unlimited'] ?? false;
                             $percentage = $data['usage_percentage'];
-                            $statusClass = 'normal';
-                            $displayWidth = min($percentage, 100); // 限制显示宽度不超过100%
                             
-                            if ($percentage >= 100) {
-                                $statusClass = 'exceeded';
-                            } elseif ($percentage >= 80) {
-                                $statusClass = 'danger';
-                            } elseif ($percentage >= 60) {
-                                $statusClass = 'warning';
+                            if ($isUnlimited) {
+                                $statusClass = 'unlimited';
+                                $displayWidth = 100;
+                            } else {
+                                $displayWidth = min($percentage, 100);
+                                $statusClass = 'normal';
+                                
+                                if ($percentage >= 100) {
+                                    $statusClass = 'exceeded';
+                                } elseif ($percentage >= 80) {
+                                    $statusClass = 'danger';
+                                } elseif ($percentage >= 60) {
+                                    $statusClass = 'warning';
+                                }
                             }
                         @endphp
                         <div class="progress-fill {{ $statusClass }}" 
                              data-percentage="{{ $percentage }}"
                              data-display-width="{{ $displayWidth }}"
+                             data-unlimited="{{ $isUnlimited ? 'true' : 'false' }}"
                              style="width: 0%"></div>
                         <div class="progress-glow {{ $statusClass }}"></div>
                     </div>
                     <div class="progress-markers">
                         <span class="marker start">0</span>
-                        <span class="marker quarter">25%</span>
-                        <span class="marker half">50%</span>
-                        <span class="marker three-quarter">75%</span>
-                        <span class="marker end">{{ number_format($data['limit']) }}</span>
+                        @if($data['is_unlimited'] ?? false)
+                            <span class="marker quarter">畅享</span>
+                            <span class="marker half">无限</span>
+                            <span class="marker three-quarter">调用</span>
+                            <span class="marker end"><i class="fa fa-infinity"></i></span>
+                        @else
+                            <span class="marker quarter">25%</span>
+                            <span class="marker half">50%</span>
+                            <span class="marker three-quarter">75%</span>
+                            <span class="marker end">{{ number_format($data['limit']) }}</span>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -478,9 +517,22 @@
     animation: pulse-exceeded 2s infinite;
 }
 
+/* 无限制状态 - 绿色彩虹渐变 */
+.api-stats-dashboard .progress-fill.unlimited {
+    background: linear-gradient(90deg, #10b981, #059669, #047857, #065f46, #064e3b);
+    background-size: 200% 100%;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    animation: unlimited-flow 3s linear infinite;
+}
+
 @keyframes pulse-exceeded {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.8; }
+}
+
+@keyframes unlimited-flow {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
 
 .api-stats-dashboard .progress-glow {
@@ -506,6 +558,16 @@
 .api-stats-dashboard .progress-glow.danger,
 .api-stats-dashboard .progress-glow.exceeded {
     background: radial-gradient(ellipse, rgba(239, 68, 68, 0.4) 0%, transparent 70%);
+}
+
+.api-stats-dashboard .progress-glow.unlimited {
+    background: radial-gradient(ellipse, rgba(16, 185, 129, 0.6) 0%, transparent 70%);
+    animation: unlimited-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes unlimited-glow {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
 }
 
 /* 立即刷新按钮样式 */
@@ -754,15 +816,25 @@ function updateRealtimeData() {
                 $('.main-stat h2').text(Number(data.total_calls).toLocaleString());
                 
                 // 更新子统计
-                $('.sub-stat:nth-child(1) .value').text(Number(data.limit).toLocaleString());
-                $('.sub-stat:nth-child(2) .value').text(Number(data.remaining).toLocaleString());
-                $('.sub-stat:nth-child(3) .value').text(data.usage_percentage + '%');
+                if (data.is_unlimited) {
+                    $('.sub-stat:nth-child(1) .value').html('<i class="fa fa-infinity text-success"></i> 无限制');
+                    $('.sub-stat:nth-child(2) .value').html('<i class="fa fa-infinity text-success"></i> 无限制');
+                    $('.sub-stat:nth-child(3) .value').html('<i class="fa fa-check-circle text-success"></i> 畅享');
+                } else {
+                    $('.sub-stat:nth-child(1) .value').text(Number(data.limit).toLocaleString());
+                    $('.sub-stat:nth-child(2) .value').text(Number(data.remaining).toLocaleString());
+                    $('.sub-stat:nth-child(3) .value').text(data.usage_percentage + '%');
+                }
                 
                 // 更新进度条百分比显示
-                $('.progress-percentage').text(data.usage_percentage + '%');
+                if (data.is_unlimited) {
+                    $('.progress-percentage').html('<i class="fa fa-infinity text-success"></i> 畅享无限');
+                } else {
+                    $('.progress-percentage').text(data.usage_percentage + '%');
+                }
                 
                 // 更新进度条状态和动画
-                updateProgressBar(data.usage_percentage);
+                updateProgressBar(data.usage_percentage, data.is_unlimited);
                 
                 // 更新最后更新时间
                 $('#last-update-time').html('<i class="fa fa-clock-o"></i> 最后更新: ' + data.last_updated);
@@ -780,30 +852,36 @@ function updateRealtimeData() {
 }
 
 // 更新进度条
-function updateProgressBar(percentage) {
+function updateProgressBar(percentage, isUnlimited = false) {
     const $progressFill = $('.progress-fill');
     const $progressGlow = $('.progress-glow');
     
     // 确定状态类
     let statusClass = 'normal';
-    if (percentage >= 100) {
-        statusClass = 'exceeded';
-    } else if (percentage >= 80) {
-        statusClass = 'danger';
-    } else if (percentage >= 60) {
-        statusClass = 'warning';
+    let displayWidth = Math.min(percentage, 100);
+    
+    if (isUnlimited) {
+        statusClass = 'unlimited';
+        displayWidth = 100; // 无限制用户进度条显示100%
+    } else {
+        if (percentage >= 100) {
+            statusClass = 'exceeded';
+        } else if (percentage >= 80) {
+            statusClass = 'danger';
+        } else if (percentage >= 60) {
+            statusClass = 'warning';
+        }
     }
     
     // 移除旧的状态类
-    $progressFill.removeClass('normal warning danger exceeded');
-    $progressGlow.removeClass('normal warning danger exceeded');
+    $progressFill.removeClass('normal warning danger exceeded unlimited');
+    $progressGlow.removeClass('normal warning danger exceeded unlimited');
     
     // 添加新的状态类
     $progressFill.addClass(statusClass);
     $progressGlow.addClass(statusClass);
     
-    // 更新进度条宽度（限制在100%以内）
-    const displayWidth = Math.min(percentage, 100);
+    // 更新进度条宽度
     $progressFill.css('width', displayWidth + '%');
     
     // 更新发光效果位置
@@ -855,8 +933,9 @@ function initProgressAnimation() {
             const $this = $(this);
             const percentage = $this.data('percentage') || 0;
             const displayWidth = $this.data('display-width') || percentage;
+            const isUnlimited = $this.data('unlimited') === 'true';
             
-            // 设置进度条宽度（限制在100%以内显示）
+            // 设置进度条宽度
             $this.css('width', displayWidth + '%');
             
             // 设置发光效果位置
