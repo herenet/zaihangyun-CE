@@ -327,11 +327,11 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">成本可控，按需付费</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">无需自建IDC和运维，一站式服务，大幅降低开发成本</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">支付集成，一键搞定</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">Apple IAP、微信、支付宝统一接入，快速实现商业变现</p>
                             </div>
                         </div>
-                        
+
                         <div style="display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px;">
                             <div style="width: 24px; height: 24px; background: #f0f9ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="#4086F5">
@@ -339,8 +339,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">支付集成，一键搞定</h4>
-                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">Apple IAP、微信、支付宝统一接入，快速实现商业变现</p>
+                                <h4 style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">成本可控，套餐灵活</h4>
+                                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.5;">无需自建IDC和运维，一站式服务，大幅降低开发成本</p>
                             </div>
                         </div>
                         
