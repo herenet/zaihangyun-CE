@@ -194,7 +194,7 @@ class ApiStatsController extends AdminController
             // 合并数据
             $data = array_merge($todayData, [
                 'trend_data' => $trendData,
-                'refresh_interval' => 10 // 自动刷新间隔（秒）
+                'refresh_interval' => 60 // 自动刷新间隔（秒）
             ]);
             
             return $content
