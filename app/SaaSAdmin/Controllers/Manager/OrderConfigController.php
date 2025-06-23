@@ -37,12 +37,30 @@ class OrderConfigController extends Controller
     const APPLE_CALLBACK_VERIFY_CACHE_KEY = 'apple_callback_verify_cache|{uuid}';
     const APPLE_CALLBACK_VERIFY_CACHE_TTL = 60; // 1分钟
 
+    /**
+     * 检查租户是否有售卖管理功能权限
+     * 只有免费版不允许使用售卖管理功能
+     */
+    private function checkSalesPermission($tenant_id)
+    {
+        $tenant = \App\Models\Tenant::find($tenant_id);
+        $currentProduct = $tenant->product ?? 'free';
+        
+        if ($currentProduct === 'free') {
+            $productInfo = config('product.free');
+            admin_toastr('当前套餐（' . ($productInfo['name'] ?? '免费版') . '）不支持售卖管理功能，请升级套餐后使用', 'error');
+            return false;
+        }
+        
+        return true;
+    }
+
     public function index(Content $content)
     {
         $app_key = $this->getAppKey();
         $app_info = app(App::class)->getAppInfo($app_key);
         $content->title('接口配置');
-        $content->description('订单模块');
+        $content->description('售卖模块');
 
         if($app_info['platform_type'] == App::PLATFORM_TYPE_IOS) {
             $content->body(Tab::forms([
@@ -79,6 +97,19 @@ class OrderConfigController extends Controller
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
+        }
+
+        // 检查套餐权限：只有免费版不允许使用售卖管理功能
+        if ($switch == 1) {
+            $tenant = \App\Models\Tenant::find($tenant_id);
+            $currentProduct = $tenant->product ?? 'free';
+            
+            // 免费版不允许启用售卖管理功能
+            if ($currentProduct === 'free') {
+                $productInfo = config('product.free');
+                admin_toastr('当前套餐（' . ($productInfo['name'] ?? '免费版') . '）不支持售卖管理功能，请升级套餐后使用', 'error');
+                return back()->withInput();
+            }
         }
 
         if ($switch == 1) {

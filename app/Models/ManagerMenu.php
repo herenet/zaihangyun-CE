@@ -69,7 +69,7 @@ class ManagerMenu
             [
                 'id' => 4,
                 'parent_id' => 0,
-                'title' => '订单管理',
+                'title' => '售卖管理',
                 'icon' => 'fa-shopping-cart',
                 'children' => $this->getOrderMenu($appKey),
             ],

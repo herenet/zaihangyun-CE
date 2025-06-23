@@ -76,6 +76,28 @@
         </div>
         
         <div style="display: flex; align-items: center; gap: 4px;">
+            <!-- 升级套餐按钮 -->
+            <a id="upgrade-package-btn" href="/pricing" target="_blank" style="
+                background: linear-gradient(135deg, #ffc107, #ff8c00); 
+                border: 1px solid #ffc107; 
+                color: #fff; 
+                cursor: pointer; 
+                padding: 0; 
+                border-radius: 4px; 
+                text-decoration: none; 
+                transition: all 0.2s ease;
+                width: 20px;
+                height: 20px;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 1px 3px rgba(255, 193, 7, 0.3);
+            " title="升级套餐获得更多API调用额度"
+            onmouseover="this.style.background='linear-gradient(135deg, #ff8c00, #ffc107)'; this.style.transform='scale(1.05)'" 
+            onmouseout="this.style.background='linear-gradient(135deg, #ffc107, #ff8c00)'; this.style.transform='scale(1)'">
+                <i class="fa fa-rocket" style="font-size: 11px;"></i>
+            </a>
+            
             <button id="refresh-api-stats" style="
                 background: #fff; 
                 border: 1px solid #dee2e6; 

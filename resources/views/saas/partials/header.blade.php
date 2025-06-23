@@ -61,7 +61,7 @@
 
                             <p>
                                 {{ Admin::user()->name }}
-                                <small>{{ Admin::user()->created_at }}</small>
+                                <small>ID: {{ Admin::user()->id }}</small>
                             </p>
                             <div style="text-align: center; margin-top: 8px;">
                                 <span class="label" style="background-color: {{ $color }}; color: white; font-size: 10px; padding: 3px 8px; border-radius: 3px;">

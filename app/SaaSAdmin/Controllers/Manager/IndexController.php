@@ -102,7 +102,7 @@ class IndexController extends AdminController
                 'color' => '#00a65a'
             ],
             [
-                'name' => '订单管理',
+                'name' => '售卖管理',
                 'description' => '提供商品、订单及收退款管理，兼容微信、支付宝、Apple Pay等支付通道，支持API调用。',
                 'enabled' => isset($order_interface_config['switch']) ? ($order_interface_config['switch'] ? true : false) : false,
                 'url' => admin_url('app/manager/'.$this->getAppKey().'/order/config'),

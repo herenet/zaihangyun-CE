@@ -399,9 +399,18 @@ class AppController extends Controller
             'platform_type.integer' => '平台必须为整数',
             'platform_type.in' => '平台必须为1或2',
         ]);
+        
+        $tenant_id = SaaSAdmin::user()->id;
+        
+        // 检查APP创建数量限制
+        $limitCheck = $this->checkAppLimit($tenant_id);
+        if ($limitCheck) {
+            return $limitCheck; // 返回错误响应
+        }
+        
         $data['app_key'] = Helpers::generateAppKey();
         $data['app_secret'] = Helpers::generateAppSecret();
-        $data['tenant_id'] = SaaSAdmin::user()->id;
+        $data['tenant_id'] = $tenant_id;
         App::create($data);
         
         // 清除统计数据缓存
@@ -409,6 +418,45 @@ class AppController extends Controller
         
         admin_toastr('创建成功', 'success');
         return redirect()->to(admin_url('/'));
+    }
+
+    /**
+     * 检查租户APP创建数量限制
+     */
+    protected function checkAppLimit($tenant_id)
+    {
+        // 获取租户信息
+        $tenant = \App\Models\Tenant::find($tenant_id);
+        if (!$tenant) {
+            admin_error('租户信息不存在');
+            return back()->withInput();
+        }
+        
+        // 获取租户的产品配置
+        $product = $tenant->product ?? 'free';
+        $appLimit = config("product.{$product}.app_limit", 1);
+        
+        // 如果是无限制（企业版等），直接通过
+        if ($appLimit >= 9999) {
+            return;
+        }
+        
+        // 统计当前已创建的APP数量
+        $currentAppCount = App::where('tenant_id', $tenant_id)->count();
+        
+        // 检查是否超出限制
+        if ($currentAppCount >= $appLimit) {
+            $productName = config("product.{$product}.name", '当前套餐');
+            $errorMsg = "创建失败：{$productName}最多只能创建{$appLimit}个应用，您已达到上限。";
+            
+            // 如果不是企业版，提示升级
+            if ($product !== 'company') {
+                $errorMsg .= "请升级套餐以创建更多应用。";
+            }
+            
+            admin_error($errorMsg);
+            return back()->withInput();
+        }
     }
 
     /**

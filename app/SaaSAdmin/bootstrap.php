@@ -101,6 +101,19 @@ JS);
 
 // API统计功能 - 独立于pjax刷新
 Admin::html(<<<HTML
+<style>
+@keyframes pulse {
+    0% {
+        box-shadow: 0 1px 3px rgba(255, 193, 7, 0.3), 0 0 0 0 rgba(255, 193, 7, 0.7);
+    }
+    70% {
+        box-shadow: 0 1px 3px rgba(255, 193, 7, 0.3), 0 0 0 4px rgba(255, 193, 7, 0);
+    }
+    100% {
+        box-shadow: 0 1px 3px rgba(255, 193, 7, 0.3), 0 0 0 0 rgba(255, 193, 7, 0);
+    }
+}
+</style>
 <script>
 // API统计全局管理器 - 防止pjax重复初始化
 window.ApiStatsManager = window.ApiStatsManager || {
@@ -153,6 +166,39 @@ window.ApiStatsManager = window.ApiStatsManager || {
         \$('#api-stats-status')
             .css('color', status.color)
             .html('<i class="fa fa-' + status.icon + '" style="margin-right: 2px;"></i>' + status.text);
+        
+        // 控制升级套餐按钮的显示
+        var upgradeBtn = \$('#upgrade-package-btn');
+        if (upgradeBtn.length > 0) {
+            if (apiData.show_upgrade) {
+                // 根据使用情况调整按钮样式和提示文案
+                var upgradeText = '升级套餐获得更多API调用额度';
+                var shouldHighlight = apiData.percentage >= 80; // 使用率超过80%时高亮显示
+                
+                if (apiData.product_name) {
+                    upgradeText = '当前: ' + apiData.product_name + ' - 升级套餐获得更多额度';
+                }
+                
+                upgradeBtn.attr('title', upgradeText);
+                
+                if (shouldHighlight) {
+                    // 高亮显示：添加脉冲动画
+                    upgradeBtn.css({
+                        'animation': 'pulse 2s infinite',
+                        'display': 'flex'
+                    });
+                } else {
+                    // 普通显示
+                    upgradeBtn.css({
+                        'animation': 'none',
+                        'display': 'flex'
+                    });
+                }
+            } else {
+                // 企业版用户隐藏升级按钮
+                upgradeBtn.css('display', 'none');
+            }
+        }
         
         // 显示数据，隐藏加载和错误状态
         loading.hide();

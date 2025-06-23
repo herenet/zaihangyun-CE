@@ -59,6 +59,11 @@ class ApiStatsController extends AdminController
                         $statusInfo = $this->getStatusInfo($percentage);
                     }
                     
+                    // 获取租户套餐信息
+                    $tenant = \App\Models\Tenant::find($tenant_id);
+                    $currentProduct = $tenant->product ?? 'free';
+                    $productInfo = config("product.{$currentProduct}");
+                    
                     return response()->json([
                         'success' => true,
                         'data' => [
@@ -68,6 +73,9 @@ class ApiStatsController extends AdminController
                             'remaining' => $isUnlimited ? '无限制' : max($limit - $current, 0),
                             'status' => $statusInfo,
                             'is_unlimited' => $isUnlimited,
+                            'current_product' => $currentProduct,
+                            'product_name' => $productInfo['name'] ?? '未知套餐',
+                            'show_upgrade' => !$isUnlimited, // 非企业版用户显示升级按钮
                             'last_updated' => date('Y-m-d H:i:s')
                         ]
                     ]);
