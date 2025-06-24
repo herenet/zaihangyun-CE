@@ -158,25 +158,50 @@ class SubscriptionWechatPayService
     public function verifyCallback($headers, $body)
     {
         try {
-            // 获取签名相关头部信息
-            $signature = $headers['Wechatpay-Signature'] ?? '';
-            $timestamp = $headers['Wechatpay-Timestamp'] ?? '';
-            $nonce = $headers['Wechatpay-Nonce'] ?? '';
-            $serial = $headers['Wechatpay-Serial'] ?? '';
+            // 获取签名相关头部信息 - 注意Laravel返回的头部键名是小写的
+            $signature = $headers['wechatpay-signature'][0] ?? $headers['wechatpay-signature'] ?? '';
+            $timestamp = $headers['wechatpay-timestamp'][0] ?? $headers['wechatpay-timestamp'] ?? '';
+            $nonce = $headers['wechatpay-nonce'][0] ?? $headers['wechatpay-nonce'] ?? '';
+            $serial = $headers['wechatpay-serial'][0] ?? $headers['wechatpay-serial'] ?? '';
+
+            // 如果是数组，取第一个元素
+            if (is_array($signature)) $signature = $signature[0];
+            if (is_array($timestamp)) $timestamp = $timestamp[0];
+            if (is_array($nonce)) $nonce = $nonce[0];
+            if (is_array($serial)) $serial = $serial[0];
 
             if (empty($signature) || empty($timestamp) || empty($nonce) || empty($serial)) {
-                Log::error('微信支付回调缺少必要的头部信息', ['headers' => $headers]);
+                Log::error('微信支付回调缺少必要的头部信息', [
+                    'headers' => $headers,
+                    'signature' => $signature,
+                    'timestamp' => $timestamp,
+                    'nonce' => $nonce,
+                    'serial' => $serial
+                ]);
                 return false;
             }
 
+            Log::info('微信支付回调验签参数', [
+                'signature' => $signature,
+                'timestamp' => $timestamp,
+                'nonce' => $nonce,
+                'serial' => $serial
+            ]);
+
             // 构造验签名串
             $message = $timestamp . "\n" . $nonce . "\n" . $body . "\n";
+            
+            Log::info('微信支付回调验签字符串', ['message' => $message]);
 
             // 验证签名
             $platformCertContent = file_get_contents($this->config['platform_cert_path']);
             $platformPublicKeyInstance = Rsa::from($platformCertContent, Rsa::KEY_TYPE_PUBLIC);
             
-            return Rsa::verify($message, $signature, $platformPublicKeyInstance);
+            $isValid = Rsa::verify($message, $signature, $platformPublicKeyInstance);
+            
+            Log::info('微信支付回调签名验证结果', ['is_valid' => $isValid]);
+            
+            return $isValid;
 
         } catch (\Exception $e) {
             Log::error('微信支付回调签名验证异常', ['error' => $e->getMessage()]);
