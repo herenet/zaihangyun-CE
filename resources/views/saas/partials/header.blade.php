@@ -47,6 +47,37 @@
                             ];
                             $color = $productColors[$product] ?? '#95a5a6';
                             $productName = config('product.' . $product . '.name', '未知版本');
+                            
+                            // 获取套餐过期时间信息
+                            $subscriptionExpire = Admin::user()->subscription_expires_at;
+                            $expireInfo = '';
+                            $expireColor = '';
+                            $expireIcon = 'fa-clock-o';
+                            
+                            if ($subscriptionExpire) {
+                                $expireDate = \Carbon\Carbon::parse($subscriptionExpire);
+                                $now = \Carbon\Carbon::now();
+                                if ($expireDate->isFuture()) {
+                                    $daysLeft = $now->diffInDays($expireDate);
+                                    if ($daysLeft <= 7) {
+                                        $expireInfo = "即将到期 ({$daysLeft}天)";
+                                        $expireColor = '#ff6b6b';
+                                        $expireIcon = 'fa-exclamation-triangle';
+                                    } else {
+                                        $expireInfo = "剩余 {$daysLeft} 天";
+                                        $expireColor = '#51cf66';
+                                        $expireIcon = 'fa-check-circle';
+                                    }
+                                } else {
+                                    $expireInfo = '已过期';
+                                    $expireColor = '#ff6b6b';
+                                    $expireIcon = 'fa-times-circle';
+                                }
+                            } else {
+                                $expireInfo = '永久有效';
+                                $expireColor = '#ffd43b';
+                                $expireIcon = 'fa-star';
+                            }
                         @endphp
                         <span class="hidden-xs" style="margin-left: 5px; line-height: normal;" title="当前版本: {{ $productName }}">{{ Admin::user()->name }}</span>
                         <span class="hidden-xs" style="background-color: {{ $color }}; color: white; font-size: 10px; padding: 1px 3px; border-radius: 2px; margin-left: 3px; vertical-align: baseline; line-height: 1;">{{ $productName }}</span>
@@ -54,27 +85,60 @@
                             <i class="fa fa-caret-down"></i>
                         </span>
                     </a>
-                    <ul class="dropdown-menu">
-                        <!-- The user image in the menu -->
-                        <li class="user-header">
-                            <img src="{{ Admin::user()->avatar }}" class="img-circle" alt="User Image">
-
-                            <p>
-                                {{ Admin::user()->name }}
-                                <small>ID: {{ Admin::user()->id }}</small>
-                            </p>
-                            <div style="text-align: center; margin-top: 8px;">
-                                <span class="label" style="background-color: {{ $color }}; color: white; font-size: 10px; padding: 3px 8px; border-radius: 3px;">
+                    <ul class="dropdown-menu" style="border-radius: 10px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border: none; overflow: hidden; min-width: 260px;">
+                        <!-- 用户信息区域 - 横向布局 -->
+                        <li style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 18px 20px;">
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 42px; height: 42px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255,255,255,0.3); margin-right: 14px; flex-shrink: 0;">
+                                    <img src="{{ Admin::user()->avatar }}" alt="User Image" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="color: white; font-size: 15px; font-weight: 600; margin-bottom: 3px; line-height: 1.2;">
+                                        {{ Admin::user()->name }}
+                                    </div>
+                                    <div style="color: rgba(255, 255, 255, 0.8); font-size: 12px; line-height: 1;">
+                                        ID: {{ Admin::user()->id }}
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <!-- 套餐信息区域 -->
+                        <li style="background: #f8f9fa; padding: 16px 20px; border-bottom: 1px solid #e9ecef;">
+                            <!-- 套餐版本 -->
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                                <span style="color: #6c757d; font-size: 13px; font-weight: 500;">当前套餐</span>
+                                <span style="background-color: {{ $color }}; color: white; font-size: 12px; padding: 4px 10px; border-radius: 15px; font-weight: 500; line-height: 1;">
                                     {{ $productName }}
                                 </span>
                             </div>
+                            
+                            <!-- 过期时间 -->
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <span style="color: #6c757d; font-size: 13px; font-weight: 500;">有效期</span>
+                                <div style="display: flex; align-items: center;">
+                                    <i class="fa {{ $expireIcon }}" style="color: {{ $expireColor }}; font-size: 12px; margin-right: 5px;"></i>
+                                    <span style="color: {{ $expireColor }}; font-size: 12px; font-weight: 600;">
+                                        {{ $expireInfo }}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            @if($subscriptionExpire)
+                            <div style="margin-top: 8px; text-align: right;">
+                                <small style="color: #adb5bd; font-size: 11px;">
+                                    到期: {{ \Carbon\Carbon::parse($subscriptionExpire)->format('Y-m-d H:i') }}
+                                </small>
+                            </div>
+                            @endif
                         </li>
-                        <li class="user-footer">
+                        
+                        <li class="user-footer" style="background: white; padding: 12px 20px;">
                             <div class="pull-left">
-                                <a href="{{ admin_url('auth/setting') }}" class="btn btn-default btn-flat">{{ trans('admin.setting') }}</a>
+                                <a href="{{ admin_url('auth/setting') }}" class="btn btn-default btn-flat" style="border-radius: 6px; font-size: 12px; padding: 8px 16px; border: 1px solid #dee2e6;">{{ trans('admin.setting') }}</a>
                             </div>
                             <div class="pull-right">
-                                <a href="{{ admin_url('auth/logout') }}" class="btn btn-default btn-flat">{{ trans('admin.logout') }}</a>
+                                <a href="{{ admin_url('auth/logout') }}" class="btn btn-default btn-flat" style="border-radius: 6px; font-size: 12px; padding: 8px 16px; border: 1px solid #dee2e6;">{{ trans('admin.logout') }}</a>
                             </div>
                         </li>
                     </ul>
