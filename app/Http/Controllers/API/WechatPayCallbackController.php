@@ -28,14 +28,14 @@ class WechatPayCallbackController extends Controller
             $body = $request->getContent();
             $headers = $request->headers->all();
             
-            Log::info('微信支付v3回调原始数据', [
+            Log::channel('callback')->info('微信支付v3回调原始数据', [
                 'body' => $body,
                 'headers' => $headers
             ]);
 
             // 验证签名
             if (!$this->wechatPayService->verifyCallback($headers, $body)) {
-                Log::error('微信支付v3回调签名验证失败');
+                Log::channel('callback')->error('微信支付v3回调签名验证失败');
                 return response($this->wechatPayService->generateCallbackResponse('FAIL', '签名验证失败'), 400)
                     ->header('Content-Type', 'application/json');
             }
@@ -43,16 +43,16 @@ class WechatPayCallbackController extends Controller
             // 解析JSON数据
             $data = json_decode($body, true);
             if (!$data) {
-                Log::error('微信支付v3回调数据解析失败', ['body' => $body]);
+                Log::channel('callback')->error('微信支付v3回调数据解析失败', ['body' => $body]);
                 return response($this->wechatPayService->generateCallbackResponse('FAIL', '数据格式错误'), 400)
                     ->header('Content-Type', 'application/json');
             }
 
-            Log::info('微信支付v3回调解析数据', ['data' => $data]);
+            Log::channel('callback')->info('微信支付v3回调解析数据', ['data' => $data]);
 
             // 检查事件类型
             if ($data['event_type'] !== 'TRANSACTION.SUCCESS') {
-                Log::info('微信支付v3回调非成功事件', ['event_type' => $data['event_type']]);
+                Log::channel('callback')->info('微信支付v3回调非成功事件', ['event_type' => $data['event_type']]);
                 return response($this->wechatPayService->generateCallbackResponse('SUCCESS', '已接收'), 200)
                     ->header('Content-Type', 'application/json');
             }
@@ -60,16 +60,16 @@ class WechatPayCallbackController extends Controller
             // 解密资源数据
             $resource = $this->decryptResource($data['resource']);
             if (!$resource) {
-                Log::error('微信支付v3回调资源解密失败');
+                Log::channel('callback')->error('微信支付v3回调资源解密失败');
                 return response($this->wechatPayService->generateCallbackResponse('FAIL', '解密失败'), 400)
                     ->header('Content-Type', 'application/json');
             }
 
-            Log::info('微信支付v3回调解密数据', ['resource' => $resource]);
+            Log::channel('callback')->info('微信支付v3回调解密数据', ['resource' => $resource]);
 
             // 检查支付状态
             if ($resource['trade_state'] !== 'SUCCESS') {
-                Log::error('微信支付v3回调支付未成功', ['trade_state' => $resource['trade_state']]);
+                Log::channel('callback')->error('微信支付v3回调支付未成功', ['trade_state' => $resource['trade_state']]);
                 return response($this->wechatPayService->generateCallbackResponse('SUCCESS', '已接收'), 200)
                     ->header('Content-Type', 'application/json');
             }
@@ -82,21 +82,21 @@ class WechatPayCallbackController extends Controller
             // 查找订单
             $order = SubscriptionOrder::where('order_id', $outTradeNo)->first();
             if (!$order) {
-                Log::error('微信支付v3回调订单不存在', ['out_trade_no' => $outTradeNo]);
+                Log::channel('callback')->error('微信支付v3回调订单不存在', ['out_trade_no' => $outTradeNo]);
                 return response($this->wechatPayService->generateCallbackResponse('FAIL', '订单不存在'), 400)
                     ->header('Content-Type', 'application/json');
             }
 
             // 检查订单状态
             if ($order->isPaid()) {
-                Log::info('微信支付v3回调订单已支付', ['order_id' => $outTradeNo]);
+                Log::channel('callback')->info('微信支付v3回调订单已支付', ['order_id' => $outTradeNo]);
                 return response($this->wechatPayService->generateCallbackResponse('SUCCESS', '已处理'), 200)
                     ->header('Content-Type', 'application/json');
             }
 
             // 验证金额
             if ($order->final_price != $totalAmount) {
-                Log::error('微信支付v3回调金额不匹配', [
+                Log::channel('callback')->error('微信支付v3回调金额不匹配', [
                     'order_id' => $outTradeNo,
                     'order_amount' => $order->final_price,
                     'paid_amount' => $totalAmount
@@ -121,7 +121,7 @@ class WechatPayCallbackController extends Controller
 
                 DB::commit();
 
-                Log::info('微信支付v3回调处理成功', [
+                Log::channel('callback')->info('微信支付v3回调处理成功', [
                     'order_id' => $outTradeNo,
                     'transaction_id' => $transactionId,
                     'tenant_id' => $order->tenant_id,
@@ -133,7 +133,7 @@ class WechatPayCallbackController extends Controller
 
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error('微信支付v3回调处理失败', [
+                Log::channel('callback')->error('微信支付v3回调处理失败', [
                     'order_id' => $outTradeNo,
                     'error' => $e->getMessage(),
                     'trace' => $e->getTraceAsString()
@@ -143,7 +143,7 @@ class WechatPayCallbackController extends Controller
             }
 
         } catch (\Exception $e) {
-            Log::error('微信支付v3回调异常', [
+            Log::channel('callback')->error('微信支付v3回调异常', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
@@ -189,7 +189,7 @@ class WechatPayCallbackController extends Controller
             return json_decode($decrypted, true);
             
         } catch (\Exception $e) {
-            Log::error('微信支付v3回调解密异常', ['error' => $e->getMessage()]);
+            Log::channel('callback')->error('微信支付v3回调解密异常', ['error' => $e->getMessage()]);
             return null;
         }
     }
@@ -216,7 +216,7 @@ class WechatPayCallbackController extends Controller
             'subscription_expires_at' => $newExpiresAt,
         ]);
         
-        Log::info('租户套餐更新成功', [
+        Log::channel('callback')->info('租户套餐更新成功', [
             'tenant_id' => $tenant->id,
             'from_product' => $order->from_product,
             'to_product' => $order->to_product,
