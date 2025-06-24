@@ -8,7 +8,7 @@
             <a href="/" class="nav-link{{ request()->is('/') ? ' active' : '' }}">首页</a>
             <a href="/pricing" class="nav-link{{ request()->is('pricing') ? ' active' : '' }}">价格</a>
             <a href="/about" class="nav-link{{ request()->is('about') ? ' active' : '' }}">关于我们</a>
-            <a href="https://github.com/zaihangyun" target="_blank" class="nav-link">社区</a>
+            <a href="https://github.com/herenet/zaihangyun/discussions" target="_blank" class="nav-link">社区</a>
             @auth('admin')
                 <a href="/console" class="cta-button" style="background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white; padding: 8px 20px; border-radius: 20px; font-weight: 600; transition: all 0.3s ease; border: 1px solid #27ae60;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 6px; vertical-align: -2px;">
@@ -33,7 +33,7 @@
             <a href="/" class="nav-link{{ request()->is('/') ? ' active' : '' }}">首页</a>
             <a href="/pricing" class="nav-link{{ request()->is('pricing') ? ' active' : '' }}">价格</a>
             <a href="/about" class="nav-link{{ request()->is('about') ? ' active' : '' }}">关于我们</a>
-            <a href="https://github.com/zaihangyun" target="_blank" class="nav-link">社区</a>
+            <a href="https://github.com/herenet/zaihangyun/discussions" target="_blank" class="nav-link">社区</a>
             @auth('admin')
                 <a href="/console" class="cta-button" style="background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white; padding: 12px 24px; border-radius: 20px; font-weight: 600; text-align: center; margin-top: 10px; border: 1px solid #27ae60;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px; vertical-align: -2px;">

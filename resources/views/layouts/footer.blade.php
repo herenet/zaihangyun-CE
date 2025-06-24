@@ -40,7 +40,7 @@
                 <div class="footer-section">
                     <h4>开发者资源</h4>
                     <ul class="footer-links">
-                        <li><a href="https://github.com/zaihangyun" target="_blank">GitHub</a></li>
+                        <li><a href="https://github.com/herenet/zaihangyun" target="_blank">GitHub</a></li>
                         <li><a target="_blank" href="/docs/1.x">API文档</a></li>
                         <li><a href="/about#contact-info-section">技术支持</a></li>
                     </ul>
