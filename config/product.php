@@ -4,6 +4,7 @@ return [
     'free' => [
         'name' => '免费版',
         'price' => 0,
+        'duration' => 'permanent', // 永久有效
         'app_limit' => 1,
         'request_limit' => 10000,
         'attach_size' => '100MB',
@@ -18,6 +19,7 @@ return [
     'basic' => [
         'name' => '基础版',
         'price' => 19900,
+        'duration' => 365, // 365天
         'app_limit' => 3,
         'request_limit' => 30000,
         'attach_size' => '1GB',
@@ -32,6 +34,7 @@ return [
     'adv' => [
         'name' => '进阶版',
         'price' => 99900,
+        'duration' => 365, // 365天
         'app_limit' => 10,
         'request_limit' => 100000,
         'attach_size' => '10GB',
@@ -46,6 +49,7 @@ return [
     'pro' => [
         'name' => '专业版',
         'price' => 299900,
+        'duration' => 365, // 永久有效
         'app_limit' => 50,
         'request_limit' => 500000,
         'attach_size' => '100GB',
@@ -60,6 +64,7 @@ return [
     'company' => [
         'name' => '企业版',
         'price' => 999900,
+        'duration' => 365, // 永久有效
         'app_limit' => 9999,
         'request_limit' => 999999999, // 表示不限制
         'attach_size' => '1TB',

@@ -55,7 +55,7 @@ class ApiStatsController extends AdminController
                             'icon' => 'infinity'
                         ];
                     } else {
-                        $percentage = $limit > 0 ? min(($current / $limit) * 100, 100) : 0;
+                    $percentage = $limit > 0 ? min(($current / $limit) * 100, 100) : 0;
                         $statusInfo = $this->getStatusInfo($percentage);
                     }
                     

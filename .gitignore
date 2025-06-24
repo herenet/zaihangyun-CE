@@ -13,3 +13,7 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+
+# 微信支付证书文件
+/storage/app/certs/*.pem
+/storage/app/certs/*.p12

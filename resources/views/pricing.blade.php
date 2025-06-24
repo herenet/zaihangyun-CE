@@ -737,16 +737,19 @@
                                 <li class="unavailable">数据迁移</li>
                             @endif
                         </ul>
-                        <a href="@if($product['key'] == 'company')/about#contact-info-section @else /console/auth/login @endif" 
-                           class="plan-button @if($product['key'] == 'adv') primary @else secondary @endif">
-                            @if($product['key'] == 'free')
+                        @if($product['key'] == 'free')
+                            <a href="/console/auth/login" class="plan-button secondary">
                                 免费开始
-                            @elseif($product['key'] == 'company')
+                            </a>
+                        @elseif($product['key'] == 'company')
+                            <a href="/about#contact-info-section" class="plan-button secondary">
                                 联系销售
-                            @else
-                                选择{{ $product['name'] }}
-                            @endif
-                        </a>
+                            </a>
+                        @else
+                            <a href="/subscription/confirm?product={{ $product['key'] }}" class="plan-button @if($product['key'] == 'adv') primary @else secondary @endif">
+                                立即购买
+                            </a>
+                        @endif
                     </div>
                     @endforeach
                 </div>

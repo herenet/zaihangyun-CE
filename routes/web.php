@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\SaaSAdmin\Controllers\ShowController;
 use App\Http\Controllers\WebsiteController;
+use App\Http\Controllers\SubscriptionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +18,14 @@ use App\Http\Controllers\WebsiteController;
 Route::get('/', [WebsiteController::class, 'index']);
 Route::get('/pricing', [WebsiteController::class, 'pricing']);
 Route::get('/about', [WebsiteController::class, 'about']);
+
+// 套餐购买相关路由
+Route::middleware(['web'])->group(function () {
+    Route::get('/subscription/confirm', [SubscriptionController::class, 'confirm'])->name('subscription.confirm');
+    Route::post('/subscription/create-order', [SubscriptionController::class, 'createOrder'])->name('subscription.create-order');
+    Route::get('/subscription/payment/{orderId}', [SubscriptionController::class, 'payment'])->name('subscription.payment');
+    Route::get('/subscription/order-status/{orderId}', [SubscriptionController::class, 'queryOrderStatus'])->name('subscription.order-status');
+});
 
 Route::get('/article/{app_key}/{id}', [ShowController::class, 'show'])->name('article.show');
 Route::get('/article/category/{app_key}/{id}', [ShowController::class, 'category'])->name('article.category.show');

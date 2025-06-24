@@ -20,6 +20,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
  * @property string|null $password
  * @property int $company_id
  * @property string $product
+ * @property \Illuminate\Support\Carbon|null $subscription_expires_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon $created_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Encore\Admin\Auth\Database\Role> $roles
@@ -42,6 +43,30 @@ class Tenant extends Model implements AuthenticatableContract
     protected $table = 'tenant';
     use Authenticatable;
     use HasPermissions;
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'subscription_expires_at' => 'datetime',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'nickname',
+        'phone_number',
+        'password',
+        'avatar',
+        'company_id',
+        'product',
+        'subscription_expires_at',
+    ];
 
      /**
      * A user has and belongs to many roles.
@@ -82,5 +107,29 @@ class Tenant extends Model implements AuthenticatableContract
     public function getNameAttribute()
     {
         return $this->nickname;
+    }
+
+    /**
+     * 检查套餐是否已过期
+     */
+    public function isSubscriptionExpired()
+    {
+        if (!$this->subscription_expires_at) {
+            return $this->product !== 'free'; // 免费版永不过期
+        }
+        
+        return $this->subscription_expires_at < now();
+    }
+
+    /**
+     * 获取套餐剩余天数
+     */
+    public function getSubscriptionRemainingDays()
+    {
+        if (!$this->subscription_expires_at || $this->isSubscriptionExpired()) {
+            return 0;
+        }
+        
+        return now()->diffInDays($this->subscription_expires_at, false);
     }
 }

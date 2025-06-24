@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>在行云 - APP开发者的后端难题终结者</title>
+    <title>在行云 - 专为独立开发者打造的BaaS平台</title>
     <meta name="description" content="专为APP开发者打造的轻量级BaaS平台，无需写一行后端代码，即可拥有完整的用户、支付、内容管理系统">
     <meta name="keywords" content="在行云,BaaS,后端服务,APP开发,独立开发者,无服务器,云服务">
     <link rel="icon" href="/favicon.ico">
