@@ -86,7 +86,8 @@ class RegisterController extends Controller
             ];
 
             if (Auth::attempt($credentials)) {
-                return redirect(config('admin.route.prefix'));
+                // 使用intended()方法，这样会自动跳转到用户之前想访问的页面
+                return redirect()->intended(config('admin.route.prefix'));
             }
 
             return redirect(admin_url('auth/login'))

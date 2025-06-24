@@ -63,7 +63,7 @@ return [
     ],
     'company' => [
         'name' => '企业版',
-        'price' => 1,
+        'price' => 'contact', // 改为洽谈
         'duration' => 365, // 永久有效
         'app_limit' => 9999,
         'request_limit' => 999999999, // 表示不限制

@@ -25,7 +25,11 @@ class WebsiteController extends Controller
         
         // 处理价格显示（从分转换为元）
         foreach ($products as $key => &$product) {
-            $product['price_yuan'] = $product['price'] / 100;
+            if ($product['price'] === 'contact') {
+                $product['price_yuan'] = 'contact';
+            } else {
+                $product['price_yuan'] = $product['price'] / 100;
+            }
             $product['key'] = $key;
         }
         

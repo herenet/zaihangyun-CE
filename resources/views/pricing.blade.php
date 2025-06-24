@@ -197,6 +197,8 @@
             background-clip: text;
             line-height: 1;
             letter-spacing: -2px;
+            text-align: center;
+            display: block;
         }
 
         .price-period {
@@ -691,20 +693,29 @@
                                 @endswitch
                             </p>
                             <div class="plan-price">
-                                <div class="price-display">
-                                    <span class="price-currency">¥</span>
-                                    <span class="price-amount">{{ $product['price_yuan'] }}</span>
-                                    <span class="price-period">/年</span>
-                                </div>
-                                <div class="price-note">
-                                    @if($product['key'] == 'free')
-                                        永久免费
-                                    @elseif($product['key'] == 'adv')
-                                        最受欢迎的方案
-                                    @else
-                                        约{{ round($product['price_yuan'] / 12, 1) }}元/月
-                                    @endif
-                                </div>
+                                @if($product['price_yuan'] === 'contact')
+                                    <div class="price-display">
+                                        <span class="price-amount">洽谈</span>
+                                    </div>
+                                    <div class="price-note">
+                                        专属定制方案
+                                    </div>
+                                @else
+                                    <div class="price-display">
+                                        <span class="price-currency">¥</span>
+                                        <span class="price-amount">{{ $product['price_yuan'] }}</span>
+                                        <span class="price-period">/年</span>
+                                    </div>
+                                    <div class="price-note">
+                                        @if($product['key'] == 'free')
+                                            永久免费
+                                        @elseif($product['key'] == 'adv')
+                                            最受欢迎的方案
+                                        @else
+                                            约{{ round($product['price_yuan'] / 12, 1) }}元/月
+                                        @endif
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <ul class="plan-features">

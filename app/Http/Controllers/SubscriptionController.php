@@ -76,7 +76,8 @@ class SubscriptionController extends Controller
     {
         // 检查登录状态
         if (!SaaSAdmin::user()) {
-            return redirect()->route('admin.login')->with('message', '请先登录');
+            // 使用Laravel的intended机制
+            return redirect()->guest(route('admin.login'))->with('message', '请先登录');
         }
 
         $productKey = $request->input('product');
