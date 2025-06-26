@@ -24,7 +24,7 @@
 | mobile           | string     | 手机号                   | 18518763128 |
 | password         | string     | 密码签名   | e10adc3949ba59abbe56e057f20fxx3e |
 | email            | string     | 电子邮箱                 | herenet@126.com |
-| avatar           | string     | 头像URL                  | https://www.zaihangyun.com/storage/mch/avatar/D5fY1F/185324/03d620a8cb.jpg |
+| avatar           | string     | 头像URL                  | https://www.zaihangyun.com/...jpg |
 | gender           | unsigned int | 性别（0=未知，1=男，2=女），默认0       | 1 |
 | birthday         | date | 生日（格式：YYYY-MM-DD）| 2011-11-11 |
 | country          | string     | 国家                     | 中国 |
