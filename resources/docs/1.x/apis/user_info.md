@@ -78,6 +78,7 @@ curl --location --request GET 'https://api.zaihangyun.com/v1/user/info' \
         "reg_ip": "127.0.0.1",
         "is_forever_vip": 1,
         "vip_expired_at": "2025-03-28 00:00:00",
+        "is_vip": 0,        //服务端根据vip_expired_at和当前时间对比判断，防止本地改时间绕过。0为非VIP，1为VIP
         "enter_pass": "111111",
         "version_number": 1,
         "channel": "official",
