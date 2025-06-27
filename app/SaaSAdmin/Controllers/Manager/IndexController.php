@@ -170,33 +170,35 @@ class IndexController extends AdminController
             ->whereBetween('created_at', [$yesterday_start, $yesterday_end])
             ->count();
 
-        // 订单统计
-        $order_total = $order_model::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)
-            ->count();
-        $order_increate = $order_model::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)
+        // 订单统计 - iOS平台排除沙盒环境数据
+        $order_query_base = $order_model::where('tenant_id', $tenant_id)
+            ->where('app_key', $app_key);
+        if ($is_ios) {
+            $order_query_base->where('environment', AppleOrder::ENVIRONMENT_PRODUCTION);
+        }
+        
+        $order_total = (clone $order_query_base)->count();
+        $order_increate = (clone $order_query_base)
             ->whereBetween('created_at', [$today_start, $today_end])
             ->count();
-        $order_yesterday = $order_model::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)
+        $order_yesterday = (clone $order_query_base)
             ->whereBetween('created_at', [$yesterday_start, $yesterday_end])
             ->count();
 
-        // 收入统计（只统计已支付的订单）
-        $total_income = $order_model::where('tenant_id', $tenant_id)
+        // 收入统计（只统计已支付的订单）- iOS平台排除沙盒环境数据
+        $income_query_base = $order_model::where('tenant_id', $tenant_id)
             ->where('app_key', $app_key)
-            ->where($status_field, $success_status)
-            ->sum($amount_field);
-        $income_increate = $order_model::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)
+            ->where($status_field, $success_status);
+        if ($is_ios) {
+            $income_query_base->where('environment', AppleOrder::ENVIRONMENT_PRODUCTION);
+        }
+        
+        $total_income = (clone $income_query_base)->sum($amount_field);
+        $income_increate = (clone $income_query_base)
             ->whereBetween('created_at', [$today_start, $today_end])
-            ->where($status_field, $success_status)
             ->sum($amount_field);
-        $income_yesterday = $order_model::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)
+        $income_yesterday = (clone $income_query_base)
             ->whereBetween('created_at', [$yesterday_start, $yesterday_end])
-            ->where($status_field, $success_status)
             ->sum($amount_field);
 
         // 计算用户增长率
