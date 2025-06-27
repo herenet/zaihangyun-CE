@@ -75,6 +75,7 @@ class AppleOrderController extends AdminController
             $filter->equal('apple_product_type', '苹果产品类型')->select(IAPProduct::$productTypeMap)->config('minimumResultsForSearch', 'Infinity');
             $filter->equal('subscription_status', '订阅状态')->select(AppleOrder::$subscriptionStatusMap)->config('minimumResultsForSearch', 'Infinity');
             $filter->equal('transaction_id', '苹果交易ID');
+            $filter->equal('original_transaction_id', '原始交易ID');
             $filter->equal('uid', '用户ID');
             $filter->equal('product_id', '产品ID');
         });
