@@ -60,7 +60,7 @@
 
 | Method | URI Path | 鉴权方式 |
 | -- | -- | -- |
-| POST | `/v1/apple/order/verify` | [Token认证](/{{route}}/{{version}}/intro#section-4) |
+| POST | `/v1/order/apple/verify` | [Token认证](/{{route}}/{{version}}/intro#section-4) |
 
 <a name="section-4"></a>
 ## 请求参数

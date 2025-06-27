@@ -172,6 +172,7 @@ class AppUpgradeController extends AdminController
                 $form->model()->channel_id = $channel_id;
                 $form->model()->app_key = $this->getAppKey();
                 $form->model()->tenant_id = SaaSAdmin::user()->id;
+                $this->clearAPICache($channel_id);
             }
 
             if($form->enabled == 'on' || $form->enabled == 1) {
