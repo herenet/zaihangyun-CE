@@ -257,35 +257,42 @@ class AppController extends Controller
         $ios_income_total = 0;
 
         if (!empty($ios_apps)) {
+            // iOS订单统计 - 排除沙盒环境数据
             $ios_orders_today = AppleOrder::where('tenant_id', $tenant_id)
                 ->whereIn('app_key', $ios_apps)
+                ->where('environment', AppleOrder::ENVIRONMENT_PRODUCTION)
                 ->whereBetween('created_at', [$today_start, $today_end])
                 ->count();
 
             $ios_orders_yesterday = AppleOrder::where('tenant_id', $tenant_id)
                 ->whereIn('app_key', $ios_apps)
+                ->where('environment', AppleOrder::ENVIRONMENT_PRODUCTION)
                 ->whereBetween('created_at', [$yesterday_start, $yesterday_end])
                 ->count();
 
             $ios_orders_total = AppleOrder::where('tenant_id', $tenant_id)
                 ->whereIn('app_key', $ios_apps)
+                ->where('environment', AppleOrder::ENVIRONMENT_PRODUCTION)
                 ->count();
 
-            // iOS使用amount字段，payment_status字段
+            // iOS收入统计 - 排除沙盒环境数据，使用amount字段，payment_status字段
             $ios_income_today = AppleOrder::where('tenant_id', $tenant_id)
                 ->whereIn('app_key', $ios_apps)
+                ->where('environment', AppleOrder::ENVIRONMENT_PRODUCTION)
                 ->where('payment_status', AppleOrder::PAYMENT_STATUS_SUCCESS)
                 ->whereBetween('created_at', [$today_start, $today_end])
                 ->sum('amount');
 
             $ios_income_yesterday = AppleOrder::where('tenant_id', $tenant_id)
                 ->whereIn('app_key', $ios_apps)
+                ->where('environment', AppleOrder::ENVIRONMENT_PRODUCTION)
                 ->where('payment_status', AppleOrder::PAYMENT_STATUS_SUCCESS)
                 ->whereBetween('created_at', [$yesterday_start, $yesterday_end])
                 ->sum('amount');
 
             $ios_income_total = AppleOrder::where('tenant_id', $tenant_id)
                 ->whereIn('app_key', $ios_apps)
+                ->where('environment', AppleOrder::ENVIRONMENT_PRODUCTION)
                 ->where('payment_status', AppleOrder::PAYMENT_STATUS_SUCCESS)
                 ->sum('amount');
         }
@@ -538,38 +545,40 @@ class AppController extends Controller
         $status_field = $is_ios ? 'payment_status' : 'status';
         $success_status = $is_ios ? AppleOrder::PAYMENT_STATUS_SUCCESS : Order::STATUS_PAID;
 
-        // 订单统计
-        $orders_today = $order_model::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)
+        // 订单统计 - iOS平台排除沙盒环境数据
+        $order_query_base = $order_model::where('tenant_id', $tenant_id)
+            ->where('app_key', $app_key);
+        if ($is_ios) {
+            $order_query_base->where('environment', AppleOrder::ENVIRONMENT_PRODUCTION);
+        }
+        
+        $orders_today = (clone $order_query_base)
             ->whereBetween('created_at', [$today_start, $today_end])
             ->count();
 
-        $orders_yesterday = $order_model::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)
+        $orders_yesterday = (clone $order_query_base)
             ->whereBetween('created_at', [$yesterday_start, $yesterday_end])
             ->count();
 
-        $orders_total = $order_model::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)
-            ->count();
+        $orders_total = (clone $order_query_base)->count();
 
-        // 收入统计（只统计已支付的订单）
-        $income_today = $order_model::where('tenant_id', $tenant_id)
+        // 收入统计（只统计已支付的订单）- iOS平台排除沙盒环境数据
+        $income_query_base = $order_model::where('tenant_id', $tenant_id)
             ->where('app_key', $app_key)
-            ->where($status_field, $success_status)
+            ->where($status_field, $success_status);
+        if ($is_ios) {
+            $income_query_base->where('environment', AppleOrder::ENVIRONMENT_PRODUCTION);
+        }
+        
+        $income_today = (clone $income_query_base)
             ->whereBetween('created_at', [$today_start, $today_end])
             ->sum($amount_field);
 
-        $income_yesterday = $order_model::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)
-            ->where($status_field, $success_status)
+        $income_yesterday = (clone $income_query_base)
             ->whereBetween('created_at', [$yesterday_start, $yesterday_end])
             ->sum($amount_field);
 
-        $income_total = $order_model::where('tenant_id', $tenant_id)
-            ->where('app_key', $app_key)
-            ->where($status_field, $success_status)
-            ->sum($amount_field);
+        $income_total = (clone $income_query_base)->sum($amount_field);
 
         return [
             'users' => [
