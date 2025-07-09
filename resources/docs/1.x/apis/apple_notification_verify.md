@@ -278,10 +278,11 @@ curl --location --request POST 'https://api.zaihangyun.com/v1/apple/receipt/veri
 | `400101` | appkey参数必填 |
 | `400102` | appkey参数长度不能超过64个字符 |
 | `400103` | receipt_data参数必填 |
-| `400104` | environment参数必须是Sandbox或Production |
-| `400105` | **transaction_id参数必填** |
-| `400106` | transaction_id参数必须是字符串类型 |
-| `400107` | transaction_id参数长度不能超过128个字符 |
+| `400104` | environment参数必填 |
+| `400105` | environment参数必须是Sandbox或Production |
+| `400106` | **transaction_id参数必填** |
+| `400107` | transaction_id参数必须是字符串类型 |
+| `400108` | transaction_id参数长度不能超过128个字符 |
 
 ### 配置相关错误
 
