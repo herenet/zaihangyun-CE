@@ -182,7 +182,7 @@ class AppConfigController extends AdminController
 
     protected function clearAPICache($config_name, $app_key)
     {
-        $cache_key = 'app_config||'.$config_name.'|'.$app_key;
+        $cache_key = 'app_config|'.$config_name.'|'.$app_key;
         Cache::store('api_cache')->forget($cache_key);
     }
 }
