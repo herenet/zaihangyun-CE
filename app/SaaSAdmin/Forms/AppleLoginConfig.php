@@ -15,7 +15,7 @@ class AppleLoginConfig extends Form
 
     public function form()
     {
-        $this->radioButton('suport_apple_login', '启用苹果登录')->options([
+        $this->radio('suport_apple_login', '启用苹果登录')->options([
             1 => '启用',
             0 => '关闭',
         ])->required()->when(1, function (Form $form) {
