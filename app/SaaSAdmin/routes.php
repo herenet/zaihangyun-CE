@@ -22,8 +22,8 @@ Route::group([
     
     // API统计相关路由
     $router->get('api-stats/today', 'ApiStatsController@getTodayStats')->name('api.stats.today');
-$router->get('api-stats/details', 'ApiStatsController@details')->name('api.stats.details');
-$router->get('api-stats/realtime', 'ApiStatsController@getRealtimeUpdate')->name('api.stats.realtime');
+    $router->get('api-stats/details', 'ApiStatsController@details')->name('api.stats.details');
+    $router->get('api-stats/realtime', 'ApiStatsController@getRealtimeUpdate')->name('api.stats.realtime');
 
     $router->resource('apps', 'AppController')->names('apps');
     $router->get('apps/list', 'AppController@list')->name('apps.list');
@@ -36,7 +36,7 @@ $router->get('api-stats/realtime', 'ApiStatsController@getRealtimeUpdate')->name
     $router->post('global/config/aliyun/access/check-interface', 'AliyunAccessConfigController@checkInterface')->name('global.aliyun.access.check-interface');
     $router->resource('global/config/apple/apicert', 'AppleApiCertConfigController')->names('global.apple.apicert.config');
     $router->post('global/config/apple/apicert/verify', 'AppleApiCertConfigController@verify')->name('global.apple.apicert.verify');
-
+    
     $router->get('app/manager/{app_key}', 'Manager\IndexController@index')->name('app.manager.index');
     $router->group(['prefix' => 'app/manager/{app_key}'], function($router) {
         $router->resource('config', 'Manager\AppConfigController')->names('app.manager.config');
@@ -55,6 +55,8 @@ $router->get('api-stats/realtime', 'ApiStatsController@getRealtimeUpdate')->name
         $router->post('user/config/sms/check-interface', 'Manager\UserConfigController@checkSmsInterface')->name('app.manager.user.config.check.sms.interface');
         $router->post('user/config/wechat', 'Manager\UserConfigController@saveWechat')->name('app.manager.user.config.save.wechat');
         $router->post('user/config/apple', 'Manager\UserConfigController@saveApple')->name('app.manager.user.config.save.apple');
+        $router->post('user/config/huawei', 'Manager\UserConfigController@saveHuawei')->name('app.manager.user.config.save.huawei');
+        $router->post('user/config/huawei/check-interface', 'Manager\UserConfigController@checkHWInterface')->name('app.manager.user.config.check.huawei.interface');
 
         $router->resource('order/android/list', 'Manager\OrderController')->names('app.manager.order.android');
         $router->resource('order/apple/list', 'Manager\AppleOrderController')->names('app.manager.order.apple');

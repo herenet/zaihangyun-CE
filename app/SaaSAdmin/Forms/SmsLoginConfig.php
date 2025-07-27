@@ -25,7 +25,6 @@ class SmsLoginConfig extends Form
             ->help('短信登录需要配置阿里云AccessKey，<a href="'.admin_url('global/config/aliyun/access').'">添加阿里云AccessKey>>></a>')
             ->when(1, function (Form $form) {
                 $form->select('aliyun_access_config_id', '阿里云AccessKey')
-                    ->required()
                     ->config('allowClear', false)
                     ->config('minimumResultsForSearch', 'Infinity')
                     ->options(function () {

@@ -25,7 +25,6 @@ class WechatLoginConfig extends Form
             ->help('微信登录需要配置微信开放平台，登录注册功能一体。')
             ->when(1, function (Form $form) {
                 $form->select('wechat_platform_config_id', '微信开放平台')
-                    ->required()
                     ->config('allowClear', false)
                     ->config('minimumResultsForSearch', 'Infinity')
                     ->options(function () {

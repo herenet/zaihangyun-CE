@@ -31,18 +31,18 @@ class App extends Model
 
     const PLATFORM_TYPE_ANDROID = 1;
     const PLATFORM_TYPE_IOS = 2;
-    // const PLATFORM_TYPE_HARMONYOS = 3;
+    const PLATFORM_TYPE_HARMONYOS = 3;
 
     public static $platformType = [
         self::PLATFORM_TYPE_ANDROID => 'Android',
         self::PLATFORM_TYPE_IOS => 'iOS',
-        // self::PLATFORM_TYPE_HARMONYOS => 'HarmonyOS',
+        self::PLATFORM_TYPE_HARMONYOS => 'HarmonyOS',
     ];
 
     public static $platformIcons = [
         self::PLATFORM_TYPE_ANDROID => '<i class="fa fa-lg fa-android text-green"></i>',
         self::PLATFORM_TYPE_IOS => '<i class="fa fa-lg fa-apple text-black"></i>',
-        // self::PLATFORM_TYPE_HARMONYOS => '<i class="fa fa-lg fa-harmonyos text-blue"></i>',
+        self::PLATFORM_TYPE_HARMONYOS => '<i class="fa fa-lg fa-circle-o text-blue"></i>',
     ];
 
     const APP_INFO_CACHE_KEY = 'app_info_';

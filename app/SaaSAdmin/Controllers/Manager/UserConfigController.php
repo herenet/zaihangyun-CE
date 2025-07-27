@@ -11,13 +11,14 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\LoginInterfaceConfig;
 use App\SaaSAdmin\Facades\SaaSAdmin;
+use Illuminate\Support\Facades\Http;
 use AlibabaCloud\Client\AlibabaCloud;
 use Illuminate\Support\Facades\Cache;
 use App\SaaSAdmin\Forms\SmsLoginConfig;
-use App\Models\WechatOpenPlatformConfig;
 use App\SaaSAdmin\Forms\AppleLoginConfig;
 use Illuminate\Support\Facades\Validator;
 use App\SaaSAdmin\Forms\AccessTokenConfig;
+use App\SaaSAdmin\Forms\HuaweiLoginConfig;
 use App\SaaSAdmin\Forms\WechatLoginConfig;
 
 class UserConfigController extends Controller
@@ -31,19 +32,30 @@ class UserConfigController extends Controller
         $content->title('接口配置');
         $content->description('用户模块');
 
-        if($app_info['platform_type'] == App::PLATFORM_TYPE_IOS) {
-            $content->body(Tab::forms([
-                'basic'    => AccessTokenConfig::class,
-                'wechat'   => WechatLoginConfig::class,
-                'sms'      => SmsLoginConfig::class,
-                'apple'    => AppleLoginConfig::class,
-            ]));
-        }else{
-            $content->body(Tab::forms([
-                'basic'    => AccessTokenConfig::class,
-                'wechat'   => WechatLoginConfig::class,
-                'sms'      => SmsLoginConfig::class,
-            ]));
+        switch($app_info['platform_type']){
+            case App::PLATFORM_TYPE_IOS:
+                $content->body(Tab::forms([
+                    'basic'    => AccessTokenConfig::class,
+                    'wechat'   => WechatLoginConfig::class,
+                    'sms'      => SmsLoginConfig::class,
+                    'apple'    => AppleLoginConfig::class,
+                ]));
+                break;
+            case App::PLATFORM_TYPE_HARMONYOS:
+                $content->body(Tab::forms([
+                    'basic'    => AccessTokenConfig::class,
+                    'wechat'   => WechatLoginConfig::class,
+                    'sms'      => SmsLoginConfig::class,
+                    'huawei'   => HuaweiLoginConfig::class,
+                ]));
+                break;
+            default:
+                $content->body(Tab::forms([
+                    'basic'    => AccessTokenConfig::class,
+                    'wechat'   => WechatLoginConfig::class,
+                    'sms'      => SmsLoginConfig::class,
+                ]));
+                break;
         }
 
         return $content;
@@ -150,6 +162,50 @@ class UserConfigController extends Controller
         }
     }
 
+    public function saveHuawei(Request $request)
+    {
+        $tenant_id = SaaSAdmin::user()->id;
+        $app_key = $this->getAppKey();
+
+        $validator = Validator::make($request->all(), [
+            'suport_huawei_login' => 'required|in:0,1',
+            'huawei_oauth_client_id' => 'required_if:suport_huawei_login,1|string|max:32',
+            'huawei_oauth_client_secret' => 'required_if:suport_huawei_login,1|string|max:128',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $interface_check = $request->input('interface_check');
+        if($interface_check == 0 && $request->input('suport_huawei_login') == 1){
+            admin_error('请先验证配置是否正确');
+            return back()->withInput();
+        }
+
+        if($request->input('suport_huawei_login') == 0){
+            $login_config_data = [
+                'suport_huawei_login' => $request->input('suport_huawei_login'),
+            ];
+        }else{
+            $login_config_data = [
+                'suport_huawei_login' => $request->input('suport_huawei_login'),
+                'huawei_oauth_client_id' => $request->input('huawei_oauth_client_id'),
+                'huawei_oauth_client_secret' => $request->input('huawei_oauth_client_secret'),
+            ];
+        }
+
+        try {
+            app(LoginInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $login_config_data);
+            $this->clearAPICache($app_key);
+            admin_toastr('保存成功', 'success');
+            return back();
+        } catch (\Exception $e) {
+            admin_toastr($e->getMessage(), 'error');
+            return back()->withErrors($e->getMessage())->withInput();
+        }
+    }
+
     public function saveSms(Request $request)
     {
         $tenant_id = SaaSAdmin::user()->id;
@@ -167,17 +223,23 @@ class UserConfigController extends Controller
         }
 
         $interface_check = $request->input('aliyun_sms_check');
-        if($interface_check == 0){
+        if($interface_check == 0 && $request->input('suport_mobile_login') == 1){
             admin_error('请先验证配置是否正确');
             return back()->withInput();
         }
-        
-        $login_config_data = [
-            'suport_mobile_login' => $request->input('suport_mobile_login'),
-            'aliyun_access_config_id' => $request->input('aliyun_access_config_id'),
-            'aliyun_sms_sign_name' => $request->input('aliyun_sms_sign_name'),
-            'aliyun_sms_tmp_code' => $request->input('aliyun_sms_tmp_code'),
-        ];
+
+        if($request->input('suport_mobile_login') == 0){
+            $login_config_data = [
+                'suport_mobile_login' => $request->input('suport_mobile_login'),
+            ];
+        }else{
+            $login_config_data = [
+                'suport_mobile_login' => $request->input('suport_mobile_login'),
+                'aliyun_access_config_id' => $request->input('aliyun_access_config_id'),
+                'aliyun_sms_sign_name' => $request->input('aliyun_sms_sign_name'),
+                'aliyun_sms_tmp_code' => $request->input('aliyun_sms_tmp_code'),
+            ];
+        }
 
         try {
             app(LoginInterfaceConfig::class)->saveConfig($tenant_id, $app_key, $login_config_data);
@@ -255,5 +317,49 @@ class UserConfigController extends Controller
     {
         $cache_key = 'login_interface_config|'.$app_key;
         Cache::store('api_cache')->forget($cache_key);
+    }
+
+    public function checkHWInterface(Request $request)
+    {
+        $client_id = $request->input('huawei_oauth_client_id');
+        $client_secret = $request->input('huawei_oauth_client_secret');
+        if (empty($client_id) || empty($client_secret)) {
+            return response()->json(['status' => false, 'message' => 'Client ID和Client Secret不能为空']);
+        }
+        
+        // 华为AGC获取access_token的接口
+        $url = 'https://oauth-login.cloud.huawei.com/oauth2/v3/token';
+        $response = Http::asForm()->post($url, [
+            'grant_type' => 'client_credentials',
+            'client_id' => $client_id,
+            'client_secret' => $client_secret,
+        ]);
+        
+        $data = $response->json();
+
+        // dump($data);
+        
+        // 根据华为AGC官方文档，成功时返回access_token、expires_in等字段
+        if (isset($data['access_token']) && !empty($data['access_token'])) {
+            return response()->json(['status' => true]);
+        }
+        
+        // 处理华为AGC的错误响应
+        if (isset($data['error'])) {
+            $error_msg = isset($data['error_description']) ? $data['error_description'] : $data['error'];
+            return response()->json(['status' => false, 'message' => '配置错误: ['.$data['sub_error'].']' . $error_msg]);
+        }
+        
+        // 处理其他可能的错误格式
+        if (isset($data['ret']) && $data['ret']['code'] != 0) {
+            $error_msg = isset($data['ret']['msg']) ? $data['ret']['msg'] : '未知错误';
+            return response()->json(['status' => false, 'message' => '配置错误: ['.$data['ret']['code'].']' . $error_msg]);
+        }
+        
+        // 其他未知错误
+        return response()->json([
+            'status' => false, 
+            'message' => '配置验证失败，返回数据格式异常'
+        ]);
     }
 }

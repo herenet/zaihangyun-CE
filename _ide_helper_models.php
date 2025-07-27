@@ -740,7 +740,30 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\LoginInterfaceConfig
+ * CREATE TABLE `login_interface_config` (
+ *  `app_key` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+ *  `tenant_id` bigint(20) unsigned NOT NULL,
+ *  `switch` tinyint(1) NOT NULL DEFAULT '0',
+ *  `token_effective_duration` mediumint(8) unsigned DEFAULT '365',
+ *  `suport_wechat_login` tinyint(1) DEFAULT '0',
+ *  `wechat_platform_config_id` bigint(20) unsigned DEFAULT NULL,
+ *  `suport_mobile_login` tinyint(1) DEFAULT '0',
+ *  `aliyun_access_config_id` bigint(20) DEFAULT NULL,
+ *  `aliyun_sms_sign_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `aliyun_sms_tmp_code` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `aliyun_sms_verify_code_expire` tinyint(3) unsigned DEFAULT '5',
+ *  `suport_apple_login` tinyint(1) DEFAULT '0',
+ *  `apple_nickname_prefix` varchar(16) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `suport_huawei_login` tinyint(1) unsigned DEFAULT '0',
+ *  `huawei_oauth_client_id` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `huawei_oauth_client_secret` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `endpoint_allow_count` tinyint(3) unsigned NOT NULL DEFAULT '1',
+ *  `cancel_after_days` tinyint(2) DEFAULT NULL COMMENT '申请注销多少天后删除',
+ *  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+ *  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+ *  PRIMARY KEY (`app_key`),
+ *  UNIQUE KEY `uniq_tenantid_appkey` (`tenant_id`,`app_key`)
+ * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
  *
  * @property string $app_key
  * @property int $tenant_id
@@ -957,6 +980,59 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\SubscriptionOrder
+ *
+ * @property string $order_id 订单号
+ * @property int $tenant_id 租户ID
+ * @property string $order_type 订单类型:new_purchase,upgrade,renew
+ * @property string|null $from_product 升级前套餐
+ * @property string $to_product 目标套餐
+ * @property string $product_name 套餐名称
+ * @property int $original_price 套餐原价(分)
+ * @property int $final_price 实际支付金额(分)
+ * @property int|null $status 订单状态:1待支付,2已支付,3已取消,4支付失败
+ * @property int|null $pay_channel 支付渠道:1微信,2支付宝
+ * @property string|null $wechat_prepay_id 微信预支付ID
+ * @property string|null $wechat_code_url 微信支付二维码链接
+ * @property string|null $third_party_order_id 第三方订单号
+ * @property string|null $third_party_transaction_id 第三方交易号
+ * @property \Illuminate\Support\Carbon|null $paid_at 支付时间
+ * @property array|null $upgrade_info 升级计算详情
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $formatted_final_price
+ * @property-read mixed $formatted_original_price
+ * @property-read mixed $pay_channel_text
+ * @property-read mixed $status_text
+ * @property-read mixed $type_text
+ * @property-read \App\Models\Tenant|null $tenant
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder query()
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereFinalPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereFromProduct($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereOrderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereOrderType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereOriginalPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder wherePaidAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder wherePayChannel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereProductName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereThirdPartyOrderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereThirdPartyTransactionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereToProduct($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereUpgradeInfo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereWechatCodeUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SubscriptionOrder whereWechatPrepayId($value)
+ */
+	class SubscriptionOrder extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Tenant
  *
  * @property int $id
@@ -965,6 +1041,8 @@ namespace App\Models{
  * @property string $phone_number
  * @property string|null $password
  * @property int $company_id
+ * @property string $product
+ * @property \Illuminate\Support\Carbon|null $subscription_expires_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon $created_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Encore\Admin\Auth\Database\Role> $roles
@@ -982,13 +1060,63 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property-read mixed $name
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereProduct($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereSubscriptionExpiresAt($value)
  */
 	class Tenant extends \Eloquent implements \Illuminate\Contracts\Auth\Authenticatable {}
 }
 
 namespace App\Models{
 /**
- * App\Models\WechatOpenPlatformConfig
+ * CREATE TABLE `tenant_api_stats` (
+ *  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+ *  `app_key` varchar(64) NOT NULL COMMENT '应用标识',
+ *  `tenant_id` bigint(20) unsigned NOT NULL COMMENT '租户ID',
+ *  `call_count` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '调用次数',
+ *  `stat_date` date NOT NULL COMMENT '统计日期',
+ *  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+ *  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ *  PRIMARY KEY (`id`),
+ *  UNIQUE KEY `uk_app_tenant_date` (`app_key`,`tenant_id`,`stat_date`),
+ *  KEY `idx_tenant_id` (`tenant_id`),
+ *  KEY `idx_stat_date` (`stat_date`)
+ * ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='租户API调用统计表';
+ *
+ * @property int $id
+ * @property string $app_key 应用标识
+ * @property int $tenant_id 租户ID
+ * @property int $call_count 调用次数
+ * @property string $stat_date 统计日期
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|TenantApiStats newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TenantApiStats newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TenantApiStats query()
+ * @method static \Illuminate\Database\Eloquent\Builder|TenantApiStats whereAppKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TenantApiStats whereCallCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TenantApiStats whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TenantApiStats whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TenantApiStats whereStatDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TenantApiStats whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TenantApiStats whereUpdatedAt($value)
+ */
+	class TenantApiStats extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * CREATE TABLE `wechat_open_platform_config` (
+ * `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+ * `tenant_id` bigint NOT NULL,
+ * `app_name` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+ * `wechat_appid` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+ * `wechat_appsecret` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+ * `interface_check` tinyint unsigned NOT NULL DEFAULT '0',
+ * `remark` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ * `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+ * `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ * PRIMARY KEY (`id`)
+ * ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
  *
  * @property int $id
  * @property int $tenant_id

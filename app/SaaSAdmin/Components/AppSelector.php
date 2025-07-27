@@ -25,8 +25,8 @@ class AppSelector implements Renderable
             // 转换为数组格式，包含平台信息
             $this->apps = [];
             foreach ($apps as $app) {
-                $platformType = $app->platform_type == 1 ? 'Android' : 'iOS';
-                $iconClass = $app->platform_type == 1 ? 'fa-android text-success' : 'fa-apple text-dark';
+                $platformType = \App\Models\App::$platformType[$app->platform_type];
+                $iconClass = $this->getAppIcon($app->platform_type);
                 $this->apps[] = [
                     'app_key' => $app->app_key,
                     'name' => $app->name,
@@ -43,6 +43,20 @@ class AppSelector implements Renderable
         // 基础URL路径
         $this->url = admin_url('app/manager');
         $this->allUrl = admin_url('/');
+    }
+
+    private function getAppIcon($platformType)
+    {
+        switch ($platformType) {
+            case \App\Models\App::PLATFORM_TYPE_ANDROID:
+                return 'fa-android text-success';
+            case \App\Models\App::PLATFORM_TYPE_IOS:
+                return 'fa-apple text-dark';
+            case \App\Models\App::PLATFORM_TYPE_HARMONYOS:
+                return 'fa-circle-o text-blue';
+            default:
+                return '';
+        }
     }
 
     public function render()

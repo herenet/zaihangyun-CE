@@ -26,7 +26,6 @@ class WechatPayConfig extends Form
             ->help('微信支付需要配置微信商户号，<a href="'.admin_url('global/config/wechat/payment').'">添加微信商户号>>></a>')
             ->when(1, function (Form $form) {
                 $form->select('wechat_payment_config_id', '微信商户号')
-                    ->required()
                     ->config('allowClear', false)
                     ->config('minimumResultsForSearch', 'Infinity')
                     ->options(function () {
@@ -35,7 +34,6 @@ class WechatPayConfig extends Form
                     ->help('请选择微信商户号，只能选择配置验证已经通过的商户号');
 
                 $form->select('wechat_platform_config_id', '微信开放平台APP')
-                    ->required()
                     ->config('allowClear', false)
                     ->config('minimumResultsForSearch', 'Infinity')
                     ->options(function () {
