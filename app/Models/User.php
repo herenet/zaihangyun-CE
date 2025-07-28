@@ -5,6 +5,50 @@ namespace App\Models;
 use Encore\Admin\Traits\DefaultDatetimeFormat;
 use Illuminate\Database\Eloquent\Model;
 
+
+/**
+ * CREATE TABLE `users` (
+ *  `uid` bigint unsigned NOT NULL,
+ *  `app_key` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用app_key',
+ *  `tenant_id` bigint NOT NULL COMMENT '租户ID',
+ *  `huawei_openid` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `huawei_unionid` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `apple_openid` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `apple_unionid` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `wechat_openid` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `wechat_unionid` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `apple_userid` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `oaid` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `device_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `username` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `nickname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `mcode` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '+86' COMMENT '手机国家区号',
+ *  `mobile` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `password` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '登录密码',
+ *  `email` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `avatar` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `gender` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `birthday` date DEFAULT NULL,
+ *  `country` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `province` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `city` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `reg_ip` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ *  `is_forever_vip` bit(1) DEFAULT b'0' COMMENT '永久会员',
+ *  `vip_expired_at` datetime DEFAULT NULL,
+ *  `enter_pass` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '应用启动密码',
+ *  `version_number` int unsigned NOT NULL DEFAULT '1' COMMENT 'APP版本数值',
+ *  `channel` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'official' COMMENT '来源渠道',
+ *  `reg_from` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '注册来源平台：1为手机号，2为微信，3为苹果',
+ *  `ext_data` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '自定义字段',
+ *  `canceled_at` timestamp NULL DEFAULT NULL COMMENT '注销时间',
+ *  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+ *  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ *  PRIMARY KEY (`uid`),
+ *  UNIQUE KEY `idx_openid` (`wechat_openid`,`app_key`) USING BTREE,
+ *  UNIQUE KEY `idx_appleuserid` (`apple_userid`,`app_key`) USING BTREE,
+ *  UNIQUE KEY `idx_mcode_mobile` (`mcode`,`mobile`,`app_key`) USING BTREE
+ * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+ */
 class User extends Model
 {
     use DefaultDatetimeFormat;

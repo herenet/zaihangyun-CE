@@ -778,6 +778,9 @@ namespace App\Models{
  * @property int|null $aliyun_sms_verify_code_expire
  * @property int|null $suport_apple_login
  * @property string|null $apple_nickname_prefix
+ * @property int|null $suport_huawei_login
+ * @property string|null $huawei_oauth_client_id
+ * @property string|null $huawei_oauth_client_secret
  * @property int $endpoint_allow_count
  * @property int|null $cancel_after_days 申请注销多少天后删除
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -794,7 +797,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|LoginInterfaceConfig whereCancelAfterDays($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginInterfaceConfig whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginInterfaceConfig whereEndpointAllowCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoginInterfaceConfig whereHuaweiOauthClientId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoginInterfaceConfig whereHuaweiOauthClientSecret($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginInterfaceConfig whereSuportAppleLogin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoginInterfaceConfig whereSuportHuaweiLogin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginInterfaceConfig whereSuportMobileLogin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginInterfaceConfig whereSuportWechatLogin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginInterfaceConfig whereSwitch($value)

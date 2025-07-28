@@ -13,6 +13,8 @@
 | 字段名           | 类型       | 说明                     | 示例值 |
 |------------------|------------|--------------------------|--------|
 | uid              | unsigned int    | 用户唯一ID               | 1857248324 |
+| huawei_openid    | string     | 华为 OpenID              | 1232dsfsadfasdfadsfdasfasdf |
+| huawei_unionid   | string     | 华为 UnionID             | asdfsadfdasfdasfdasfdasfasdf |
 | wechat_openid    | string     | 微信 OpenID              | 1232dsfsadfasdfadsfdasfasdf |
 | wechat_unionid   | string     | 微信 UnionID             | asdfsadfdasfdasfdasfdasfasdf |
 | apple_userid     | string     | Apple 用户ID             | sdafasdfasdfdsafasf |
@@ -36,7 +38,7 @@
 | enter_pass       | string     | 应用启动密码    | 111111 |
 | version_number   | unsigned int   | 用户数据版本号           | 1 |
 | channel          | string     | 渠道标识（默认：official）                 | official |
-| reg_from         | unsigned int    | 注册来源（1=手机号，2=微信，3=苹果，99=后台）         | 99 |
+| reg_from         | unsigned int    | 注册来源（1=手机号，2=微信，3=苹果，4=华为，99=后台）         | 99 |
 | ext_data         | JSON       | 自定义扩展数据（JSON字符串）   | { "device_id": "7290832492f7bccf", "c_number": "huawei", ... } |
 | created_at       | datetime   | 创建时间（注册时间）     | 2025-03-28 16:53:35 |
 

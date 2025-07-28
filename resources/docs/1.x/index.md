@@ -11,6 +11,7 @@
 - ## 接口列表
     - [获取应用配置](/{{route}}/{{version}}/apis/app_config)
     - [版本升级检查](/{{route}}/{{version}}/apis/app_upgrade)
+    - [华为登录（登录&注册）](/{{route}}/{{version}}/apis/login_huawei)
     - [微信登录（登录&注册）](/{{route}}/{{version}}/apis/login_wechat)
     - [发送登录短信验证码](/{{route}}/{{version}}/apis/login_verify_code)
     - [手机验证码登录（登录&注册）](/{{route}}/{{version}}/apis/login_mobile)
