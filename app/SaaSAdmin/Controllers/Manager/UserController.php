@@ -61,6 +61,9 @@ class UserController extends AdminController
         $grid->column('wechat_unionid', '微信UnionID')->limit(15);
         if($app_info['platform_type'] == App::PLATFORM_TYPE_IOS) {
             $grid->column('apple_userid', '苹果ID')->limit(15);
+        }elseif($app_info['platform_type'] == App::PLATFORM_TYPE_HARMONYOS) {
+            $grid->column('huawei_openid', '华为OpenID')->limit(15);
+            $grid->column('huawei_unionid', '华为UnionID')->limit(15);
         }
 
         // 地理位置
@@ -189,6 +192,9 @@ class UserController extends AdminController
         $form->text('wechat_unionid', '微信UnionID')->rules(['nullable', 'string', 'max:128']);
         if($app_info['platform_type'] == App::PLATFORM_TYPE_IOS) {
             $form->text('apple_userid', '苹果ID')->rules(['nullable', 'string', 'max:128']);
+        }elseif($app_info['platform_type'] == App::PLATFORM_TYPE_HARMONYOS) {
+            $form->text('huawei_openid', '华为OpenID')->rules(['nullable', 'string', 'max:128']);
+            $form->text('huawei_unionid', '华为UnionID')->rules(['nullable', 'string', 'max:128']);
         }
         $form->number('version_number', 'APP版本')->default(1)->rules(['integer', 'min:1', 'max:9999']);
         $form->json('ext_data', '扩展数据')->rules(['nullable', 'string', 'max:128']);
@@ -267,6 +273,9 @@ class UserController extends AdminController
         $show->field('wechat_unionid', '微信UnionID');
         if($app_info['platform_type'] == App::PLATFORM_TYPE_IOS) {
             $show->field('apple_userid', '苹果ID');
+        }elseif($app_info['platform_type'] == App::PLATFORM_TYPE_HARMONYOS) {
+            $show->field('huawei_openid', '华为OpenID');
+            $show->field('huawei_unionid', '华为UnionID');
         }
         $show->field('nickname', '昵称');
         $show->field('username', '用户名');
