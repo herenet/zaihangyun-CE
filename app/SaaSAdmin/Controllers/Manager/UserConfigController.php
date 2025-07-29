@@ -28,35 +28,16 @@ class UserConfigController extends Controller
     public function index(Content $content)
     {
         $app_key = $this->getAppKey();
-        $app_info = app(App::class)->getAppInfo($app_key);
         $content->title('接口配置');
         $content->description('用户模块');
 
-        switch($app_info['platform_type']){
-            case App::PLATFORM_TYPE_IOS:
-                $content->body(Tab::forms([
-                    'basic'    => AccessTokenConfig::class,
-                    'wechat'   => WechatLoginConfig::class,
-                    'sms'      => SmsLoginConfig::class,
-                    'apple'    => AppleLoginConfig::class,
-                ]));
-                break;
-            case App::PLATFORM_TYPE_HARMONYOS:
-                $content->body(Tab::forms([
-                    'basic'    => AccessTokenConfig::class,
-                    'wechat'   => WechatLoginConfig::class,
-                    'sms'      => SmsLoginConfig::class,
-                    'huawei'   => HuaweiLoginConfig::class,
-                ]));
-                break;
-            default:
-                $content->body(Tab::forms([
-                    'basic'    => AccessTokenConfig::class,
-                    'wechat'   => WechatLoginConfig::class,
-                    'sms'      => SmsLoginConfig::class,
-                ]));
-                break;
-        }
+        $content->body(Tab::forms([
+            'basic'    => AccessTokenConfig::class,
+            'wechat'   => WechatLoginConfig::class,
+            'sms'      => SmsLoginConfig::class,
+            'apple'    => AppleLoginConfig::class,
+            'huawei'   => HuaweiLoginConfig::class,
+        ]));
 
         return $content;
     }

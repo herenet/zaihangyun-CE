@@ -2,7 +2,6 @@
 
 namespace App\SaaSAdmin\Controllers\Manager;
 
-use App\Models\App;
 use App\Models\User;
 use App\Libs\Helpers;
 use Encore\Admin\Form;
@@ -30,7 +29,6 @@ class UserController extends AdminController
     protected function grid()
     {
         $app_key = $this->getAppKey();
-        $app_info = app(App::class)->getAppInfo($app_key);
         $grid = new Grid(new User());
         $grid->model()->where('app_key', $app_key)->orderBy('created_at', 'desc');
         $grid->fixColumns(2, -2);
@@ -59,12 +57,9 @@ class UserController extends AdminController
         // 第三方账号
         $grid->column('wechat_openid', '微信OpenID')->limit(15);
         $grid->column('wechat_unionid', '微信UnionID')->limit(15);
-        if($app_info['platform_type'] == App::PLATFORM_TYPE_IOS) {
-            $grid->column('apple_userid', '苹果ID')->limit(15);
-        }elseif($app_info['platform_type'] == App::PLATFORM_TYPE_HARMONYOS) {
-            $grid->column('huawei_openid', '华为OpenID')->limit(15);
-            $grid->column('huawei_unionid', '华为UnionID')->limit(15);
-        }
+        $grid->column('apple_userid', '苹果ID')->limit(15);
+        $grid->column('huawei_openid', '华为OpenID')->limit(15);
+        $grid->column('huawei_unionid', '华为UnionID')->limit(15);
 
         // 地理位置
         $grid->column('country', '国家');
@@ -153,7 +148,6 @@ class UserController extends AdminController
     {
         $form = new Form(new User());
         $app_key = $this->getAppKey();
-        $app_info = app(App::class)->getAppInfo($app_key);
         $form->setWidth(6, 3);
         $form->text('nickname', '昵称')->rules(['required', 'string', 'max:64']);
         $form->text('username', '用户名')->rules(['nullable', 'string', 'max:64']);
@@ -190,12 +184,10 @@ class UserController extends AdminController
 
         $form->text('wechat_openid', '微信OpenID')->rules(['nullable', 'string', 'max:128']);
         $form->text('wechat_unionid', '微信UnionID')->rules(['nullable', 'string', 'max:128']);
-        if($app_info['platform_type'] == App::PLATFORM_TYPE_IOS) {
-            $form->text('apple_userid', '苹果ID')->rules(['nullable', 'string', 'max:128']);
-        }elseif($app_info['platform_type'] == App::PLATFORM_TYPE_HARMONYOS) {
-            $form->text('huawei_openid', '华为OpenID')->rules(['nullable', 'string', 'max:128']);
-            $form->text('huawei_unionid', '华为UnionID')->rules(['nullable', 'string', 'max:128']);
-        }
+        $form->text('apple_userid', '苹果ID')->rules(['nullable', 'string', 'max:128']);
+        $form->text('huawei_openid', '华为OpenID')->rules(['nullable', 'string', 'max:128']);
+        $form->text('huawei_unionid', '华为UnionID')->rules(['nullable', 'string', 'max:128']);
+
         $form->number('version_number', 'APP版本')->default(1)->rules(['integer', 'min:1', 'max:9999']);
         $form->json('ext_data', '扩展数据')->rules(['nullable', 'string', 'max:128']);
         $form->select('reg_from', '注册来源')->options(User::$regFromMap)->default(99);
@@ -264,19 +256,17 @@ class UserController extends AdminController
     public function detail()
     {
         $app_key = $this->getAppKey();
-        $app_info = app(App::class)->getAppInfo($app_key);
         $uid = request()->route('list');
         $show = new Show(User::find($uid));
         $show->avatar('头像')->image(config('app.url').'/storage/mch/avatar/');
         $show->field('uid', 'UID');
         $show->field('wechat_openid', '微信OpenID');
         $show->field('wechat_unionid', '微信UnionID');
-        if($app_info['platform_type'] == App::PLATFORM_TYPE_IOS) {
-            $show->field('apple_userid', '苹果ID');
-        }elseif($app_info['platform_type'] == App::PLATFORM_TYPE_HARMONYOS) {
-            $show->field('huawei_openid', '华为OpenID');
-            $show->field('huawei_unionid', '华为UnionID');
-        }
+      
+        $show->field('apple_userid', '苹果ID');
+        $show->field('huawei_openid', '华为OpenID');
+        $show->field('huawei_unionid', '华为UnionID');
+
         $show->field('nickname', '昵称');
         $show->field('username', '用户名');
         $show->field('gender', '性别')->using(User::$genderMap);
