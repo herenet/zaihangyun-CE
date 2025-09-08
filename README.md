@@ -25,18 +25,13 @@
 
 ## 技术架构
 
-本项目基于 Laravel 框架开发，使用了丰富的扩展包和组件，包括：
-- **Laravel Admin**：用于构建管理后台。
-- **Laravel API**：提供轻量级 API 接口。
-- **Laravel ORM**：用于数据库操作。
-- **Laravel Queue**：用于异步任务处理。
-- **Laravel Cache**：用于缓存管理。
-- **Laravel Validation**：用于数据验证。
-- **Laravel Session**：用于会话管理。
-- **Laravel Mail**：用于邮件发送。
-- **Laravel Notification**：用于通知推送。
-- **Laravel Broadcasting**：用于实时通信。
-- **Laravel Testing**：用于单元测试和功能测试。
+### 项目结构
+- **app**： 项目主目录
+   - **admin**：管理后台 - 基于laravel-admin框架构建
+   - **api**：api接口 - 基于webman框架构建
+
+### 特别说明
+- **为确保API接口性能，同时保证后台配置能实时生效，admin与api共享一个Redis实例。**
 
 ## 接口文档
 
@@ -51,12 +46,12 @@
 - Redis >= 5.0
 - Composer
 
-### 安装步骤
+### Admin后台安装步骤
 
 1. **克隆仓库**
    ```bash
    git clone https://gitee.com/herenet/zaihangyun-CE.git
-   cd zaihangyun-CE
+   cd zaihangyun-CE/admin
    ```
 
 2. **安装依赖**
@@ -83,6 +78,31 @@
 6. **访问后台**
    打开浏览器，访问 `http://localhost:8000/admin` 即可进入后台管理界面。默认账号密码为 `admin` / `admin`。
    登录后，你可以在左侧导航栏中找到不同的模块，如用户管理、支付管理、文档管理等。
+
+### API接口安装步骤
+
+1. **选择目录**
+   ```bash
+   cd zaihangyun-CE/api
+   ```
+
+2. **安装依赖**
+   ```bash
+   composer install
+   ```
+
+3. **配置环境**
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **启动服务**
+   ```bash
+   php start.php start
+   ```
+
+5. **访问接口**
+   访问 `http://localhost:8787` 调用API接口
 
 ## 使用说明
 
