@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 * CREATE TABLE `iap_products` (
 *  `pid` bigint unsigned NOT NULL,
 *  `app_key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-*  `tenant_id` bigint unsigned NOT NULL,
 *  `iap_product_id` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '苹果产品ID',
 *  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '产品名称',
 *  `sub_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '子标题',
@@ -41,7 +40,6 @@ class IAPProduct extends Model implements Sortable
 
     protected $fillable = [
         'app_key', 
-        'tenant_id', 
         'iap_product_id',
         'name', 
         'sub_name', 

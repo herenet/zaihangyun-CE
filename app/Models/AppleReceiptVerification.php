@@ -21,7 +21,6 @@ class AppleReceiptVerification extends Model
     ];
 
     protected $fillable = [
-        'tenant_id',
         'app_key', 
         'receipt_data_hash',
         'verification_status',
@@ -52,7 +51,7 @@ class AppleReceiptVerification extends Model
     /**
      * 创建或获取验证记录（处理去重）
      */
-    public static function createOrGet($tenantId, $appKey, $receiptData, $additionalData = [])
+    public static function createOrGet($appKey, $receiptData, $additionalData = [])
     {
         $hash = hash('sha256', $receiptData);
         
@@ -68,7 +67,6 @@ class AppleReceiptVerification extends Model
 
         // 创建新记录
         $verification = self::create(array_merge([
-            'tenant_id' => $tenantId,
             'app_key' => $appKey,
             'receipt_data_hash' => $hash,
             'verification_status' => self::STATUS_FAILED, // 默认失败状态
@@ -76,7 +74,6 @@ class AppleReceiptVerification extends Model
 
         // 创建关联的数据记录（包含冗余字段）
         $verification->receiptData()->create([
-            'tenant_id' => $tenantId,
             'app_key' => $appKey,
             'receipt_data_hash' => $hash,
             'receipt_data' => $receiptData

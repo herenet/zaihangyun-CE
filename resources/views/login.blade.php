@@ -38,7 +38,7 @@
       width: 100%;
     }
 
-    /* 左侧品牌区域 - 参考Fireboom比例调整 */
+    /* 左侧品牌区域 */
     .brand-section {
       flex: 0 0 40%;
       background: linear-gradient(135deg, #4086F5 0%, #6B9BF7 50%, #1AE2D6 100%);
@@ -59,7 +59,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="20" r="1" fill="rgba(255,255,255,0.03)"/><circle cx="30" cy="40" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="70" cy="60" r="1" fill="rgba(255,255,255,0.02)"/><circle cx="20" cy="80" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+      background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><pattern id=\"grain\" width=\"100\" height=\"100\" patternUnits=\"userSpaceOnUse\"><circle cx=\"10\" cy=\"10\" r=\"1\" fill=\"rgba(255,255,255,0.05)\"/><circle cx=\"90\" cy=\"20\" r=\"1\" fill=\"rgba(255,255,255,0.03)\"/><circle cx=\"30\" cy=\"40\" r=\"1\" fill=\"rgba(255,255,255,0.04)\"/><circle cx=\"70\" cy=\"60\" r=\"1\" fill=\"rgba(255,255,255,0.02)\"/><circle cx=\"20\" cy=\"80\" r=\"1\" fill=\"rgba(255,255,255,0.05)\"/></pattern></defs><rect width=\"100\" height=\"100\" fill=\"url(%23grain)\"/></svg>') repeat;
       opacity: 0.3;
     }
 
@@ -165,7 +165,7 @@
       color: #1AE2D6;
     }
 
-    /* 右侧登录区域 - 调整宽度比例 */
+    /* 右侧登录区域 */
     .auth-section {
       flex: 1;
       background: #FAFBFC;
@@ -188,76 +188,50 @@
     /* Logo区域 */
     .auth-header {
       text-align: center;
-      padding: 40px 30px 30px;
+      padding: 50px 30px 40px;
     }
 
     .auth-logo img {
-      height: 70px;
+      height: 80px;
       width: auto;
     }
 
-    /* Tab导航 */
-    .auth-tabs {
-      padding: 0 30px;
-      margin-bottom: 30px;
-      margin-top: 20px;
-    }
-
-    .tab-nav {
-      display: flex;
-      background: #F8F9FA;
-      border-radius: 10px;
-      padding: 4px;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 12px 16px;
-      border: none;
-      background: transparent;
-      color: #6B7280;
+    .auth-title {
+      font-size: 24px;
       font-weight: 600;
+      color: #1F2937;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    .auth-subtitle {
       font-size: 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      color: #6B7280;
+      margin-bottom: 0;
     }
 
-    .tab-btn.active {
-      background: #4086F5;
-      color: white;
-      box-shadow: 0 2px 8px rgba(64, 134, 245, 0.3);
-    }
-
-    .tab-btn:hover:not(.active) {
-      background: rgba(64, 134, 245, 0.1);
-      color: #4086F5;
-    }
-
-    /* 表单容器 - 固定高度避免跳动 */
+    /* 表单容器 */
     .form-container {
-      min-height: 420px; /* 设置最小高度，避免切换时跳动 */
-      padding: 0 30px 30px;
+      padding: 0 30px 40px;
       position: relative;
     }
 
     /* 表单内容 */
-    .tab-content {
-      display: none;
-      width: 100%;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
     .auth-form {
       width: 100%;
     }
 
     /* 表单组 */
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 8px;
     }
 
     .form-control {
@@ -269,6 +243,7 @@
       font-size: 14px;
       background: #FAFBFC;
       transition: all 0.3s ease;
+      box-sizing: border-box;
     }
 
     .form-control:focus {
@@ -282,56 +257,11 @@
       color: #9CA3AF;
     }
 
-    /* 输入组（验证码） */
-    .input-group {
-      display: flex;
-      position: relative;
-      align-items: stretch; /* 确保高度一致 */
-    }
-
-    .input-group .form-control {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      border-right: none;
-      flex: 1;
-      margin: 0; /* 移除可能的margin */
-    }
-
-    .code-btn {
-      height: 48px;
-      padding: 0 16px;
-      border: 2px solid #E5E7EB;
-      border-left: none;
-      border-top-right-radius: 8px;
-      border-bottom-right-radius: 8px;
-      background: #F8FAFC;
-      color: #4086F5;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-      min-width: 90px;
-      flex-shrink: 0;
-      margin: 0; /* 移除可能的margin */
-      box-sizing: border-box; /* 确保border包含在尺寸内 */
-    }
-
-    /* 修复验证码按钮hover样式 */
-    .code-btn:hover:not(:disabled) {
-      background: #F0F7FF;
-      color: #3574E3;
-      border-color: #E5E7EB; /* 保持边框颜色不变 */
-    }
-
-    .code-btn:disabled {
-      background: #F3F4F6;
-      color: #9CA3AF;
-      cursor: not-allowed;
-      border-color: #E5E7EB;
-    }
-
     /* 复选框 */
+    .checkbox-group {
+      margin-bottom: 30px;
+    }
+
     .checkbox-label {
       display: flex;
       align-items: center;
@@ -341,7 +271,7 @@
       user-select: none;
     }
 
-    .checkbox-label input[type="checkbox"] {
+    .checkbox-label input[type=\"checkbox\"] {
       position: absolute;
       opacity: 0;
       cursor: pointer;
@@ -352,18 +282,18 @@
       height: 18px;
       border: 2px solid #E5E7EB;
       border-radius: 4px;
-      margin-right: 8px;
+      margin-right: 10px;
       position: relative;
       transition: all 0.3s ease;
       flex-shrink: 0;
     }
 
-    .checkbox-label input[type="checkbox"]:checked + .checkmark {
+    .checkbox-label input[type=\"checkbox\"]:checked + .checkmark {
       background: #4086F5;
       border-color: #4086F5;
     }
 
-    .checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+    .checkbox-label input[type=\"checkbox\"]:checked + .checkmark::after {
       content: '';
       position: absolute;
       left: 5px;
@@ -385,10 +315,6 @@
       font-size: 16px;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-bottom: 20px;
-    }
-
-    .submit-btn {
       background: linear-gradient(135deg, #4086F5 0%, #6B9BF7 100%);
       color: white;
       box-shadow: 0 4px 12px rgba(64, 134, 245, 0.3);
@@ -400,36 +326,8 @@
       box-shadow: 0 6px 16px rgba(64, 134, 245, 0.4);
     }
 
-    .register-btn {
-      background: linear-gradient(135deg, #10B981 0%, #1AE2D6 100%);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-
-    .register-btn:hover {
-      background: linear-gradient(135deg, #0D9488 0%, #15C7BB 100%);
-      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
-    }
-
-    /* 表单底部 */
-    .form-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 15px;
-      border-top: 1px solid #F3F4F6;
-    }
-
-    .link {
-      color: #4086F5;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-
-    .link:hover {
-      color: #3574E3;
-      text-decoration: none;
+    .submit-btn:active {
+      transform: translateY(0);
     }
 
     /* 错误信息 */
@@ -438,47 +336,10 @@
       background: #FEF2F2;
     }
 
-    /* 修复input-group在错误状态下的样式一致性 */
-    .has-error .input-group .form-control {
-      border-color: #EF4444;
-      background: #FEF2F2;
-    }
-
-    .has-error .input-group .code-btn {
-      border-color: #EF4444;
-      background: #FEF2F2;
-      color: #DC2626;
-    }
-
-    .has-error .input-group .code-btn:hover:not(:disabled) {
-      background: #FEE2E2;
-      color: #B91C1C;
-      border-color: #EF4444;
-    }
-
-    .has-error .input-group .code-btn:disabled {
-      background: #F9FAFB;
-      color: #9CA3AF;
-      border-color: #EF4444;
-    }
-
-    /* 确保input-group在焦点状态下的样式 */
-    .input-group .form-control:focus {
-      border-color: #4086F5;
-      background: white;
-      box-shadow: none; /* 移除默认阴影，避免和按钮不匹配 */
-      z-index: 1; /* 确保焦点时input在按钮上层 */
-      position: relative;
-    }
-
-    .input-group .form-control:focus + .code-btn {
-      border-color: #4086F5;
-    }
-
     .error-text {
       color: #EF4444;
       font-size: 13px;
-      margin-top: 5px;
+      margin-top: 6px;
       display: block;
     }
 
@@ -498,25 +359,15 @@
       
       .auth-container {
         max-width: none;
+        margin: 0;
       }
       
       .auth-header {
-        padding: 30px 20px 20px;
-      }
-      
-      .auth-tabs, .form-container {
-        padding-left: 20px;
-        padding-right: 20px;
+        padding: 40px 20px 30px;
       }
       
       .form-container {
-        min-height: 380px; /* 移动端调整最小高度 */
-      }
-      
-      .form-footer {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
+        padding: 0 20px 30px;
       }
     }
 
@@ -525,65 +376,25 @@
         height: 70px;
       }
       
-      .form-control, .code-btn, .submit-btn {
+      .auth-title {
+        font-size: 20px;
+      }
+      
+      .form-control, .submit-btn {
         height: 44px;
       }
       
-      .form-container {
-        min-height: 360px;
+      .auth-header {
+        padding: 30px 20px 25px;
       }
-    }
-
-    /* SweetAlert2 必要样式修复 */
-    .swal2-popup {
-      border-radius: 12px !important;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
-      padding: 30px !important;
-      font-family: inherit !important;
-    }
-
-    .swal2-title {
-      font-size: 20px !important;
-      font-weight: 600 !important;
-      color: #333 !important;
-      margin-bottom: 10px !important;
-    }
-
-    .swal2-content {
-      font-size: 14px !important;
-      color: #666 !important;
-    }
-
-    .swal2-confirm {
-      background: #4086F5 !important;
-      border: none !important;
-      border-radius: 8px !important;
-      padding: 10px 24px !important;
-      font-weight: 500 !important;
-    }
-
-    .swal2-confirm:hover {
-      background: #2563EB !important;
-    }
-
-    .swal2-icon.swal2-success {
-      color: #10B981 !important;
-      border-color: #10B981 !important;
-    }
-
-    .swal2-icon.swal2-error {
-      color: #EF4444 !important;
-      border-color: #EF4444 !important;
     }
   </style>
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
-  <script src="//oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <script src=\"//oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js\"></script>
+  <script src=\"//oss.maxcdn.com/respond/1.4.2/respond.min.js\"></script>
   <![endif]-->
-
-  <link href="{{ admin_asset('vendor/laravel-admin/sweetalert2/dist/sweetalert2.css') }}" rel="stylesheet">
 </head>
 <body class="login-page">
 
@@ -641,7 +452,7 @@
           <span>零后端开发</span>
         </div>
         <div class="highlight-item">
-          <i class="fa fa-check-circle"></i>
+          <i class="fa fa-check-circle"></i>  
           <span>一键配置后台</span>
         </div>
         <div class="highlight-item">
@@ -657,279 +468,54 @@
     <div class="auth-container">
       <!-- Logo区域 -->
       <div class="auth-header">
-        <div class="auth-logo">
-          <img src="{{ admin_asset('images/logo-baas.png') }}" alt="在行云">
-        </div>
+        <h2 class="auth-title">管理员登录</h2>
+        <p class="auth-subtitle">请输入您的账号信息</p>
       </div>
       
-      <!-- Tab导航 -->
-      <div class="auth-tabs">
-        <div class="tab-nav">
-          <button class="tab-btn active" data-tab="login">账号登录</button>
-          <button class="tab-btn" data-tab="register">手机注册</button>
-        </div>
-      </div>
-      
-      <!-- 表单容器 - 固定高度避免跳动 -->
+      <!-- 表单容器 -->
       <div class="form-container">
-        <!-- 登录表单 -->
-        <div id="login-tab" class="tab-content active">
-          <form action="{{ admin_url('auth/login') }}" method="post" class="auth-form">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <input type="hidden" name="login_type" value="password" id="login_type">
-            
-            <div class="form-group {{ $errors->has('phone_number') ? 'has-error' : '' }}">
-              <input type="text" class="form-control" placeholder="请输入手机号" name="phone_number" value="{{ old('phone_number') }}" required>
-              @if($errors->has('phone_number'))
-                <span class="error-text">{{ $errors->first('phone_number') }}</span>
-              @endif
-            </div>
-            
-            <!-- 密码输入 -->
-            <div class="form-group password-input {{ $errors->has('password') ? 'has-error' : '' }}">
-              <input type="password" class="form-control" placeholder="请输入密码" name="password" required>
-              @if($errors->has('password'))
-                <span class="error-text">{{ $errors->first('password') }}</span>
-              @endif
-            </div>
-            
-            <!-- 验证码输入 -->
-            <div class="form-group code-input {{ $errors->has('verification_login_code') ? 'has-error' : '' }}" style="display: none;">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="请输入验证码" name="verification_login_code" value="{{ old('verification_login_code') }}">
-                <button type="button" class="code-btn" id="get-login-code">获取验证码</button>
-              </div>
-              @if($errors->has('verification_login_code'))
-                <span class="error-text">{{ $errors->first('verification_login_code') }}</span>
-              @endif
-            </div>
-            
-            @if(config('admin.auth.remember'))
-            <div class="form-group">
-              <label class="checkbox-label">
-                <input type="checkbox" name="remember" value="1" {{ (!old('username') || old('remember')) ? 'checked' : '' }}>
-                <span class="checkmark"></span>
-                {{ trans('admin.remember_me') }}
-              </label>
-            </div>
+        <form action="{{ admin_url('auth/login') }}" method="post" class="auth-form">
+          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+          
+          <div class="form-group {{ $errors->has('username') ? 'has-error' : '' }}">
+            <label class="form-label">用户名</label>
+            <input type="text" class="form-control" placeholder="请输入用户名" name="username" value="{{ old('username') }}" required autofocus>
+            @if($errors->has('username'))
+              <span class="error-text">{{ $errors->first('username') }}</span>
             @endif
-            
-            <button type="submit" class="submit-btn">{{ trans('admin.login') }}</button>
-            
-            <div class="form-footer">
-              <a href="#" class="link forgot-password">忘记密码？</a>
-              <a href="#" class="link back-to-password" style="display: none;">密码登录</a>
-            </div>
-          </form>
-        </div>
-        
-        <!-- 注册表单 -->
-        <div id="register-tab" class="tab-content">
-          <form action="{{ admin_url('register') }}" method="post" class="auth-form">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            
-            <div class="form-group {{ $errors->has('register_phone') ? 'has-error' : '' }}">
-              <input type="text" class="form-control" placeholder="请输入手机号" name="register_phone" value="{{ old('register_phone') }}" required>
-              @if($errors->has('register_phone'))
-                <span class="error-text">{{ $errors->first('register_phone') }}</span>
-              @endif
-            </div>
-            
-            <div class="form-group {{ $errors->has('verification_code') ? 'has-error' : '' }}">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="请输入验证码" name="verification_code" value="{{ old('verification_code') }}" required>
-                <button type="button" class="code-btn" id="get-register-code">获取验证码</button>
-              </div>
-              @if($errors->has('verification_code'))
-                <span class="error-text">{{ $errors->first('verification_code') }}</span>
-              @endif
-            </div>
-            
-            <div class="form-group {{ $errors->has('register_password') ? 'has-error' : '' }}">
-              <input type="password" class="form-control" placeholder="请设置密码（6位以上）" name="register_password" required minlength="6">
-              @if($errors->has('register_password'))
-                <span class="error-text">{{ $errors->first('register_password') }}</span>
-              @endif
-            </div>
-            
-            <div class="form-group {{ $errors->has('register_password_confirmation') ? 'has-error' : '' }}">
-              <input type="password" class="form-control" placeholder="请确认密码" name="register_password_confirmation" required minlength="6">
-              @if($errors->has('register_password_confirmation'))
-                <span class="error-text">{{ $errors->first('register_password_confirmation') }}</span>
-              @endif
-            </div>
-            
-            <div class="form-group {{ $errors->has('agree_terms') ? 'has-error' : '' }}">
-              <label class="checkbox-label">
-                <input type="checkbox" name="agree_terms" required>
-                <span class="checkmark"></span>
-                同意用户协议和隐私政策
-              </label>
-              @if($errors->has('agree_terms'))
-                <span class="error-text">{{ $errors->first('agree_terms') }}</span>
-              @endif
-            </div>
-            
-            <button type="submit" class="submit-btn register-btn">立即注册</button>
-          </form>
-        </div>
+          </div>
+          
+          <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
+            <label class="form-label">密码</label>
+            <input type="password" class="form-control" placeholder="请输入密码" name="password" required>
+            @if($errors->has('password'))
+              <span class="error-text">{{ $errors->first('password') }}</span>
+            @endif
+          </div>
+          
+          @if(config('admin.auth.remember'))
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" name="remember" value="1" {{ (!old('username') || old('remember')) ? 'checked' : '' }}>
+              <span class="checkmark"></span>
+              {{ trans('admin.remember_me') }}
+            </label>
+          </div>
+          @endif
+          
+          <button type="submit" class="submit-btn">{{ trans('admin.login') }}</button>
+        </form>
       </div>
     </div>
   </div>
 </div>
 
 <!-- jQuery 2.1.4 -->
-<script src="{{ admin_asset("vendor/laravel-admin/AdminLTE/plugins/jQuery/jQuery-2.1.4.min.js")}}"></script>
+<script src="{{ admin_asset('vendor/laravel-admin/AdminLTE/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
 <!-- Bootstrap 3.3.5 -->
-<script src="{{ admin_asset("vendor/laravel-admin/AdminLTE/bootstrap/js/bootstrap.min.js")}}"></script>
+<script src="{{ admin_asset('vendor/laravel-admin/AdminLTE/bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- iCheck -->
-<script src="{{ admin_asset("vendor/laravel-admin/AdminLTE/plugins/iCheck/icheck.min.js")}}"></script>
-<!-- SweetAlert2 -->
-<script src="{{ admin_asset('vendor/laravel-admin/sweetalert2/dist/sweetalert2.min.js') }}"></script>
+<script src="{{ admin_asset('vendor/laravel-admin/AdminLTE/plugins/iCheck/icheck.min.js') }}"></script>
 
-<script>
-$(document).ready(function() {
-  // Tab切换
-  $('.tab-btn').click(function() {
-    var targetTab = $(this).data('tab');
-    
-    $('.tab-btn').removeClass('active');
-    $(this).addClass('active');
-    
-    $('.tab-content').removeClass('active');
-    $('#' + targetTab + '-tab').addClass('active');
-    
-    // 更新URL
-    if (targetTab === 'register') {
-      window.location.hash = '#tab_register';
-    } else {
-      window.location.hash = '';
-    }
-  });
-  
-  // 检查初始状态
-  if (window.location.hash === '#tab_register' || {{ $errors->has('register_phone') ? 'true' : 'false' }}) {
-    $('.tab-btn[data-tab="register"]').click();
-  }
-  
-  // 检查是否需要显示验证码登录
-  if ({{ $errors->has('verification_login_code') ? 'true' : 'false' }}) {
-    showCodeMode();
-  }
-  
-  // 忘记密码 - 切换到验证码模式
-  $('.forgot-password').click(function(e) {
-    e.preventDefault();
-    showCodeMode();
-  });
-  
-  // 返回密码登录
-  $('.back-to-password').click(function(e) {
-    e.preventDefault();
-    showPasswordMode();
-  });
-  
-  // 显示验证码模式（忘记密码）
-  function showCodeMode() {
-    $('.password-input').hide();
-    $('.code-input').show();
-    $('.forgot-password').hide();
-    $('.back-to-password').show();
-    $('#login_type').val('verification_code');
-    
-    // 移除密码字段的required属性，添加验证码字段的required属性
-    $('input[name="password"]').removeAttr('required');
-    $('input[name="verification_login_code"]').attr('required', 'required');
-  }
-  
-  // 显示密码模式
-  function showPasswordMode() {
-    $('.code-input').hide();
-    $('.password-input').show();
-    $('.back-to-password').hide();
-    $('.forgot-password').show();
-    $('#login_type').val('password');
-    
-    // 恢复密码字段的required属性，移除验证码字段的required属性
-    $('input[name="password"]').attr('required', 'required');
-    $('input[name="verification_login_code"]').removeAttr('required');
-  }
-  
-  // 发送验证码 - 恢复实际请求逻辑
-  $('#get-login-code, #get-register-code').click(function() {
-    var $btn = $(this);
-    var $form = $btn.closest('form');
-    var phone = $form.find('input[name="phone_number"], input[name="register_phone"]').val();
-    
-    if (!phone || !/^1\d{10}$/.test(phone)) {
-      Swal.fire({
-        icon: 'error',
-        title: '输入错误',
-        text: '请输入正确的手机号码'
-      });
-      return;
-    }
-    
-    $btn.prop('disabled', true);
-    
-    // 判断是登录验证码还是注册验证码
-    var isLoginCode = $btn.attr('id') === 'get-login-code';
-    var url = isLoginCode ? '{{ admin_url("send-login-verification") }}' : '{{ admin_url("send-verification") }}';
-    
-    // 发送验证码请求
-    $.ajax({
-      url: url,
-      type: 'POST',
-      data: {
-        _token: '{{ csrf_token() }}',
-        phone: phone
-      },
-      success: function(response) {
-        if(response.success) {
-          startCountdown($btn);
-          Swal.fire({
-            icon: 'success',
-            title: '发送成功',
-            text: '验证码已发送，请注意查收',
-            timer: 2000,
-            showConfirmButton: false
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: '发送失败',
-            text: response.message || '发送失败，请稍后再试'
-          });
-          $btn.prop('disabled', false);
-        }
-      },
-      error: function() {
-        Swal.fire({
-          icon: 'error',
-          title: '发送失败',
-          text: '网络错误，请稍后再试'
-        });
-        $btn.prop('disabled', false);
-      }
-    });
-  });
-  
-  // 倒计时
-  function startCountdown($btn) {
-    var seconds = 60;
-    $btn.prop('disabled', true).text(seconds + '秒后重发');
-    
-    var timer = setInterval(function() {
-      seconds--;
-      $btn.text(seconds + '秒后重发');
-      
-      if (seconds <= 0) {
-        clearInterval(timer);
-        $btn.prop('disabled', false).text('获取验证码');
-      }
-    }, 1000);
-  }
-});
-</script>
 </body>
 </html>

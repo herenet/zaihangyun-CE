@@ -7,7 +7,6 @@ use Encore\Admin\Traits\DefaultDatetimeFormat;
 /**
  * CREATE TABLE `wechat_open_platform_config` (
  * `id` bigint unsigned NOT NULL AUTO_INCREMENT,
- * `tenant_id` bigint NOT NULL,
  * `app_name` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
  * `wechat_appid` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
  * `wechat_appsecret` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -26,7 +25,6 @@ class WechatOpenPlatformConfig extends Model
 
     protected $table = 'wechat_open_platform_config';
     protected $fillable = [
-        'tenant_id',
         'app_name',
         'wechat_appid', 
         'wechat_appsecret',

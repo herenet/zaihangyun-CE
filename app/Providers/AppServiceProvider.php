@@ -13,8 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(\App\SaaSAdmin\SaaSAdmin::class, function ($app) {
-            return new \App\SaaSAdmin\SaaSAdmin();
+        $this->app->singleton(\App\Admin\Admin::class, function ($app) {
+            return new \App\Admin\Admin();
         });
     }
 

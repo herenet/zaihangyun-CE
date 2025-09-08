@@ -18,4 +18,115 @@
  *
  */
 
-Encore\Admin\Form::forget(['map', 'editor']);
+use Encore\Admin\Form;
+use Encore\Admin\Show;
+use App\Models\Menu;
+use App\Models\ManagerMenu;
+use Encore\Admin\Grid\Column;
+use App\Admin\Components\AppSelector;
+use App\Admin\Extensions\Nav\Shortcut;
+use App\Admin\Extensions\Show\Password;
+use App\Admin\Extensions\Column\ZhySwitch;
+use App\Admin\Extensions\Form\ZhyKeyValue;
+use App\Admin\Extensions\Form\AliyunSmsCheck;
+use App\Admin\Extensions\Form\IAPSingleCheck;
+use App\Admin\Extensions\Form\InterfaceCheck;
+use App\Admin\Extensions\Form\IAPCallbackCheck;
+use App\Admin\Extensions\Editormd\MyEditorField;
+
+//判断URL中是否是以app/manager开头
+if(strpos($_SERVER['REQUEST_URI'], 'app/manager') === false){
+    $layout_type = 'custom';
+}else{
+    $layout_type = 'default';
+}
+
+Column::extend('password', function($value, $args, $length = null) {
+    if(empty($value)){
+        return '';
+    }
+    $maskChar = $args[0] ?? '*';
+    $maskLength = $length ?? strlen($value);
+    
+    $id = uniqid('pwd_');
+    $mask = str_repeat($maskChar, $maskLength);
+    
+    return <<<HTML
+    <span id="{$id}">{$mask}</span>
+    <a href="javascript:void(0);" onclick="togglePassword('{$id}', '{$value}', '{$mask}')" class="fa fa-eye"></a>
+HTML;
+});
+
+Column::extend('prependIcon', function ($value, $icon) {
+    if(empty($value)){
+        return '';
+    }
+    return "<span style='color: #999;'><i class='fa fa-$icon'></i>  $value</span>";
+});
+Show::extend('password', Password::class);
+Form::extend('myEditorMd', MyEditorField::class);
+Form::extend('interfaceCheck', InterfaceCheck::class);
+Form::extend('aliyunSmsCheck', AliyunSmsCheck::class);
+Form::extend('iapSingleCheck', IAPSingleCheck::class);
+Form::extend('iapCallbackCheck', IAPCallbackCheck::class);
+Form::extend('zhyKeyValue', ZhyKeyValue::class);
+Column::extend('zhySwitch', ZhySwitch::class);
+
+Admin::script(<<<JS
+$(document).ready(function() {
+    window.togglePasswordVisibility = function(icon) {
+        var input = $(icon).parent().siblings('input');
+        if (input.attr('type') === 'password') {
+            input.attr('type', 'text');
+            $(icon).removeClass('fa-eye').addClass('fa-eye-slash');
+        } else {
+            input.attr('type', 'password');
+            $(icon).removeClass('fa-eye-slash').addClass('fa-eye');
+        }
+    };
+    window.togglePassword =function (id, value, mask) {
+        var span = $('#'+id);
+        var icon = span.next('a');
+        if (span.text() === mask) {
+            span.text(value);
+            icon.removeClass('fa-eye').addClass('fa-eye-slash');
+        } else {
+            span.text(mask);
+            icon.removeClass('fa-eye-slash').addClass('fa-eye');
+        }
+    }
+});
+JS);
+
+Admin::css("/vendor/laravel-admin/modern-admin.css");
+
+$appSelector = (new AppSelector())->render();
+view()->share('appSelector', $appSelector);
+Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
+    $navbar->right(Shortcut::make([
+        '微信开放平台设置' => 'global/config/wechat/platform',
+        '微信商户号设置' => 'global/config/wechat/payment',
+        '阿里云AccessKey设置' => 'global/config/aliyun/access',
+        '苹果服务端API请求证书设置' => 'global/config/apple/apicert',
+    ], 'fa-gears')->title('全局设置 <i class="fa fa-caret-down"></i>'));
+
+    $navbar->right(
+        '<li class="dropdown">
+            <a href="/docs" class="dropdown-toggle" target="_blank">
+                <i class="fa fa-book"></i> API接入文档
+            </a>
+        </li>'
+    );
+});
+
+if($layout_type == 'custom'){
+    view()->share('custom_menu', ['menu' => app(Menu::class)->allNodes()]);
+    app('view')->prependNamespace('admin', resource_path('views/saas'));
+}else{
+    Encore\Admin\Form::forget(['map', 'editor']);
+    $appKey = request()->route('app_key');
+    
+    view()->share('custom_menu', ['menu' => app(ManagerMenu::class)->allNodes($appKey)]);
+    
+    app('view')->prependNamespace('admin', resource_path('views/manager'));
+}

@@ -84,7 +84,7 @@ class Helpers
             $imageData = $icon->getImageData('png');
             
             // 确保目录存在
-            return Storage::disk('SaaSAdmin-mch')->put($path, $imageData);
+            return Storage::disk('Admin-mch')->put($path, $imageData);
         } catch (\Exception $e) {
             \Log::error('生成头像失败: ' . $e->getMessage());
             return false;

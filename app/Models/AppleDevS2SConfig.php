@@ -7,7 +7,6 @@ use Encore\Admin\Traits\DefaultDatetimeFormat;
 /**
  * CREATE TABLE `apple_dev_s2s_config` (
  * `id` bigint unsigned NOT NULL AUTO_INCREMENT,
- * `tenant_id` bigint unsigned NOT NULL,
  * `dev_account_name` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '苹果开发者账户名称',
  * `issuer_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
  * `key_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -26,7 +25,6 @@ class AppleDevS2SConfig extends Model
     protected $table = 'apple_dev_s2s_config';
 
     protected $fillable = [
-        'tenant_id',
         'dev_account_name',
         'issuer_id',
         'key_id',

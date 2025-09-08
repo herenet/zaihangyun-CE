@@ -15,7 +15,6 @@ class IAPConfig extends Model
     /**
      * CREATE TABLE `iap_config` (
      *   `app_key` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-     *   `tenant_id` bigint unsigned NOT NULL,
      *   `bundle_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
      *   `app_apple_id` bigint NOT NULL,
      *   `subscrip_switch` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '用户是否开启了苹果的订阅功能',
@@ -25,13 +24,12 @@ class IAPConfig extends Model
      *   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
      *   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
      *   PRIMARY KEY (`app_key`),
-     *   UNIQUE KEY `unq_buildle_id` (`tenant_id`,`bundle_id`) COMMENT '同一个租户不添加两个bundleID相同的配置'
+     *   UNIQUE KEY `unq_buildle_id` (`bundle_id`) COMMENT '同一个租户不添加两个bundleID相同的配置'
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='苹果In-App Purchase配置';
      */
 
     protected $fillable = [
         'app_key',
-        'tenant_id',
         'bundle_id',
         'app_apple_id',
         'subscrip_switch',
@@ -40,15 +38,15 @@ class IAPConfig extends Model
         'interface_check',
     ];
 
-    public function getConfig($tenantId, $appKey)
+    public function getConfig($appKey)
     {
-        $config = $this->where(['tenant_id' => $tenantId, 'app_key' => $appKey])->first();
+        $config = $this->where(['app_key' => $appKey])->first();
         return $config;
     }
 
-    public function saveConfig($tenantId, $appKey, $data)
+    public function saveConfig($appKey, $data)
     {
-        return self::updateOrCreate(['tenant_id' => $tenantId, 'app_key' => $appKey], $data);
+        return self::updateOrCreate(['app_key' => $appKey], $data);
     }
     
 }

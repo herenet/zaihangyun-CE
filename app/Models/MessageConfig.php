@@ -16,22 +16,21 @@ class MessageConfig extends Model
 
     protected $fillable = [
         'app_key',
-        'tenant_id',
         'switch',
     ];
 
-    public function getConfig($appKey, $tenantId)
+    public function getConfig($appKey)
     {
-        $config = $this->where(['app_key' => $appKey, 'tenant_id' => $tenantId])->first();
+        $config = $this->where(['app_key' => $appKey])->first();
         if(!$config){
             return [];
         }
         return $config->toArray();
     }
 
-    public function saveConfig($appKey, $tenantId, $data)
+    public function saveConfig($appKey, $data)
     {
-        return self::updateOrCreate(['tenant_id' => $tenantId, 'app_key' => $appKey], $data);
+        return self::updateOrCreate(['app_key' => $appKey], $data);
     }
     
     

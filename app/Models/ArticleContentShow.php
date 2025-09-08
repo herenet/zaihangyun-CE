@@ -14,7 +14,6 @@ class ArticleContentShow extends Model
     // 添加 fillable 属性
     protected $fillable = [
         'article_id',
-        'tenant_id',
         'app_key',
         'content'
     ];

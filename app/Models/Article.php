@@ -6,7 +6,6 @@ use Spatie\EloquentSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\SortableTrait;
 use Encore\Admin\Traits\DefaultDatetimeFormat;
-use App\Models\ArticleContentShow;
 
 class Article extends Model implements Sortable
 {

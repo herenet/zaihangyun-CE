@@ -25,7 +25,6 @@ class ArticleConfig extends Model
 
     protected $fillable = [
         'app_key',
-        'tenant_id',
         'switch',
         'list_theme',
         'content_theme',
@@ -41,12 +40,12 @@ class ArticleConfig extends Model
         'dark' => '深色主题',
     ];
 
-    public function getConfig($appKey, $tenantId)
+    public function getConfig($appKey)
     {
         $cacheKey = self::CACHE_KEY_PREFIX . $appKey;
         $config_info = Cache::get($cacheKey);
         if(!$config_info){
-            $config_info = self::where('app_key', $appKey)->where('tenant_id', $tenantId)->first();
+            $config_info = self::where('app_key', $appKey)->first();
             $config_info = $config_info ? $config_info->toArray() : [];
             if($config_info){
                 Cache::put($cacheKey, $config_info, self::CACHE_EXPIRE_TIME);
@@ -75,10 +74,10 @@ class ArticleConfig extends Model
         Cache::forget($cacheKey);
     }
 
-    public function saveConfig($appKey, $tenantId, $configData)
+    public function saveConfig($appKey, $configData)
     {
         $this->clearCache($appKey);
-        return self::updateOrCreate(['tenant_id' => $tenantId, 'app_key' => $appKey], $configData);
+        return self::updateOrCreate(['app_key' => $appKey], $configData);
     }
 }
 

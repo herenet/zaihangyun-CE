@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * CREATE TABLE `apple_notifications` (
  *  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
- *  `tenant_id` bigint(20) unsigned NOT NULL COMMENT '租户ID',
  *  `app_key` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用标识',
  *  `notification_uuid` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
  *  `notification_type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '通知类型(如INITIAL_BUY,DID_RENEW,DID_CANCEL等)',
@@ -39,7 +38,6 @@ class AppleNotification extends Model
     ];
 
     protected $fillable = [
-        'tenant_id', 
         'app_key', 
         'notification_uuid', 
         'notification_type', 

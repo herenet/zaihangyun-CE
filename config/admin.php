@@ -44,7 +44,7 @@ return [
     | This value is the path of laravel-admin bootstrap file.
     |
     */
-    'bootstrap' => app_path('SaaSAdmin/bootstrap.php'),
+    'bootstrap' => app_path('Admin/bootstrap.php'),
 
     /*
     |--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ return [
 
         'prefix' => env('ADMIN_ROUTE_PREFIX', 'console'),
 
-        'namespace' => 'App\\SaaSAdmin\\Controllers',
+        'namespace' => 'App\\Admin\\Controllers',
 
         'middleware' => ['web', 'admin'],
     ],
@@ -75,7 +75,7 @@ return [
     | be set before running `artisan admin::install` to take effect.
     |
     */
-    'directory' => app_path('SaaSAdmin'),
+    'directory' => app_path('Admin'),
 
     /*
     |--------------------------------------------------------------------------
@@ -110,7 +110,7 @@ return [
     */
     'auth' => [
 
-        'controller' => App\SaaSAdmin\Controllers\AuthController::class,
+        'controller' => App\Admin\Controllers\AuthController::class,
 
         'guard' => 'admin',
 
@@ -124,7 +124,7 @@ return [
         'providers' => [
             'admin' => [
                 'driver' => 'eloquent',
-                'model'  => \App\Models\Tenant::class,
+                'model'  => \App\Models\Admin::class,
             ],
         ],
 
@@ -156,7 +156,7 @@ return [
     'upload' => [
 
         // Disk in `config/filesystem.php`.
-        'disk' => 'SaaSAdmin-mch',
+        'disk' => 'Admin-mch',
 
         // Image and file upload path under the disk above.
         // 'directory' => [
@@ -179,8 +179,8 @@ return [
         'connection' => '',
 
         // User tables and model.
-        'users_table' => 'tenant',
-        'users_model' => App\Models\Tenant::class,
+        'users_table' => 'admin',
+        'users_model' => App\Models\Admin::class,
 
         // Role table and model.
         'roles_table' => 'admin_roles',
@@ -396,7 +396,7 @@ return [
     | When you use command `php artisan admin:extend` to generate extensions,
     | the extension files will be generated in this directory.
     */
-    'extension_dir' => app_path('SaaSAdmin/Extensions'),
+    'extension_dir' => app_path('Admin/Extensions'),
 
     /*
     |--------------------------------------------------------------------------
@@ -493,7 +493,7 @@ return [
 
         'api-tester' => [
         
-            'class' => \App\SaaSAdmin\Extensions\ZaihangyunApiTester::class,
+            'class' => \App\Admin\Extensions\ZaihangyunApiTester::class,
             // route prefix for APIs
             'prefix' => env('ADMIN_ROUTE_PREFIX', 'console'),
 
@@ -502,7 +502,7 @@ return [
 
             // If you are not using the default user model as the authentication model, set it up
             // 'user_retriever' => function ($id) {
-            //     return \App\Models\Tenant::find($id);
+            //     return \App\Models\Admin::find($id);
             // },
         ]
     ],

@@ -10,7 +10,6 @@ class AliyunAccessConfig extends Model
 
     protected $table = 'aliyun_access_config';
     protected $fillable = [
-        'tenant_id', 
         'name',
         'access_key_id',
         'access_key_secret',

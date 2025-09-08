@@ -157,7 +157,6 @@
         Swal.fire({
             title: '确定要删除此渠道吗？',
             html: confirm_text,
-            type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
             confirmButtonText: '确认删除',

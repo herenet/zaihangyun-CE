@@ -11,7 +11,6 @@ class WechatPaymentConfig extends Model
     protected $table = 'wechat_payment_config';
     protected $fillable = [
         'mch_name',
-        'tenant_id', 
         'mch_id',
         'mch_cert_serial',
         'mch_api_v3_secret',

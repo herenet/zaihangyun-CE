@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * CREATE TABLE `apple_verify_config` (
  *  `app_key` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
- *  `tenant_id` bigint unsigned NOT NULL,
  *  `bundle_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
  *  `multiple_verify` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否允许多次验证：0不允许，1允许',
  *  `subscrip_switch` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '是否开启订阅：0关闭，1开启',
@@ -28,7 +27,6 @@ class AppleVerifyConfig extends Model
 
     protected $fillable = [
         'app_key',
-        'tenant_id',
         'bundle_id',
         'multiple_verify',
         'subscrip_switch',
@@ -36,13 +34,13 @@ class AppleVerifyConfig extends Model
         'interface_check',
     ];
 
-    public function getConfig($tenantId, $appKey)
+    public function getConfig($appKey)
     {
-        return self::where(['tenant_id' => $tenantId, 'app_key' => $appKey])->first();
+        return self::where(['app_key' => $appKey])->first();
     }
 
-    public function saveConfig($tenantId, $appKey, $data)
+    public function saveConfig($appKey, $data)
     {
-        return self::updateOrCreate(['tenant_id' => $tenantId, 'app_key' => $appKey], $data);
+        return self::updateOrCreate(['app_key' => $appKey], $data);
     }
 }

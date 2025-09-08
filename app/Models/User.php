@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
  * CREATE TABLE `users` (
  *  `uid` bigint unsigned NOT NULL,
  *  `app_key` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用app_key',
- *  `tenant_id` bigint NOT NULL COMMENT '租户ID',
  *  `huawei_openid` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
  *  `huawei_unionid` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
  *  `apple_openid` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -111,7 +110,6 @@ class User extends Model
     {
         $columns = $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
         $ret = array_diff($columns, [
-            'tenant_id',
             'wechat_openid', 
             'wechat_unionid', 
             'apple_userid', 

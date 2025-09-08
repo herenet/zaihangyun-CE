@@ -18,11 +18,11 @@ class AlipayService
         $this->_client = Factory::payment();
     }
 
-    public function createAppOrder(string $subject, string $orderId, int $amount, string $appkey, int $tenantId)
+    public function createAppOrder(string $subject, string $orderId, int $amount, string $appkey)
     {
         $amount = sprintf("%.2f", $amount / 100);
 
-        $callback_params = Helpers::simpleEncode($appkey.'-'.$tenantId);
+        $callback_params = Helpers::simpleEncode($appkey);
         $notify_url = getenv("API_URL")."/v1/order/callback/alipay/".$callback_params;
         
         $result = $this->_client

@@ -8,7 +8,6 @@ use Readdle\AppStoreServerAPI\Environment;
 /**
  * CREATE TABLE `apple_orders` (
  * `oid` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '内部订单号',
- * `tenant_id` bigint(20) unsigned NOT NULL COMMENT '租户ID',
  * `app_key` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用标识',
  * `uid` bigint(20) unsigned NOT NULL COMMENT '用户ID',
  * `product_id` int(10) unsigned NOT NULL COMMENT '内部产品ID',
@@ -32,9 +31,6 @@ use Readdle\AppStoreServerAPI\Environment;
  * `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
  * `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
  * PRIMARY KEY (`oid`),
- * UNIQUE KEY `uk_tenant_app_transaction` (`tenant_id`,`app_key`,`transaction_id`),
- * KEY `idx_tenant_app_original_transaction` (`tenant_id`,`app_key`,`original_transaction_id`),
- * KEY `idx_uid` (`uid`)
  * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='苹果支付订单表';
  */
 class AppleOrder extends Model
@@ -113,7 +109,6 @@ class AppleOrder extends Model
 
     protected $fillable = [
         'oid', 
-        'tenant_id', 
         'app_key', 
         'uid', 
         'product_id', 

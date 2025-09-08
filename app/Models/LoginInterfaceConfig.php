@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * CREATE TABLE `login_interface_config` (
  *  `app_key` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
- *  `tenant_id` bigint(20) unsigned NOT NULL,
  *  `switch` tinyint(1) NOT NULL DEFAULT '0',
  *  `token_effective_duration` mediumint(8) unsigned DEFAULT '365',
  *  `suport_wechat_login` tinyint(1) DEFAULT '0',
@@ -26,7 +25,6 @@ use Illuminate\Database\Eloquent\Model;
  *  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
  *  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
  *  PRIMARY KEY (`app_key`),
- *  UNIQUE KEY `uniq_tenantid_appkey` (`tenant_id`,`app_key`)
  * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
  */
 class LoginInterfaceConfig extends Model
@@ -39,7 +37,6 @@ class LoginInterfaceConfig extends Model
 
     protected $fillable = [
         'app_key', 
-        'tenant_id', 
         'switch', 
         'token_effective_duration',
         'suport_wechat_login', 
@@ -58,14 +55,14 @@ class LoginInterfaceConfig extends Model
         'cancel_after_days',
     ];
 
-    public function getConfig($tenantId, $appKey)
+    public function getConfig($appKey)
     {
-        $config = $this->where(['tenant_id' => $tenantId, 'app_key' => $appKey])->first();
+        $config = $this->where(['app_key' => $appKey])->first();
         return $config;
     }
 
-    public function saveConfig($tenantId, $appKey, $data)
+    public function saveConfig($appKey, $data)
     {
-        return self::updateOrCreate(['tenant_id' => $tenantId, 'app_key' => $appKey], $data);
+        return self::updateOrCreate(['app_key' => $appKey], $data);
     }
 }

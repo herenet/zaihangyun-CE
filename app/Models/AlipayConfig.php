@@ -13,21 +13,20 @@ class AlipayConfig extends Model
 
     protected $fillable = [
         'app_key', 
-        'tenant_id', 
         'alipay_app_id',
         'alipay_public_cert',
         'app_private_cert',
         'interface_check',
     ];
 
-    public function getConfig($tenantId, $appKey)
+    public function getConfig($appKey)
     {
-        $config = $this->where(['tenant_id' => $tenantId, 'app_key' => $appKey])->first();
+        $config = $this->where(['app_key' => $appKey])->first();
         return $config;
     }
 
-    public function saveConfig($tenantId, $appKey, $data)
+    public function saveConfig($appKey, $data)
     {
-        return self::updateOrCreate(['tenant_id' => $tenantId, 'app_key' => $appKey], $data);
+        return self::updateOrCreate(['app_key' => $appKey], $data);
     }
 }

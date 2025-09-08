@@ -1101,7 +1101,7 @@ td.column-order button.grid-row-orderable {
 
 /* 修复question图标的问号居中显示 */
 .skin-blue-light .swal2-icon.swal2-question {
-    display: flex !important;
+    display: flex;
     align-items: center !important;
     justify-content: center !important;
 }

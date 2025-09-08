@@ -19,7 +19,6 @@ class Feedback extends Model
 
     protected $fillable = [
         'app_key', 
-        'tenant_id', 
         'uid',
         'type', 
         'content', 

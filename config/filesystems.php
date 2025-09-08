@@ -42,14 +42,14 @@ return [
             'visibility' => 'public',
         ],
         
-        'SaaSAdmin' => [
+        'Admin' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
 
-        'SaaSAdmin-mch' => [
+        'Admin-mch' => [
             'driver' => 'local',
             'root' => storage_path('app/public/mch'),
             'url' => env('APP_URL').'/storage/mch',

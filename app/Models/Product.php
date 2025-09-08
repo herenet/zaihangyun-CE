@@ -29,7 +29,6 @@ class Product extends Model implements Sortable
     static $fields_map = [
         'pid' => 'PID',
         'app_key' => '应用Key',
-        'tenant_id' => '租户ID',
         'name' => '产品名称',
         'sub_name' => '子标题',
         'type' => '产品类型',
@@ -68,7 +67,6 @@ class Product extends Model implements Sortable
     protected $fillable = [
         'pid',
         'app_key',
-        'tenant_id',
         'name',
         'sub_name',
         'type',

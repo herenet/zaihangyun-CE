@@ -14,7 +14,6 @@ class AppleReceiptData extends Model
 
     protected $fillable = [
         'verification_id',
-        'tenant_id',
         'app_key',
         'receipt_data_hash',
         'receipt_data',

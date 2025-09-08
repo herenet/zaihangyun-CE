@@ -10,7 +10,6 @@ use Encore\Admin\Traits\DefaultDatetimeFormat;
 /**
  * CREATE TABLE `apps` (
  *  `app_key` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
- *  `tenant_id` bigint(20) unsigned NOT NULL,
  *  `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
  *  `platform_type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '1为安卓，2为iphone',
  *  `launcher_icon` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -53,7 +52,6 @@ class App extends Model
         'app_secret',
         'name',
         'platform_type',
-        'tenant_id',
     ];
 
     public function getAppInfo($app_key) : array

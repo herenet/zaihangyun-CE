@@ -59,7 +59,6 @@ class Order extends Model
     /**
      * CREATE TABLE `orders` (
      * `oid` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-     * `tenant_id` bigint unsigned NOT NULL,
      * `app_key` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
      * `uid` bigint unsigned NOT NULL,
      * `product_id` int unsigned NOT NULL,
@@ -92,7 +91,6 @@ class Order extends Model
      */
     protected $fillable = [
         'oid',
-        'tenant_id',
         'app_key',
         'uid',
         'product_id',

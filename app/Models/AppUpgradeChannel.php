@@ -14,7 +14,6 @@ class AppUpgradeChannel extends Model
         'app_key',
         'channel_name',
         'is_default',
-        'tenant_id'
     ];
     
     public const IS_DEFAULT = 1;

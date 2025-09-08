@@ -233,7 +233,7 @@
                 url: handleUrl,
                 data: {
                     _key: key,
-                    _action: 'App_SaaSAdmin_Actions_DeleteApp',
+                    _action: 'App_Admin_Actions_DeleteApp',
                     _model: 'App_Models_App',
                     mobile: mobile,
                     sms_code: smsCode,
