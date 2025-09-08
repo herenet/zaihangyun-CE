@@ -1,8 +1,18 @@
 # 在行云 BaaS 平台
 
-
+## 项目介绍
 
 [在行云](https://www.zaihangyun.com)是一款专为独立开发者打造的轻量级 BaaS（Backend as a Service）平台，帮助开发者无需自建后台、无需后端开发即可快速构建功能完善的 APP。平台提供成熟的系统模块和管理后台，涵盖用户管理、支付、文档、数据收集、版本管理等核心功能。
+
+## 体验地址
+线上功能与开源版功能一致，区别在于：
+- **开源版**：免费，功能完善，支持二次开发。
+- **线上版**：收费，免IDC成本，免部署，免运维，数据安全。
+- **在线体验**：[https://www.zaihangyun.com](https://www.zaihangyun.com)
+
+## 源码地址
+- **国内**：[https://gitee.com/herenet/zaihangyun-CE](https://gitee.com/herenet/zaihangyun-CE)
+- **国外**：[https://github.com/herenet/zaihangyun-CE](https://github.com/herenet/zaihangyun-CE)
 
 ## 项目特点
 
