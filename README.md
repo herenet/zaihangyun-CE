@@ -55,8 +55,8 @@
 
 1. **克隆仓库**
    ```bash
-   git clone https://gitee.com/herenet/zaihangyun-admin.git
-   cd zaihangyun-admin
+   git clone https://gitee.com/herenet/zaihangyun-CE.git
+   cd zaihangyun-CE
    ```
 
 2. **安装依赖**
@@ -107,4 +107,4 @@
 
 扫码添加官方微信，第一时间了解产品动态并参与共建。
 
-![微信二维码](public/images/wechat.jpg)
+![微信二维码](admin/public/images/wechat.jpg)
