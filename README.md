@@ -1,64 +1,81 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# 产品介绍
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+---
 
-## About Laravel
+- [产品简介](#section-1)
+- [产品特点](#section-2)
+- [数据安全](#section-3)
+- [添加我们的微信](#section-4)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+> {primary.fa-info-circle} 专为独立开发者打造的轻量级 BaaS（Backend as a Service） 平台，**无需自建后台**、**无需后端开发**，也能拥有成熟的系统模块及管理后台
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<a name="section-1"></a>
+##产品简介
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+在行云，致力于为独立开发者提供简单高效的后端 API 服务，帮助开发者专注于打造出色的 APP 产品。
 
-## Learning Laravel
+我们提供一站式轻量解决方案，让你**无需自建后台**、**无需后端开发**，也能拥有成熟的系统模块及管理后台，包括：
+- `用户模块` 支持用户注册、登录和用户管理等基础功能，快速搭建用户体系。
+- `售卖模块` 覆盖支付、退款、会员购买、功能开通、自定义标识、订单管理等APP常用变现核心能力。
+- `文档模块` 管理帮助文档、协议条款、自定义文档等内容，保障用户知情权与产品合规性。
+- `数据收集模块` 收集用户反馈、常见问题（Q&A）、系统通知等信息，助力产品优化。
+- `版本管理模块` 支持 APP 版本控制与更新策略，实现稳定迭代和高效发布。
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+更多功能正在持续开发中，我们非常欢迎来自开发者的宝贵意见与建议。你可以通过扫码添加官方微信，第一时间了解产品动态并参与共建。
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+<a name="section-2"></a>
 
-### Premium Partners
+## 产品特点
+在行云，专为独立开发者量身打造，降低开发门槛，让你专注于打造优质的前端体验。以下是我们平台的核心优势：
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+- `零后端开发门槛` 无需掌握后端开发技术，甚至无需写一行后端代码。在行云为你打包好所有常用模块，一键启用，立刻使用。
 
-## Contributing
+- `一键配置，快速拥有后台` 通过简单配置即可为你的 APP 自动生成功能齐全的管理后台，包括用户、订单、文档、数据等模块，开箱即用。
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- `无需开发对接主流开放平台能力` 无需对接第三方支付接口或开放平台。在行云已为你集成支付、退款以及第三方登录等能力，省去繁琐开发工作。
 
-## Code of Conduct
+- `无需购买基础设施` 在行云托管服务为你免去服务器、域名、带宽、HTTPS 证书等 IDC 相关投入，真正实现「即开即用」。
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- `运维与合规无忧` 无需再担心服务器运维、数据备份、安全配置、系统监控及备案等问题，一切交给我们，省心又专业。
 
-## Security Vulnerabilities
+- `灵活可迁移` 当你的产品日后发展需要更多个性化、非标准化的功能时，可随时导出所有业务数据，自由迁移到你的私有后端。
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- `极简 API 接入体验` 在保证数据安全的前提下，我们大幅简化 API 接入流程，无需复杂认证机制，让开发更高效。
 
-## License
+- `模块化设计，按需启用` 你可以按实际需求启用或关闭模块功能，避免冗余系统开销，让管理后台更加清爽、聚焦。
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- `专为独立开发者优化` 我们深知独立开发者在资源、时间上的局限性，平台从底层架构到 UI 交互均为个人开发者友好设计。
+
+- `持续迭代，拥抱建议` 在行云并非一成不变的产品，我们欢迎每一位开发者的建议和需求，和你一起把产品打磨得更好！
+
+<a name="section-3"></a>
+## 数据安全
+在行云始终以企业级标准建设平台的数据安全体系，从数据存储到传输、备份、恢复，我们构建了全方位的防护机制，确保每一位开发者的业务数据在任何情况下都可靠、可控、可恢复。
+
+- `数据存储安全`
+	1. 所有业务数据均存储在国内合规云厂商的数据中心，享受与大型企业相同级别的基础设施保障。
+	2. 数据采用分布式存储架构设计，具备高可用性和抗单点故障能力。
+
+- `传输安全`
+	1. 平台全站启用 TLS 1.2+ 加密协议，所有 API 通信与后台管理均使用 HTTPS 加密，防止数据在传输过程中被监听或篡改。
+	2. 关键接口启用签名校验机制，有效抵御重放攻击与伪造请求。
+
+- `数据备份与恢复`
+	1. 提供自动化多副本备份机制，支持每日定时快照备份 + 实时增量数据同步。
+	2. 所有备份数据均异地冗余存储，确保即便发生物理灾害亦能恢复。
+	3. 支持业务数据恢复服务，开发者可申请按时间点回滚指定业务数据。
+
+- `数据运维与监控`
+	1. 实施 24/7 数据异常监控与告警机制，覆盖数据入库失败、写入异常、存储容量预警等核心指标。
+	2. 所有系统层操作均具备完整审计日志，支持安全追踪与溯源。
+	3. 内部系统采用最小权限访问策略，杜绝非授权人员接触生产数据。
+
+- `合规与标准`
+	1. 平台已对接《网络安全法》《数据安全法》等相关法律法规，并参考 ISO/IEC 27001 安全体系规范进行数据管理。
+	2. 所有数据资产遵循生命周期管理策略，从生成、使用、存储到销毁全程可控、可追溯。
+
+<a name="section-4"></a>
+## 添加我们的微信
+<image src="/images/wechat.jpg" width="300px"/>
