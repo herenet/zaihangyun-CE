@@ -11,7 +11,7 @@
  Target Server Version : 80028 (8.0.28)
  File Encoding         : 65001
 
- Date: 08/09/2025 11:34:39
+ Date: 08/09/2025 16:53:46
 */
 
 SET NAMES utf8mb4;
@@ -664,7 +664,7 @@ CREATE TABLE `iap_config` (
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`app_key`),
-  UNIQUE KEY `unq_buildle_id` (`bundle_id`) USING BTREE COMMENT '同一个租户不添加两个bundleID相同的配置'
+  UNIQUE KEY `unq_buildle_id` (`bundle_id`) USING BTREE COMMENT '不能添加两个bundleID相同的配置'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='苹果In-App Purchase配置';
 
 -- ----------------------------
@@ -790,8 +790,7 @@ CREATE TABLE `order_interface_config` (
   `suport_apple_verify` tinyint unsigned DEFAULT '0',
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`app_key`),
-  UNIQUE KEY `uniq_tenantid_appkey` (`app_key`)
+  PRIMARY KEY (`app_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
@@ -877,7 +876,6 @@ COMMIT;
 DROP TABLE IF EXISTS `user_tokens`;
 CREATE TABLE `user_tokens` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `tenant_id` bigint unsigned NOT NULL,
   `app_key` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `uid` bigint unsigned NOT NULL,
   `token` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
