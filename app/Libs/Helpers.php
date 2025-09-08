@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Libs;
+use Log;
 use Jdenticon\Identicon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
@@ -86,7 +87,7 @@ class Helpers
             // 确保目录存在
             return Storage::disk('Admin-mch')->put($path, $imageData);
         } catch (\Exception $e) {
-            \Log::error('生成头像失败: ' . $e->getMessage());
+            Log::error('生成头像失败: ' . $e->getMessage());
             return false;
         }
     }
