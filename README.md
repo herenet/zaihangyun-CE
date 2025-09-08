@@ -46,7 +46,7 @@
 
 ### 环境要求
 
-- PHP >= 7.0
+- PHP >= 8.0
 - MySQL >= 5.6
 - Redis >= 5.0
 - Composer
