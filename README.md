@@ -49,4 +49,4 @@
 
 <a name="section-3"></a>
 ## 添加我们的微信
-<image src="/images/wechat.jpg" width="300px"/>
+<image src="https://www.zaihangyun.com/images/wechat.jpg" width="300px"/>
