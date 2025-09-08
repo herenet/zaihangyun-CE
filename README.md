@@ -38,6 +38,10 @@
 - **Laravel Broadcasting**：用于实时通信。
 - **Laravel Testing**：用于单元测试和功能测试。
 
+## 接口文档
+
+- **在线文档**：[https://www.zaihangyun.com/docs](https://www.zaihangyun.com/docs)
+
 ## 安装与部署
 
 ### 环境要求
@@ -97,7 +101,7 @@
 
 ## 协议
 
-本项目采用 [MIT License](LICENSE)，你可以自由使用、修改和分发本项目代码。
+本项目采用 [Apache License 2.0](LICENSE)，你可以自由使用、修改和分发本项目代码。
 
 ## 联系我们
 
