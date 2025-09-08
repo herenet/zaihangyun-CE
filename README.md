@@ -6,7 +6,7 @@
 - [产品特点](#section-2)
 - [添加我们的微信](#section-3)
 
-> {primary.fa-info-circle} 专为独立开发者打造的轻量级 BaaS（Backend as a Service） 平台，**无需自建后台**、**无需后端开发**，也能拥有成熟的系统模块及管理后台
+> 专为独立开发者打造的轻量级 BaaS（Backend as a Service） 平台，**无需自建后台**、**无需后端开发**，也能拥有成熟的系统模块及管理后台
 
 <a name="section-1"></a>
 
