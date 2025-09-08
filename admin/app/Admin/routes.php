@@ -13,17 +13,7 @@ Route::group([
     'as'            => config('admin.route.prefix') . '.',
 ], function (Router $router) {
     $router->get('/', 'AppController@home');
-
-    $router->post('register', 'RegisterController@register');
-    $router->post('send-verification', 'RegisterController@sendVerification');
-    $router->post('send-delete-app-code', 'ManagerController@sendDeleteAppCode');
-    $router->post('send-login-verification', 'RegisterController@sendLoginVerification');
     $router->post('upload/article/image', 'UploadController@uploadImage')->name('upload.article.image');
-    
-    // API统计相关路由
-    $router->get('api-stats/today', 'ApiStatsController@getTodayStats')->name('api.stats.today');
-    $router->get('api-stats/details', 'ApiStatsController@details')->name('api.stats.details');
-    $router->get('api-stats/realtime', 'ApiStatsController@getRealtimeUpdate')->name('api.stats.realtime');
 
     $router->resource('apps', 'AppController')->names('apps');
     $router->get('apps/list', 'AppController@list')->name('apps.list');
@@ -70,7 +60,7 @@ Route::group([
         $router->post('order/config/apple/verify-one-time-purchase', 'Manager\OrderConfigController@verifyOneTimePurchase')->name('app.manager.order.config.verify.one-time-purchase');
         $router->post('order/config/apple/verify-notify', 'Manager\OrderConfigController@verifyNotify')->name('app.manager.order.config.verify.notify');
         $router->post('order/config/apple/verify-subscription', 'Manager\OrderConfigController@verifySubscription')->name('app.manager.order.config.verify.subscription');
-        // $router->get('order/config/apple/callback-verify-status', 'Manager\OrderConfigController@getAppleCallbackVerifyStatus')->name('app.manager.order.config.verify.callback-status');
+
         $router->post('order/config/iap', 'Manager\OrderConfigController@saveIAP')->name('app.manager.order.config.save.iap');
         $router->post('order/config/apple-verify', 'Manager\OrderConfigController@saveAppleVerify')->name('app.manager.order.config.save.apple-verify');
         

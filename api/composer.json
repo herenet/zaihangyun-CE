@@ -1,0 +1,80 @@
+{
+  "name": "workerman/webman",
+  "type": "project",
+  "keywords": [
+    "high performance",
+    "http service"
+  ],
+  "homepage": "https://www.workerman.net",
+  "license": "MIT",
+  "description": "High performance HTTP Service Framework.",
+  "authors": [
+    {
+      "name": "walkor",
+      "email": "walkor@workerman.net",
+      "homepage": "https://www.workerman.net",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "walkor@workerman.net",
+    "issues": "https://github.com/walkor/webman/issues",
+    "forum": "https://wenda.workerman.net/",
+    "wiki": "https://workerman.net/doc/webman",
+    "source": "https://github.com/walkor/webman"
+  },
+  "require": {
+    "php": ">=8.0",
+    "workerman/webman-framework": "^1.6.8",
+    "monolog/monolog": "^2.0",
+    "illuminate/database": "^9.52",
+    "illuminate/pagination": "^9.52",
+    "illuminate/events": "^9.52",
+    "symfony/var-dumper": "^6.0",
+    "laravel/serializable-closure": "^1.3",
+    "vlucas/phpdotenv": "^5.6",
+    "illuminate/redis": "^9.52",
+    "topthink/think-validate": "^3.0",
+    "webman/rate-limiter": "^1.1",
+    "symfony/cache": "^6.0",
+    "psr/simple-cache": "^3.0",
+    "guzzlehttp/guzzle": "^7.9",
+    "webman/event": "^1.0",
+    "webman/redis-queue": "^1.3",
+    "webman-tech/laravel-filesystem": "^3.1",
+    "webman/console": "^2.1",
+    "league/flysystem": "^3.29",
+    "mrgoon/aliyun-sms": "^2.0",
+    "intervention/image": "^2.7",
+    "wechatpay/wechatpay": "^1.4",
+    "workerman/crontab": "^1.0",
+    "ramsey/uuid": "^4.7",
+    "alipaysdk/easysdk": "^2.2",
+    "griffinledingham/php-apple-signin": "^1.1",
+    "readdle/app-store-server-api": "^3.12"
+  },
+  "suggest": {
+    "ext-event": "For better performance. "
+  },
+  "autoload": {
+    "psr-4": {
+      "": "./",
+      "app\\": "./app",
+      "App\\": "./app",
+      "app\\View\\Components\\": "./app/view/components"
+    }
+  },
+  "scripts": {
+    "post-package-install": [
+      "support\\Plugin::install"
+    ],
+    "post-package-update": [
+      "support\\Plugin::install"
+    ],
+    "pre-package-uninstall": [
+      "support\\Plugin::uninstall"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

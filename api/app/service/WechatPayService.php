@@ -1,0 +1,87 @@
+<?php
+namespace app\service;
+
+use Exception;
+use support\Log;
+use WeChatPay\Builder;
+use WeChatPay\Crypto\Rsa;
+use WeChatPay\Util\PemUtil;
+
+class WechatPayService
+{
+    const REQUEST_SUCCESS_HTTP_CODE = 200;
+
+    private $instance;
+
+    private $appid;
+
+    private $mchid;
+
+    private $notifyUrl;
+
+    public function __construct($appid, $mchid, $mch_cert_serial, $mch_private_key, $platform_cert, $notifyUrl = null)
+    {
+        $this->appid = $appid;
+        $this->mchid = $mchid;
+        $this->notifyUrl = $notifyUrl ?? getenv("APP_URL")."/v1/order/callback/wechat";
+
+        $mch_private_key_file = 'file://'.$mch_private_key;
+        $platform_cert_file = 'file://'.$platform_cert;
+        $platform_public_key_instance = Rsa::from($platform_cert_file, Rsa::KEY_TYPE_PUBLIC);
+        $platform_cert_serial = PemUtil::parseCertificateSerialNo($platform_cert_file);
+        
+        $this->instance = Builder::factory([
+            "mchid" => $this->mchid,
+            "serial" => $mch_cert_serial,
+            "privateKey" => Rsa::from($mch_private_key_file, Rsa::KEY_TYPE_PRIVATE),
+            "certs" => [
+                $platform_cert_serial => $platform_public_key_instance,
+            ]
+        ]);
+    }
+
+    public function downloadPlatformCert()
+    {
+        $resp = $this->instance->chain('/v3/certificates')->get();
+        return $this->_getResponseContent($resp);
+    }
+
+    public function createAppOrder(string $orderId, int $amount, string $desc, array $attach = [])
+    {
+        $resp = $this->instance
+            ->chain('/v3/pay/transactions/app')
+            ->post(['json' => [
+                'mchid' => $this->mchid,
+                'out_trade_no' => $orderId,
+                'appid' => $this->appid,
+                'description' => $desc,
+                'notify_url' => $this->notifyUrl,
+                'amount' => ['total' => $amount],
+            ]]);
+        return $this->_getResponseContent($resp);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function _getResponseContent(object $response) : array
+    {
+        $content = '';
+        if ($response->getStatusCode() == self::REQUEST_SUCCESS_HTTP_CODE) {
+            $content = json_decode($response->getBody()->getContents(), true);
+            if (!isset($content['errcode'])) {
+                return $content;
+            }
+        }
+        throw new Exception(json_encode($content), $response->getStatusCode());
+    }
+
+    public static function generateSign(string $appId, int $timestamp, string $nonceStr, string $prepayId, string $mch_private_key) : string
+    {
+        $sign_str = $appId."\n".$timestamp."\n".$nonceStr."\n".$prepayId."\n";
+        $mch_private_key_file = 'file://'.$mch_private_key;
+        $mch_private_key_instence = Rsa::from($mch_private_key_file, Rsa::KEY_TYPE_PRIVATE);
+
+        return Rsa::sign($sign_str, $mch_private_key_instence);
+    }
+}
