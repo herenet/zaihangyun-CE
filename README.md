@@ -10,7 +10,7 @@
 
 <a name="section-1"></a>
 
-##产品简介
+## 产品简介
 
 在行云，致力于为独立开发者提供简单高效的后端 API 服务，帮助开发者专注于打造出色的 APP 产品。
 
@@ -49,5 +49,6 @@
 - `持续迭代，拥抱建议` 在行云并非一成不变的产品，我们欢迎每一位开发者的建议和需求，和你一起把产品打磨得更好！
 
 <a name="section-3"></a>
+
 ## 添加我们的微信
 <image src="https://www.zaihangyun.com/images/wechat.jpg" width="300px"/>
