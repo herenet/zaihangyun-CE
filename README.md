@@ -1,5 +1,8 @@
 # 在行云 BaaS 平台
 
+![Static Badge](https://img.shields.io/badge/:badgeContent)
+
+
 [在行云](https://www.zaihangyun.com)是一款专为独立开发者打造的轻量级 BaaS（Backend as a Service）平台，帮助开发者无需自建后台、无需后端开发即可快速构建功能完善的 APP。平台提供成熟的系统模块和管理后台，涵盖用户管理、支付、文档、数据收集、版本管理等核心功能。
 
 ## 项目特点
