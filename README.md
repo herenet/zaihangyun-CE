@@ -3,6 +3,10 @@
 </p>
 <p align="left">
   <img src="https://img.shields.io/badge/社区版-master-blue.svg">
+  <img src="https://img.shields.io/badge/License-Apache2.0-lightgrey.svg">
+  <img src="https://img.shields.io/badge/PHP-8.0+-blue.svg">
+  <img src="https://img.shields.io/badge/MySQL-5.6+-blue.svg">
+  <img src="https://img.shields.io/badge/Redis-5.0+-blue.svg">
 </p>
 
 # 在行云 BaaS 平台
