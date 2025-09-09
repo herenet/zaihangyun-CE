@@ -1,3 +1,14 @@
+<p align="left">
+  <img src="admin/public/images/logo-mini.png" alt="在行云 BaaS 平台" width="160" />
+</p>
+<p align="left">
+  <img src="https://img.shields.io/badge/CE-master-blue.svg">
+  <img src="https://img.shields.io/badge/License-Apache2.0-lightgrey.svg">
+  <img src="https://img.shields.io/badge/PHP-8.0+-blue.svg">
+  <img src="https://img.shields.io/badge/MySQL-5.6+-blue.svg">
+  <img src="https://img.shields.io/badge/Redis-5.0+-blue.svg">
+</p>
+
 # Zaihangyun BaaS Platform
 查看中文版本：[README.md](README.md)
 
