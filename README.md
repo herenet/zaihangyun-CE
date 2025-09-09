@@ -2,7 +2,7 @@
   <img src="admin/public/images/logo-baas.png" alt="在行云 BaaS 平台" width="240" />
 </p>
 <p align="left">
-  <img src="https://img.shields.io/badge/社区版-master-brightblue.svg">
+  <img src="https://img.shields.io/badge/社区版-master-blue.svg">
 </p>
 
 # 在行云 BaaS 平台
