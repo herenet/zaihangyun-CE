@@ -1,4 +1,5 @@
 # 在行云 BaaS 平台
+View English documentation: [README_EN.md](README_EN.md)
 
 ## 项目介绍
 
