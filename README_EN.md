@@ -1,0 +1,133 @@
+# Zaihangyun BaaS Platform
+查看中文版本：[README.md](README.md)
+
+## Project Introduction
+
+[Zaihangyun](https://www.zaihangyun.com) is a lightweight BaaS (Backend as a Service) platform specifically designed for independent developers, helping them quickly build fully functional apps without setting up their own backend or requiring backend development. The platform provides mature system modules and an admin dashboard, covering core functionalities such as user management, payment, documentation, data collection, version management, and more.
+
+## Experience Address
+The online version has the same functionality as the open-source version, with the following differences:
+- **Open-source Version**: Free, fully functional, supports secondary development.
+- **Online Version**: Paid service, no IDC costs, no deployment needed, no maintenance required, data security guaranteed.
+- **Online Experience**: [https://www.zaihangyun.com](https://www.zaihangyun.com)
+
+## Project Features
+
+- **Zero Backend Development Threshold**: No need to master backend development technologies, or even write a single line of backend code.
+- **One-click Configuration**: Generate a fully functional admin dashboard for your APP through simple configuration.
+- **Mainstream Platform Integration**: Already integrated with payment, refund, third-party login and other mainstream platform capabilities, eliminating tedious integration work.
+- **No Infrastructure Investment**: No need to purchase servers, domain names, bandwidth, HTTPS certificates, etc., truly achieving "plug and play".
+- **Worry-free Maintenance and Compliance**: No need to worry about server maintenance, data backup, security configuration, system monitoring, and filing requirements.
+- **Flexible and Migratable**: When product development requires personalized features, you can export business data at any time and freely migrate to a private backend.
+- **Minimalist API Integration**: Simplify the API integration process while ensuring data security, making development more efficient.
+- **Modular Design**: Enable module functionality as needed, avoid redundant system overhead, making the admin dashboard cleaner and more focused.
+- **Optimized for Independent Developers**: From underlying architecture to UI interaction, all designed to be friendly for individual developers.
+- **Continuous Iteration**: Developers are welcome to provide suggestions and requirements to refine the product together.
+
+## Functional Modules
+
+- **User Module**: Supports basic functions such as user registration, login, and user management, quickly building a user system.
+- **Sales Module**: Covers payment, refunds, membership purchases, feature activation, order management, and other core monetization capabilities commonly used in APPs.
+- **Documentation Module**: Helps manage help documents, terms and agreements, custom documents, and other content, ensuring user informed consent and product compliance.
+- **Data Collection Module**: Collects user feedback, frequently asked questions (Q&A), system notifications, and other information to help optimize the product.
+- **Version Management Module**: Supports APP version control and update strategies, enabling stable iteration and efficient release.
+
+## Technical Architecture
+
+### Project Structure
+- **app**: Main project directory
+   - **admin**: Admin dashboard - Built on the laravel-admin framework
+   - **api**: API interface - Built on the webman framework
+
+### Special Note
+- **To ensure API interface performance while ensuring admin configurations take effect in real-time, admin and api share a Redis instance.**
+
+## API Documentation
+
+- **Online Documentation**: [https://www.zaihangyun.com/docs](https://www.zaihangyun.com/docs)
+
+## Installation and Deployment
+
+### Environment Requirements
+
+- PHP >= 8.0
+- MySQL >= 5.6
+- Redis >= 5.0
+- Composer
+
+### Admin Dashboard Installation Steps
+
+1. **Clone Repository**
+   ```bash
+   git clone https://github.com/herenet/zaihangyun-CE.git
+   cd zaihangyun-CE/admin
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   composer install
+   ```
+
+3. **Configure Environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. **Database Migration**
+   ```bash
+   mysql -u 用户名 -p 数据库名 < /zaihangyun-admin/zaihangyun-admin.sql
+   ```
+
+5. **Start Service**
+   ```bash
+   php artisan serve
+   ```
+
+6. **Access Admin Dashboard**
+   Open your browser and visit `http://localhost:8000/admin` to enter the admin dashboard. The default account password is `admin` / `admin`.
+   After logging in, you can find different modules in the left navigation bar, such as user management, payment management, documentation management, etc.
+
+### API Interface Installation Steps
+
+1. **Select Directory**
+   ```bash
+   cd zaihangyun-CE/api
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   composer install
+   ```
+
+3. **Configure Environment**
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Start Service**
+   ```bash
+   php start.php start
+   ```
+
+5. **Access API**
+   Visit `http://localhost:8787` to call the API interface
+
+## Usage Instructions
+- User Management : Manage user registration, login, permission assignment, etc. through the admin interface.
+- Payment Management : Integrate mainstream payment methods such as Alipay, WeChat Pay, Apple IAP, etc., supporting order management, refund processing, etc.
+- Document Management : Manage help documents, terms and agreements, custom documents, and other content through the document module.
+- Data Collection : Collect user feedback, frequently asked questions (Q&A), system notifications, and other information.
+- Version Management : Support APP version control and update strategies, enabling stable iteration and efficient release.
+## Contribution Guidelines
+Developers are welcome to participate in co-building! You can contribute in the following ways:
+
+- Submit Issues: Report bugs or suggest features.
+- Submit Pull Requests: Fix bugs or implement new features.
+- Participate in Discussions: Help optimize the product through comments or suggestions.
+## License
+This project is licensed under the Apache License 2.0 , you are free to use, modify, and distribute the code of this project.
+
+## Contact Us
+Scan the QR code to add our official WeChat account and be the first to learn about product updates and participate in co-building.
+![WeChat QR Code](admin/public/images/wechat.jpg)
