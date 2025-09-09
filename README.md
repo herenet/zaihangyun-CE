@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/images/logo-baas.png" alt="在行云 BaaS 平台" width="200" />
+  <img src="https://www.zaihangyun.com/images/logo-baas.png" alt="在行云 BaaS 平台" width="200" />
 </p>
 
 # 在行云 BaaS 平台
