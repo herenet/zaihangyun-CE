@@ -1,7 +1,5 @@
 <p align="left">
-   <div style="background-color: #fff;">
-      <img src="admin/public/images/logo-baas.png" alt="在行云 BaaS 平台" width="240" />
-   </div>
+  <img src="admin/public/images/logo-mini.png" alt="在行云 BaaS 平台" width="200" />
 </p>
 <p align="left">
   <img src="https://img.shields.io/badge/社区版-master-blue.svg">
