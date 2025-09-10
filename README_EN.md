@@ -99,7 +99,7 @@ The online version has the same functionality as the open-source version, with t
    Open your browser and visit `http://localhost:8000` to enter the admin dashboard. The default account password is `admin` / `admin`.
    After logging in, you can find different modules in the left navigation bar, such as user management, payment management, documentation management, etc.
 
-### Online Admin Dashboard Nginx Configuration
+7. **Online Admin Dashboard Nginx Configuration**
    ```bash
    server {
       listen 443 ssl;
@@ -174,7 +174,7 @@ The online version has the same functionality as the open-source version, with t
 6. **Access API**
    Visit `http://localhost:8787` to call the API interface
 
-### Online API Interface Nginx Configuration
+7. **Online API Interface Nginx Configuration**
    ```bash
    upstream webman {
       server 127.0.0.1:8787;
