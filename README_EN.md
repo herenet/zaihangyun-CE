@@ -233,7 +233,6 @@ The online version has the same functionality as the open-source version, with t
       location ~ /\. {
             return 404;
       }
-
    }
    ```
 
