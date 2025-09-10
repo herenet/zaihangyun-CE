@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/CE-master-blue.svg">
   <img src="https://img.shields.io/badge/License-Apache2.0-lightgrey.svg">
   <img src="https://img.shields.io/badge/PHP-8.0+-blue.svg">
-  <img src="https://img.shields.io/badge/MySQL-5.6+-blue.svg">
+  <img src="https://img.shields.io/badge/MySQL-5.7+-blue.svg">
   <img src="https://img.shields.io/badge/Redis-5.0+-blue.svg">
 </p>
 
@@ -62,7 +62,7 @@ The online version has the same functionality as the open-source version, with t
 ### Environment Requirements
 
 - PHP >= 8.0
-- MySQL >= 5.6
+- MySQL >= 5.7
 - Redis >= 5.0
 - Composer
 
