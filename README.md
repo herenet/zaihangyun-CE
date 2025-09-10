@@ -104,7 +104,41 @@ View English documentation: [README_EN.md](README_EN.md)
    登录后，你可以在左侧导航栏中找到不同的模块，如用户管理、支付管理、文档管理等。
 
 ### 线上Admin后台Nginx配置
+```bash
+   server {
+      listen 443 ssl;
+      listen [::]:443 ssl;
 
+      ssl_certificate /etc/nginx/cert/www.domain.com.pem;
+      ssl_certificate_key  /etc/nginx/cert/www.domain.com.key;
+      ssl_session_timeout 5m;
+      ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+      ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+      ssl_prefer_server_ciphers on;
+
+      root /path/zaihangyun-CE/admin/public;
+      index index.html index.htm index.php;
+
+      server_name www.domain.com domain.com;
+
+      location / {
+               try_files $uri $uri/ /index.php?$query_string;
+      }
+
+      location ~ \.php$ {
+         include snippets/fastcgi-php.conf;
+         fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+      }
+
+      location ~ \.phtml$ {
+         deny all;
+      }
+
+      location ~ /\.ht {
+         deny all;
+      }
+   }
+```
 
 ### API接口安装步骤
 
@@ -132,7 +166,7 @@ View English documentation: [README_EN.md](README_EN.md)
    访问 `http://localhost:8787` 调用API接口
 
 ### 线上API接口Nginx配置
-   ```
+   ```bash
    upstream webman {
       server 127.0.0.1:8787;
       keepalive 10240;
@@ -151,7 +185,7 @@ View English documentation: [README_EN.md](README_EN.md)
 
       access_log off;
       # 注意，这里一定是webman下的public目录，不能是webman根目录
-      root /your_path/zaihangyun-api/public;
+      root /path/zaihangyun-CE/api/public;
 
       location ^~ / {
          # 动态设置 CORS Origin，允许所有 *.domain.com 域名

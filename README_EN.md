@@ -99,6 +99,43 @@ The online version has the same functionality as the open-source version, with t
    Open your browser and visit `http://localhost:8000/admin` to enter the admin dashboard. The default account password is `admin` / `admin`.
    After logging in, you can find different modules in the left navigation bar, such as user management, payment management, documentation management, etc.
 
+### Online Admin Dashboard Nginx Configuration
+```bash
+   server {
+      listen 443 ssl;
+      listen [::]:443 ssl;
+
+      ssl_certificate /etc/nginx/cert/www.domain.com.pem;
+      ssl_certificate_key  /etc/nginx/cert/www.domain.com.key;
+      ssl_session_timeout 5m;
+      ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+      ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+      ssl_prefer_server_ciphers on;
+
+      root /path/zaihangyun-CE/admin/public;
+      index index.html index.htm index.php;
+
+      server_name www.domain.com domain.com;
+
+      location / {
+               try_files $uri $uri/ /index.php?$query_string;
+      }
+
+      location ~ \.php$ {
+         include snippets/fastcgi-php.conf;
+         fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+      }
+
+      location ~ \.phtml$ {
+         deny all;
+      }
+
+      location ~ /\.ht {
+         deny all;
+      }
+   }
+```
+
 ### API Interface Installation Steps
 
 1. **Select Directory**
@@ -123,6 +160,82 @@ The online version has the same functionality as the open-source version, with t
 
 5. **Access API**
    Visit `http://localhost:8787` to call the API interface
+
+### Online API Interface Nginx Configuration
+   ```bash
+   upstream webman {
+      server 127.0.0.1:8787;
+      keepalive 10240;
+   }
+
+   server {
+      server_name api.domain.com;
+      listen 443 ssl;
+      listen [::]:443 ssl;
+      ssl_certificate /etc/nginx/cert/api.domain.com.pem;
+      ssl_certificate_key  /etc/nginx/cert/api.domain.com.key;
+      ssl_session_timeout 5m;
+      ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+      ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+      ssl_prefer_server_ciphers on;
+
+      access_log off;
+      # 注意，这里一定是webman下的public目录，不能是webman根目录
+      root /path/zaihangyun-CE/api/public;
+
+      location ^~ / {
+         # 动态设置 CORS Origin，允许所有 *.domain.com 域名
+         set $cors_origin "";
+         if ($http_origin ~* "^https?://(.*\.)?domain\.com$") {
+            set $cors_origin $http_origin;
+         }
+
+         # 添加 CORS 头
+         add_header 'Access-Control-Allow-Origin' $cors_origin always;
+         add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+         add_header 'Access-Control-Allow-Headers' 'Content-Type, Authorization, X-Requested-With, Accept, Origin' always;
+         add_header 'Access-Control-Allow-Credentials' 'true' always;
+
+         # 处理 OPTIONS 预检请求
+         if ($request_method = 'OPTIONS') {
+            add_header 'Access-Control-Allow-Origin' $cors_origin;
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+            add_header 'Access-Control-Allow-Headers' 'Content-Type, Authorization, X-Requested-With, Accept, Origin';
+            add_header 'Access-Control-Allow-Credentials' 'true';
+            add_header 'Access-Control-Max-Age' 1728000;
+            add_header 'Content-Type' 'text/plain; charset=utf-8';
+            add_header 'Content-Length' 0;
+            return 204;
+         }
+
+         proxy_set_header Host $http_host;
+         proxy_set_header X-Forwarded-For $remote_addr;
+         proxy_set_header X-Forwarded-Proto $scheme;
+         proxy_set_header X-Real-IP $remote_addr;
+         proxy_http_version 1.1;
+         proxy_set_header Connection "";
+         if (!-f $request_filename){
+            proxy_pass http://webman;
+         }
+      }
+
+      # 拒绝访问所有以 .php 结尾的文件
+      location ~ \.php$ {
+            return 404;
+      }
+
+      # 允许访问 .well-known 目录
+      location ~ ^/\.well-known/ {
+            allow all;
+      }
+
+      # 拒绝访问所有以 . 开头的文件或目录
+      location ~ /\. {
+            return 404;
+      }
+
+   }
+   ```
 
 ## Usage Instructions
 - User Management : Manage user registration, login, permission assignment, etc. through the admin interface.
