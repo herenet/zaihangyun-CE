@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/社区版-master-blue.svg">
   <img src="https://img.shields.io/badge/License-Apache2.0-lightgrey.svg">
   <img src="https://img.shields.io/badge/PHP-8.0+-blue.svg">
-  <img src="https://img.shields.io/badge/MySQL-5.6+-blue.svg">
+  <img src="https://img.shields.io/badge/MySQL-5.7+-blue.svg">
   <img src="https://img.shields.io/badge/Redis-5.0+-blue.svg">
 </p>
 
@@ -66,7 +66,7 @@ View English documentation: [README_EN.md](README_EN.md)
 ### 环境要求
 
 - PHP >= 8.0
-- MySQL >= 5.6
+- MySQL >= 5.7
 - Redis >= 5.0
 - Composer
 
@@ -103,6 +103,9 @@ View English documentation: [README_EN.md](README_EN.md)
    打开浏览器，访问 `http://localhost:8000/admin` 即可进入后台管理界面。默认账号密码为 `admin` / `admin`。
    登录后，你可以在左侧导航栏中找到不同的模块，如用户管理、支付管理、文档管理等。
 
+### 线上Admin后台Nginx配置
+
+
 ### API接口安装步骤
 
 1. **选择目录**
@@ -127,6 +130,82 @@ View English documentation: [README_EN.md](README_EN.md)
 
 5. **访问接口**
    访问 `http://localhost:8787` 调用API接口
+
+### 线上API接口Nginx配置
+   ```
+   upstream webman {
+      server 127.0.0.1:8787;
+      keepalive 10240;
+   }
+
+   server {
+      server_name api.domain.com;
+      listen 443 ssl;
+      listen [::]:443 ssl;
+      ssl_certificate /etc/nginx/cert/api.domain.com.pem;
+      ssl_certificate_key  /etc/nginx/cert/api.domain.com.key;
+      ssl_session_timeout 5m;
+      ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+      ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+      ssl_prefer_server_ciphers on;
+
+      access_log off;
+      # 注意，这里一定是webman下的public目录，不能是webman根目录
+      root /your_path/zaihangyun-api/public;
+
+      location ^~ / {
+         # 动态设置 CORS Origin，允许所有 *.domain.com 域名
+         set $cors_origin "";
+         if ($http_origin ~* "^https?://(.*\.)?domain\.com$") {
+            set $cors_origin $http_origin;
+         }
+
+         # 添加 CORS 头
+         add_header 'Access-Control-Allow-Origin' $cors_origin always;
+         add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+         add_header 'Access-Control-Allow-Headers' 'Content-Type, Authorization, X-Requested-With, Accept, Origin' always;
+         add_header 'Access-Control-Allow-Credentials' 'true' always;
+
+         # 处理 OPTIONS 预检请求
+         if ($request_method = 'OPTIONS') {
+            add_header 'Access-Control-Allow-Origin' $cors_origin;
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+            add_header 'Access-Control-Allow-Headers' 'Content-Type, Authorization, X-Requested-With, Accept, Origin';
+            add_header 'Access-Control-Allow-Credentials' 'true';
+            add_header 'Access-Control-Max-Age' 1728000;
+            add_header 'Content-Type' 'text/plain; charset=utf-8';
+            add_header 'Content-Length' 0;
+            return 204;
+         }
+
+         proxy_set_header Host $http_host;
+         proxy_set_header X-Forwarded-For $remote_addr;
+         proxy_set_header X-Forwarded-Proto $scheme;
+         proxy_set_header X-Real-IP $remote_addr;
+         proxy_http_version 1.1;
+         proxy_set_header Connection "";
+         if (!-f $request_filename){
+            proxy_pass http://webman;
+         }
+      }
+
+      # 拒绝访问所有以 .php 结尾的文件
+      location ~ \.php$ {
+            return 404;
+      }
+
+      # 允许访问 .well-known 目录
+      location ~ ^/\.well-known/ {
+            allow all;
+      }
+
+      # 拒绝访问所有以 . 开头的文件或目录
+      location ~ /\. {
+            return 404;
+      }
+
+   }
+   ```
 
 ## 使用说明
 
