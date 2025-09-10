@@ -100,7 +100,7 @@ View English documentation: [README_EN.md](README_EN.md)
    ```
 
 6. **访问后台**
-   打开浏览器，访问 `http://localhost:8000/admin` 即可进入后台管理界面。默认账号密码为 `admin` / `admin`。
+   打开浏览器，访问 `http://localhost:8000` 即可进入后台管理界面。默认账号密码为 `admin` / `admin`。
    登录后，你可以在左侧导航栏中找到不同的模块，如用户管理、支付管理、文档管理等。
 
 ### 线上Admin后台Nginx配置
@@ -169,7 +169,7 @@ View English documentation: [README_EN.md](README_EN.md)
    cd api/public/
    ln -s ../storage ./
    ```
-   
+
 5. **启动服务**
    ```bash
    php start.php start

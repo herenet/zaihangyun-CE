@@ -96,11 +96,11 @@ The online version has the same functionality as the open-source version, with t
    ```
 
 6. **Access Admin Dashboard**
-   Open your browser and visit `http://localhost:8000/admin` to enter the admin dashboard. The default account password is `admin` / `admin`.
+   Open your browser and visit `http://localhost:8000` to enter the admin dashboard. The default account password is `admin` / `admin`.
    After logging in, you can find different modules in the left navigation bar, such as user management, payment management, documentation management, etc.
 
 ### Online Admin Dashboard Nginx Configuration
-```bash
+   ```bash
    server {
       listen 443 ssl;
       listen [::]:443 ssl;
@@ -134,7 +134,7 @@ The online version has the same functionality as the open-source version, with t
          deny all;
       }
    }
-```
+   ```
 
 ### API Interface Installation Steps
 
