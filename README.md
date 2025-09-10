@@ -103,8 +103,8 @@ View English documentation: [README_EN.md](README_EN.md)
    打开浏览器，访问 `http://localhost:8000` 即可进入后台管理界面。默认账号密码为 `admin` / `admin`。
    登录后，你可以在左侧导航栏中找到不同的模块，如用户管理、支付管理、文档管理等。
 
-7. 线上Admin后台Nginx配置
-```bash
+7. **线上Admin后台Nginx配置**
+   ```bash
    server {
       listen 443 ssl;
       listen [::]:443 ssl;
@@ -138,7 +138,7 @@ View English documentation: [README_EN.md](README_EN.md)
          deny all;
       }
    }
-```
+   ```
 
 ### API接口安装步骤
 
@@ -178,7 +178,7 @@ View English documentation: [README_EN.md](README_EN.md)
 6. **访问接口**
    访问 `http://localhost:8787` 调用API接口
 
-7. 线上API接口Nginx配置
+7. **线上API接口Nginx配置**
    ```bash
    upstream webman {
       server 127.0.0.1:8787;
