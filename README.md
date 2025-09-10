@@ -157,12 +157,25 @@ View English documentation: [README_EN.md](README_EN.md)
    cp .env.example .env
    ```
 
-4. **启动服务**
+4. **创建软链接**
+   - 为确保api平台能够正确访问到后台配置的相关证书，需要配置如下软链接：
+   ```bash
+   cd api/storage/app
+   ln -s ../../admin/storage/app/public/mch ./
+   ```
+
+   - 头像与图片相关
+   ```bash
+   cd api/public/
+   ln -s ../storage ./
+   ```
+   
+5. **启动服务**
    ```bash
    php start.php start
    ```
 
-5. **访问接口**
+6. **访问接口**
    访问 `http://localhost:8787` 调用API接口
 
 ### 线上API接口Nginx配置

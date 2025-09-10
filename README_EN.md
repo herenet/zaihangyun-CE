@@ -153,12 +153,25 @@ The online version has the same functionality as the open-source version, with t
    cp .env.example .env
    ```
 
-4. **Start Service**
+4. **Create Symbolic Links**
+   - To ensure the API platform can correctly access certificates configured in the admin backend, configure the following symbolic links:
+   ```bash
+   cd api/storage/app
+   ln -s ../../admin/storage/app/public/mch ./
+   ```
+
+   - For avatars and image-related files:
+   ```bash
+   cd api/public/
+   ln -s ../storage ./
+   ```
+
+5. **Start Service**
    ```bash
    php start.php start
    ```
 
-5. **Access API**
+6. **Access API**
    Visit `http://localhost:8787` to call the API interface
 
 ### Online API Interface Nginx Configuration
