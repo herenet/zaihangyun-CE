@@ -59,71 +59,71 @@ class VerifyAppleNotify implements Consumer
             switch ($notificationType) {
                 // 订阅成功（替代INITIAL_BUY用于订阅产品首次购买）
                 case ResponseBodyV2::NOTIFICATION_TYPE__SUBSCRIBED:
-                    $this->handleSubscribedV2($transactionInfo, $renewalInfo, $appkey, $subtype);
+                    $this->handleSubscribedV2($transactionInfo, $appkey, $renewalInfo, $subtype);
                     break;
                 // 一次性收费（替代INITIAL_BUY用于一次性商品购买）
                 case ResponseBodyV2::NOTIFICATION_TYPE__ONE_TIME_CHARGE:
-                    $this->handleOneTimeChargeV2($transactionInfo, $renewalInfo, $appkey);
+                    $this->handleOneTimeChargeV2($transactionInfo, $appkey, $renewalInfo);
                     break;
                 // 续费成功
                 case ResponseBodyV2::NOTIFICATION_TYPE__DID_RENEW:
-                    $this->handleDidRenewV2($transactionInfo, $renewalInfo, $appkey, $subtype);
+                    $this->handleDidRenewV2($transactionInfo, $appkey, $renewalInfo, $subtype);
                     break;
                 // 续费失败
                 case ResponseBodyV2::NOTIFICATION_TYPE__DID_FAIL_TO_RENEW:
-                    $this->handleDidFailToRenewV2($transactionInfo, $renewalInfo, $appkey, $subtype);
+                    $this->handleDidFailToRenewV2($transactionInfo, $appkey, $renewalInfo, $subtype);
                     break;
                 // 续费状态变更（包含取消订阅逻辑）
                 case ResponseBodyV2::NOTIFICATION_TYPE__DID_CHANGE_RENEWAL_STATUS:
-                    $this->handleDidChangeRenewalStatusV2($transactionInfo, $renewalInfo, $appkey, $subtype);
+                    $this->handleDidChangeRenewalStatusV2($transactionInfo, $appkey, $renewalInfo, $subtype);
                     break;
                 // 订阅过期
                 case ResponseBodyV2::NOTIFICATION_TYPE__EXPIRED:
-                    $this->handleExpiredV2($transactionInfo, $renewalInfo, $appkey, $subtype);
+                    $this->handleExpiredV2($transactionInfo, $appkey, $renewalInfo, $subtype);
                     break;
                 // 宽限期过期
                 case ResponseBodyV2::NOTIFICATION_TYPE__GRACE_PERIOD_EXPIRED:
-                    $this->handleGracePeriodExpiredV2($transactionInfo, $renewalInfo, $appkey);
+                    $this->handleGracePeriodExpiredV2($transactionInfo, $appkey, $renewalInfo);
                     break;
                 // 价格上涨
                 case ResponseBodyV2::NOTIFICATION_TYPE__PRICE_INCREASE:
-                    $this->handlePriceIncreaseV2($transactionInfo, $renewalInfo, $appkey, $subtype);
+                    $this->handlePriceIncreaseV2($transactionInfo, $appkey, $renewalInfo, $subtype);
                     break;
                 // 续费变更偏好
                 case ResponseBodyV2::NOTIFICATION_TYPE__DID_CHANGE_RENEWAL_PREF:
-                    $this->handleDidChangeRenewalPrefV2($transactionInfo, $renewalInfo, $appkey, $subtype);
+                    $this->handleDidChangeRenewalPrefV2($transactionInfo, $appkey, $renewalInfo, $subtype);
                     break;
                 // 优惠券兑换
                 case ResponseBodyV2::NOTIFICATION_TYPE__OFFER_REDEEMED:
-                    $this->handleOfferRedeemedV2($transactionInfo, $renewalInfo, $appkey, $subtype);
+                    $this->handleOfferRedeemedV2($transactionInfo, $appkey, $renewalInfo, $subtype);
                     break;
                 // 退款
                 case ResponseBodyV2::NOTIFICATION_TYPE__REFUND:
-                    $this->handleRefundV2($transactionInfo, $renewalInfo, $appkey);
+                    $this->handleRefundV2($transactionInfo, $appkey, $renewalInfo);
                     break;
                 // 撤销
                 case ResponseBodyV2::NOTIFICATION_TYPE__REVOKE:
-                    $this->handleRevokeV2($transactionInfo, $renewalInfo, $appkey);
+                    $this->handleRevokeV2($transactionInfo, $appkey, $renewalInfo);
                     break;
                 // 续费延长
                 case ResponseBodyV2::NOTIFICATION_TYPE__RENEWAL_EXTENDED:
-                    $this->handleRenewalExtendedV2($transactionInfo, $renewalInfo, $appkey);
+                    $this->handleRenewalExtendedV2($transactionInfo, $appkey, $renewalInfo);
                     break;
                 // 消耗数据请求
                 case ResponseBodyV2::NOTIFICATION_TYPE__CONSUMPTION_REQUEST:
-                    $this->handleConsumptionRequestV2($transactionInfo, $renewalInfo, $appkey);
+                    $this->handleConsumptionRequestV2($transactionInfo, $appkey, $renewalInfo);
                     break;
                 // 退款请求被拒绝
                 case ResponseBodyV2::NOTIFICATION_TYPE__REFUND_DECLINED:
-                    $this->handleRefundDeclinedV2($transactionInfo, $renewalInfo, $appkey);
+                    $this->handleRefundDeclinedV2($transactionInfo, $appkey, $renewalInfo);
                     break;
                 // 退款被撤销
                 case ResponseBodyV2::NOTIFICATION_TYPE__REFUND_REVERSED:
-                    $this->handleRefundReversedV2($transactionInfo, $renewalInfo, $appkey);
+                    $this->handleRefundReversedV2($transactionInfo, $appkey, $renewalInfo);
                     break;
                 // 批量续费延期状态
                 case ResponseBodyV2::NOTIFICATION_TYPE__RENEWAL_EXTENSION:
-                    $this->handleRenewalExtensionV2($transactionInfo, $renewalInfo, $appkey, $subtype);
+                    $this->handleRenewalExtensionV2($transactionInfo, $appkey, $renewalInfo, $subtype);
                     break;
                 // 其他通知类型
                 default:
@@ -166,10 +166,10 @@ class VerifyAppleNotify implements Consumer
      * 当Apple请求提供消耗型商品的消耗数据时触发
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      */
-    private function handleConsumptionRequestV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey)
+    private function handleConsumptionRequestV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null)
     {
         $transactionId = $transactionInfo->getTransactionId();
         
@@ -188,10 +188,10 @@ class VerifyAppleNotify implements Consumer
      * 当Apple拒绝退款请求时触发
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      */
-    private function handleRefundDeclinedV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey)
+    private function handleRefundDeclinedV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null)
     {
         $transactionId = $transactionInfo->getTransactionId();
         
@@ -209,10 +209,10 @@ class VerifyAppleNotify implements Consumer
      * 当之前的退款被撤销时触发，需要恢复用户权益
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      */
-    private function handleRefundReversedV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey)
+    private function handleRefundReversedV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null)
     {
         $transactionId = $transactionInfo->getTransactionId();
         
@@ -270,11 +270,11 @@ class VerifyAppleNotify implements Consumer
      * 当批量续费延期操作完成时触发
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string|null $subtype 通知类型
      */
-    private function handleRenewalExtensionV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, ?string $subtype = null)
+    private function handleRenewalExtensionV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null, ?string $subtype = null)
     {
         Log::channel('order')->info('handling renewal extension', [
             'appkey' => $appkey,
@@ -304,10 +304,10 @@ class VerifyAppleNotify implements Consumer
      * 当订阅的宽限期结束时触发
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      */
-    private function handleGracePeriodExpiredV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey)
+    private function handleGracePeriodExpiredV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null)
     {
         $originalTransactionId = $transactionInfo->getOriginalTransactionId();
         
@@ -332,11 +332,11 @@ class VerifyAppleNotify implements Consumer
      * 当订阅产品价格上涨时触发
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string|null $subtype 通知类型
      */
-    private function handlePriceIncreaseV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, ?string $subtype = null)
+    private function handlePriceIncreaseV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null, ?string $subtype = null)
     {
         $originalTransactionId = $transactionInfo->getOriginalTransactionId();
         
@@ -354,11 +354,11 @@ class VerifyAppleNotify implements Consumer
      * 当用户更改订阅计划或产品时触发
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string|null $subtype 通知类型
      */
-    private function handleDidChangeRenewalPrefV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, ?string $subtype = null)
+    private function handleDidChangeRenewalPrefV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null, ?string $subtype = null)
     {
         $originalTransactionId = $transactionInfo->getOriginalTransactionId();
         
@@ -388,11 +388,11 @@ class VerifyAppleNotify implements Consumer
      * 当用户兑换促销优惠码时触发
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string|null $subtype 通知类型
      */
-    private function handleOfferRedeemedV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, ?string $subtype = null)
+    private function handleOfferRedeemedV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null, ?string $subtype = null)
     {
         $transactionId = $transactionInfo->getTransactionId();
         $originalTransactionId = $transactionInfo->getOriginalTransactionId();
@@ -418,7 +418,7 @@ class VerifyAppleNotify implements Consumer
             }
             
             // 创建新订单
-            $this->createOrderFromNotification($transactionInfo, $renewalInfo, $appkey, $uid, $subtype);
+            $this->createOrderFromNotification($transactionInfo, $appkey, $uid, $renewalInfo, $subtype);
         } else {
             // 更新现有订单
             $this->updateOrderFromNotification($order, $transactionInfo, $renewalInfo, $subtype);
@@ -430,11 +430,10 @@ class VerifyAppleNotify implements Consumer
      * 当Apple撤销之前的交易时触发（通常用于家庭共享场景）
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
-     * @param string|null $subtype 通知类型
+     * @param RenewalInfo|null $renewalInfo 续费信息
      */
-    private function handleRevokeV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, ?string $subtype = null)
+    private function handleRevokeV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null)
     {
         $transactionId = $transactionInfo->getTransactionId();
         
@@ -463,11 +462,10 @@ class VerifyAppleNotify implements Consumer
      * 当Apple延长订阅期限时触发（通常用于服务中断补偿）
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
-     * @param string|null $subtype 通知类型
+     * @param RenewalInfo|null $renewalInfo 续费信息
      */
-    private function handleRenewalExtendedV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, ?string $subtype = null)
+    private function handleRenewalExtendedV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null)
     {
         $originalTransactionId = $transactionInfo->getOriginalTransactionId();
         
@@ -528,11 +526,11 @@ class VerifyAppleNotify implements Consumer
      * 当自动续费成功时触发
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string|null $subtype 通知类型
      */
-    private function handleDidRenewV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, ?string $subtype = null)
+    private function handleDidRenewV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null, ?string $subtype = null)
     {
         $originalTransactionId = $transactionInfo->getOriginalTransactionId();
         
@@ -547,7 +545,7 @@ class VerifyAppleNotify implements Consumer
         
         if (!empty($originalOrder)) {
             // 创建续费订单或更新订阅状态
-            $this->handleRenewalOrder($originalOrder, $transactionInfo, $renewalInfo, $appkey, $subtype);
+            $this->handleRenewalOrder($originalOrder, $transactionInfo, $appkey, $renewalInfo, $subtype);
         }else{
             throw new \Exception('did renew order not found: '.$originalTransactionId.' appkey: '.$appkey);
         }
@@ -559,11 +557,11 @@ class VerifyAppleNotify implements Consumer
      * 
      * @param array $originalOrder 原始订单数据
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string|null $subtype 通知类型
      */
-    private function handleRenewalOrder(array $originalOrder, TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, ?string $subtype = null)
+    private function handleRenewalOrder(array $originalOrder, TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null, ?string $subtype = null)
     {
         $transactionId = $transactionInfo->getTransactionId();
         
@@ -583,7 +581,7 @@ class VerifyAppleNotify implements Consumer
         } else {
             // 创建新的续费订单，传入原始订单的用户ID
             $originalUid = $originalOrder['uid'] ?? 0;
-            $this->createOrderFromNotification($transactionInfo, $renewalInfo, $appkey, $originalUid, $subtype);
+            $this->createOrderFromNotification($transactionInfo, $appkey, $originalUid, $renewalInfo, $subtype);
         }
     }
 
@@ -592,11 +590,11 @@ class VerifyAppleNotify implements Consumer
      * 当自动续费失败时触发
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string|null $subtype 通知类型
      */
-    private function handleDidFailToRenewV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, ?string $subtype = null)
+    private function handleDidFailToRenewV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null, ?string $subtype = null)
     {
         $originalTransactionId = $transactionInfo->getOriginalTransactionId();
         
@@ -621,11 +619,11 @@ class VerifyAppleNotify implements Consumer
      * 当用户开启或关闭自动续费时触发（包含取消订阅逻辑）
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string|null $subtype 通知类型
      */
-    private function handleDidChangeRenewalStatusV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, ?string $subtype = null)
+    private function handleDidChangeRenewalStatusV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null, ?string $subtype = null)
     {
         $transactionId = $transactionInfo->getTransactionId();
         $originalTransactionId = $transactionInfo->getOriginalTransactionId();
@@ -663,7 +661,7 @@ class VerifyAppleNotify implements Consumer
             if (!empty($originalOrder)) {
                 $uid = $originalOrder['uid'] ?? 0;
                 // 创建新订单记录这次状态变更交易
-                $this->createOrderFromNotification($transactionInfo, $renewalInfo, $appkey, $uid, $subtype);
+                $this->createOrderFromNotification($transactionInfo, $appkey, $uid, $renewalInfo, $subtype);
                 
                 Log::channel('order')->info('created order for renewal status change', [
                     'transactionId' => $transactionId,
@@ -696,11 +694,11 @@ class VerifyAppleNotify implements Consumer
      * 当订阅到期且未续费时触发
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string|null $subtype 通知类型
      */
-    private function handleExpiredV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, ?string $subtype = null)
+    private function handleExpiredV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null, ?string $subtype = null)
     {
         $originalTransactionId = $transactionInfo->getOriginalTransactionId();
         
@@ -726,10 +724,10 @@ class VerifyAppleNotify implements Consumer
      * 当Apple处理退款请求时触发
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      */
-    private function handleRefundV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey)
+    private function handleRefundV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null)
     {
         $transactionId = $transactionInfo->getTransactionId();
         $originalTransactionId = $transactionInfo->getOriginalTransactionId();
@@ -846,11 +844,11 @@ class VerifyAppleNotify implements Consumer
      * 当用户购买消耗型或非消耗型商品时触发
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string|null $subtype 通知类型
      */
-    private function handleOneTimeChargeV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, ?string $subtype = null)
+    private function handleOneTimeChargeV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null, ?string $subtype = null)
     {
         $transactionId = $transactionInfo->getTransactionId();
         $originalTransactionId = $transactionInfo->getOriginalTransactionId();
@@ -883,7 +881,7 @@ class VerifyAppleNotify implements Consumer
                 }
             }
             
-            $this->createOrderFromNotification($transactionInfo, $renewalInfo, $appkey, $uid, $subtype);
+            $this->createOrderFromNotification($transactionInfo, $appkey, $uid, $renewalInfo, $subtype);
         } else {
             // 更新现有订单状态
             $this->updateOrderFromNotification($order, $transactionInfo, $renewalInfo, $subtype);
@@ -895,11 +893,11 @@ class VerifyAppleNotify implements Consumer
      * 当用户订阅产品时触发（包括首次订阅和重新订阅）
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
+     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string|null $subtype 通知类型
      */
-    private function handleSubscribedV2(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, ?string $subtype = null)
+    private function handleSubscribedV2(TransactionInfo $transactionInfo, string $appkey, ?RenewalInfo $renewalInfo = null, ?string $subtype = null)
     {
         $transactionId = $transactionInfo->getTransactionId();
         $originalTransactionId = $transactionInfo->getOriginalTransactionId();
@@ -925,7 +923,7 @@ class VerifyAppleNotify implements Consumer
             }
             
             // 创建新订单
-            $this->createOrderFromNotification($transactionInfo, $renewalInfo, $appkey, $uid, $subtype);
+            $this->createOrderFromNotification($transactionInfo, $appkey, $uid, $renewalInfo, $subtype);
         } else {
             // 更新订阅状态
             $update_data = [
@@ -949,13 +947,13 @@ class VerifyAppleNotify implements Consumer
      * 用于处理用户直接在App Store购买的情况
      * 
      * @param TransactionInfo $transactionInfo 交易信息
-     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string $appkey 应用标识
      * @param int $uid 用户ID，续费时从原始订单获取，首次购买时为0
+     * @param RenewalInfo|null $renewalInfo 续费信息
      * @param string|null $subtype 通知类型
      * @throws \Exception 创建失败时抛出异常
      */
-    private function createOrderFromNotification(TransactionInfo $transactionInfo, ?RenewalInfo $renewalInfo = null, string $appkey, int $uid = 0, ?string $subtype = null)
+    private function createOrderFromNotification(TransactionInfo $transactionInfo, string $appkey, int $uid = 0, ?RenewalInfo $renewalInfo = null, ?string $subtype = null)
     {
         $productId = $transactionInfo->getProductId();
         $transactionId = $transactionInfo->getTransactionId();
