@@ -38,7 +38,7 @@ class VerifyAppleNotify implements Consumer
         $transactionInfo = $data['transactionInfo'] ? TransactionInfo::createFromRawTransactionInfo($data['transactionInfo']) : null;
         $renewalInfo = $data['renewalInfo'] ? RenewalInfo::createFromRawRenewalInfo($data['renewalInfo']) : null;
 
-        $appkey = $data['appkey'];
+        $appkey = $data['appkey'] ?? null;
         $notificationType = $data['notification_type'];
         $subtype = $data['subtype'];
         $notificationId = $data['notification_id'];
@@ -175,7 +175,7 @@ class VerifyAppleNotify implements Consumer
         
         Log::channel('order')->info('handling consumption request', [
             'transactionId' => $transactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
 
         // 消耗数据请求通知通常需要回复消耗状态
@@ -197,7 +197,7 @@ class VerifyAppleNotify implements Consumer
         
         Log::channel('order')->info('handling refund declined', [
             'transactionId' => $transactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
 
         // 退款被拒绝，订单状态保持不变
@@ -218,7 +218,7 @@ class VerifyAppleNotify implements Consumer
         
         Log::channel('order')->info('handling refund reversed', [
             'transactionId' => $transactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
 
         $apple_order_model = new AppleOrder();
@@ -278,7 +278,7 @@ class VerifyAppleNotify implements Consumer
     {
         Log::channel('order')->info('handling renewal extension', [
             'appkey' => $appkey,
-            'subtype' => $subtype
+            'subtype' => $subtype ?? null
         ]);
 
         // 根据subtype处理不同的批量续费延期状态
@@ -313,7 +313,7 @@ class VerifyAppleNotify implements Consumer
         
         Log::channel('order')->info('handling grace period expired', [
             'originalTransactionId' => $originalTransactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
 
         $apple_order_model = new AppleOrder();
@@ -342,7 +342,7 @@ class VerifyAppleNotify implements Consumer
         
         Log::channel('order')->info('handling price increase', [
             'originalTransactionId' => $originalTransactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
 
         // 价格上涨通知通常只需要记录，不需要更新订单状态
@@ -364,7 +364,7 @@ class VerifyAppleNotify implements Consumer
         
         Log::channel('order')->info('handling renewal preference change', [
             'originalTransactionId' => $originalTransactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
 
         $apple_order_model = new AppleOrder();
@@ -400,7 +400,7 @@ class VerifyAppleNotify implements Consumer
         Log::channel('order')->info('handling offer redeemed', [
             'transactionId' => $transactionId,
             'originalTransactionId' => $originalTransactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
 
         // 优惠兑换可能创建新的交易或更新现有订阅
@@ -440,7 +440,7 @@ class VerifyAppleNotify implements Consumer
         
         Log::channel('order')->info('handling revoke', [
             'transactionId' => $transactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
 
         $apple_order_model = new AppleOrder();
@@ -473,7 +473,7 @@ class VerifyAppleNotify implements Consumer
         
         Log::channel('order')->info('handling renewal extended', [
             'originalTransactionId' => $originalTransactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
 
         $apple_order_model = new AppleOrder();
@@ -538,7 +538,7 @@ class VerifyAppleNotify implements Consumer
         
         Log::channel('order')->info('handling did renew', [
             'originalTransactionId' => $originalTransactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
         
         // 查找原始订单
@@ -570,7 +570,7 @@ class VerifyAppleNotify implements Consumer
         Log::channel('order')->info('handling renewal order', [
             'transactionId' => $transactionId,
             'originalOid' => $originalOrder['oid'],
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
         
         // 检查是否已存在该交易ID的订单
@@ -602,7 +602,7 @@ class VerifyAppleNotify implements Consumer
         
         Log::channel('order')->info('handling did fail to renew', [
             'originalTransactionId' => $originalTransactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
         
         $apple_order_model = new AppleOrder();
@@ -633,7 +633,7 @@ class VerifyAppleNotify implements Consumer
         Log::channel('order')->info('handling renewal status change', [
             'transactionId' => $transactionId,
             'originalTransactionId' => $originalTransactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
 
         // 从 renewalInfo 中获取正确的 autoRenewStatus
@@ -646,7 +646,7 @@ class VerifyAppleNotify implements Consumer
             Log::channel('order')->warning('renewal status change without auto_renew_status', [
                 'transactionId' => $transactionId,
                 'originalTransactionId' => $originalTransactionId,
-                'appkey' => $appkey
+                'appkey' => $appkey ?? null
             ]);
             return;
         }
@@ -675,7 +675,7 @@ class VerifyAppleNotify implements Consumer
                 Log::channel('order')->warning('no original order found for renewal status change', [
                     'transactionId' => $transactionId,
                     'originalTransactionId' => $originalTransactionId,
-                    'appkey' => $appkey
+                    'appkey' => $appkey ?? null
                 ]);
                 return;
             }
@@ -706,7 +706,7 @@ class VerifyAppleNotify implements Consumer
         
         Log::channel('order')->info('handling expired', [
             'originalTransactionId' => $originalTransactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
         
         $apple_order_model = new AppleOrder();
@@ -737,7 +737,7 @@ class VerifyAppleNotify implements Consumer
         Log::channel('order')->info('handling refund', [
             'transactionId' => $transactionId,
             'originalTransactionId' => $originalTransactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
         
         $apple_order_model = new AppleOrder();
@@ -814,7 +814,7 @@ class VerifyAppleNotify implements Consumer
         } else {
             Log::channel('order')->warning('refund order not found', [
                 'transactionId' => $transactionId,
-                'appkey' => $appkey
+                'appkey' => $appkey ?? null
             ]);
         }
     }
@@ -858,7 +858,7 @@ class VerifyAppleNotify implements Consumer
         Log::channel('order')->info('handling one time charge', [
             'transactionId' => $transactionId,
             'originalTransactionId' => $originalTransactionId,
-            'appkey' => $appkey
+            'appkey' => $appkey ?? null
         ]);
 
         // 简单检查：如果订单已存在且已成功，直接返回
